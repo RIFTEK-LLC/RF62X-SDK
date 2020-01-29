@@ -3,7 +3,7 @@
 
 #include "rf627_devices.h"
 #include "platform_types.h"
-#include "srvc_proto.h"
+#include "rf627_protocol.h"
 #include <stddef.h>
 
 

@@ -1,0 +1,9 @@
+[submodule "rf627core/third_party/utils/custom_vector"]
+	path = rf627core/third_party/utils/custom_vector
+	url = https://gitlab.com/riftek_llc/software/utilities/custom_vector.git
+[submodule "rf627core/third_party/utils/platform_methods"]
+	path = rf627core/third_party/utils/platform_methods
+	url = https://gitlab.com/riftek_llc/software/utilities/platform_methods.git
+[submodule "rf627core/third_party/protocols/rf627protocol"]
+	path = rf627core/third_party/protocols/rf627protocol
+	url = https://gitlab.com/riftek_llc/software/sdk/protocols/rf627protocol.git

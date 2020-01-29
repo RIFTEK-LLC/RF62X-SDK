@@ -1,5 +1,5 @@
 #include "rf627_core.h"
-#include "srvc_proto.h"
+#include "rf627_protocol.h"
 
 #include <pthread.h>
 
