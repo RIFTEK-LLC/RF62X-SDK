@@ -10,3 +10,6 @@
 [submodule "rf627core/third_party/utils/endian_conv"]
 	path = rf627core/third_party/utils/endian_conv
 	url = https://gitlab.com/riftek_llc/software/utilities/endian_conv.git
+[submodule "rf627core/third_party/utils/custom_string"]
+	path = rf627core/third_party/utils/custom_string
+	url = https://gitlab.com/riftek_llc/software/utilities/custom_string.git

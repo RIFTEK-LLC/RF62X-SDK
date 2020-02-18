@@ -12,7 +12,10 @@
 #endif
 
 namespace SDK {
-namespace RF_SCANNERS {
+namespace SCANNERS {
+namespace RF627 {
+
+
 
 /**
  * @brief sdk_version - Return info about SDK version
@@ -32,8 +35,6 @@ API_EXPORT bool sdk_init();
  */
 API_EXPORT void sdk_cleanup();
 
-class rf627old;
-typedef std::vector<rf627old*> rf627_list;
 
 class API_EXPORT rf627old
 {
@@ -44,7 +45,7 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return vector of rf627old devices
      */
-    static rf627_list search(PROTOCOLS protocol);
+    static std::vector<rf627old*> search(PROTOCOLS protocol);
 
     /**
      * @brief connect - Establish connection to the RF627old device
@@ -55,7 +56,6 @@ public:
 
     /**
      * @brief disconnect_from_scanner - Close connection to the device
-     * @param device - prt to scanner
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success
      */
@@ -63,13 +63,32 @@ public:
 
     /**
      * @brief get_profile - Get measurement from scanner's data stream
-     * @param device - ptr to scanner
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return ptr to rf627_profile_t structure
      */
     profile_t* get_profile(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
+    /**
+     * @brief read_params - Read parameters from device to internal structure.
+     * This structure is accessible via get_params() function
+     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success
+     */
+    bool read_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
+    /**
+     * @brief write_params - Write current parameters to device's memory
+     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success
+     */
+    bool write_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    /**
+     * @brief get_param - Search parameters by his name
+     * @param param_name - name of parameter
+     * @return param on success, else - null
+     */
+    param_t* get_param(std::string param_name);
 
     rf627old(void* scanner_base);
     ~rf627old();
@@ -80,6 +99,7 @@ private:
 
 };
 
+}
 }
 }
 

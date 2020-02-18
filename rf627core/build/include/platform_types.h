@@ -20,11 +20,10 @@ typedef uint32_t	rfUint32;	// 32-bit unsigned number
 typedef char		rfChar;		// 8-bit signed number
 typedef uint8_t		rfByte;		// 8-bit bit string
 typedef uint8_t		rfBool;     // bool data types
-typedef size_t      rfSize;     // size_t
-typedef ssize_t     rfSsize;    // ssize_t
-typedef int         rfInt;      // int
-typedef float		rfFloat;	// IEEE 754 32-bit floating point number
-typedef double		rfDouble;	// IEEE 754 64-bit floating point number
+typedef size_t      rfSize;     // rfSize
+typedef int         rfInt;      // rfInt
+typedef float		rfFloat;	// IEEE 754 32-bit rfFloating point number
+typedef double		rfDouble;	// IEEE 754 64-bit rfFloating point number
 
 #define _SUPPORT_64BIT_DATATYPES
 #ifdef _SUPPORT_64BIT_DATATYPES

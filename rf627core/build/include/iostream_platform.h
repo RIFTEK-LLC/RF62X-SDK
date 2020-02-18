@@ -32,4 +32,5 @@ extern iostream_platform_dependent_methods_t iostream_platform;
  */
 void init_iostream_platform(iostream_platform_dependent_methods_t* methods);
 
+
 #endif //IOSTREAM_PLATFORM_H

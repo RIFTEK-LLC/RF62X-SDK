@@ -2,18 +2,19 @@
 #define RF627_DEVICES_H
 
 #include "rf627_types.h"
-#include "rf627_config.h"
 #include "custom_vector.h"
 
 typedef struct
 {
     config_options_t options;
     factory_params_t factory_params;
-    user_params_t user_params;
+    rf627_old_user_params_t user_params;
 
     void* m_svc_sock;
     void* m_data_sock;
     rfUint16 msg_count;
+
+    vector_t *params_list;
 
 }rf627_old_t;
 
@@ -21,7 +22,7 @@ typedef struct
 
 /*! Return rf627-old api version
  */
-uint32_t rf627_old_api_version();
+rfUint32 rf627_old_api_version();
 
 /**
  * @brief rf627_old_search - Search for RF627-old devices over network
@@ -56,7 +57,7 @@ int rf627_old_mutex_unlock();
  * @return
  */
 rf627_old_t* rf627_old_create_from_hello_msg(
-        void* msg_info, uint16_t init_msg_count);
+        void* msg_info, rfUint16 init_msg_count);
 
 /**
  * @brief rf627_old_connect - Establish connection to the device
@@ -78,6 +79,31 @@ void rf627_old_disconnect(rf627_old_t* scanner);
  */
 rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner);
 
+/**
+ * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.
+ * This structure is accessible via get_params() function
+ * @param device - ptr to scanner
+ * @param protocol -  protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @return 0 on success
+ */
+rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner);
+
+/**
+ * @brief write_params_to_scanner - Write current parameters to device's memory
+ * @param device - ptr to scanner
+ * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @return 0 on success
+ */
+rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner);
+
+/**
+ * @brief rf627_old_get_parameter - Search parameters by his name
+ * @param scanner - ptr to scanner
+ * @param param_name - name of parameter
+ * @return param on success, else - null
+ */
+parameter_t* rf627_old_get_parameter(
+        rf627_old_t* scanner, const rfChar* param_name);
 
 
 

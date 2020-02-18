@@ -1,8 +1,10 @@
 #include "rf627sdk.h"
+#include "rf627types.h"
 #include <iostream>
 
 using namespace SDK;
-using namespace RF_SCANNERS;
+using namespace SCANNERS;
+using namespace RF627;
 
 int main()
 {
@@ -15,7 +17,7 @@ int main()
 
 
     // Create value for scanners vector's type
-    rf627_list list;
+    std::vector<rf627old*> list;
     // Search for RF627old devices over network
     list = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
 
@@ -33,11 +35,11 @@ int main()
         list[i]->connect();
         // Get profile from scanner's data stream by Service Protocol.
         profile_t* profile = list[i]->get_profile();
-
-        // Print the serial number of the scanner to which the profile belongs.
-        std::cout << std::endl;
-        std::cout << profile->profile_header.serial_number << std::endl;
-        std::cout << std::endl;
+        if (profile != nullptr)
+        {
+            // Print the serial number of the scanner to which the profile belongs.
+            std::cout << profile->profile_header.serial_number << std::endl;
+        }
     }
 
 }

@@ -12,7 +12,7 @@ typedef struct vector_ {
 /**
  * @brief vector_init - The vector type used in this library
  */
-void vector_init(vector_t* vec);
+void vector_init(vector_t** vec);
 
 /**
  * @brief vector_count - get count of vectors elements

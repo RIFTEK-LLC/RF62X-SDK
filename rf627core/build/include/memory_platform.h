@@ -43,11 +43,11 @@ typedef void (*free_t)(void* data);
 /**
  * @brief memset_t - ptr to function whish fills block of memory
  * Sets the first num bytes of the block of memory pointed by ptr to the
- * specified value (interpreted as an unsigned char).
+ * specified value (interpreted as an unsigned rfChar).
  * @param memptr - Pointer to the block of memory to fill.
  * @param val - Value to be set.
  * @param num - Number of bytes to be set to the value.
- *              rfSize is an unsigned integral type.
+ *              rfSize is an unsigned rfIntegral type.
  * @return ptr is returned.
  */
 typedef void* (*memset_t)(void* memptr, rfInt val, rfSize num);
@@ -59,7 +59,7 @@ typedef void* (*memset_t)(void* memptr, rfInt val, rfSize num);
  *                      be copied, type-casted to a pointer of type void*.
  * @param source - Pointer to the source of data to be copied, type-casted to a
  *                 pointer of type const void*.
- * @param num - Number of bytes to copy. rfSize is an unsigned integral type.
+ * @param num - Number of bytes to copy. rfSize is an unsigned rfIntegral type.
  * @return destination is returned.
  */
 typedef void* (*memcpy_t)(void* destination, const void* source, rfSize num);
@@ -78,7 +78,7 @@ typedef void* (*memcpy_t)(void* destination, const void* source, rfSize num);
  *         >0 - if the first byte that does not match in both memory blocks has
  * a greater value in ptr1 than in ptr2.
  */
-typedef rfInt (*memcmp_t)(const void * ptr1, const void * ptr2, size_t num );
+typedef rfInt (*memcmp_t)(const void * ptr1, const void * ptr2, rfSize num );
 
 
 /** @brief Structure with user-provided platform-specific methods

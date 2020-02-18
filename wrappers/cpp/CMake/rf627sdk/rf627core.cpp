@@ -1,10 +1,10 @@
-extern "C"{
-#include <rf627_sdk.h>
-}
+#include "rf627core.h"
+#include <memory>
 #include <iostream>
-#include <cstring>
-#include <stdarg.h>
 
+extern "C"{
+#include <rf627_core.h>
+}
 
 #ifdef _WIN32
 #include <winsock.h>
@@ -330,7 +330,7 @@ rfUint8 platform_close_socket(void* socket)
  * 				than the number requested to be sent in the len parameter
  * - On error: -1
  */
-rfSsize platform_send_tcp_data(void* socket, const void *buf, rfSize len)
+rfInt platform_send_tcp_data(void* socket, const void *buf, rfSize len)
 {
     if (!buf || !len) {
         return -1;
@@ -350,7 +350,7 @@ rfSsize platform_send_tcp_data(void* socket, const void *buf, rfSize len)
  * 				than the number requested to be sent in the len parameter
  * - On error: -1
  */
-rfSsize platform_send_udp_data(
+rfInt platform_send_udp_data(
         void* socket, const void *data, rfSize len,
         const rf_sockaddr_in *dest_addr, rf_socklen_t addrlen)
 {
@@ -370,11 +370,11 @@ rfSsize platform_send_udp_data(
  * @param addrlen - Specifies the length of the sender's address.
  * @return If successful - the number of bytes received. On failure, it returns a value of -1
  */
-rfSsize platform_recv_from(
+rfInt platform_recv_from(
         void* socket, void *buf, rfSize len,
         rf_sockaddr_in *src_addr, rf_socklen_t *addrlen)
 {
-    rfSsize nret;
+    rfInt nret;
     rf_socklen_t from_size;
     rf_sockaddr_in from_addr;
     from_size = sizeof(from_addr);
@@ -382,6 +382,7 @@ rfSsize platform_recv_from(
         return -1;
     }
     nret = recvfrom(*(SOCKET*)socket, (char*)buf, (int)len, 0, (sockaddr*)&from_addr, (int*)addrlen);
+
     if (nret > 0)
     {
         if (src_addr) {
@@ -393,6 +394,32 @@ rfSsize platform_recv_from(
     {
         return -1;
     }
+}
+
+/**
+ * @brief Pointer to the function that receive message from socket and capture address of sender.
+ * @param sockfd - Specifies a socket descriptor from which data should be received.
+ * @param buf - Specifies the buffer in which to place the message.
+ * @param len - Specifies the length of the buffer area.
+ * @return If successful - the number of bytes received. On failure, it returns a value of -1
+ */
+rfInt platform_recv(void* socket, void *buf, rfSize len)
+{
+    rfInt nret;
+    if (*(SOCKET*)socket == INVALID_SOCKET) {
+        return -1;
+    }
+    nret = recv(*(SOCKET*)socket, (char*)buf, len, 0);
+
+    if (nret > 0)
+    {
+        return nret;
+    }
+    else
+    {
+        return -1;
+    }
+
 }
 
 network_platform_dependent_methods_t network_methods = {
@@ -413,7 +440,8 @@ network_platform_dependent_methods_t network_methods = {
     .send_tcp_data = platform_send_tcp_data,
     .send_udp_data = platform_send_udp_data,
 
-    .recv_from = platform_recv_from
+    .recv_data_from = platform_recv_from,
+    .recv_data = platform_recv
 };
 
 network_platform_dependent_settings_t adapter_settings =
@@ -431,59 +459,43 @@ extern const char* GetAdapterAddress(int index);
 extern BOOL WinSockInit();
 
 
-
-
-
-
-
-int main()
+int SDK::CORES::RF627::version()
 {
-#if (defined _WIN32)// && !defined __MINGW32__)
-    WinSockInit();
-#endif
-    FreeAdapterAddresses();
-    EnumAdapterAddresses();
-
-    std::cout << sdk_version() << std::endl;
-
-    init_platform_dependent_methods(
-                &memory_methods, &iostream_methods, &network_methods, &adapter_settings);
-
-    vector_t* scanners = (vector_t*)calloc(1, sizeof(vector_t));
-    vector_init(scanners);
-
-    for (int i=0; i<GetAdaptersCount(); i++)
-    {
-        adapter_settings.host_ip_addr = inet_addr(GetAdapterAddress(i));
-        change_platform_adapter_settings(&adapter_settings);
-        search(scanners, kRF627_OLD, kSERVICE_PROTOKOL);
-    }
-
-    std::cout << vector_count(scanners) << std::endl;
+    /*
+     * Get rf627 core version
+     */
+    return core_version();
 }
 
+bool SDK::CORES::RF627::init()
+{
+#if (defined _WIN32)
+    /*
+     * Network Interface initialization.
+     *
+     * All processes (applications or DLLs) that call Winsock functions must
+     * initialize the use of the Windows Sockets DLL before making other Winsock
+     * functions calls. This also makes certain that Winsock is supported on the
+     * system.
+     */
+    WinSockInit();
+#endif
 
+    /*
+     * Cleaning detected network adapter.
+     */
+    FreeAdapterAddresses();
+    /*
+     * Retrieving addresses associated with adapters on the local computer.
+     */
+    EnumAdapterAddresses();
 
+    /*
+     * Initialization platform dependent methods and settings for win64 platform
+     */
+    init_platform_dependent_methods(
+                &memory_methods, &iostream_methods,
+                &network_methods, &adapter_settings);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return true;
+}

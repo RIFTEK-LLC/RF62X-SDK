@@ -33,7 +33,7 @@ typedef struct {
 typedef rfUint32 rf_socklen_t;
 
 #ifndef AF_INET
-#define AF_INET		  2	/* Internet IP Protocol 	*/
+#define AF_INET		  2	/* rfInternet IP Protocol 	*/
 #endif
 
 #ifndef SOCK_DGRAM
@@ -78,7 +78,7 @@ typedef rfUint32 rf_socklen_t;
 typedef rfUint32 (*hton_long_t) (rfUint32 hostlong);
 
 /** @brief The modbusHtoN_long_t function converts a u_long from TCP/IP network
- * order to host byte order (which is little-endian on Intel processors).
+ * order to host byte order (which is little-endian on rfIntel processors).
  *
  * @param netlong - A 32-bit number in TCP/IP network byte order.
  * @return: The modbusNtoH_long_t function returns the value supplied in the netlong parameter with the byte order reversed.
@@ -179,7 +179,7 @@ typedef rfUint8 (*socket_listen_t)(
  * 				entity, as known to the communications layer. The exact format of the addr
  * 				parameter is determined by the address family that was established when
  * 				the socket from the SockAddr structure was created.
- * @param addrlen - An optional pointer to an integer that contains the length of structure
+ * @param addrlen - An optional pointer to an rfInteger that contains the length of structure
  * 				   pointed to by the addr parameter.
  * @return
  * - On success: If no error occurs, modbusSocketAccept_t returns value is a handle for the
@@ -208,7 +208,7 @@ typedef rfUint8 (*close_socket_t)(void* socket);
  * 				than the number requested to be sent in the len parameter
  * - On error: -1
  */
-typedef rfSsize (*send_tcp_data_t)(void* socket, const void *buf, rfSize len);
+typedef rfInt (*send_tcp_data_t)(void* socket, const void *buf, rfSize len);
 
 /** @brief Pointer to the send function that sends data on a UDP socket
  *
@@ -222,7 +222,7 @@ typedef rfSsize (*send_tcp_data_t)(void* socket, const void *buf, rfSize len);
  * 				than the number requested to be sent in the len parameter
  * - On error: -1
  */
-typedef rfSsize (*send_udp_data_t)(
+typedef rfInt (*send_udp_data_t)(
         void* socket, const void *data, rfSize len,
         const rf_sockaddr_in *dest_addr, rf_socklen_t addrlen);
 
@@ -235,7 +235,7 @@ typedef rfSsize (*send_udp_data_t)(
  * @param addrlen - Specifies the length of the sender's address.
  * @return If successful - the number of bytes received. On failure, it returns a value of -1
  */
-typedef rfSsize (*recv_data_from_t)(
+typedef rfInt (*recv_data_from_t)(
         void* sockfd, void *buf, rfSize len,
         rf_sockaddr_in *src_addr, rf_socklen_t *addrlen);
 
@@ -246,7 +246,7 @@ typedef rfSsize (*recv_data_from_t)(
  * @param len - Specifies the length of the buffer area.
  * @return If successful - the number of bytes received. On failure, it returns a value of -1
  */
-typedef rfSsize (*recv_data_t)(void* socket, void *buf, rfSize len);
+typedef rfInt (*recv_data_t)(void* socket, void *buf, rfSize len);
 
 /** @brief Structure with user-provided platform-specific methods
  */
@@ -303,6 +303,6 @@ void init_network_platform(network_platform_dependent_methods_t* methods);
  * @brief set_adapter_settings - adapter settings for init network
  * @param settings
  */
-void set_adapter_settings(network_platform_dependent_settings_t* settings);
+void set_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr);
 
 #endif // NETWORK_PLATFORM_H

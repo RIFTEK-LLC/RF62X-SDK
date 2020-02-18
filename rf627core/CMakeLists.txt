@@ -13,8 +13,12 @@ file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/*.c
     )
@@ -22,7 +26,9 @@ file(GLOB SOURCES
 file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/*.h
     )
 
@@ -42,7 +48,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/
     )
 
