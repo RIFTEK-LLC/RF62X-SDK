@@ -39,17 +39,35 @@ from the IDE. Just clone `https://gitlab.com/riftek_llc/software/sdk/scanners/rf
 to get the full code.
 
 In case you didn't install an IDE, you will need to manually [install Git](https://git-scm.com/downloads)
-on your local computer and do the following build instructions:
+on your local computer and do the following instructions:
 
 ```CMake
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
 cd rf627sdk
 git submodule update --init --recursive
+```
+
+#### 2. Build
+###### CMake
+To build the code:
+
+```CMake
 cd rf627core
 cmake .
 cmake --build . 
 ```
-##### IDE
-###### CMake
+
 ###### Qt Creator
+To build the code:
+*  Open in folder rf627core CMakeLists.txt file with Qt Creator
+*  Compile
+
 ###### Visual Studio Community
+To build the code:
+
+```CMake
+cd rf627core
+cmake .
+```
+*  Open rf627core.sln with Visual Studio
+*  Compile
