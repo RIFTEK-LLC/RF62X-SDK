@@ -46,6 +46,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
 cd rf627sdk
 git submodule update --init --recursive
 cd rf627core
+cmake .
 cmake --build . 
 ```
 ##### IDE
