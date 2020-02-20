@@ -21,10 +21,30 @@ and [GitLab](https://about.gitlab.com/) for source code hosting.
 For developers who simply want to use this SDK for work with scanners, can be 
 downloaded last libraries and read usage examples.
 
-For developers who wish to download and build the latest code:
-*  [install a git client](https://git-scm.com/downloads) on your local computer
-*  "clone" the project to download "master" to your local computer
-*  build/compile the project
+For developers who wish to download and build the latest code, should be able to 
+use Git and do the following instructions:
+###### 1. Install a git client on your local computer (if you haven’t yet)
+*  On Linux use the terminal command: `sudo apt install git`
+*  On MacOS use the terminal command: `brew install git`
+*  For other platforms see the [git installation documentation](https://git-scm.com/downloads).
+###### 2. Open a command prompt/terminal on your computer
+*  On Linux, click the launch bar and search for 'terminal'
+*  On OS X, hit ⌘-space and search for 'terminal'
+*  On Windows, click the Start menu and search for 'command line'.
+###### 3. Clone the repository using the following commands:
+```
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
+cd rf627sdk
+git submodule update --init --recursive
+```
+
+For developers who wish to download and build the latest code using Git from the 
+IDE (Qt Creator or Visual Studio Community) should follow these instructions:
+1.  Create a Git project in one of the IDEs 
+2.  Clone `https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git`
+3.  Download submodules 
+
+> We recommend to use a git client for downloading and Qt Creator for project building 
 
 ## RF627 CORE
 The base library for the following scanner series: 
@@ -32,22 +52,16 @@ The base library for the following scanner series:
 *  RF627-smart
 
 
-### How to compile
-#### 1. Get the code
-If you get Qt Creator or Visual Studio Community, you should be able to use Git 
-from the IDE. Just clone `https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git`
-to get the full code.
-
-In case you didn't install an IDE, you will need to manually [install Git](https://git-scm.com/downloads)
-on your local computer and do the following instructions:
-
-```CMake
+### HOW TO COMPILE
+RF627 CORE can be built on the console or in an IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
 cd rf627sdk
 git submodule update --init --recursive
 ```
+> for more information about project downloading steps, see an [overview](#overview)
 
-#### 2. Build
 ###### CMake
 To build the code:
 
@@ -59,8 +73,10 @@ cmake --build .
 
 ###### Qt Creator
 To build the code:
-*  Open in folder rf627core CMakeLists.txt file with Qt Creator
-*  Compile
+*  Load the CMakeLists.txt file in the rf627core folder via **File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Open **Build Settings** and check **install** target for **Build Steps** 
+*  Compile project
 
 ###### Visual Studio Community
 To build the code:
