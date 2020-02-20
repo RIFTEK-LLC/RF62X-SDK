@@ -1,18 +1,19 @@
 # RF627SDK
 
 ## CONTENTS
+- [OVERVIEW](#overview)
 - [RF627 CORE](#rf627-core)
   - [How to compile](#how-to-compile)
-- [RF627 SDK-WRAPPERS]()
-  - [C++](#c++)
-    - [How to compile](#how-to-compile1)
-    - [Examples](#examples1)
-  - [C#](#c#)
-    - [How to compile](#how-to-compile2)
-    - [Examples](#examples2)
-  - [Python](#python)
-    - [How to compile](#how-to-compile3)
-    - [Examples](#examples3)
+- [RF627 WRAPPER LIBRARIES]()
+  - [C++ LIBRARY](#c-library)
+    - [How to compile](#how-to-compile-1)
+    - [How to use](#how-to-use)
+  - [C# LIBRARY](#c-library-1)
+    - [How to compile](#how-to-compile-2)
+    - [How to use](#how-to-use-1)
+  - [PYTHON LIBRARY](#python-library)
+    - [How to compile](#how-to-compile-3)
+    - [How to use](#how-to-use-2)
 
 ## OVERVIEW
 The RF627SDK project uses [git](http://git-scm.com/) for source code management 
@@ -75,7 +76,7 @@ cmake --build .
 To build the code:
 *  Load the CMakeLists.txt file in the rf627core folder via **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-*  Open **Build Settings** and check **install** target for **Build Steps** 
+*  Open **Build Settings** and check ***install*** target for **Build Steps** 
 *  Compile project
 
 ###### Visual Studio Community
@@ -87,3 +88,18 @@ cmake .
 ```
 *  Open rf627core.sln with Visual Studio
 *  Compile
+
+## RF627 WRAPPER LIBRARIES
+Wrappers are used to make writing programs using the rf627core library easier.
+
+### C++ LIBRARY
+#### HOW TO COMPILE
+#### HOW TO USE
+
+### C# LIBRARY
+#### HOW TO COMPILE
+#### HOW TO USE
+
+### PYTHON LIBRARY
+#### HOW TO COMPILE
+#### HOW TO USE
