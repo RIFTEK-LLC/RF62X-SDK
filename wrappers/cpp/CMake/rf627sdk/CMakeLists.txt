@@ -1,47 +1,56 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rf627sdk LANGUAGES CXX)
 
+##
+## PROJECT
+## name and version
+##
+project(rf627sdk VERSION 1.0.1 LANGUAGES CXX)
+
+
+##
+## CONFIGURATION
+##
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # Enabling export of all symbols to create a dynamic library
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-set(RF627CORE_DIR "D:/Work/C/rf627sdk/rf627core/build/")
+# set rf627core path variable
+set(RF627CORE_DIR "../../../../rf627core")
+# add subdirectory of rf627core lib
+add_subdirectory(${RF627CORE_DIR} CMAKE_CURRENT_SOURCE_DIR)
 
-# include *.h rf627core files from directory
-include_directories("${RF627CORE_DIR}/include")
+# create glob files for *.h, *.cpp
+file (GLOB H_FILES   ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file (GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+# concatenate the results (glob files) to variable
+set  (SOURCES ${CPP_FILES} ${H_FILES})
 
-SET(CMAKE_FIND_LIBRARY_PREFIXES "")
-SET(CMAKE_FIND_LIBRARY_SUFFIXES ".lib" ".dll")
 
-# find rf627core lib from paths and copy full file name to RF627SDK_LIBRARY
-find_library(
-    RF627CORE_LIBRARY
-    rf627core
-    PATHS ${RF627CORE_DIR}/bin/MinGW_64)
-
-file(GLOB SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    )
-
-file(GLOB HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    )
-#add_executable(${PROJECT_NAME} ${SOURCES})
+##
+## TARGET
+## create target and add include path
+##
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/
+    )
 
-target_link_libraries(${PROJECT_NAME} ${RF627CORE_LIBRARY})
+target_link_libraries(${PROJECT_NAME} rf627core)
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} ws2_32)
 endif(MINGW)
 target_link_libraries(${PROJECT_NAME} iphlpapi)
 
+
+##
+## INSTALL
+## install header files, generate .lib or .dll file.
+##
 if(MINGW AND (CMAKE_SIZEOF_VOID_P EQUAL 4))
     set(RUNTIME_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/MinGW_32)
     set(LIBRARY_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/lib/MinGW_32)
@@ -56,13 +65,6 @@ elseif(MSVC14 AND NOT (CMAKE_SIZEOF_VOID_P EQUAL 4))
     set(LIBRARY_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/lib/MSVC14_64)
 endif(MINGW AND (CMAKE_SIZEOF_VOID_P EQUAL 4))
 
-# copy rf627sdk lib from directory to project build directory
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${RF627CORE_LIBRARY} ${LIBRARY_DESTINATION}
-    COMMAND ${CMAKE_COMMAND} -E copy ${RF627CORE_LIBRARY} ${RUNTIME_DESTINATION})
-
-
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${PROJECT_NAME}
@@ -71,9 +73,4 @@ install(
     LIBRARY DESTINATION ${LIBRARY_DESTINATION}
     )
 
-install(FILES ${HEADERS} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/include)
-
-
-
-
-
+install(FILES ${H_FILES} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/include)

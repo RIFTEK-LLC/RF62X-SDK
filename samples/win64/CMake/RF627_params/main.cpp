@@ -41,7 +41,6 @@ int main()
             std::cout << profile->profile_header.serial_number << std::endl;
         }
     }
-
 }
 
 
