@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.10.2)
 ## PROJECT
 ## name and version
 ##
-project(rf627core LANGUAGES C CXX VERSION 1.1.0 DESCRIPTION "rf627core library" )
+project(rf627core LANGUAGES C VERSION 1.1.0 DESCRIPTION "rf627core library" )
 
 
 ##
@@ -41,7 +41,7 @@ set  (SOURCES ${C_FILES} ${H_FILES})
 ## TARGET
 ## create target and add include path
 ##
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -54,26 +54,16 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/
     )
 
-if(MINGW AND (CMAKE_SIZEOF_VOID_P EQUAL 4))
-    set(RUNTIME_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/MinGW_32)
-    set(LIBRARY_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/lib/MinGW_32)
-elseif(MINGW AND NOT (CMAKE_SIZEOF_VOID_P EQUAL 4))
-    set(RUNTIME_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/MinGW_64)
-    set(LIBRARY_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/lib/MinGW_64)
-elseif(MSVC14 AND (CMAKE_SIZEOF_VOID_P EQUAL 4))
-    set(RUNTIME_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/MSVC14_32)
-    set(LIBRARY_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/lib/MSVC14_32)
-elseif(MSVC14 AND NOT (CMAKE_SIZEOF_VOID_P EQUAL 4))
-    set(RUNTIME_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/MSVC14_64)
-    set(LIBRARY_DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/lib/MSVC14_64)
-endif(MINGW AND (CMAKE_SIZEOF_VOID_P EQUAL 4))
 
+##
+## INSTALL
+## install header files, generate .lib or .dll file.
+##
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${PROJECT_NAME}
     COMPONENT developer
-    RUNTIME DESTINATION ${RUNTIME_DESTINATION}
-    LIBRARY DESTINATION ${LIBRARY_DESTINATION}
+    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/
     )
 
 install(FILES ${H_FILES} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/include)
