@@ -74,12 +74,13 @@ cmake --build .
 
 ###### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file in the rf627core folder via **File > Open File or Project** (Select the CMakeLists.txt file)
+*  Load the CMakeLists.txt file in the **rf627core** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Open **Build Settings** and check ***install*** target for **Build Steps** 
 *  Compile project
 
-###### Visual Studio Community
+###### Visual Studio
 To build the code:
 
 ```CMake
@@ -93,8 +94,84 @@ cmake .
 Wrappers are used to make writing programs using the rf627core library easier.
 
 ### C++ LIBRARY
+This project is a C++ library that simplifies the integration of C++ 
+applications with following scanner series: 
+*  RF627-old
+*  RF627-smart
+
 #### HOW TO COMPILE
+RF627 SDK (C++) can be built on the console or in an IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
+cd rf627sdk
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [overview](#overview)
+
+###### CMake
+To build the С++ wrapper:
+
+```CMake
+cd wrappers/cpp/CMake/rf627sdk
+cmake .
+cmake --build . 
+```
+
+###### Qt Creator
+To build the code:
+*  Load the CMakeLists.txt file in the **wrappers/cpp/CMake/rf627sdk** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
+
+###### Visual Studio
+To build the code:
+
+```CMake
+cd wrappers/cpp/CMake/rf627sdk
+cmake .
+```
+*  Open rf627sdk.sln with Visual Studio
+*  Compile
+
 #### HOW TO USE
+Beside the examples below, you may want to check the documentation where each function 
+contains a separate code example. All example project can be compiled and executed.
+##### Search for RF627 devices
+Here are some examples how to use search methods
+###### Search for RF627-old devices over network by service protocol
+```c++
+#include <rf627sdk.h>
+#include <rf627types.h>
+#include <iostream>
+
+using namespace SDK;
+using namespace SCANNERS;
+using namespace RF627;
+
+int main()
+{
+
+    // Initialize sdk library
+    sdk_init();
+
+    // Print return rf627 sdk version
+    std::cout << sdk_version() << std::endl;
+
+
+    // Create value for scanners vector's type
+    std::vector<rf627old*> list;
+    // Search for RF627old devices over network
+    list = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
+
+
+    //Print count of discovered rf627-old in network by Service Protocol
+    std::cout << "Discovered " << list.size() << " rf627-old" << std::endl;
+
+}
+```
+
 
 ### C# LIBRARY
 #### HOW TO COMPILE
