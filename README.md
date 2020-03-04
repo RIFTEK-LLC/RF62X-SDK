@@ -177,7 +177,8 @@ You can open and build this example by **Qt Creator**:
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
 
-
+##### Get Profile from RF627 devices
+Here are some examples how to use get profile methods
 ###### Get Profile from RF627-old devices over network by service protocol
 ```c++
 #include <rf627sdk.h>
@@ -226,7 +227,8 @@ You can open and build this example by **Qt Creator**:
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
 
-
+##### Get/Set RF627-old parameters
+Here are some examples how to work with device's parameters
 ###### Get/Set RF627-old parameters devices over network
 ```c++
 #include <rf627sdk.h>
@@ -297,6 +299,125 @@ You can open and build this example by **Qt Creator**:
 
 
 ### C# LIBRARY
+This project is a .NET library, written in C# language, that simplifies the integration of C#, 
+Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner series: 
+*  RF627-old
+*  RF627-smart
+
+#### HOW TO COMPILE
+RF627 SDK (C#) can be built in an Visual Studio IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
+cd rf627sdk
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [overview](#overview)
+
+###### Visual Studio
+To build the code:
+
+```CMake
+cd wrappers/cpp/CMake/rf627sdk
+cmake .
+```
+*  Open rf627sdk.sln from the **wrappers/csharp/VS2019/rf627sdk** folder with Visual Studio
+*  Compile
+
+#### HOW TO USE
+Beside the examples below, you may want to check the documentation where each function 
+contains a separate code example. All example project can be compiled and executed.
+
+You can open and build these examples by **Visual Studio**:  
+*  Open **RF627_TESTS.sln** from the **wrappers/csharp/VS2019/RF627_TESTS** folder with Visual Studio
+*  Select **x64 Debug** or **x64 Release** target platdorm
+*  Add the **rf627sdk.dll** library to project's **references** 
+*  Copy the **rf627core.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Compile project
+
+##### Search for RF627 devices
+Here are some examples how to use search methods
+###### Search for RF627-old devices over network by service protocol
+```c#
+using System;
+using System.Collections.Generic;
+using SDK.SCANNERS;
+
+namespace RF627_search
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Start initialization of the library core
+            RF627.SdkInit();
+
+            // Print return rf627 sdk version
+            Console.WriteLine("Current rf627 sdk version: {0}", RF627.SdkVersion());
+
+            // Search for RF627old devices over network
+            Console.WriteLine("- Start searching device");
+            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            Console.WriteLine("+ {0} scanners detected", Scanners.Count);
+
+            Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
+            Console.ReadKey();
+        }
+    }
+}
+```
+
+##### Get Profile from RF627 devices
+Here are some examples how to use get profile methods
+###### Get Profile from RF627-old devices over network by service protocol
+```c#
+using System;
+using System.Collections.Generic;
+using SDK.SCANNERS;
+
+namespace RF627_profile
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Start initialization of the library core
+            RF627.SdkInit();
+
+            // Search for RF627old devices over network
+            Console.WriteLine("- Start searching device");
+            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            Console.WriteLine("+ {0} scanners detected", Scanners.Count);
+
+            // foreach over an scanners list
+            for (int i = 0; i < Scanners.Count; i++)
+            {
+                Console.WriteLine("{0}- Try to connect to {1} scanner", Environment.NewLine, i + 1);
+                bool isConnect = Scanners[i].Connect();
+                if (isConnect)
+                {
+                    Console.WriteLine("+ Successfully connected"); Console.WriteLine();
+
+                    Console.WriteLine("- Try to receive profile");
+                    RF627.Profile profile = Scanners[i].GetProfile();
+                    if (profile.header != null)
+                        Console.WriteLine("+ Received profile successfully. S/n: {0}", 
+                            profile.header.serial_number.ToString());
+                    else 
+                        Console.WriteLine("! Profile is null");
+                        
+                }
+                else Console.WriteLine("! Connection error");
+            }
+
+            Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
+            Console.ReadKey();
+        }
+    }
+}
+```
+
+
 #### HOW TO COMPILE
 #### HOW TO USE
 
