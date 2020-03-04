@@ -74,7 +74,7 @@ cmake --build .
 
 ###### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file in the **rf627core** folder via 
+*  Load the CMakeLists.txt file from the **rf627core** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Open **Build Settings** and check ***install*** target for **Build Steps** 
@@ -120,7 +120,7 @@ cmake --build .
 
 ###### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file in the **wrappers/cpp/CMake/rf627sdk** folder via 
+*  Load the CMakeLists.txt file from the **wrappers/cpp/CMake/rf627sdk** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
@@ -171,6 +171,130 @@ int main()
 
 }
 ```
+You can open and build this example by **Qt Creator**:  
+*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_search** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
+
+
+###### Get Profile from RF627-old devices over network by service protocol
+```c++
+#include <rf627sdk.h>
+#include <rf627types.h>
+#include <iostream>
+
+using namespace SDK;
+using namespace SCANNERS;
+using namespace RF627;
+
+int main()
+{
+
+    // Initialize sdk library
+    sdk_init();
+
+    // Print return rf627 sdk version
+    std::cout << sdk_version() << std::endl;
+
+
+    // Create value for scanners vector's type
+    std::vector<rf627old*> scanners;
+    // Search for RF627old devices over network
+    scanners = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
+
+    
+    
+    // Iterate over all discovered rf627-old in network, connect to each of
+    // them and get a profile.
+    for(size_t i = 0; i < scanners.size(); i++)
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        scanners[i]->connect();
+        // Get profile from scanner's data stream by Service Protocol.
+        profile_t* profile = scanners[i]->get_profile();
+        if (profile != nullptr)
+        {
+            // Print the serial number of the scanner to which the profile belongs.
+            std::cout << profile->profile_header.serial_number << std::endl;
+        }
+    }
+}
+```
+You can open and build this example by **Qt Creator**:  
+*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_profile** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
+
+
+###### Get/Set RF627-old parameters devices over network
+```c++
+#include <rf627sdk.h>
+#include <rf627types.h>
+#include <iostream>
+
+using namespace SDK;
+using namespace SCANNERS;
+using namespace RF627;
+
+int main()
+{
+
+    // Initialize sdk library
+    sdk_init();
+
+    // Print return rf627 sdk version
+    std::cout << sdk_version() << std::endl;
+
+
+    // Create value for scanners vector's type
+    std::vector<rf627old*> scanners;
+    // Search for RF627old devices over network
+    scanners = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
+
+
+    // Iterate over all discovered rf627-old in network, connect to each of
+    // them and read/set parameters.
+    for(size_t i = 0; i < scanners.size(); i++)
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        scanners[i]->connect();
+
+
+        // read params from RF627 device by Service Protocol.
+        scanners[i]->read_params();
+
+        // Get parameter by it's name from last read
+        param_t* param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
+        if (param->type == param_value_types[STRING_PARAM_TYPE])
+        {
+            std::cout << param->get_value<value_str_t>() << std::endl;
+
+            // set new scanner's name and write changed parameters to scanner
+            param->set_value<value_str_t>("Test Name");
+            scanners[i]->set_param(param);
+            scanners[i]->write_params();
+        }
+
+        // Check that the parameter is set correctly
+        // Read arain all params from RF627 device by Service Protocol.
+        scanners[i]->read_params();
+
+        // Get device name
+        param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
+        if (param->get_value<value_str_t>() == "Test Name")
+            std::cout << "Changed parameters write successfully" << std::endl;
+        else 
+            std::cout << "Error changing parameters" << std::endl;
+    }
+}
+```
+You can open and build this example by **Qt Creator**:  
+*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_params** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
 
 
 ### C# LIBRARY
