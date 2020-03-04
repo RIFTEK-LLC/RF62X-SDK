@@ -155,7 +155,6 @@ int main()
 
     // Initialize sdk library
     sdk_init();
-
     // Print return rf627 sdk version
     std::cout << sdk_version() << std::endl;
 
@@ -166,7 +165,7 @@ int main()
     list = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
 
 
-    //Print count of discovered rf627-old in network by Service Protocol
+    // Print count of discovered rf627-old in network by Service Protocol
     std::cout << "Discovered " << list.size() << " rf627-old" << std::endl;
 
 }
@@ -194,7 +193,6 @@ int main()
 
     // Initialize sdk library
     sdk_init();
-
     // Print return rf627 sdk version
     std::cout << sdk_version() << std::endl;
 
@@ -211,14 +209,15 @@ int main()
     {
         // Establish connection to the RF627 device by Service Protocol.
         scanners[i]->connect();
+        
+        
         // Get profile from scanner's data stream by Service Protocol.
         profile_t* profile = scanners[i]->get_profile();
-        if (profile != nullptr)
-        {
-            // Print the serial number of the scanner to which the profile belongs.
-            std::cout << profile->profile_header.serial_number << std::endl;
-        }
+        // Print the serial number of the scanner to which the profile belongs.
+        std::cout << profile->profile_header.serial_number << std::endl;
+        
     }
+    
 }
 ```
 You can open and build this example by **Qt Creator**:  
@@ -244,7 +243,6 @@ int main()
 
     // Initialize sdk library
     sdk_init();
-
     // Print return rf627 sdk version
     std::cout << sdk_version() << std::endl;
 
@@ -266,10 +264,12 @@ int main()
         // read params from RF627 device by Service Protocol.
         scanners[i]->read_params();
 
+
         // Get parameter by it's name from last read
         param_t* param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
         if (param->type == param_value_types[STRING_PARAM_TYPE])
         {
+            // Print current scanner's name
             std::cout << param->get_value<value_str_t>() << std::endl;
 
             // set new scanner's name and write changed parameters to scanner
@@ -278,9 +278,11 @@ int main()
             scanners[i]->write_params();
         }
 
+
         // Check that the parameter is set correctly
         // Read arain all params from RF627 device by Service Protocol.
         scanners[i]->read_params();
+
 
         // Get device name
         param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
@@ -289,6 +291,7 @@ int main()
         else 
             std::cout << "Error changing parameters" << std::endl;
     }
+    
 }
 ```
 You can open and build this example by **Qt Creator**:  
@@ -349,6 +352,7 @@ namespace RF627_search
     {
         static void Main(string[] args)
         {
+        
             // Start initialization of the library core
             RF627.SdkInit();
 
@@ -360,6 +364,7 @@ namespace RF627_search
             Console.WriteLine("- Start searching device");
             List<RF627.RF627old> Scanners = RF627.RF627old.Search();
             Console.WriteLine("+ {0} scanners detected", Scanners.Count);
+            
         }
     }
 }
@@ -379,6 +384,7 @@ namespace RF627_profile
     {
         static void Main(string[] args)
         {
+        
             // Start initialization of the library core
             RF627.SdkInit();
 
@@ -390,7 +396,9 @@ namespace RF627_profile
             // foreach over an scanners list
             for (int i = 0; i < Scanners.Count; i++)
             {
+                // Establish connection to the RF627 device
                 Scanners[i].Connect();
+                
                 
                 //Receive profile
                 RF627.Profile profile = Scanners[i].GetProfile();
@@ -398,8 +406,8 @@ namespace RF627_profile
                     Console.WriteLine("Received profile successfully);
                 else 
                     Console.WriteLine("Profile is null");
-                
             }
+            
         }
     }
 }
@@ -419,6 +427,7 @@ namespace RF627_params
     {
         static void Main(string[] args)
         {
+        
             // Start initialization of the library core
             RF627.SdkInit();
 
@@ -430,19 +439,23 @@ namespace RF627_params
             // foreach over an scanners list
             for (int i = 0; i < Scanners.Count; i++)
             {
+                // Establish connection to the RF627 device
                 Scanners[i].Connect();
+
 
                 // Try to read params
                 Scanners[i].ReadParams();
+
 
                 // Get scanner's name
                 RF627.Param<string> deviceName = 
                         Scanners[i].GetParam(RF627.Params.User.General.deviceName);
 
+
                 // Set new scanner's name and write changed parameters to scanner
-                string newName = "Test Name" + '\0';
-                deviceName.SetValue(newName);
+                deviceName.SetValue("New Name");
                 Scanners[i].SetParam(deviceName);
+
 
                 // Send command to scanner to write changed parameters
                 Scanners[i].WriteParams();
@@ -452,14 +465,16 @@ namespace RF627_params
                 // Read again all params from RF627 device.
                 Scanners[i].ReadParams();
 
+
                 // Get scanner's name
-                RF627.Param<string> deviceName = 
+                RF627.Param<string> newDeviceName = 
                         Scanners[i].GetParam(RF627.Params.User.General.deviceName);
-                if (deviceName.GetValue() == "Test Name")
+                if (newDeviceName.GetValue() == "New Name")
                     Console.WriteLine("Changed parameters write successfully");
                 else 
                     Console.WriteLine("Error changing parameters");
             }
+            
         }
     }
 }
