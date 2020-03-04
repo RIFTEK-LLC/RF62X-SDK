@@ -355,13 +355,11 @@ namespace RF627_search
             // Print return rf627 sdk version
             Console.WriteLine("Current rf627 sdk version: {0}", RF627.SdkVersion());
 
+
             // Search for RF627old devices over network
             Console.WriteLine("- Start searching device");
             List<RF627.RF627old> Scanners = RF627.RF627old.Search();
             Console.WriteLine("+ {0} scanners detected", Scanners.Count);
-
-            Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
-            Console.ReadKey();
         }
     }
 }
@@ -384,34 +382,84 @@ namespace RF627_profile
             // Start initialization of the library core
             RF627.SdkInit();
 
+
             // Search for RF627old devices over network
-            Console.WriteLine("- Start searching device");
             List<RF627.RF627old> Scanners = RF627.RF627old.Search();
-            Console.WriteLine("+ {0} scanners detected", Scanners.Count);
+
 
             // foreach over an scanners list
             for (int i = 0; i < Scanners.Count; i++)
             {
-                Console.WriteLine("{0}- Try to connect to {1} scanner", Environment.NewLine, i + 1);
-                bool isConnect = Scanners[i].Connect();
-                if (isConnect)
-                {
-                    Console.WriteLine("+ Successfully connected"); Console.WriteLine();
-
-                    Console.WriteLine("- Try to receive profile");
-                    RF627.Profile profile = Scanners[i].GetProfile();
-                    if (profile.header != null)
-                        Console.WriteLine("+ Received profile successfully. S/n: {0}", 
-                            profile.header.serial_number.ToString());
-                    else 
-                        Console.WriteLine("! Profile is null");
-                        
-                }
-                else Console.WriteLine("! Connection error");
+                Scanners[i].Connect();
+                
+                //Receive profile
+                RF627.Profile profile = Scanners[i].GetProfile();
+                if (profile.header != null)
+                    Console.WriteLine("Received profile successfully);
+                else 
+                    Console.WriteLine("Profile is null");
+                
             }
+        }
+    }
+}
+```
 
-            Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
-            Console.ReadKey();
+##### Get/Set RF627-old parameters
+Here are some examples how to work with device's parameters
+###### Get/Set RF627-old parameters devices over network
+```c#
+using System;
+using System.Collections.Generic;
+using SDK.SCANNERS;
+
+namespace RF627_params
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Start initialization of the library core
+            RF627.SdkInit();
+
+
+            // Search for RF627old devices over network
+            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+
+
+            // foreach over an scanners list
+            for (int i = 0; i < Scanners.Count; i++)
+            {
+                Scanners[i].Connect();
+
+                // Try to read params
+                Scanners[i].ReadParams();
+
+                // Get scanner's name
+                RF627.Param<string> deviceName = 
+                        Scanners[i].GetParam(RF627.Params.User.General.deviceName);
+
+                // Set new scanner's name and write changed parameters to scanner
+                string newName = "Test Name" + '\0';
+                deviceName.SetValue(newName);
+                Scanners[i].SetParam(deviceName);
+
+                // Send command to scanner to write changed parameters
+                Scanners[i].WriteParams();
+
+
+                // Check that the parameter is set correctly
+                // Read again all params from RF627 device.
+                Scanners[i].ReadParams();
+
+                // Get scanner's name
+                RF627.Param<string> deviceName = 
+                        Scanners[i].GetParam(RF627.Params.User.General.deviceName);
+                if (deviceName.GetValue() == "Test Name")
+                    Console.WriteLine("Changed parameters write successfully");
+                else 
+                    Console.WriteLine("Error changing parameters");
+            }
         }
     }
 }
