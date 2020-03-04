@@ -1,6 +1,6 @@
 #include "rf627_sdk.h"
 
-void change_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
+void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
 {
     set_adapter_settings(host_mask, host_ip_addr);
 }
@@ -204,7 +204,7 @@ rfUint8 write_params_to_scanner(scanner_base_t *device, protocol_types_t protoco
     case kRF627_OLD:
         switch (protocol) {
         case kSERVICE_PROTOKOL:
-            rf627_old_disconnect(device->rf627_old);
+            rf627_old_write_params_to_scanner(device->rf627_old);
             return 0;
             break;
         case kETHERNET_IP:
@@ -242,6 +242,22 @@ parameter_t* get_parameter(scanner_base_t *device, const rfChar *param_name)
     case kRF627_OLD:
     {
         return rf627_old_get_parameter(device->rf627_old, param_name);
+        break;
+    }
+    case kRF627_SMART:
+        break;
+    default:
+        break;
+    }
+    return NULL;
+}
+
+rfUint8 set_parameter(scanner_base_t *device, parameter_t* param)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+    {
+        return rf627_old_set_parameter(device->rf627_old, param);
         break;
     }
     case kRF627_SMART:

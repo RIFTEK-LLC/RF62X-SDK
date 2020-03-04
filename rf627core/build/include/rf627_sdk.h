@@ -16,7 +16,7 @@
  * @brief change_platform_adapter_settings - change adapter's settings
  * @param adapter_settings
  */
-dllexport void change_platform_adapter_settings(
+dllexport void set_platform_adapter_settings(
         rfUint32 host_mask, rfUint32 host_ip_addr);
 
 /**
@@ -83,6 +83,15 @@ dllexport rfUint8 write_params_to_scanner(
  */
 dllexport parameter_t* get_parameter(
         scanner_base_t *device, const rfChar* param_name);
+
+/**
+ * @brief set_parameter - Search parameters by his name
+ * @param device - ptr to scanner
+ * @param param_name - name of parameter
+ * @return param on success, else - null
+ */
+dllexport rfUint8 set_parameter(
+        scanner_base_t *device, parameter_t* param);
 
 /*! Return structure containing device information about scanner rf627(smart) version
  */

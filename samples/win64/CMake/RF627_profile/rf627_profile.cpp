@@ -1,5 +1,5 @@
-#include "rf627sdk.h"
-#include "rf627types.h"
+#include <rf627sdk.h>
+#include <rf627types.h>
 #include <iostream>
 
 using namespace SDK;
@@ -22,13 +22,9 @@ int main()
     list = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
 
 
-    //Print count of discovered rf627-old in network by Service Protocol
-    std::cout << "Discovered " << list.size() << " rf627-old" << std::endl;
 
-    /*
-     * Iterate over all discovered rf627-old in network, connect to each of
-     * them and get a profile.
-     */
+    // Iterate over all discovered rf627-old in network, connect to each of
+    // them and get a profile.
     for(size_t i = 0; i < list.size(); i++)
     {
         // Establish connection to the RF627 device by Service Protocol.
@@ -41,7 +37,6 @@ int main()
             std::cout << profile->profile_header.serial_number << std::endl;
         }
     }
-
 }
 
 

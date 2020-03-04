@@ -82,16 +82,14 @@ rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner);
 /**
  * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.
  * This structure is accessible via get_params() function
- * @param device - ptr to scanner
- * @param protocol -  protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @param scanner - ptr to scanner
  * @return 0 on success
  */
 rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner);
 
 /**
- * @brief write_params_to_scanner - Write current parameters to device's memory
- * @param device - ptr to scanner
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @brief rf627_old_write_params_to_scanner - Write current parameters to device.
+ * @param scanner - ptr to scanner
  * @return 0 on success
  */
 rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner);
@@ -105,11 +103,24 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner);
 parameter_t* rf627_old_get_parameter(
         rf627_old_t* scanner, const rfChar* param_name);
 
+/**
+ * @brief rf627_old_set_parameter - Search parameters by his name
+ * @param scanner - ptr to scanner
+ * @param param - ptr to parameter
+ * @return 0 on success
+ */
+rfUint8 rf627_old_set_parameter(
+        rf627_old_t* scanner, parameter_t* param);
+
 
 
 typedef struct
 {
+    void* m_svc_sock;
+    void* m_data_sock;
+    rfUint16 msg_count;
 
+    vector_t *params_list;
 }rf627_smart_t;
 
 

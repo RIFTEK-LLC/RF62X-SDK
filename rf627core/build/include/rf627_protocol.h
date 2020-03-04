@@ -4,6 +4,7 @@
 #include "platform_types.h"
 #include "netwok_platform.h"
 #include "memory_platform.h"
+#include "custom_vector.h"
 
 /* RF627_old - Service Message
  +--------+---------------+-------------+--------------------------------------+
@@ -97,6 +98,11 @@ typedef enum
  * @brief RF627_PROTOCOL_OLD_USER_RESPONSE_PACKET_SIZE - Packet size is 1400 bytes.
  */
 #define RF627_PROTOCOL_OLD_USER_RESPONSE_PACKET_SIZE 1400
+
+/**
+ * @brief RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE - Packet size is 1400 bytes.
+ */
+#define RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE 1400
 
 /**
  * @enum rf627_protocol_old_header_checksum_t
@@ -575,7 +581,16 @@ rfUint32 rf627_protocol_old_get_size_of_response_profile_header_packet();
  * @return Size of response profile header in packet from rf627old
  */
 rfUint32 rf627_protocol_old_get_size_of_response_read_user_params_packet();
-
+/**
+ * @brief rf627_protocol_old_get_size_of_response_profile_header_packet
+ * @return Size of response profile header in packet from rf627old
+ */
+rfUint32 rf627_protocol_old_get_size_of_request_write_user_params_payload_packet();
+/**
+ * @brief rf627_protocol_old_get_size_of_response_write_user_params_packet
+ * @return Size of response profile header in packet from rf627old
+ */
+rfUint32 rf627_protocol_old_get_size_of_response_write_user_params_packet();
 
 
 //
@@ -628,6 +643,18 @@ rf627_old_header_msg_t rf627_protocol_old_create_read_user_params_msg_request(
         rfUint32                                 serial_number,
         rfUint16                                 msg_count
         );
+
+/**
+ * @brief rf627_protocol_old_create_write_user_params_msg_request
+ * @return old request write_params msg
+ */
+rf627_old_header_msg_t rf627_protocol_old_create_write_user_params_msg_request(
+        rf627_protocol_old_header_confirmation_t confirmation,
+        rfUint32                                 serial_number,
+        rfUint16                                 msg_count
+        );
+
+
 
 /**
  * @brief rf627_protocol_old_create_confirm_packet_from_response_packet
@@ -685,7 +712,14 @@ rfSize rf627_protocol_old_pack_hello_msg_request_to_packet(
  * @return old request read_params msg
  */
 rfSize rf627_protocol_old_pack_read_user_params_msg_request_to_packet(
-        rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* hello_msg);
+        rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* msg);
+
+/**
+ * @brief rf627_protocol_old_pack_write_user_params_msg_request_to_packet
+ * @return old request read_params msg
+ */
+rfSize rf627_protocol_old_pack_write_user_params_msg_request_to_packet(
+        rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* msg);
 
 
 
@@ -742,6 +776,15 @@ rf627_old_header_msg_t rf627_protocol_old_unpack_header_msg_from_user_params_pac
  */
 rf627_old_user_params_t rf627_protocol_old_unpack_payload_msg_from_user_params_packet(
         rfUint8* buffer);
+
+/**
+ * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
+ * payload msg from user_params network packet
+ * @param buffer - ptr to network buffer
+ * @return rf627_old_user_params_t
+ */
+rfUint32 rf627_protocol_old_pack_payload_msg_to_user_params_packet(
+        rfUint8* buffer, vector_t *params_list);
 
 
 

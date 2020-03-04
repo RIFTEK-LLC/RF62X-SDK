@@ -112,14 +112,14 @@ rfInt platform_memcmp(const void * ptr1, const void * ptr2, size_t num )
 }
 
 memory_platform_dependent_methods_t memory_methods = {
-    .rf_calloc = platform_calloc,
-    .rf_malloc = platform_malloc,
-    .rf_realloc = platform_realloc,
-    .rf_free = platform_free,
+    platform_calloc,
+    platform_malloc,
+    platform_realloc,
+    platform_free,
 
-    .rf_memset = platform_memset,
-    .rf_memcpy = platform_memcpy,
-    .rf_memcmp = platform_memcmp
+    platform_memset,
+    platform_memcpy,
+    platform_memcmp
 };
 
 /** @brief Method for outputting debugging information
@@ -131,9 +131,9 @@ rfInt platform_printf(const rfChar* msg, ...)
 
 
 iostream_platform_dependent_methods_t iostream_methods = {
-    .trace_info = platform_printf,
-    .trace_warning = platform_printf,
-    .trace_error = platform_printf
+    platform_printf,
+    platform_printf,
+    platform_printf
 };
 
 /** @brief The modbusHtoN_long_t function converts a u_long from host to TCP/IP
@@ -192,7 +192,7 @@ void* platform_create_socket(rfInt32 af, rfInt32 type, rfInt32 protocol)
 {
     SOCKET* s = new SOCKET;
     *s = socket(af, type, protocol);
-    return s;
+    return (void*)*s;
 }
 
 /** @brief Pointer to the function that sets a socket option.
@@ -210,7 +210,7 @@ rfInt8 platform_set_socket_option(
         void* socket, rfInt32 level, rfInt32 optname,
         const rfChar* optval, rfInt32 optlen)
 {
-    return setsockopt(*(SOCKET*)socket, level, optname, optval, optlen);
+    return setsockopt((SOCKET)socket, level, optname, optval, optlen);
 }
 
 /** @brief Pointer to the function that sets a timeout for socket receive.
@@ -230,7 +230,7 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
     t.tv_sec = msec / 1000;
     t.tv_usec = (msec % 1000) * 1000;
 #endif
-    return (setsockopt(*(SOCKET*)socket, SOL_SOCKET, SO_RCVTIMEO, (char*)&t, sizeof(t)));
+    return (setsockopt((SOCKET)socket, SOL_SOCKET, SO_RCVTIMEO, (char*)&t, sizeof(t)));
 }
 
 /** @brief Pointer to the function that establishes a connection to a specified socket
@@ -245,7 +245,7 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
 rfUint8 platform_socket_connect(
         void* socket, rf_sockaddr_in* name, rfInt32 namelen)
 {
-    return connect(*(SOCKET*)socket, (sockaddr*)name, namelen);
+    return connect((SOCKET)socket, (sockaddr*)name, namelen);
 }
 
 /** @brief Pointer to the function that associates a local address with a socket.
@@ -260,7 +260,7 @@ rfUint8 platform_socket_connect(
 rfUint8 platform_socket_bind(
         void* socket, rf_sockaddr_in* name, rfInt32 namelen)
 {
-    return bind(*(SOCKET*)socket, (sockaddr*)name, namelen);
+    return bind((SOCKET)socket, (sockaddr*)name, namelen);
 }
 
 /** @brief Pointer to the function that places a socket in a state in which it is listening for an incoming connection.
@@ -274,7 +274,7 @@ rfUint8 platform_socket_bind(
 rfUint8 platform_socket_listen(
         void* socket, rfInt32 backlog)
 {
-    return listen(*(SOCKET*)socket, backlog);
+    return listen((SOCKET)socket, backlog);
 }
 
 /** @brief Pointer to the function that permits an incoming connection attempt on a socket.
@@ -297,8 +297,8 @@ void* platform_socket_accept(
         void* socket, rf_sockaddr_in* addr, rfInt32* addrlen)
 {
     SOCKET* s = new SOCKET();
-    *s = accept(*(SOCKET*)socket, (sockaddr*)addr, addrlen);
-    return s;
+    *s = accept((SOCKET)socket, (sockaddr*)addr, addrlen);
+    return (void*)*s;
 }
 
 /** @brief Pointer to the function that closes an existing socket.
@@ -310,9 +310,9 @@ void* platform_socket_accept(
  */
 rfUint8 platform_close_socket(void* socket)
 {
-    if (*(SOCKET*)socket != INVALID_SOCKET) {
+    if ((SOCKET)socket != INVALID_SOCKET) {
 #ifdef _WIN32
-        return closesocket(*(SOCKET*)socket);
+        return closesocket((SOCKET)socket);
 #else
         return close(s);
 #endif
@@ -335,7 +335,7 @@ rfInt platform_send_tcp_data(void* socket, const void *buf, rfSize len)
     if (!buf || !len) {
         return -1;
     }
-    return send(*(SOCKET*)socket, (char*)buf, len, 0);
+    return send((SOCKET)socket, (char*)buf, len, 0);
 }
 
 /** @brief Pointer to the send function that sends data on a UDP socket
@@ -352,13 +352,13 @@ rfInt platform_send_tcp_data(void* socket, const void *buf, rfSize len)
  */
 rfInt platform_send_udp_data(
         void* socket, const void *data, rfSize len,
-        const rf_sockaddr_in *dest_addr, rf_socklen_t addrlen)
+        rf_sockaddr_in *dest_addr, rf_socklen_t addrlen)
 {
     if (!data || !len) {
         return -1;
     }
-    return sendto(*(SOCKET*)socket, (char*)data, len,
-                  0, (sockaddr*)dest_addr, addrlen);
+    return sendto((SOCKET)socket, (char*)data, len,
+                  0, (sockaddr*)dest_addr, sizeof(rf_sockaddr_in));
 }
 
 /**
@@ -378,10 +378,10 @@ rfInt platform_recv_from(
     rf_socklen_t from_size;
     rf_sockaddr_in from_addr;
     from_size = sizeof(from_addr);
-    if (*(SOCKET*)socket == INVALID_SOCKET) {
+    if ((SOCKET)socket == INVALID_SOCKET) {
         return -1;
     }
-    nret = recvfrom(*(SOCKET*)socket, (char*)buf, (int)len, 0, (sockaddr*)&from_addr, (int*)addrlen);
+    nret = recvfrom((SOCKET)socket, (char*)buf, (int)len, 0, (sockaddr*)&from_addr, (int*)addrlen);
 
     if (nret > 0)
     {
@@ -406,10 +406,10 @@ rfInt platform_recv_from(
 rfInt platform_recv(void* socket, void *buf, rfSize len)
 {
     rfInt nret;
-    if (*(SOCKET*)socket == INVALID_SOCKET) {
+    if ((SOCKET)socket == INVALID_SOCKET) {
         return -1;
     }
-    nret = recv(*(SOCKET*)socket, (char*)buf, len, 0);
+    nret = recv((SOCKET)socket, (char*)buf, len, 0);
 
     if (nret > 0)
     {
@@ -423,31 +423,31 @@ rfInt platform_recv(void* socket, void *buf, rfSize len)
 }
 
 network_platform_dependent_methods_t network_methods = {
-    .hton_long = platform_htonl,
-    .ntoh_long = platform_ntohl,
-    .hton_short = platform_htons,
-    .ntoh_short = platform_ntohs,
+    platform_htonl,
+    platform_ntohl,
+    platform_htons,
+    platform_ntohs,
 
-    .create_socket = platform_create_socket,
-    .set_socket_option = platform_set_socket_option,
-    .set_socket_recv_timeout = platform_set_socket_recv_timeout,
-    .socket_connect = platform_socket_connect,
-    .socket_bind = platform_socket_bind,
-    .socket_listen = platform_socket_listen,
-    .socket_accept = platform_socket_accept,
-    .close_socket = platform_close_socket,
+    platform_create_socket,
+    platform_set_socket_option,
+    platform_set_socket_recv_timeout,
+    platform_socket_connect,
+    platform_socket_bind,
+    platform_socket_listen,
+    platform_socket_accept,
+    platform_close_socket,
 
-    .send_tcp_data = platform_send_tcp_data,
-    .send_udp_data = platform_send_udp_data,
+    platform_send_tcp_data,
+    platform_send_udp_data,
 
-    .recv_data_from = platform_recv_from,
-    .recv_data = platform_recv
+    platform_recv_from,
+    platform_recv
 };
 
 network_platform_dependent_settings_t adapter_settings =
 {
-    .host_ip_addr = inet_addr("127.0.0.1"),
-    .host_mask = inet_addr("255.255.255.0")
+    inet_addr("127.0.0.1"),
+    inet_addr("255.255.255.0")
 };
 
 

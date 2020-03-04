@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rf627sdk", "rf627sdk\rf627sdk.csproj", "{FEC8ED13-069D-4C43-A132-8D2B1EE93502}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEC8ED13-069D-4C43-A132-8D2B1EE93502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC8ED13-069D-4C43-A132-8D2B1EE93502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC8ED13-069D-4C43-A132-8D2B1EE93502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC8ED13-069D-4C43-A132-8D2B1EE93502}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24E6015D-765F-4C15-922E-11C2E70EDFE2}
+	EndGlobalSection
+EndGlobal

@@ -18,14 +18,14 @@ typedef struct rf_in_addr {
 #define rf_s_impno	rf_S_un.rf_S_un_b.s_b4
 #define rf_s_lh	    rf_S_un.rf_S_un_b.s_b3
 
-#pragma pack(push,1)
+
 typedef struct {
     rfInt16    sin_family;   // e.g. AF_INET
     rfUint16   sin_port;     // e.g. htons(3490)
-    struct rf_in_addr	sin_addr;     // see struct in_addr, below
+    rfUint32   sin_addr;     // see struct in_addr, below
     rfChar     sin_zero[8];  // zero this if you want to
 }rf_sockaddr_in;
-#pragma pack(pop)
+
 
 
 
@@ -224,7 +224,7 @@ typedef rfInt (*send_tcp_data_t)(void* socket, const void *buf, rfSize len);
  */
 typedef rfInt (*send_udp_data_t)(
         void* socket, const void *data, rfSize len,
-        const rf_sockaddr_in *dest_addr, rf_socklen_t addrlen);
+        rf_sockaddr_in *dest_addr, rf_socklen_t addrlen);
 
 /**
  * @brief Pointer to the function that receive message from socket and capture address of sender.

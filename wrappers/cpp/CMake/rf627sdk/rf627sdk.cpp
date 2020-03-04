@@ -69,7 +69,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
             uint32_t host_ip_addr = inet_addr(GetAdapterAddress(i));
             uint32_t host_mask = inet_addr("255.255.255.0");
             // call the function to change adapter settings inside the library.
-            change_platform_adapter_settings(host_mask, host_ip_addr);
+            set_platform_adapter_settings(host_mask, host_ip_addr);
 
             // Search for RF627-old devices over network by Service Protocol.
             search_scanners(scanners, kRF627_OLD, kSERVICE_PROTOKOL);
@@ -175,8 +175,7 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
         rf627_profile_t* profile_from_scanner = get_profile_from_scanner(
                     (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
 
-        profile_t* result =
-                (profile_t*)calloc(1, sizeof(profile_t));
+        profile_t* result = new profile_t;
 
         if(profile_from_scanner->rf627_profile != NULL)
         {
@@ -233,8 +232,6 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
                             rf627_profile->pixels_format.pixels[i];
                 }
 
-                break;
-
                 if(profile_from_scanner->rf627_profile->intensity_count > 0)
                 {
                     result->intensity.resize(
@@ -243,6 +240,8 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
                         result->intensity[i] =
                                 profile_from_scanner->rf627_profile->intensity[i];
                 }
+
+                break;
             }
             case DTY_ProfileNormal:
             case DTY_ProfileInterpolated:
@@ -271,11 +270,16 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
             default:
                 break;
             }
+            free(profile_from_scanner->rf627_profile->intensity);
+            free(profile_from_scanner->rf627_profile->pixels_format.pixels);
+            free(profile_from_scanner->rf627_profile);
             free(profile_from_scanner);
             return result;
         }
 
-        free(result);
+        free(profile_from_scanner->rf627_profile);
+        free(profile_from_scanner);
+        delete result;
     }
     default:
         break;
@@ -299,6 +303,31 @@ bool rf627old::read_params(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = read_params_from_scanner(
+                    (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool rf627old::write_params(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE_PROTOKOL:
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        bool result = false;
+        result = write_params_to_scanner(
                     (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
         return result;
         break;
@@ -367,6 +396,11 @@ param_t* create_param_from_type(std::string type)
         p->type = type;
     }
     return p;
+}
+
+param_t *rf627old::get_param(parameter_name_keys_t param_name)
+{
+    return get_param(parameter_names[param_name]);
 }
 
 param_t *rf627old::get_param(std::string param_name)
@@ -651,7 +685,121 @@ param_t *rf627old::get_param(std::string param_name)
     return nullptr;
 }
 
+parameter_t* create_parameter_from_type(std::string type)
+{
+    parameter_t* p = NULL;
+    if (type == pvtKey[PVT_STRING])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_uint = (typeof (p->val_uint))calloc(1, sizeof (p->val_uint));
+        p->base.type = param_value_types[UINT_PARAM_TYPE].c_str();
+    }else if (type == pvtKey[PVT_UINT64])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_uint64 = (typeof (p->val_uint64))calloc(1, sizeof (p->val_uint64));
+        p->base.type = param_value_types[UINT64_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_INT])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_int = (typeof (p->val_int))calloc(1, sizeof (p->val_int));
+        p->base.type = param_value_types[INT_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_INT64])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_int64 = (typeof (p->val_int64))calloc(1, sizeof (p->val_int64));
+        p->base.type = param_value_types[INT64_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_FLOAT])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_flt = (typeof (p->val_flt))calloc(1, sizeof (p->val_flt));
+        p->base.type = param_value_types[FLOAT_PARAM_TYPE].c_str();
+    }else if(type ==  pvtKey[PVT_DOUBLE])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_dbl = (typeof (p->val_dbl))calloc(1, sizeof (p->val_dbl));
+        p->base.type = param_value_types[DOUBLE_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_ARRAY_UINT32])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->arr_uint = (typeof (p->arr_uint))calloc(1, sizeof (p->arr_uint));
+        p->base.type = param_value_types[UINT32_ARRAY_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_ARRAY_UINT64])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->arr_uint64 = (typeof (p->arr_uint64))calloc(1, sizeof (p->arr_uint64));
+        p->base.type = param_value_types[UINT64_ARRAY_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_ARRAY_INT32])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->arr_int = (typeof (p->arr_int))calloc(1, sizeof (p->arr_int));
+        p->base.type = param_value_types[INT32_ARRAY_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_ARRAY_INT64])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->arr_int64 = (typeof (p->arr_int64))calloc(1, sizeof (p->arr_int64));
+        p->base.type = param_value_types[INT64_ARRAY_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_ARRAY_FLT])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->arr_flt = (typeof (p->arr_flt))calloc(1, sizeof (p->arr_flt));
+        p->base.type = param_value_types[FLT_ARRAY_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_ARRAY_DBL])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->arr_dbl = (typeof (p->arr_dbl))calloc(1, sizeof (p->arr_dbl));
+        p->base.type = param_value_types[DBL_ARRAY_PARAM_TYPE].c_str();
+    }else if (type ==  pvtKey[PVT_STRING])
+    {
+        p = (parameter_t*)calloc(1, sizeof (parameter_t));
+        p->val_str = (typeof (p->val_str))calloc(1, sizeof (p->val_str));
+        p->base.type = param_value_types[STRING_PARAM_TYPE].c_str();
+    }
+    return p;
+}
 
+bool rf627old::set_param(param_t* param)
+{
+    parameter_t* p = create_parameter_from_type(param->type.c_str());
+    if (p != NULL)
+    {
+        p->base.name = param->name.c_str();
+        p->base.type = param->type.c_str();
+        p->base.access = param->access.c_str();
+        p->base.units = param->units.c_str();
+        if (param->type == pvtKey[PVT_STRING])
+        {
+            p->val_str->value = (char*)param->get_value<value_str_t>().c_str();
+            p->base.size = param->get_value<value_str_t>().size() + 1;
+        }
+        else if (param->type == pvtKey[PVT_INT])
+        {
+            p->val_int->value = param->get_value<value_int32_t>();
+        }
+        else if (param->type == pvtKey[PVT_INT64])
+        {
+            p->val_int64->value = param->get_value<value_int64_t>();
+        }
+        else if (param->type == pvtKey[PVT_UINT])
+        {
+            p->val_uint->value = param->get_value<value_uint32_t>();
+        }
+        else if (param->type == pvtKey[PVT_UINT64])
+        {
+            p->val_uint64->value = param->get_value<value_uint64_t>();
+        }
+        else if (param->type == pvtKey[PVT_FLOAT])
+        {
+            p->val_flt->value = param->get_value<value_flt_t>();
+        }
+        else if (param->type ==  pvtKey[PVT_DOUBLE])
+        {
+            p->val_dbl->value = param->get_value<value_dbl_t>();
+        }
+        set_parameter((scanner_base_t*)this->scanner_base, p);
+        return true;
+    }
+    return false;
+}
 
 
 //typedef enum
