@@ -204,7 +204,6 @@ int main()
     scanners = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
 
     
-    
     // Iterate over all discovered rf627-old in network, connect to each of
     // them and get a profile.
     for(size_t i = 0; i < scanners.size(); i++)
