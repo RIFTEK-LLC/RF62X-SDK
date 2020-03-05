@@ -71,7 +71,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="rf62Xsdk">
-      <HintPath>..\..\..\..\..\..\wrappers\csharp\VS2019\rf62Xsdk\rf62Xsdk\bin\x64\Debug\rf62Xsdk.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\wrappers\csharp\VS2019\rf62Xsdk\rf62Xsdk\bin\x64\Release\rf62Xsdk.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

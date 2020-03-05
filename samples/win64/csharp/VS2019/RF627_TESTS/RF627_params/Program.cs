@@ -42,7 +42,7 @@ namespace RF627_params
                             deviceName.SetValue(newName);
                             Scanners[i].SetParam(deviceName);
 
-                            // Send command to scanner to write changed parameters
+                            // Send command to scanner to write changed parameters.
                             bool isSet = Scanners[i].WriteParams();
                             if (isSet)
                                 Console.WriteLine("+ Command to change parameters send successfully");
