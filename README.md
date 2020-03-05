@@ -8,7 +8,7 @@
   - [C++ LIBRARY](#c-library)
     - [How to compile](#how-to-compile-1)
     - [How to use](#how-to-use)
-  - [C# LIBRARY](#c-library-1)
+  - [.NET LIBRARY](#net-library)
     - [How to compile](#how-to-compile-2)
     - [How to use](#how-to-use-1)
   - [PYTHON LIBRARY](#python-library)
@@ -22,38 +22,7 @@ and [GitLab](https://about.gitlab.com/) for source code hosting.
 ***
 
 **For developers** who simply **want to use this SDK** for work with scanners, can be 
-**downloaded last libraries** and read usage examples.
-
-### RF62X CORE
-This library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999)
-
-| Compiler | 64bit | Includes |
-| ------   | ------| ------|
-| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
-| MSVC2017 | [rf62Xcore.dll](/uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
-| Clang 9.1.0 | [rf62Xcore.dll](/uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
-
-***
-
-### RF62X SDK
-This library helps to make programs in different languages and for different platforms using the rf62Xcore library easier.
-
-#### C++ WRAPPERS
-
-| Compiler | 64bit | Includes |
-| ------ | ------ | ------|
-| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/9ac9b774dafe149cd4c2b8b6da0d6fdd/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
-| MSVC2017 | [rf62Xsdk.dll](/uploads/1b5b87768dab262561afe55a39a5a7f0/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
-| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
-
-#### .NET WRAPPERS
-
-| Platform | 64bit | Dependencies (x64) |
-| ------ | ------ |------ |
-| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
-
-***
-
+**downloaded last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).
 **For developers** who **wish to build the latest code**, should be able to 
 use Git and **do the following instructions**:
 ###### 1. Install a git client on your local computer (if you haven’t yet)
@@ -80,9 +49,19 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
 ## RF62X CORE
-The base library for the following scanner series: 
+This base library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999) for the following scanner series: 
 *  RF627-old
 *  RF627-smart
+
+##### Last release libraries:
+
+| Compiler | 64bit | Includes |
+| ------   | ------| ------|
+| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+| MSVC2017 | [rf62Xcore.dll](/uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+| Clang 9.1.0 | [rf62Xcore.dll](/uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+
+***
 
 
 ### HOW TO COMPILE
@@ -123,13 +102,21 @@ cmake .
 *  Compile
 
 ## RF62X WRAPPER LIBRARIES
-Wrappers are used to make writing programs using the rf62Xcore library easier.
+Wrappers are help to make programs in different languages and for different platforms using the rf62Xcore library easier.
 
 ### C++ LIBRARY
 This project is a C++ library that simplifies the integration of C++ 
 applications with following scanner series: 
 *  RF627-old
 *  RF627-smart
+
+##### Last release libraries:
+
+| Compiler | 64bit | Includes |
+| ------ | ------ | ------|
+| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/9ac9b774dafe149cd4c2b8b6da0d6fdd/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+| MSVC2017 | [rf62Xsdk.dll](/uploads/1b5b87768dab262561afe55a39a5a7f0/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
 
 #### HOW TO COMPILE
 RF62X SDK (C++) can be built on the console or in an IDE.\
@@ -332,12 +319,18 @@ You can open and build this example by **Qt Creator**:
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
 
-
-### C# LIBRARY
+### .NET LIBRARY
 This project is a .NET library, written in C# language, that simplifies the integration of C#, 
 Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner series: 
 *  RF627-old
 *  RF627-smart
+
+##### Last release libraries:
+
+| Platform | 64bit | Dependencies (x64) |
+| ------ | ------ |------ |
+| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
+
 
 #### HOW TO COMPILE
 RF62X SDK (C#) can be built in an Visual Studio IDE.\
@@ -507,10 +500,6 @@ namespace RF627_params
     }
 }
 ```
-
-
-#### HOW TO COMPILE
-#### HOW TO USE
 
 ### PYTHON LIBRARY
 #### HOW TO COMPILE
