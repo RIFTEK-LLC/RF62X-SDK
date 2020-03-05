@@ -34,15 +34,15 @@ use Git and do the following instructions:
 *  On Windows, click the Start menu and search for 'command line'.
 ###### 3. Clone the repository using the following commands:
 ```
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
-cd rf627sdk
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
 git submodule update --init --recursive
 ```
 
 For developers who wish to download and build the latest code using Git from the 
 IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 1.  Create a Git project in one of the IDEs 
-2.  Clone `https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git`
+2.  Clone `https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git`
 3.  Download submodules 
 
 > We recommend to use a git client for downloading and Qt Creator for project building 
@@ -87,7 +87,7 @@ To build the code:
 cd rf62Xcore
 cmake .
 ```
-*  Open rf627core.sln with Visual Studio
+*  Open rf62Xcore.sln with Visual Studio
 *  Compile
 
 ## RF62X WRAPPER LIBRARIES
@@ -113,14 +113,14 @@ git submodule update --init --recursive
 To build the С++ wrapper:
 
 ```CMake
-cd wrappers/cpp/CMake/rf627sdk
+cd wrappers/cpp/CMake/rf62Xsdk
 cmake .
 cmake --build . 
 ```
 
 ###### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file from the **wrappers/cpp/CMake/rf627sdk** folder via 
+*  Load the CMakeLists.txt file from the **wrappers/cpp/CMake/rf62Xsdk** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
@@ -132,7 +132,7 @@ To build the code:
 cd wrappers/cpp/CMake/rf62Xsdk
 cmake .
 ```
-*  Open rf627sdk.sln with Visual Studio
+*  Open rf62Xsdk.sln with Visual Studio
 *  Compile
 
 #### HOW TO USE
@@ -142,20 +142,20 @@ contains a separate code example. All example project can be compiled and execut
 Here are some examples how to use search methods
 ###### Search for RF627-old devices over network by service protocol
 ```c++
-#include <rf627sdk.h>
-#include <rf627types.h>
+#include <rf62Xsdk.h>
+#include <rf62Xtypes.h>
 #include <iostream>
 
 using namespace SDK;
 using namespace SCANNERS;
-using namespace RF627;
+using namespace RF62X;
 
 int main()
 {
 
     // Initialize sdk library
     sdk_init();
-    // Print return rf627 sdk version
+    // Print return rf62X sdk version
     std::cout << sdk_version() << std::endl;
 
 
@@ -180,20 +180,20 @@ You can open and build this example by **Qt Creator**:
 Here are some examples how to use get profile methods
 ###### Get Profile from RF627-old devices over network by service protocol
 ```c++
-#include <rf627sdk.h>
-#include <rf627types.h>
+#include <rf62Xsdk.h>
+#include <rf62Xtypes.h>
 #include <iostream>
 
 using namespace SDK;
 using namespace SCANNERS;
-using namespace RF627;
+using namespace RF62X;
 
 int main()
 {
 
     // Initialize sdk library
     sdk_init();
-    // Print return rf627 sdk version
+    // Print return rf62X sdk version
     std::cout << sdk_version() << std::endl;
 
 
@@ -230,20 +230,20 @@ You can open and build this example by **Qt Creator**:
 Here are some examples how to work with device's parameters
 ###### Get/Set RF627-old parameters devices over network
 ```c++
-#include <rf627sdk.h>
-#include <rf627types.h>
+#include <rf62Xsdk.h>
+#include <rf62Xtypes.h>
 #include <iostream>
 
 using namespace SDK;
 using namespace SCANNERS;
-using namespace RF627;
+using namespace RF62X;
 
 int main()
 {
 
     // Initialize sdk library
     sdk_init();
-    // Print return rf627 sdk version
+    // Print return rf62X sdk version
     std::cout << sdk_version() << std::endl;
 
 
@@ -320,11 +320,7 @@ git submodule update --init --recursive
 ###### Visual Studio
 To build the code:
 
-```CMake
-cd wrappers/cpp/CMake/rf627sdk
-cmake .
-```
-*  Open rf627sdk.sln from the **wrappers/csharp/VS2019/rf627sdk** folder with Visual Studio
+*  Open rf62Xsdk.sln from the **wrappers/csharp/VS2019/rf62Xsdk** folder with Visual Studio
 *  Compile
 
 #### HOW TO USE
@@ -334,8 +330,8 @@ contains a separate code example. All example project can be compiled and execut
 You can open and build these examples by **Visual Studio**:  
 *  Open **RF627_TESTS.sln** from the **wrappers/csharp/VS2019/RF627_TESTS** folder with Visual Studio
 *  Select **x64 Debug** or **x64 Release** target platdorm
-*  Add the **rf627sdk.dll** library to project's **references** 
-*  Copy the **rf627core.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Add the **rf62Xsdk.dll** library to project's **references** 
+*  Copy the **rf62Xcore.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Compile project
 
 ##### Search for RF62X devices
@@ -354,15 +350,15 @@ namespace RF627_search
         {
         
             // Start initialization of the library core
-            RF627.SdkInit();
+            RF62X.SdkInit();
 
-            // Print return rf627 sdk version
-            Console.WriteLine("Current rf627 sdk version: {0}", RF627.SdkVersion());
+            // Print return rf62X sdk version
+            Console.WriteLine("Current rf62X sdk version: {0}", RF62X.SdkVersion());
 
 
             // Search for RF627old devices over network
             Console.WriteLine("- Start searching device");
-            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
             Console.WriteLine("+ {0} scanners detected", Scanners.Count);
             
         }
