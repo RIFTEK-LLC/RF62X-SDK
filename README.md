@@ -1,4 +1,4 @@
-# RF62XSDK
+# RF62X SDK
 
 ## CONTENTS
 - [OVERVIEW](#overview)
@@ -23,8 +23,8 @@ and [GitLab](https://about.gitlab.com/) for source code hosting.
 
 **For developers** who simply **want to use this SDK** for work with scanners, can be 
 **downloaded last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).
-**For developers** who **wish to build the latest code**, should be able to 
-use Git and **do the following instructions**:
+
+**For others** who want to go through hell and **build the latest code**, should be able to use Git and **do the following instructions**:
 ###### 1. Install a git client on your local computer (if you haven’t yet)
 *  On Linux use the terminal command: `sudo apt install git`
 *  On MacOS use the terminal command: `brew install git`
