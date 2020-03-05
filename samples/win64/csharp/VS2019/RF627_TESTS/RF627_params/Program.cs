@@ -9,11 +9,11 @@ namespace RF627_params
         static void Main(string[] args)
         {
             // Start initialization of the library core
-            RF627.SdkInit();
+            RF62X.SdkInit();
 
             // Search for RF627old devices over network
             Console.WriteLine("- Start searching device");
-            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
             Console.WriteLine("+ {0} scanners detected", Scanners.Count);
 
             // foreach over an scanners list
@@ -32,7 +32,7 @@ namespace RF627_params
                         Console.WriteLine("+ Parameters read successfully"); Console.WriteLine();
 
                         Console.WriteLine("- Try to get scanner's name");
-                        RF627.Param<string> deviceName = Scanners[i].GetParam(RF627.Params.User.General.deviceName);
+                        RF62X.Param<string> deviceName = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
                         if (deviceName != null)
                         {
                             Console.WriteLine("+ Device name is: {0}", deviceName.GetValue()); Console.WriteLine();
@@ -61,7 +61,7 @@ namespace RF627_params
                         Console.WriteLine("+ Parameters read successfully"); Console.WriteLine();
 
                         Console.WriteLine("- Try to get scanner's name");
-                        RF627.Param<string> deviceName = Scanners[i].GetParam(RF627.Params.User.General.deviceName);
+                        RF62X.Param<string> deviceName = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
                         if (deviceName.GetValue() == "Test Name")
                             Console.WriteLine("+ Changed parameters write successfully");
                         else Console.WriteLine("! Error changing parameters");

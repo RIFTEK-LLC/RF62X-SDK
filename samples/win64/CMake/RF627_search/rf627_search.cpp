@@ -1,10 +1,10 @@
-#include <rf627sdk.h>
-#include <rf627types.h>
+#include <rf62Xsdk.h>
+#include <rf62Xtypes.h>
 #include <iostream>
 
 using namespace SDK;
 using namespace SCANNERS;
-using namespace RF627;
+using namespace RF62X;
 
 int main()
 {

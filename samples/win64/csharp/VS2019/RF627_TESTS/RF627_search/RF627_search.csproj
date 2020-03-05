@@ -70,9 +70,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="rf627sdk, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\x64\Debug\rf627sdk.dll</HintPath>
+    <Reference Include="rf62Xsdk">
+      <HintPath>..\..\..\..\..\..\wrappers\csharp\VS2019\rf62Xsdk\rf62Xsdk\bin\x64\Debug\rf62Xsdk.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

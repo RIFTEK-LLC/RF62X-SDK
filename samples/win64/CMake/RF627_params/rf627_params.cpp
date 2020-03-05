@@ -1,10 +1,10 @@
-#include <rf627sdk.h>
-#include <rf627types.h>
+#include <rf62Xsdk.h>
+#include <rf62Xtypes.h>
 #include <iostream>
 
 using namespace SDK;
 using namespace SCANNERS;
-using namespace RF627;
+using namespace RF62X;
 
 int main()
 {
@@ -37,10 +37,10 @@ int main()
         param_t* param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
         if (param->type == param_value_types[STRING_PARAM_TYPE])
         {
-            std::cout << param->get_value<value_str_t>() << std::endl;
+            std::cout << param->get_value<value_str>() << std::endl;
 
             // set new scanner's name and write changed parameters to scanner
-            param->set_value<value_str_t>("Test Name");
+            param->set_value<value_str>("Test Name");
             scanners[i]->set_param(param);
             scanners[i]->write_params();
         }
@@ -51,7 +51,7 @@ int main()
 
         // Get device name
         param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
-        if (param->get_value<value_str_t>() == "Test Name")
+        if (param->get_value<value_str>() == "Test Name")
             std::cout << "Changed parameters write successfully" << std::endl;
         else std::cout << "Error changing parameters" << std::endl;
 

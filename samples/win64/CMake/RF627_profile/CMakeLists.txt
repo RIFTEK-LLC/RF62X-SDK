@@ -16,9 +16,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # set rf627sdk path variable
-set(RF627SDK_DIR "../../../../wrappers/cpp/CMake/rf627sdk")
+set(RF62XSDK_DIR "../../../../wrappers/cpp/CMake/rf62Xsdk")
 # add subdirectory of rf627sdk lib
-add_subdirectory(${RF627SDK_DIR} CMAKE_CURRENT_SOURCE_DIR)
+add_subdirectory(${RF62XSDK_DIR} CMAKE_CURRENT_SOURCE_DIR)
 
 # create glob files for *.h, *.cpp
 file (GLOB H_FILES   ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
@@ -33,7 +33,7 @@ set  (SOURCES ${CPP_FILES} ${H_FILES})
 ##
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} rf627sdk)
+target_link_libraries(${PROJECT_NAME} rf62Xsdk)
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} ws2_32)
 endif(MINGW)

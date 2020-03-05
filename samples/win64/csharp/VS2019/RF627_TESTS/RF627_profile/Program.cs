@@ -9,11 +9,11 @@ namespace RF627_profile
         static void Main(string[] args)
         {
             // Start initialization of the library core
-            RF627.SdkInit();
+            RF62X.SdkInit();
 
             // Search for RF627old devices over network
             Console.WriteLine("- Start searching device");
-            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
             Console.WriteLine("+ {0} scanners detected", Scanners.Count);
 
             // foreach over an scanners list
@@ -26,7 +26,7 @@ namespace RF627_profile
                     Console.WriteLine("+ Successfully connected"); Console.WriteLine();
 
                     Console.WriteLine("- Try to receive profile");
-                    RF627.Profile profile = Scanners[i].GetProfile();
+                    RF62X.Profile profile = Scanners[i].GetProfile();
                     if (profile.header != null)
                         Console.WriteLine("+ Received profile successfully. S/n: {0}", 
                             profile.header.serial_number.ToString());

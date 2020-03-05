@@ -9,14 +9,14 @@ namespace RF627_search
         static void Main(string[] args)
         {
             // Start initialization of the library core
-            RF627.SdkInit();
+            RF62X.SdkInit();
 
-            // Print return rf627 sdk version
-            Console.WriteLine("Current rf627 sdk version: {0}", RF627.SdkVersion());
+            // Print return rf62X sdk version
+            Console.WriteLine("Current rf62X sdk version: {0}", RF62X.SdkVersion());
 
             // Search for RF627old devices over network
             Console.WriteLine("- Start searching device");
-            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
             Console.WriteLine("+ {0} scanners detected", Scanners.Count);
 
             Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
