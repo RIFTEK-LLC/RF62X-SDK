@@ -19,11 +19,42 @@
 The RF62X SDK project uses [git](http://git-scm.com/) for source code management 
 and [GitLab](https://about.gitlab.com/) for source code hosting.
 
-For developers who simply want to use this SDK for work with scanners, can be 
-downloaded last libraries and read usage examples.
+***
 
-For developers who wish to download and build the latest code, should be able to 
-use Git and do the following instructions:
+**For developers** who simply **want to use this SDK** for work with scanners, can be 
+**downloaded last libraries** and read usage examples.
+
+### RF62X CORE
+This library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999)
+
+| Compiler | 64bit | Includes |
+| ------   | ------| ------|
+| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+| MSVC2017 | [rf62Xcore.dll](/uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+| Clang 9.1.0 | [rf62Xcore.dll](/uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+
+***
+
+### RF62X SDK
+
+#### C++ LIBRARIES
+
+| Compiler | 64bit | Includes |
+| ------ | ------ | ------|
+| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/9ac9b774dafe149cd4c2b8b6da0d6fdd/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+| MSVC2017 | [rf62Xsdk.dll](/uploads/1b5b87768dab262561afe55a39a5a7f0/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+
+#### .NET LIBRARIES
+
+| Platform | 64bit | Dependencies (x64) |
+| ------ | ------ |------ |
+| .NET Framework 4.5 (and late) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
+
+***
+
+**For developers** who **wish to build the latest code**, should be able to 
+use Git and **do the following instructions**:
 ###### 1. Install a git client on your local computer (if you haven’t yet)
 *  On Linux use the terminal command: `sudo apt install git`
 *  On MacOS use the terminal command: `brew install git`
