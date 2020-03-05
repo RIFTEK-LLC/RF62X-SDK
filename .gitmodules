@@ -1,15 +1,15 @@
-[submodule "rf627core/third_party/utils/custom_vector"]
-	path = rf627core/third_party/utils/custom_vector
+[submodule "rf62Xcore/third_party/utils/custom_vector"]
+	path = rf62Xcore/third_party/utils/custom_vector
 	url = https://gitlab.com/riftek_llc/software/utilities/custom_vector.git
-[submodule "rf627core/third_party/utils/platform_methods"]
-	path = rf627core/third_party/utils/platform_methods
+[submodule "rf62Xcore/third_party/utils/platform_methods"]
+	path = rf62Xcore/third_party/utils/platform_methods
 	url = https://gitlab.com/riftek_llc/software/utilities/platform_methods.git
-[submodule "rf627core/third_party/protocols/rf627protocol"]
-	path = rf627core/third_party/protocols/rf627protocol
+[submodule "rf62Xcore/third_party/protocols/rf627protocol"]
+	path = rf62Xcore/third_party/protocols/rf627protocol
 	url = https://gitlab.com/riftek_llc/software/sdk/protocols/rf627protocol.git
-[submodule "rf627core/third_party/utils/endian_conv"]
-	path = rf627core/third_party/utils/endian_conv
+[submodule "rf62Xcore/third_party/utils/endian_conv"]
+	path = rf62Xcore/third_party/utils/endian_conv
 	url = https://gitlab.com/riftek_llc/software/utilities/endian_conv.git
-[submodule "rf627core/third_party/utils/custom_string"]
-	path = rf627core/third_party/utils/custom_string
+[submodule "rf62Xcore/third_party/utils/custom_string"]
+	path = rf62Xcore/third_party/utils/custom_string
 	url = https://gitlab.com/riftek_llc/software/utilities/custom_string.git
