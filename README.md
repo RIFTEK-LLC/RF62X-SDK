@@ -1,10 +1,10 @@
-# RF627SDK
+# RF62XSDK
 
 ## CONTENTS
 - [OVERVIEW](#overview)
-- [RF627 CORE](#rf627-core)
+- [RF62X CORE](#rf62x-core)
   - [How to compile](#how-to-compile)
-- [RF627 WRAPPER LIBRARIES](#rf627-wrapper-libraries)
+- [RF62X WRAPPER LIBRARIES](#rf62x-wrapper-libraries)
   - [C++ LIBRARY](#c-library)
     - [How to compile](#how-to-compile-1)
     - [How to use](#how-to-use)
@@ -16,7 +16,7 @@
     - [How to use](#how-to-use-2)
 
 ## OVERVIEW
-The RF627SDK project uses [git](http://git-scm.com/) for source code management 
+The RF62X SDK project uses [git](http://git-scm.com/) for source code management 
 and [GitLab](https://about.gitlab.com/) for source code hosting.
 
 For developers who simply want to use this SDK for work with scanners, can be 
@@ -47,18 +47,18 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
-## RF627 CORE
+## RF62X CORE
 The base library for the following scanner series: 
 *  RF627-old
 *  RF627-smart
 
 
 ### HOW TO COMPILE
-RF627 CORE can be built on the console or in an IDE.\
+RF62X CORE can be built on the console or in an IDE.\
 Firstly, you should download the project (if you have already done it, skip next commands)
 ```
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
-cd rf627sdk
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
 git submodule update --init --recursive
 ```
 > for more information about project downloading steps, see an [overview](#overview)
@@ -67,14 +67,14 @@ git submodule update --init --recursive
 To build the code:
 
 ```CMake
-cd rf627core
+cd rf62Xcore
 cmake .
 cmake --build . 
 ```
 
 ###### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file from the **rf627core** folder via 
+*  Load the CMakeLists.txt file from the **rf62Xcore** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Open **Build Settings** and check ***install*** target for **Build Steps** 
@@ -84,14 +84,14 @@ To build the code:
 To build the code:
 
 ```CMake
-cd rf627core
+cd rf62Xcore
 cmake .
 ```
 *  Open rf627core.sln with Visual Studio
 *  Compile
 
-## RF627 WRAPPER LIBRARIES
-Wrappers are used to make writing programs using the rf627core library easier.
+## RF62X WRAPPER LIBRARIES
+Wrappers are used to make writing programs using the rf62Xcore library easier.
 
 ### C++ LIBRARY
 This project is a C++ library that simplifies the integration of C++ 
@@ -100,11 +100,11 @@ applications with following scanner series:
 *  RF627-smart
 
 #### HOW TO COMPILE
-RF627 SDK (C++) can be built on the console or in an IDE.\
+RF62X SDK (C++) can be built on the console or in an IDE.\
 Firstly, you should download the project (if you have already done it, skip next commands)
 ```
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
-cd rf627sdk
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
 git submodule update --init --recursive
 ```
 > for more information about project downloading steps, see an [overview](#overview)
@@ -129,7 +129,7 @@ To build the code:
 To build the code:
 
 ```CMake
-cd wrappers/cpp/CMake/rf627sdk
+cd wrappers/cpp/CMake/rf62Xsdk
 cmake .
 ```
 *  Open rf627sdk.sln with Visual Studio
@@ -138,7 +138,7 @@ cmake .
 #### HOW TO USE
 Beside the examples below, you may want to check the documentation where each function 
 contains a separate code example. All example project can be compiled and executed.
-##### Search for RF627 devices
+##### Search for RF62X devices
 Here are some examples how to use search methods
 ###### Search for RF627-old devices over network by service protocol
 ```c++
@@ -176,7 +176,7 @@ You can open and build this example by **Qt Creator**:
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
 
-##### Get Profile from RF627 devices
+##### Get Profile from RF62X devices
 Here are some examples how to use get profile methods
 ###### Get Profile from RF627-old devices over network by service protocol
 ```c++
@@ -226,7 +226,7 @@ You can open and build this example by **Qt Creator**:
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
 
-##### Get/Set RF627-old parameters
+##### Get/Set RF62X-old parameters
 Here are some examples how to work with device's parameters
 ###### Get/Set RF627-old parameters devices over network
 ```c++
@@ -308,11 +308,11 @@ Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner 
 *  RF627-smart
 
 #### HOW TO COMPILE
-RF627 SDK (C#) can be built in an Visual Studio IDE.\
+RF62X SDK (C#) can be built in an Visual Studio IDE.\
 Firstly, you should download the project (if you have already done it, skip next commands)
 ```
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/rf627sdk.git
-cd rf627sdk
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
 git submodule update --init --recursive
 ```
 > for more information about project downloading steps, see an [overview](#overview)
@@ -338,7 +338,7 @@ You can open and build these examples by **Visual Studio**:
 *  Copy the **rf627core.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Compile project
 
-##### Search for RF627 devices
+##### Search for RF62X devices
 Here are some examples how to use search methods
 ###### Search for RF627-old devices over network by service protocol
 ```c#
@@ -370,7 +370,7 @@ namespace RF627_search
 }
 ```
 
-##### Get Profile from RF627 devices
+##### Get Profile from RF62X devices
 Here are some examples how to use get profile methods
 ###### Get Profile from RF627-old devices over network by service protocol
 ```c#
@@ -386,11 +386,11 @@ namespace RF627_profile
         {
         
             // Start initialization of the library core
-            RF627.SdkInit();
+            RF62X.SdkInit();
 
 
             // Search for RF627old devices over network
-            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
 
 
             // foreach over an scanners list
@@ -401,7 +401,7 @@ namespace RF627_profile
                 
                 
                 //Receive profile
-                RF627.Profile profile = Scanners[i].GetProfile();
+                RF62X.Profile profile = Scanners[i].GetProfile();
                 if (profile.header != null)
                     Console.WriteLine("Received profile successfully);
                 else 
@@ -413,7 +413,7 @@ namespace RF627_profile
 }
 ```
 
-##### Get/Set RF627-old parameters
+##### Get/Set RF62X-old parameters
 Here are some examples how to work with device's parameters
 ###### Get/Set RF627-old parameters devices over network
 ```c#
@@ -429,11 +429,11 @@ namespace RF627_params
         {
         
             // Start initialization of the library core
-            RF627.SdkInit();
+            RF62X.SdkInit();
 
 
             // Search for RF627old devices over network
-            List<RF627.RF627old> Scanners = RF627.RF627old.Search();
+            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
 
 
             // foreach over an scanners list
@@ -448,8 +448,8 @@ namespace RF627_params
 
 
                 // Get scanner's name
-                RF627.Param<string> deviceName = 
-                        Scanners[i].GetParam(RF627.Params.User.General.deviceName);
+                RF62X.Param<string> deviceName = 
+                        Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
 
 
                 // Set new scanner's name and write changed parameters to scanner
@@ -467,8 +467,8 @@ namespace RF627_params
 
 
                 // Get scanner's name
-                RF627.Param<string> newDeviceName = 
-                        Scanners[i].GetParam(RF627.Params.User.General.deviceName);
+                RF62X.Param<string> newDeviceName = 
+                        Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
                 if (newDeviceName.GetValue() == "New Name")
                     Console.WriteLine("Changed parameters write successfully");
                 else 
