@@ -36,8 +36,9 @@ This library was written in C programming language in accordance with C99 Sdanda
 ***
 
 ### RF62X SDK
+This library helps to make programs in different languages and for different platforms using the rf62Xcore library easier.
 
-#### C++ LIBRARIES
+#### C++ WRAPPERS
 
 | Compiler | 64bit | Includes |
 | ------ | ------ | ------|
@@ -45,11 +46,11 @@ This library was written in C programming language in accordance with C99 Sdanda
 | MSVC2017 | [rf62Xsdk.dll](/uploads/1b5b87768dab262561afe55a39a5a7f0/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
 | Clang 9.1.0 | [rf62Xsdk.dll](/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
 
-#### .NET LIBRARIES
+#### .NET WRAPPERS
 
 | Platform | 64bit | Dependencies (x64) |
 | ------ | ------ |------ |
-| .NET Framework 4.5 (and late) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
+| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
 
 ***
 
