@@ -328,7 +328,7 @@ Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner 
 
 | Platform | 64bit | Dependencies (x64) |
 | ------ | ------ |------ |
-| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
+| .NET Framework 4.5 (or above) | [rf62Xsdk.dll](/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
 
 
 #### HOW TO COMPILE
