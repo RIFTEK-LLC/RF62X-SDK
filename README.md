@@ -54,7 +54,7 @@ The RF627X SDK consist of two parts:
 ## GETTING STARTED
 
 **For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).\
-**For others** who want to ~~go through hell~~ do their life more interesting and **build the latest code**, should be able to use Git and **do the [Installing instructions](#installing-software)**:
+**For others** who want to ~~go through hell~~ do their life more interesting and **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
 
 ### Installing software
 
@@ -156,7 +156,7 @@ applications with following scanner series:
 | Compiler | 64bit | Includes |
 | ------ | ------ | ------|
 | MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/9ac9b774dafe149cd4c2b8b6da0d6fdd/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
-| MSVC2017 | [rf62Xsdk.dll](/uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+| MSVC2017 | [rf62Xsdk.dll](/uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll), [rf62Xsdk.lib](/uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
 | Clang 9.1.0 | [rf62Xsdk.dll](/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
 
 #### HOW TO COMPILE
