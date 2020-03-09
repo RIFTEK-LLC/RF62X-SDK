@@ -82,11 +82,35 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
 ### Running RF62X SDK tutorials
-Here a basic example how to use method for searching RF62X devices. You should open and build it by **Qt Creator**:  
+Here a basic example how to use method for searching RF62X devices in different languages by different ways.\
+You can create a new project yourself or you can just open an existing project example and build it.
+#### Open example in C++
+##### 1) Open and build example project in **Qt Creator**:  
 *  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_search** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
+
+##### 2) Open and build example project in **Visual Studio**
+*  Open the **ALL_BUILD.vcxproj** from the **samples/win64/VS2019/RF627_search** folder by Visual Studio 2019
+*  Select **x64 Debug** or **x64 Release** target platdorm and start compilation 
+*  Copy the **rf62Xsdk.dll** into the path of the project executable
+*  Run RF627_search project
+
+
+##### Create a new project
+##### 2) Create a new project by СMake for **Visual Studio**
+To build the code:
+
+```CMake
+cd samples/win64/CMake/RF627_search
+cmake .
+```
+*  Open the **ALL_BUILD.vcxproj** from the **samples/win64/VS2019/RF627_search** folder by Visual Studio 2019
+*  Select **x64 Debug** or **x64 Release** target platdorm and start compilation 
+*  Copy the **rf62Xsdk.dll** into the path of the project executable
+*  Run RF627_search project
+
 
 Beside the example below, you may want to check the documentation where each function contains a separate code example. All example project can be compiled and executed.
 
