@@ -1,7 +1,15 @@
-# RF62X SDK
+***
+![RF62X_SDK_v5_](/uploads/32dd3154010ecc0cfa5c366ca7ad7838/RF62X_SDK_v5_.png)
+***
 
 ## CONTENTS
 - [OVERVIEW](#overview)
+  - [Core features](#core-features)
+  - [Supported compilers](#supported-compilers)
+  - [Resources](#resources)
+- [GETTING STARTED](#getting-started)
+  - [Installing software](#installing-software)
+  - [Running RF62X SDK tutorials](#)
 - [RF62X CORE](#rf62x-core)
   - [How to compile](#how-to-compile)
 - [RF62X WRAPPER LIBRARIES](#rf62x-wrapper-libraries)
@@ -15,15 +23,41 @@
     - [How to compile](#how-to-compile-3)
     - [How to use](#how-to-use-2)
 
+
+
 ## OVERVIEW
-The RF62X SDK project uses [git](http://git-scm.com/) for source code management 
-and [GitLab](https://about.gitlab.com/) for source code hosting.
+**RF627X SDK** is a library that supports rapid development of software that deals with scanners series RF62X (RF627-old, RF627-smart).
 
-***
+The RF627X SDK consist of two parts:
+*  **RF62X CORE** is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
+*  **RF62X WRAPPER** is the library that helps to develop programs in a definite programming language and for the selected platform, simplifying the use of the main library (RF62X CORE).
 
-**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).
+> RF627X SDK project uses [git](http://git-scm.com/) for source code management and [GitLab](https://about.gitlab.com/) for source code hosting.
 
-**For others** who want to ~~go through hell~~ do their life more interesting and **build the latest code**, should be able to use Git and **do the following instructions**:
+### Core features
+*  Search scanners
+*  Get scanner's profile
+*  Get/set scanner's parameters
+
+### Supported compilers
+*  GCC 5.x or newer on Linux
+*  XCode 8.0 or newer on OS X
+*  Visual Studio 2017 or newer on Windows
+
+### Resources
+*  Website: www.riftek.com
+*  Code: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK
+*  Document: www.riftek.com  
+
+
+
+## GETTING STARTED
+
+**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).\
+**For others** who want to ~~go through hell~~ do their life more interesting and **build the latest code**, should be able to use Git and **do the [Installing instructions](#installing-software)**:
+
+### Installing software
+
 ###### 1. Install a git client on your local computer (if you haven’t yet)
 *  On Linux use the terminal command: `sudo apt install git`
 *  On MacOS use the terminal command: `brew install git`
@@ -47,10 +81,18 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
+### Running RF62X SDK tutorials
+Here a basic example how to use method for searching RF62X devices. You can open and build it by **Qt Creator**:  
+*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_search** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
+
+Beside the example below, you may want to check the documentation where each function contains a separate code example. All example project can be compiled and executed.
+
 ## RF62X CORE
-This base library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999) for the following scanner series: 
-*  RF627-old
-*  RF627-smart
+RF62X CORE is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
+This library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999).
 
 ##### Last release libraries:
 
