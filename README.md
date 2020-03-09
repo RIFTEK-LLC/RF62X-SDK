@@ -82,7 +82,7 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
 ### Running RF62X SDK tutorials
-Here a basic example how to use method for searching RF62X devices. You can open and build it by **Qt Creator**:  
+Here a basic example how to use method for searching RF62X devices. You should open and build it by **Qt Creator**:  
 *  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_search** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
