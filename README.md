@@ -84,8 +84,8 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 ### Running RF62X SDK tutorials
 Here a basic example how to use method for searching RF62X devices in different languages by different ways.\
 You can create a new project yourself or you can just open an existing project example and build it.
-#### Open example in C++
-##### 1) Open and build examples project in **Qt Creator**:  
+#### Compiling examples in C++ from source
+##### 1) Open and compile examples project in **Qt Creator**:  
 *  Load the CMakeLists.txt file from the **samples/Cpp/RF627_TESTS** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 
@@ -95,16 +95,26 @@ You can create a new project yourself or you can just open an existing project e
 
 ![](/uploads/aea9094ca516e84609b41ff70412ac37/Аннотация2.jpg)
 
-*  Compile and Run one of examples
+*  Choose one of the examples, Compile and Run it
 
-##### 2) Open and build example project in **Visual Studio**
-*  Open the **ALL_BUILD.vcxproj** from the **samples/win64/VS2019/RF627_search** folder by Visual Studio 2019
-*  Select **x64 Debug** or **x64 Release** target platdorm and start compilation 
-*  Copy the **rf62Xsdk.dll** into the path of the project executable
-*  Run RF627_search project
+##### 2) Generate a project for **Visual Studio** and compile examples
+*  Generate Visual Studio solution by calling CMake from the console
+```CMake
+cd samples/Cpp/RF627_TESTS
+mkdir build
+cd build
+
+:: Run one of the following lines based on your Visual Studio version
+cmake -G "Visual Studio 15 2017 Win64" ..
+cmake -G "Visual Studio 16 2019 Win64" ..
+```
+*  Open the **ALL_BUILD.vcxproj** from the **samples/Cpp/RF627_TESTS** folder by Visual Studio
+*  Select the build type and target platdorm - **x64 Debug** or **x64 Release**
+*  Rebuild the **ALL_BUILD** target
+*  Choose one of the examples, Compile and Run it
 
 
-##### Create a new project
+##### Creating a new project in C++ using shared or static SDK library
 ##### 2) Create a new project by СMake for **Visual Studio**
 To build the code:
 
