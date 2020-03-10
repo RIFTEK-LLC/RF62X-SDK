@@ -85,11 +85,17 @@ IDE (Qt Creator or Visual Studio Community) should follow these instructions:
 Here a basic example how to use method for searching RF62X devices in different languages by different ways.\
 You can create a new project yourself or you can just open an existing project example and build it.
 #### Open example in C++
-##### 1) Open and build example project in **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_search** folder via 
+##### 1) Open and build examples project in **Qt Creator**:  
+*  Load the CMakeLists.txt file from the **samples/Cpp/RF627_TESTS** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
+
+![](/uploads/78032febfdfd6b2954b93ff3cfac2967/Аннотация_2020-03-10_153146.jpg)
+
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-*  Compile project
+
+![](/uploads/aea9094ca516e84609b41ff70412ac37/Аннотация2.jpg)
+
+*  Compile and Run one of examples
 
 ##### 2) Open and build example project in **Visual Studio**
 *  Open the **ALL_BUILD.vcxproj** from the **samples/win64/VS2019/RF627_search** folder by Visual Studio 2019
