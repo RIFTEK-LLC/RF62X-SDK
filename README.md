@@ -122,9 +122,11 @@ cmake -G "Visual Studio 16 2019 Win64" ..
 
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
-*  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and and finish project setup.
-*  Unzip and paste files from **include.zip** into the project directory
-*  Copy **rf62Xsdk.dll** into the project directory next to the main.cpp file
+*  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
+*  [Download](#c-library) **include.zip** archive and unzip it into the project directory. Also download **rf62Xsdk.dll** and copy it into the project directory next to the main.cpp file
+
+![](/uploads/f772d702180bb91cf67cad8621090b40/note3.png)
+
 *  Modify your **CMakeLists.txt** file according to the example below:
 ```cmake
 cmake_minimum_required(VERSION 3.5)
@@ -181,8 +183,8 @@ int main()
 ```
 *  Copy **rf62Xsdk.dll** into the path of the project executable (PROJECT_BINARY_DIR)
 
-You can do it in two ways: \
-1) Copy rf62Xsdk.dll to the executable folder (near with *.exe) yourself.\
+You can do it in two ways:
+1) Copy rf62Xsdk.dll to the executable folder (near with *.exe) yourself.
 2) Or add a "copy command" to the end of the CMakeLists.txt file:
 
 ```cmake
