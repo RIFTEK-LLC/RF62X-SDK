@@ -298,7 +298,7 @@ int main()
         // Get profile from scanner's data stream by Service Protocol.
         profile_t* profile = scanners[i]->get_profile();
         // Print the serial number of the scanner to which the profile belongs.
-        std::cout << profile->profile_header.serial_number << std::endl;
+        std::cout << profile->header.serial_number << std::endl;
         
     }
     
