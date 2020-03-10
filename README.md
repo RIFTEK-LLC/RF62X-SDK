@@ -26,13 +26,13 @@
 
 
 ## OVERVIEW
+
 **RF627X SDK** is a library that supports rapid development of software that deals with scanners series RF62X (RF627-old, RF627-smart).
 
 The RF627X SDK consist of two parts:
 *  **RF62X CORE** is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
 *  **RF62X WRAPPER** is the library that helps to develop programs in a definite programming language and for the selected platform, simplifying the use of the main library (RF62X CORE).
 
-> RF627X SDK project uses [git](http://git-scm.com/) for source code management and [GitLab](https://about.gitlab.com/) for source code hosting.
 
 ### Core features
 *  Search scanners
@@ -45,9 +45,10 @@ The RF627X SDK consist of two parts:
 *  Visual Studio 2017 or newer on Windows
 
 ### Resources
-*  Website: www.riftek.com
+This project uses [git](http://git-scm.com/) for source code management and [GitLab](https://about.gitlab.com/) for source code hosting.
 *  Code: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK
 *  Document: www.riftek.com  
+*  Website: www.riftek.com
 
 
 
