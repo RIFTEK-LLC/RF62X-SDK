@@ -67,7 +67,7 @@ The RF627X SDK consist of two parts:
 *  On OS X, hit ⌘-space and search for 'terminal'
 *  On Windows, click the Start menu and search for 'command line'.
 ###### 3. Clone the repository using the following commands:
-```
+```bash
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 git submodule update --init --recursive
@@ -99,7 +99,7 @@ You can create a new project yourself or you can just open an existing project e
 
 ##### 2) Generate a project for **Visual Studio** and compile examples
 *  Generate Visual Studio solution by calling CMake from the console
-```CMake
+```bash
 cd samples/Cpp/RF627_TESTS
 mkdir build
 cd build
@@ -118,7 +118,7 @@ cmake -G "Visual Studio 16 2019 Win64" ..
 ##### 2) Create a new project by СMake for **Visual Studio**
 To build the code:
 
-```CMake
+```bash
 cd samples/win64/CMake/RF627_search
 cmake .
 ```
@@ -148,7 +148,7 @@ This library was written in C programming language in accordance with C99 Sdanda
 ### HOW TO COMPILE
 RF62X CORE can be built on the console or in an IDE.\
 Firstly, you should download the project (if you have already done it, skip next commands)
-```
+```bash
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 git submodule update --init --recursive
@@ -158,7 +158,7 @@ git submodule update --init --recursive
 ###### CMake
 To build the code:
 
-```CMake
+```bash
 cd rf62Xcore
 cmake .
 cmake --build . 
@@ -175,7 +175,7 @@ To build the code:
 ###### Visual Studio
 To build the code:
 
-```CMake
+```bash
 cd rf62Xcore
 cmake .
 ```
@@ -202,7 +202,7 @@ applications with following scanner series:
 #### HOW TO COMPILE
 RF62X SDK (C++) can be built on the console or in an IDE.\
 Firstly, you should download the project (if you have already done it, skip next commands)
-```
+```bash
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 git submodule update --init --recursive
@@ -212,7 +212,7 @@ git submodule update --init --recursive
 ###### CMake
 To build the С++ wrapper:
 
-```CMake
+```bash
 cd wrappers/cpp/CMake/rf62Xsdk
 cmake .
 cmake --build . 
@@ -228,7 +228,7 @@ To build the code:
 ###### Visual Studio
 To build the code:
 
-```CMake
+```bash
 cd wrappers/cpp/CMake/rf62Xsdk
 cmake .
 ```
@@ -416,7 +416,7 @@ Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner 
 #### HOW TO COMPILE
 RF62X SDK (C#) can be built in an Visual Studio IDE.\
 Firstly, you should download the project (if you have already done it, skip next commands)
-```
+```bash
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 git submodule update --init --recursive
