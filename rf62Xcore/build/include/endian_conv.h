@@ -189,7 +189,7 @@ rfSize add_rfUint16_to_packet(
  *        be incremented by 4!
  * @return Length in bytes of the encoded packet
  */
-rfSize add_rfrfInt32o_packet (
+rfSize add_rfInt32_to_packet (
         rfInt32 data, rfUint8** buffer_address, rf_endianess endian);
 
 /**
@@ -199,7 +199,7 @@ rfSize add_rfrfInt32o_packet (
  *        be incremented by 4!
  * @return Length in bytes of the encoded packet
  */
-rfSize add_rfrfUint32o_packet(
+rfSize add_rfUint32_to_packet(
         rfUint32 data, rfUint8** buffer_address, rf_endianess endian);
 
 
@@ -241,7 +241,7 @@ rfSize add_rfUint64_to_packet(
  *        be incremented by 8!
  * @return Length in bytes of the encoded packet
  */
-rfSize add_rfInt64o_packet(
+rfSize add_rfInt64_to_packet(
         rfInt64 data, rfUint8** buffer_address, rf_endianess endian);
 
 #endif

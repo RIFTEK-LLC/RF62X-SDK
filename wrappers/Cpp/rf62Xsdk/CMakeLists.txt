@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Enabling export of all symbols to create a dynamic library
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 # set rf627core path variable
-set(RF62XCORE_DIR "../../../../rf62Xcore")
+set(RF62XCORE_DIR "../../../rf62Xcore")
 
 # add subdirectory of rf627core lib
 add_subdirectory(${RF62XCORE_DIR} CMAKE_CURRENT_SOURCE_DIR)

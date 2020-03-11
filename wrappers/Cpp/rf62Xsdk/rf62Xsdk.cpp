@@ -101,6 +101,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 rf627old::rf627old(void* base)
 {
     this->scanner_base = base;
+    this->command = new Command(this);
 }
 
 rf627old::~rf627old()
@@ -179,47 +180,47 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
 
         if(profile_from_scanner->rf627_profile != NULL)
         {
-            result->profile_header.data_type =
+            result->header.data_type =
                     profile_from_scanner->rf627_profile->header.data_type;
-            result->profile_header.flags =
+            result->header.flags =
                     profile_from_scanner->rf627_profile->header.flags;
-            result->profile_header.device_type =
+            result->header.device_type =
                     profile_from_scanner->rf627_profile->header.device_type;
-            result->profile_header.serial_number =
+            result->header.serial_number =
                     profile_from_scanner->rf627_profile->header.serial_number;
-            result->profile_header.system_time =
+            result->header.system_time =
                     profile_from_scanner->rf627_profile->header.system_time;
 
-            result->profile_header.proto_version_major =
+            result->header.proto_version_major =
                     profile_from_scanner->rf627_profile->header.proto_version_major;
-            result->profile_header.proto_version_minor =
+            result->header.proto_version_minor =
                     profile_from_scanner->rf627_profile->header.proto_version_minor;
-            result->profile_header.hardware_params_offset =
+            result->header.hardware_params_offset =
                     profile_from_scanner->rf627_profile->header.hardware_params_offset;
-            result->profile_header.data_offset =
+            result->header.data_offset =
                     profile_from_scanner->rf627_profile->header.data_offset;
-            result->profile_header.packet_count =
+            result->header.packet_count =
                     profile_from_scanner->rf627_profile->header.packet_count;
-            result->profile_header.measure_count =
+            result->header.measure_count =
                     profile_from_scanner->rf627_profile->header.measure_count;
 
-            result->profile_header.zmr =
+            result->header.zmr =
                     profile_from_scanner->rf627_profile->header.zmr;
-            result->profile_header.xemr =
+            result->header.xemr =
                     profile_from_scanner->rf627_profile->header.xemr;
-            result->profile_header.discrete_value =
+            result->header.discrete_value =
                     profile_from_scanner->rf627_profile->header.discrete_value;
 
-            result->profile_header.exposure_time =
+            result->header.exposure_time =
                     profile_from_scanner->rf627_profile->header.exposure_time;
-            result->profile_header.laser_value =
+            result->header.laser_value =
                     profile_from_scanner->rf627_profile->header.laser_value;
-            result->profile_header.step_count =
+            result->header.step_count =
                     profile_from_scanner->rf627_profile->header.step_count;
-            result->profile_header.dir =
+            result->header.dir =
                     profile_from_scanner->rf627_profile->header.dir;
 
-            switch (result->profile_header.data_type) {
+            switch (result->header.data_type) {
             case DTY_PixelsNormal:
             case DTY_PixelsInterpolated:
             {
@@ -801,6 +802,23 @@ bool rf627old::set_param(param_t* param)
     return false;
 }
 
+rf627old::Command::Command(rf627old* parent)
+{
+    _parent = parent;
+}
+rf627old::Command::~Command()
+{
+
+}
+
+bool rf627old::Command::set_counters(int profile_counter, int packet_counter)
+{
+    // Establish connection to the RF627 device by Service Protocol.
+    bool result = false;
+    result = rf627_old_command_set_counters(
+                ((scanner_base_t*)_parent->scanner_base)->rf627_old, profile_counter, packet_counter);
+    return result;
+}
 
 //typedef enum
 //{

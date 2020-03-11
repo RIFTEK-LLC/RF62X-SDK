@@ -622,16 +622,6 @@ rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner)
 
         if(profile->header.serial_number == scanner->factory_params.General.Serial)
         {
-            rfSize confirm_packet_size =
-                    rf627_protocol_old_create_confirm_packet_from_response_profile_packet(
-                        TX, TX_SIZE, RX, RX_SIZE);
-            if(confirm_packet_size > 0)
-            {
-                network_platform.network_methods.send_tcp_data(
-                            scanner->m_data_sock, TX, TX_SIZE);
-            }
-
-
             rfInt16 x;
             rfUint16 z;
 
@@ -935,8 +925,8 @@ rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner)
                         TX, TX_SIZE, RX, RX_SIZE);
             if(confirm_packet_size > 0)
             {
-                network_platform.network_methods.send_tcp_data(
-                            scanner->m_data_sock, TX, TX_SIZE);
+                rf627_protocol_send_packet_by_udp(
+                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
             }
 
             rf627_old_header_msg_t header =
@@ -2559,8 +2549,8 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
                         TX, TX_SIZE, RX, RX_SIZE);
             if(confirm_packet_size > 0)
             {
-                network_platform.network_methods.send_tcp_data(
-                            scanner->m_data_sock, TX, TX_SIZE);
+                rf627_protocol_send_packet_by_udp(
+                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
             }
         }
     }
@@ -2638,3 +2628,92 @@ rfUint8 rf627_old_set_parameter(
     return 1;
 }
 
+rfUint8 rf627_old_command_set_counters(
+        rf627_old_t* scanner, rfUint32 profile_counter, rfUint32 packet_counter)
+{
+    rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
+    rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
+    rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
+    rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
+
+    rf_sockaddr_in send_addr;
+    rfBool ret = 1;
+
+    // create write_params msg request
+    rf627_old_header_msg_t reset_counters_msg =
+            rf627_protocol_old_create_command_set_counters_msg(
+                kRF627_OLD_PROTOCOL_HEADER_CONFIRMATION_ON,
+                scanner->factory_params.General.Serial,
+                scanner->msg_count,
+                profile_counter,
+                packet_counter);
+
+    // pack hello msg request to packet
+    rfUint32 command_packet_size =
+            rf627_protocol_old_pack_write_user_params_msg_request_to_packet(
+                (rfUint8*)TX, TX_SIZE, &reset_counters_msg);
+
+    send_addr.sin_family = AF_INET;
+    send_addr.sin_addr = scanner->user_params.network.ip_address;
+    send_addr.sin_port = network_platform.network_methods.hton_short(
+                scanner->user_params.network.service_port);
+
+    rfUint32 payload_size = 0;
+    if(reset_counters_msg.payload_size != 0)
+    {
+        rfUint8 payload[RF627_PROTOCOL_OLD_COMMAND_SET_COUNTERS_PAYLOAD_PACKET_SIZE];
+
+        payload_size =
+                rf627_protocol_old_pack_payload_msg_to_command_set_counter_packet(
+                    payload, profile_counter, packet_counter);
+
+        if (rf627_protocol_send_packet_by_udp(
+                    scanner->m_svc_sock, TX, command_packet_size, &send_addr, payload_size, payload))
+        {
+            scanner->msg_count++;
+
+            const rfInt data_len =
+                    rf627_protocol_old_get_size_of_response_write_user_params_packet();
+            rfInt nret = network_platform.network_methods.recv_data(
+                        scanner->m_svc_sock, RX, data_len);
+            if (nret == data_len)
+            {
+                rfSize confirm_packet_size =
+                        rf627_protocol_old_create_confirm_packet_from_response_packet(
+                            TX, TX_SIZE, RX, RX_SIZE);
+                if(confirm_packet_size > 0)
+                {
+                    rf627_protocol_send_packet_by_udp(
+                                scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+                }
+            }
+        }
+    }else if (rf627_protocol_send_packet_by_udp(
+                scanner->m_svc_sock, TX, command_packet_size, &send_addr, payload_size, 0))
+    {
+        scanner->msg_count++;
+
+        const rfInt data_len =
+                rf627_protocol_old_get_size_of_response_write_user_params_packet();
+        rfInt nret = network_platform.network_methods.recv_data(
+                    scanner->m_svc_sock, RX, data_len);
+        if (nret == data_len)
+        {
+            rfSize confirm_packet_size =
+                    rf627_protocol_old_create_confirm_packet_from_response_packet(
+                        TX, TX_SIZE, RX, RX_SIZE);
+            if(confirm_packet_size > 0)
+            {
+                rf627_protocol_send_packet_by_udp(
+                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+//                network_platform.network_methods.send_tcp_data(
+//                            scanner->m_data_sock, TX, TX_SIZE);
+            }
+        }
+    }
+
+    memory_platform.rf_free(RX);
+    memory_platform.rf_free(TX);
+    return ret;
+
+}

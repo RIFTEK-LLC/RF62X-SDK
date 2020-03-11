@@ -2,10 +2,11 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
 namespace SDK {
 namespace SCANNERS {
-namespace RF627 {
+namespace RF62X {
 
 enum class PROTOCOLS {
     CURRENT = 0,
@@ -49,7 +50,7 @@ typedef struct
         uint32_t    laser_value;
         uint32_t    step_count;
         uint8_t     dir;
-    }profile_header;
+    }header;
 
 
         std::vector<point_t> points;

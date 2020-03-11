@@ -112,6 +112,15 @@ parameter_t* rf627_old_get_parameter(
 rfUint8 rf627_old_set_parameter(
         rf627_old_t* scanner, parameter_t* param);
 
+/**
+ * @brief rf627_old_command_set_counters
+ * @param scanner
+ * @param profile_counter
+ * @param packet_counter
+ * @return 0 on success
+ */
+rfUint8 rf627_old_command_set_counters(
+        rf627_old_t* scanner, rfUint32 profile_counter, rfUint32 packet_counter);
 
 
 typedef struct

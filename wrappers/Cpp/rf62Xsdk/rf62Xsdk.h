@@ -1,9 +1,10 @@
 #pragma once
 
-#include"rf627types.h"
+#include"rf62Xtypes.h"
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
 #if (defined _WIN32 && defined RF627_LIBRARY)
 #define API_EXPORT __declspec(dllexport)
@@ -13,7 +14,7 @@
 
 namespace SDK {
 namespace SCANNERS {
-namespace RF627 {
+namespace RF62X {
 
 
 
@@ -96,6 +97,16 @@ public:
      * @return true on success, else - false
      */
     bool set_param(param_t* param);
+
+    class Command {
+    public:
+        Command(rf627old* parent);
+        ~Command();
+        bool set_counters(int profile_counter, int packet_counter);
+    private:
+        rf627old* _parent = NULL;
+    };
+    Command* command;
 
     rf627old(void* scanner_base);
     ~rf627old();

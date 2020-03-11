@@ -105,6 +105,11 @@ typedef enum
 #define RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE 1400
 
 /**
+ * @brief RF627_PROTOCOL_OLD_COMMAND_SET_COUNTERS - Payload size is 8 bytes.
+ */
+#define RF627_PROTOCOL_OLD_COMMAND_SET_COUNTERS_PAYLOAD_PACKET_SIZE 8
+
+/**
  * @enum rf627_protocol_old_header_checksum_t
  * @brief is a enum representing of a sign of the presence of a checksum in the
  * message parameters (Bit 1 in Index 0)
@@ -680,6 +685,21 @@ rfSize rf627_protocol_old_create_confirm_packet_from_response_profile_packet(
         rfUint8* destination_buffer, rfUint32 destination_buffer_size,
         rfUint8* source_buffer, rfUint32 source_buffer_size);
 
+/**
+ * @brief rf627_protocol_old_create_reset_counters_command_msg
+ * @param confirmation
+ * @param serial_number
+ * @param msg_count
+ * @param profile_counter
+ * @param packet_counter
+ * @return
+ */
+rf627_old_header_msg_t rf627_protocol_old_create_command_set_counters_msg(
+        rf627_protocol_old_header_confirmation_t confirmation,
+        rfUint32 serial_number,
+        rfUint16 msg_count,
+        rfUint32 profile_counter,
+        rfUint32 packet_counter);
 
 
 
@@ -721,6 +741,33 @@ rfSize rf627_protocol_old_pack_read_user_params_msg_request_to_packet(
 rfSize rf627_protocol_old_pack_write_user_params_msg_request_to_packet(
         rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* msg);
 
+/**
+ * @brief rf627_protocol_old_pack_command_set_counters_to_packet
+ * @param buffer
+ * @param buffer_size
+ * @param msg
+ * @return
+ */
+rfSize rf627_protocol_old_pack_command_set_counters_to_packet(
+        rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* msg);
+
+/**
+ * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
+ * payload msg from user_params network packet
+ * @param buffer - ptr to network buffer
+ * @return rf627_old_user_params_t
+ */
+rfUint32 rf627_protocol_old_pack_payload_msg_to_user_params_packet(
+        rfUint8* buffer, vector_t *params_list);
+
+/**
+ * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
+ * payload msg from user_params network packet
+ * @param buffer - ptr to network buffer
+ * @return rf627_old_user_params_t
+ */
+rfUint32 rf627_protocol_old_pack_payload_msg_to_command_set_counter_packet(
+        rfUint8* buffer, rfUint32 profile_counter, rfUint32 packet_counter);
 
 
 //
@@ -777,14 +824,6 @@ rf627_old_header_msg_t rf627_protocol_old_unpack_header_msg_from_user_params_pac
 rf627_old_user_params_t rf627_protocol_old_unpack_payload_msg_from_user_params_packet(
         rfUint8* buffer);
 
-/**
- * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
- * payload msg from user_params network packet
- * @param buffer - ptr to network buffer
- * @return rf627_old_user_params_t
- */
-rfUint32 rf627_protocol_old_pack_payload_msg_to_user_params_packet(
-        rfUint8* buffer, vector_t *params_list);
 
 
 
