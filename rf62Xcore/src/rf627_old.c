@@ -677,7 +677,7 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
                 case DTY_ProfileInterpolated:
                     z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
                     x = *(rfInt16*)(&RX[profile_header_size + i*4]);
-                    if (zero_points != 0 && z > 0 && pt.x != 0)
+                    if (zero_points != 0 && z > 0 && x != 0)
                     {
                         pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
                                 (rfDouble)(profile->header.discrete_value);
@@ -798,7 +798,7 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                 pt_count = RF627_PROFILE_SIZE;
                 profile->profile_format.points_count = 0;
                 profile->profile_format.points =
-                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
+                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point3D_t));
                 if (profile->header.flags & 0x01){
                     profile->intensity_count = 0;
                     profile->intensity =
@@ -820,7 +820,7 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                 pt_count = RF627_EXT_PROFILE_SIZE;
                 profile->profile_format.points_count = 0;
                 profile->profile_format.points =
-                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
+                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point3D_t));
                 if (profile->header.flags & 0x01){
                     profile->intensity_count = 0;
                     profile->intensity =
@@ -838,7 +838,7 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                 case DTY_ProfileInterpolated:
                     z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
                     x = *(rfInt16*)(&RX[profile_header_size + i*4]);
-                    if (zero_points != 0 && z > 0 && pt.x != 0)
+                    if (zero_points != 0 && z > 0 && x != 0)
                     {
                         pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
                                 (rfDouble)(profile->header.discrete_value);

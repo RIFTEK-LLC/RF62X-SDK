@@ -29,8 +29,8 @@ int main()
     list[0]->send_cmd("CID_PROFILE_SET_COUNTERS", 5000, 1000);
     list[0]->read_params();
     list[0]->set_param(USER_GENERAL_DEVICENAME, "test name");
-    list[0]->get_profile3D(1, 0, COUNT_TYPES::MEASURE, false);
-
+    profile3D_t* test = list[0]->get_profile3D(.001f, 0, COUNT_TYPES::STEP, false);
+    std::cout << test->intensity.size() << std::endl;
 }
 
 
