@@ -387,6 +387,8 @@ profile3D_t* rf627old::get_profile3D(float step_size, float k,
                 {
                     result->points[i].x = profile_from_scanner->rf627_profile3D->
                             profile_format.points[i].x;
+                    result->points[i].y = profile_from_scanner->rf627_profile3D->
+                            profile_format.points[i].y;
                     result->points[i].z = profile_from_scanner->rf627_profile3D->
                             profile_format.points[i].z;
                 }
