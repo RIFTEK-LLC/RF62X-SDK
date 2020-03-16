@@ -414,7 +414,16 @@ typedef struct
 {
     rfFloat x;
     rfFloat z;
-}rf627_old_point_t;
+}rf627_old_point2D_t;
+
+/*! Structure to store a point of profile
+ */
+typedef struct
+{
+    rfFloat x;
+    rfFloat y;
+    rfFloat z;
+}rf627_old_point3D_t;
 
 /*! Structure to store a profile for rf627_old
  */
@@ -427,13 +436,13 @@ typedef struct
             rfUint32 pixels_count;
         }pixels_format;
         struct{
-            rf627_old_point_t* points;
+            rf627_old_point2D_t* points;
             rfUint32 points_count;
         }profile_format;
     };
     rfUint8* intensity;
     rfUint32 intensity_count;
-}rf627_old_profile_t;
+}rf627_old_profile2D_t;
 
 /*! Structure to store a profile for rf627_old
  */
@@ -446,13 +455,52 @@ typedef struct
             rfUint32 pixels_count;
         }pixels_format;
         struct{
-            rf627_old_point_t* points;
+            rf627_old_point3D_t* points;
             rfUint32 points_count;
         }profile_format;
     };
     rfUint8* intensity;
     rfUint32 intensity_count;
-}rf627_smart_profile_t;
+}rf627_old_profile3D_t;
+
+/*! Structure to store a profile for rf627_old
+ */
+typedef struct
+{
+    rf627_old_stream_msg_t header;
+    union{
+        struct{
+            rfUint16* pixels;
+            rfUint32 pixels_count;
+        }pixels_format;
+        struct{
+            rf627_old_point2D_t* points;
+            rfUint32 points_count;
+        }profile_format;
+    };
+    rfUint8* intensity;
+    rfUint32 intensity_count;
+}rf627_smart_profile2D_t;
+
+/*! Structure to store a profile for rf627_old
+ */
+typedef struct
+{
+    rf627_old_stream_msg_t header;
+    union{
+        struct{
+            rfUint16* pixels;
+            rfUint32 pixels_count;
+        }pixels_format;
+        struct{
+            rf627_old_point3D_t* points;
+            rfUint32 points_count;
+        }profile_format;
+    };
+    rfUint8* intensity;
+    rfUint32 intensity_count;
+}rf627_smart_profile3D_t;
+
 
 //Типы значений параметров
 typedef enum
@@ -1045,7 +1093,11 @@ typedef struct
 }parameter_t;
 
 
-
+typedef struct
+{
+    const char* name;
+    va_list arg_list;
+}command_t;
 
 
 
@@ -1058,10 +1110,16 @@ typedef enum {
 }scanner_types_t;
 
 typedef enum {
-    kSERVICE_PROTOKOL = 1,
+    kSERVICE = 1,
     kETHERNET_IP = 2,
     kMODBUS_TCP = 3,
 }protocol_types_t;
+
+typedef enum {
+    kSTEP = 1,
+    kMEASURE = 2,
+    kPACKET = 3,
+}count_types_t;
 
 /*! Structure to store a profile
  */
@@ -1069,9 +1127,20 @@ typedef struct
 {
     scanner_types_t type;
     union{
-        rf627_old_profile_t* rf627_profile;
-        rf627_smart_profile_t* rf627smart_profile;
+        rf627_old_profile2D_t* rf627_profile2D;
+        rf627_smart_profile2D_t* rf627smart_profile2D;
     };
-}rf627_profile_t;
+}rf627_profile2D_t;
+
+/*! Structure to store a profile
+ */
+typedef struct
+{
+    scanner_types_t type;
+    union{
+        rf627_old_profile3D_t* rf627_profile3D;
+        rf627_smart_profile3D_t* rf627smart_profile3D;
+    };
+}rf627_profile3D_t;
 
 #endif // RF62X_TYPES_H

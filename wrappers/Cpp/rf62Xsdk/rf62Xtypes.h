@@ -10,18 +10,33 @@ namespace RF62X {
 
 enum class PROTOCOLS {
     CURRENT = 0,
-    SERVICE_PROTOKOL = 1,
+    SERVICE = 1,
     ETHERNET_IP = 2,
     MODBUS_TCP = 3
 };
 
-/*! Structure to store a point of profile
+enum class COUNT_TYPES {
+    STEP = 1,
+    MEASURE = 2,
+    PACKET = 3
+};
+
+/*! Structure to store a 2D-point of profile
  */
 typedef struct
 {
     float x;
     float z;
-}point_t;
+}point2D_t;
+
+/*! Structure to store a 3D-point of profile
+ */
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+}point3D_t;
 
 /*! Structure to store a profile
  */
@@ -53,12 +68,49 @@ typedef struct
     }header;
 
 
-        std::vector<point_t> points;
+        std::vector<point2D_t> points;
         std::vector<uint16_t> pixels;
 
 
     std::vector<uint8_t> intensity;
-}profile_t;
+}profile2D_t;
+
+/*! Structure to store a profile
+ */
+typedef struct
+{
+    struct
+    {
+        uint8_t     data_type;
+        uint8_t     flags;
+        uint16_t    device_type;
+        uint32_t    serial_number;
+        uint64_t    system_time;
+
+        uint8_t     proto_version_major;
+        uint8_t     proto_version_minor;
+        uint8_t     hardware_params_offset;
+        uint8_t     data_offset;
+        uint32_t    packet_count;
+        uint32_t    measure_count;
+
+        uint16_t    zmr;
+        uint16_t    xemr;
+        uint16_t    discrete_value;
+
+        uint32_t    exposure_time;
+        uint32_t    laser_value;
+        uint32_t    step_count;
+        uint8_t     dir;
+    }header;
+
+
+        std::vector<point3D_t> points;
+        std::vector<uint16_t> pixels;
+
+
+    std::vector<uint8_t> intensity;
+}profile3D_t;
 
 //Типы значений параметров
 typedef enum
@@ -356,6 +408,11 @@ typedef struct
       return ((T*)this)->maxLen;
   }
 }param_t;
+
+typedef struct {
+    int ID;
+    std::vector<param_t> args;
+}cmd_t;
 
 typedef struct value_uint32 : param_t
 {

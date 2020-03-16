@@ -19,7 +19,7 @@ int main()
     // Create value for scanners vector's type
     std::vector<rf627old*> list;
     // Search for RF627old devices over network
-    list = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
+    list = rf627old::search(PROTOCOLS::SERVICE);
 
 
 
@@ -30,7 +30,7 @@ int main()
         // Establish connection to the RF627 device by Service Protocol.
         list[i]->connect();
         // Get profile from scanner's data stream by Service Protocol.
-        profile_t* profile = list[i]->get_profile();
+        profile2D_t* profile = list[i]->get_profile2D();
         if (profile != nullptr)
         {
             // Print the serial number of the scanner to which the profile belongs.

@@ -75,9 +75,22 @@ void rf627_old_disconnect(rf627_old_t* scanner);
 /**
  * @brief rf627_old_get_profile - Get measurement from scanner's data stream
  * @param scanner - ptr to device
+ * @param zero_points - include zero points in return profile2D
  * @return ptr to rf627_old_profile_t structure
  */
-rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner);
+rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero_points);
+
+/**
+ * @brief rf627_old_get_profile - Get measurement from scanner's data stream
+ * @param scanner - ptr to device
+ * @param zero_points - include zero points in return profile2D
+ * @return ptr to rf627_old_profile_t structure
+ */
+rf627_old_profile3D_t* rf627_old_get_profile3D(
+        rf627_old_t* scanner, rfFloat step_size, rfFloat k,
+        count_types_t count_type,
+        rfBool zero_points,
+        protocol_types_t protocol);
 
 /**
  * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.
@@ -104,13 +117,23 @@ parameter_t* rf627_old_get_parameter(
         rf627_old_t* scanner, const rfChar* param_name);
 
 /**
- * @brief rf627_old_set_parameter - Search parameters by his name
+ * @brief rf627_old_set_parameter - set parameters
  * @param scanner - ptr to scanner
  * @param param - ptr to parameter
  * @return 0 on success
  */
 rfUint8 rf627_old_set_parameter(
         rf627_old_t* scanner, parameter_t* param);
+
+/**
+ * @brief rf627_old_set_parameter_by_name - set parameter by his name
+ * @param scanner - ptr to scanner
+ * @param param_name - param name
+ * @param value - setting value
+ * @return 0 on success
+ */
+rfUint8 rf627_old_set_parameter_by_name(
+        rf627_old_t* scanner, const rfChar* param_name, va_list value);
 
 /**
  * @brief rf627_old_command_set_counters

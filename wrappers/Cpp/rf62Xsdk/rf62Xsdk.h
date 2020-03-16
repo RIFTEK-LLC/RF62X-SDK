@@ -63,11 +63,30 @@ public:
     bool disconnect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
-     * @brief get_profile - Get measurement from scanner's data stream
+     * @brief get_profile2D  - Get 2D measurement from scanner's data stream
+     * @param zero_points - include zero points in return profile2D
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return ptr to rf627_profile_t structure
+     * @return ptr to profile2D_t structure if success, else - null
      */
-    profile_t* get_profile(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    profile2D_t* get_profile2D(
+            bool zero_points = true,
+            PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    /**
+     * @brief get_profile3D - Get 3D measurement from scanner's data stream
+     * where y is calculated based on the next equation: y = k * x + b
+     * where b - y-intercept of the line, calculates by the next equation: b = step_size * count_value
+     * @param step_size - step size in real units (mm, sm, etc.)
+     * @param k - slope or gradient of the line , where
+     * @param count_type - type of counter (STEP, MEASURE, PACKET)
+     * @param zero_points - include zero points in return profile2D
+     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return ptr to profile3D_t structure if success, else - null
+     */
+    profile3D_t* get_profile3D(float step_size, float k = 0,
+                               COUNT_TYPES count_type = COUNT_TYPES::MEASURE,
+                               bool zero_points = true,
+                               PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief read_params - Read parameters from device to internal structure.
@@ -97,16 +116,10 @@ public:
      * @return true on success, else - false
      */
     bool set_param(param_t* param);
+    bool set_param(const char* param_name, ...);
+    bool set_param(int param_id, ...);
 
-    class Command {
-    public:
-        Command(rf627old* parent);
-        ~Command();
-        bool set_counters(int profile_counter, int packet_counter);
-    private:
-        rf627old* _parent = NULL;
-    };
-    Command* command;
+    bool send_cmd(const char* command_name, ...);
 
     rf627old(void* scanner_base);
     ~rf627old();

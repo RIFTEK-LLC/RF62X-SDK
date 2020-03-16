@@ -2,6 +2,7 @@
 #include "iostream_platform.h"
 #include "rf627_protocol.h"
 #include "custom_string.h"
+#include <stdarg.h>
 
 //#include <pthread.h>
 
@@ -222,6 +223,7 @@ rfUint32 rf627_old_api_version()
 int rf627_old_mutex_lock()
 {
 //    return pthread_mutex_lock(&_mutex);
+    return 0;
 }
 
 int rf627_old_mutex_trylock()
@@ -257,11 +259,13 @@ int rf627_old_mutex_trylock()
 //        }
 //    }
 //    return error;
+    return 0;
 }
 
 int rf627_old_mutex_unlock()
 {
 //    return pthread_mutex_unlock(&_mutex);
+    return 0;
 }
 
 
@@ -291,7 +295,7 @@ uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
     s = network_platform.
             network_methods.create_socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
-    if ((rfInt32*)s == SOCKET_ERROR) {
+    if (s == (void*)SOCKET_ERROR) {
         return 1;
     }
 
@@ -313,7 +317,7 @@ uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
     nret = network_platform.
             network_methods.socket_bind(s, &from_addr, sizeof(from_addr));
 
-    if (nret != (rfSize)SOCKET_ERROR)
+    if (nret != (rfInt)SOCKET_ERROR)
     {
         if (rf627_protocol_send_packet_by_udp(
                     s, TX, request_packet_size, &send_addr, 0, NULL))
@@ -321,19 +325,19 @@ uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
             from_len = sizeof(from_addr);
             memory_platform.rf_memset(&from_addr, 0, from_len);
 
-            rfSize response_packet_size =
+            rfUint32 response_packet_size =
                     rf627_protocol_old_get_size_of_response_hello_packet();
             do
             {
                 nret = network_platform.network_methods.recv_data_from(
                             s, RX, RX_SIZE, &from_addr, &from_len);
 
-                if (nret == (rfSize)SOCKET_ERROR)
+                if (nret == SOCKET_ERROR)
                 {
                     //std::cout << "errno " << ::WSAGetLastError() << std::endl;
                 }
 
-                if (nret == response_packet_size)
+                if (nret == (rfInt)response_packet_size)
                 {
                     rfSize confirm_packet_size =
                             rf627_protocol_old_create_confirm_packet_from_response_packet(
@@ -514,7 +518,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
             network_platform.network_methods.create_socket(
                 AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
-    if ((rfInt32*)scanner->m_svc_sock == SOCKET_ERROR)
+    if (scanner->m_svc_sock == (void*)SOCKET_ERROR)
     {
         return -1;
     }
@@ -540,7 +544,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
     scanner->m_data_sock =
             network_platform.network_methods.create_socket(
                 AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if ((rfInt32*)scanner->m_data_sock != SOCKET_ERROR)
+    if (scanner->m_data_sock != (void*)SOCKET_ERROR)
     {
         nret = 1;
         network_platform.network_methods.set_socket_option(
@@ -577,36 +581,26 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
 void rf627_old_disconnect(rf627_old_t* scanner)
 {
     if (scanner->m_svc_sock != NULL &&
-            (rfInt32*)scanner->m_svc_sock != SOCKET_ERROR)
+            scanner->m_svc_sock != (void*)SOCKET_ERROR)
     {
         network_platform.network_methods.close_socket(scanner->m_svc_sock);
         scanner->m_svc_sock = NULL;
     }
     if (scanner->m_data_sock != NULL &&
-            (rfInt32*)scanner->m_data_sock != SOCKET_ERROR)
+            scanner->m_data_sock != (void*)SOCKET_ERROR)
     {
         network_platform.network_methods.close_socket(scanner->m_data_sock);
         scanner->m_data_sock = NULL;
     }
 }
 
-rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner)
+rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero_points)
 {
 
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
     rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
-
-//    const rfInt msg_size = sizeof(rf627_old_stream_msg_t);
-//    const rfInt max_data_len = msg_size +
-//            RF627_EXT_PROFILE_SIZE * sizeof(uint16_t) * 2 +
-//            RF627_EXT_PROFILE_SIZE * sizeof(uint8_t);
-
-    //std::cout << __LINE__ << " _mx[1].lock();" << std::endl << std::flush;
-    //pthread_mutex_lock(&_mutex);
-
-
 
     rfInt nret = network_platform.network_methods.recv_data(
                 scanner->m_data_sock, RX, RX_SIZE);
@@ -615,8 +609,8 @@ rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner)
         rfSize profile_header_size =
                 rf627_protocol_old_get_size_of_response_profile_header_packet();
 
-        rf627_old_profile_t* profile =
-                memory_platform.rf_calloc(1, sizeof(rf627_old_profile_t));
+        rf627_old_profile2D_t* profile =
+                memory_platform.rf_calloc(1, sizeof(rf627_old_profile2D_t));
 
         profile->header = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
 
@@ -630,44 +624,44 @@ rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner)
             {
             case DTY_PixelsNormal:
                 pt_count = RF627_PROFILE_SIZE;
-                profile->pixels_format.pixels_count = pt_count;
+                profile->pixels_format.pixels_count = 0;
                 profile->pixels_format.pixels =
                         memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
                 if (profile->header.flags & 0x01){
-                    profile->intensity_count = pt_count;
+                    profile->intensity_count = 0;
                     profile->intensity =
                             memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
                 }
                 break;
             case DTY_ProfileNormal:
                 pt_count = RF627_PROFILE_SIZE;
-                profile->profile_format.points_count = pt_count;
+                profile->profile_format.points_count = 0;
                 profile->profile_format.points =
-                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point_t));
+                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
                 if (profile->header.flags & 0x01){
-                    profile->intensity_count = pt_count;
+                    profile->intensity_count = 0;
                     profile->intensity =
                             memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
                 }
                 break;
             case DTY_PixelsInterpolated:
                 pt_count = RF627_EXT_PROFILE_SIZE;
-                profile->pixels_format.pixels_count = pt_count;
+                profile->pixels_format.pixels_count = 0;
                 profile->pixels_format.pixels =
                         memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
                 if (profile->header.flags & 0x01){
-                    profile->intensity_count = pt_count;
+                    profile->intensity_count = 0;
                     profile->intensity =
                             memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
                 }
                 break;
             case DTY_ProfileInterpolated:
                 pt_count = RF627_EXT_PROFILE_SIZE;
-                profile->profile_format.points_count = pt_count;
+                profile->profile_format.points_count = 0;
                 profile->profile_format.points =
-                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point_t));
+                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
                 if (profile->header.flags & 0x01){
-                    profile->intensity_count = pt_count;
+                    profile->intensity_count = 0;
                     profile->intensity =
                             memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
                 }
@@ -676,39 +670,61 @@ rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner)
 
             for (rfUint32 i=0; i<pt_count; i++)
             {
-                rf627_old_point_t pt;
+                rf627_old_point2D_t pt;
                 switch (profile->header.data_type)
                 {
                 case DTY_ProfileNormal:
                 case DTY_ProfileInterpolated:
                     z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
-                    if (/*_fixed_result ||*/ z > 0)
+                    x = *(rfInt16*)(&RX[profile_header_size + i*4]);
+                    if (zero_points != 0 && z > 0 && pt.x != 0)
                     {
-                        x = *(rfInt16*)(&RX[profile_header_size + i*4]);
                         pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
                                 (rfDouble)(profile->header.discrete_value);
                         pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
                                 (rfDouble)(profile->header.discrete_value);
+
+                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points_count++;
+                        if (profile->header.flags & 0x01)
+                        {
+                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity_count++;
+                        }
+                    }else if (zero_points == 0 && z > 0)
+                    {
+                        pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
+                                (rfDouble)(profile->header.discrete_value);
+                        pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
+                                (rfDouble)(profile->header.discrete_value);
+
+                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points_count++;
+                        if (profile->header.flags & 0x01)
+                        {
+                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity_count++;
+                        }
                     }
                     break;
                 case DTY_PixelsNormal:
                 case DTY_PixelsInterpolated:
                     z = *(rfUint16*)(&RX[profile_header_size + i*2]);
-                    pt.x = i;
+                    //pt.x = i;
 
                     profile->pixels_format.pixels[i] = z;
-                    pt.z = (rfDouble)(z) / (rfDouble)(profile->header.discrete_value);
-
-                    break;
-                }
-                if (z > 0)
-                {
-                    profile->profile_format.points[i] = pt;
+                    profile->pixels_format.pixels_count++;
                     if (profile->header.flags & 0x01)
                     {
                         profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                        profile->intensity_count++;
                     }
+
+                    //pt.z = (rfDouble)(z) / (rfDouble)(profile->header.discrete_value);
+
+                    break;
                 }
+
             }
             //_mx[1].unlock();
             memory_platform.rf_free(RX);
@@ -736,7 +752,176 @@ rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner)
 
 }
 
-parameter_t* create_parameter_from_type(rfChar* type)
+rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat step_size, rfFloat k,
+                                               count_types_t count_type,
+                                               rfBool zero_points,
+                                               protocol_types_t protocol)
+{
+
+    rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
+    rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
+    rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
+    rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
+
+    rfInt nret = network_platform.network_methods.recv_data(
+                scanner->m_data_sock, RX, RX_SIZE);
+    if(nret > 0)
+    {
+        rfSize profile_header_size =
+                rf627_protocol_old_get_size_of_response_profile_header_packet();
+
+        rf627_old_profile3D_t* profile =
+                memory_platform.rf_calloc(1, sizeof(rf627_old_profile3D_t));
+
+        profile->header = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
+
+        if(profile->header.serial_number == scanner->factory_params.General.Serial)
+        {
+            rfInt16 x;
+            rfUint16 z;
+
+            rfUint32 pt_count;
+            switch (profile->header.data_type)
+            {
+            case DTY_PixelsNormal:
+                pt_count = RF627_PROFILE_SIZE;
+                profile->pixels_format.pixels_count = 0;
+                profile->pixels_format.pixels =
+                        memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
+                if (profile->header.flags & 0x01){
+                    profile->intensity_count = 0;
+                    profile->intensity =
+                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
+                }
+                break;
+            case DTY_ProfileNormal:
+                pt_count = RF627_PROFILE_SIZE;
+                profile->profile_format.points_count = 0;
+                profile->profile_format.points =
+                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
+                if (profile->header.flags & 0x01){
+                    profile->intensity_count = 0;
+                    profile->intensity =
+                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
+                }
+                break;
+            case DTY_PixelsInterpolated:
+                pt_count = RF627_EXT_PROFILE_SIZE;
+                profile->pixels_format.pixels_count = 0;
+                profile->pixels_format.pixels =
+                        memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
+                if (profile->header.flags & 0x01){
+                    profile->intensity_count = 0;
+                    profile->intensity =
+                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
+                }
+                break;
+            case DTY_ProfileInterpolated:
+                pt_count = RF627_EXT_PROFILE_SIZE;
+                profile->profile_format.points_count = 0;
+                profile->profile_format.points =
+                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
+                if (profile->header.flags & 0x01){
+                    profile->intensity_count = 0;
+                    profile->intensity =
+                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
+                }
+                break;
+            }
+
+            for (rfUint32 i=0; i<pt_count; i++)
+            {
+                rf627_old_point3D_t pt;
+                switch (profile->header.data_type)
+                {
+                case DTY_ProfileNormal:
+                case DTY_ProfileInterpolated:
+                    z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
+                    x = *(rfInt16*)(&RX[profile_header_size + i*4]);
+                    if (zero_points != 0 && z > 0 && pt.x != 0)
+                    {
+                        pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
+                                (rfDouble)(profile->header.discrete_value);
+                        if(count_type == kSTEP)
+                            pt.y = k * pt.x + step_size * profile->header.step_count;
+                        else if(count_type == kMEASURE)
+                            pt.y = k * pt.x + step_size * profile->header.measure_count;
+                        pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
+                                (rfDouble)(profile->header.discrete_value);
+
+                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points_count++;
+                        if (profile->header.flags & 0x01)
+                        {
+                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity_count++;
+                        }
+                    }else if (zero_points == 0 && z > 0)
+                    {
+                        pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
+                                (rfDouble)(profile->header.discrete_value);
+                        if(count_type == kSTEP)
+                            pt.y = k * pt.x + step_size * profile->header.step_count;
+                        else if(count_type == kMEASURE)
+                            pt.y = k * pt.x + step_size * profile->header.measure_count;
+                        pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
+                                (rfDouble)(profile->header.discrete_value);
+
+                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points_count++;
+                        if (profile->header.flags & 0x01)
+                        {
+                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity_count++;
+                        }
+                    }
+                    break;
+                case DTY_PixelsNormal:
+                case DTY_PixelsInterpolated:
+                    z = *(rfUint16*)(&RX[profile_header_size + i*2]);
+                    //pt.x = i;
+
+                    profile->pixels_format.pixels[i] = z;
+                    profile->pixels_format.pixels_count++;
+                    if (profile->header.flags & 0x01)
+                    {
+                        profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                        profile->intensity_count++;
+                    }
+                    //pt.z = (rfDouble)(z) / (rfDouble)(profile->header.discrete_value);
+
+                    break;
+                }
+
+            }
+            //_mx[1].unlock();
+            memory_platform.rf_free(RX);
+            memory_platform.rf_free(TX);
+            return profile;
+        }
+    }
+    memory_platform.rf_free(RX);
+    memory_platform.rf_free(TX);
+    return NULL;
+
+
+//    if (nret < msg_size) {
+//        //dprint("get_result!");
+//        //_mx[1].unlock();
+//        return NULL;
+//    }
+
+//    if (profile_header.data_type < DTY_PixelsNormal || msg->data_type > DTY_ProfileInterpolated) {
+//        //_mx[1].unlock();
+//        return NULL;
+//    }
+
+
+
+}
+
+
+parameter_t* create_parameter_from_type(const rfChar* type)
 {
     parameter_t* p = NULL;
     if(rf_strcmp(pvtKey[PVT_UINT], type) == 0)
@@ -2621,6 +2806,59 @@ rfUint8 rf627_old_set_parameter(
             else if (rf_strcmp(p->base.type, pvtKey[PVT_DOUBLE]) == 0)
             {
                 p->val_dbl->value = param->val_dbl->value;
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+rfUint8 rf627_old_set_parameter_by_name(
+        rf627_old_t* scanner, const rfChar* param_name, va_list value)
+{
+    for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
+    {
+        parameter_t* p = vector_get(scanner->params_list, i);
+        if (rf_strcmp(p->base.name, param_name) == 0)
+        {
+            if (rf_strcmp(p->base.type, pvtKey[PVT_STRING]) == 0)
+            {
+                const rfChar* str_value = va_arg(value, const rfChar*);
+                memory_platform.rf_memcpy(
+                            (void*)p->val_str->value,
+                            str_value,
+                            rf_strlen(str_value));
+                p->base.size = rf_strlen(str_value);
+                return 0;
+            }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
+            {
+                p->val_int->value = va_arg(value, rfInt32);
+                return 0;
+            }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
+            {
+                p->val_int64->value = va_arg(value, rfInt64);
+                return 0;
+            }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
+            {
+                p->val_uint->value = va_arg(value, rfUint32);
+                return 0;
+            }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
+            {
+                p->val_uint64->value = va_arg(value, rfUint64);
+                return 0;
+            }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_FLOAT]) == 0)
+            {
+                p->val_flt->value = va_arg(value, rfDouble);
+                return 0;
+            }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_DOUBLE]) == 0)
+            {
+                p->val_dbl->value = va_arg(value, rfDouble);
                 return 0;
             }
         }

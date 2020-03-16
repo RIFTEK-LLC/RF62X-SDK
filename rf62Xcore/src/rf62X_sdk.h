@@ -41,7 +41,7 @@ dllexport rfUint8 connect_to_scanner(
 /**
  * @brief disconnect_from_scanner - Close connection to the device
  * @param device - prt to scanner
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)
  * @return 0 on success
  */
 dllexport rfUint8 disconnect_from_scanner(
@@ -50,11 +50,19 @@ dllexport rfUint8 disconnect_from_scanner(
 /**
  * @brief get_profile - Get measurement from scanner's data stream
  * @param device - ptr to scanner
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @param zero_points - include zero points in return profile2D
+ * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)
  * @return ptr to rf627_profile_t structure
  */
-dllexport rf627_profile_t* get_profile_from_scanner(
-        scanner_base_t *device, protocol_types_t protocol);
+dllexport rf627_profile2D_t* get_profile2D_from_scanner(
+        scanner_base_t *device, rfBool zero_points, protocol_types_t protocol);
+
+
+dllexport rf627_profile3D_t* get_profile3D_from_scanner(
+        scanner_base_t *device, rfFloat step_size, rfFloat k,
+        count_types_t count_type,
+        rfBool zero_points,
+        protocol_types_t protocol);
 
 /**
  * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.
@@ -85,13 +93,33 @@ dllexport parameter_t* get_parameter(
         scanner_base_t *device, const rfChar* param_name);
 
 /**
+ * @brief set_parameter - Set parameter
+ * @param device - ptr to scanner
+ * @param param - setting parameter
+ * @return 0 if success
+ */
+dllexport rfUint8 set_parameter(
+        scanner_base_t *device, parameter_t* param);
+
+/**
+ * @brief set_parameter_by_name - Set parameters by his name
+ * @param device - ptr to scanner
+ * @param param_name - parameter name
+ * @param value - value
+ * @return 0 if success
+ */
+dllexport rfUint8 set_parameter_by_name(
+        scanner_base_t *device, const char* param_name, va_list value);
+
+/**
  * @brief set_parameter - Search parameters by his name
  * @param device - ptr to scanner
  * @param param_name - name of parameter
  * @return param on success, else - null
  */
-dllexport rfUint8 set_parameter(
-        scanner_base_t *device, parameter_t* param);
+dllexport rfUint8 send_command(
+        scanner_base_t *device, command_t* command);
+
 
 /*! Return structure containing device information about scanner rf627(smart) version
  */

@@ -47,7 +47,7 @@ namespace RF62X {
 std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 {
     switch (protocol) {
-    case PROTOCOLS::SERVICE_PROTOKOL:
+    case PROTOCOLS::SERVICE:
     {
         /*
          * Create value for scanners vector's type
@@ -72,7 +72,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
             set_platform_adapter_settings(host_mask, host_ip_addr);
 
             // Search for RF627-old devices over network by Service Protocol.
-            search_scanners(scanners, kRF627_OLD, kSERVICE_PROTOKOL);
+            search_scanners(scanners, kRF627_OLD, kSERVICE);
         }
 
         static std::vector<rf627old*> result;
@@ -83,7 +83,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
         for(size_t i = 0; i < vector_count(scanners); i++)
         {
             result.push_back(new rf627old((void*)vector_get(scanners,i)));
-            result[i]->current_protocol = PROTOCOLS::SERVICE_PROTOKOL;
+            result[i]->current_protocol = PROTOCOLS::SERVICE;
         }
         return result;
         break;
@@ -101,7 +101,6 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 rf627old::rf627old(void* base)
 {
     this->scanner_base = base;
-    this->command = new Command(this);
 }
 
 rf627old::~rf627old()
@@ -118,12 +117,12 @@ bool rf627old::connect(PROTOCOLS protocol)
         p = protocol;
 
     switch (p) {
-    case PROTOCOLS::SERVICE_PROTOKOL:
+    case PROTOCOLS::SERVICE:
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = connect_to_scanner(
-                    ((scanner_base_t*)this->scanner_base), kSERVICE_PROTOKOL);
+                    ((scanner_base_t*)this->scanner_base), kSERVICE);
 
         return result;
         break;
@@ -145,12 +144,12 @@ bool rf627old::disconnect(PROTOCOLS protocol)
         p = protocol;
 
     switch (p) {
-    case PROTOCOLS::SERVICE_PROTOKOL:
+    case PROTOCOLS::SERVICE:
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = disconnect_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
+                    (scanner_base_t*)scanner_base, kSERVICE);
         return result;
         break;
     }
@@ -161,7 +160,9 @@ bool rf627old::disconnect(PROTOCOLS protocol)
     return false;
 }
 
-profile_t* rf627old::get_profile(PROTOCOLS protocol)
+profile2D_t* rf627old::get_profile2D(
+        bool zero_points,
+        PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -170,76 +171,76 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
         p = protocol;
 
     switch (p) {
-    case PROTOCOLS::SERVICE_PROTOKOL:
+    case PROTOCOLS::SERVICE:
     {
         // Get profile from scanner's data stream by Service Protocol.
-        rf627_profile_t* profile_from_scanner = get_profile_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
+        rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
+                    (scanner_base_t*)scanner_base, zero_points, kSERVICE);
 
-        profile_t* result = new profile_t;
+        profile2D_t* result = new profile2D_t;
 
-        if(profile_from_scanner->rf627_profile != NULL)
+        if(profile_from_scanner->rf627_profile2D != NULL)
         {
             result->header.data_type =
-                    profile_from_scanner->rf627_profile->header.data_type;
+                    profile_from_scanner->rf627_profile2D->header.data_type;
             result->header.flags =
-                    profile_from_scanner->rf627_profile->header.flags;
+                    profile_from_scanner->rf627_profile2D->header.flags;
             result->header.device_type =
-                    profile_from_scanner->rf627_profile->header.device_type;
+                    profile_from_scanner->rf627_profile2D->header.device_type;
             result->header.serial_number =
-                    profile_from_scanner->rf627_profile->header.serial_number;
+                    profile_from_scanner->rf627_profile2D->header.serial_number;
             result->header.system_time =
-                    profile_from_scanner->rf627_profile->header.system_time;
+                    profile_from_scanner->rf627_profile2D->header.system_time;
 
             result->header.proto_version_major =
-                    profile_from_scanner->rf627_profile->header.proto_version_major;
+                    profile_from_scanner->rf627_profile2D->header.proto_version_major;
             result->header.proto_version_minor =
-                    profile_from_scanner->rf627_profile->header.proto_version_minor;
+                    profile_from_scanner->rf627_profile2D->header.proto_version_minor;
             result->header.hardware_params_offset =
-                    profile_from_scanner->rf627_profile->header.hardware_params_offset;
+                    profile_from_scanner->rf627_profile2D->header.hardware_params_offset;
             result->header.data_offset =
-                    profile_from_scanner->rf627_profile->header.data_offset;
+                    profile_from_scanner->rf627_profile2D->header.data_offset;
             result->header.packet_count =
-                    profile_from_scanner->rf627_profile->header.packet_count;
+                    profile_from_scanner->rf627_profile2D->header.packet_count;
             result->header.measure_count =
-                    profile_from_scanner->rf627_profile->header.measure_count;
+                    profile_from_scanner->rf627_profile2D->header.measure_count;
 
             result->header.zmr =
-                    profile_from_scanner->rf627_profile->header.zmr;
+                    profile_from_scanner->rf627_profile2D->header.zmr;
             result->header.xemr =
-                    profile_from_scanner->rf627_profile->header.xemr;
+                    profile_from_scanner->rf627_profile2D->header.xemr;
             result->header.discrete_value =
-                    profile_from_scanner->rf627_profile->header.discrete_value;
+                    profile_from_scanner->rf627_profile2D->header.discrete_value;
 
             result->header.exposure_time =
-                    profile_from_scanner->rf627_profile->header.exposure_time;
+                    profile_from_scanner->rf627_profile2D->header.exposure_time;
             result->header.laser_value =
-                    profile_from_scanner->rf627_profile->header.laser_value;
+                    profile_from_scanner->rf627_profile2D->header.laser_value;
             result->header.step_count =
-                    profile_from_scanner->rf627_profile->header.step_count;
+                    profile_from_scanner->rf627_profile2D->header.step_count;
             result->header.dir =
-                    profile_from_scanner->rf627_profile->header.dir;
+                    profile_from_scanner->rf627_profile2D->header.dir;
 
             switch (result->header.data_type) {
             case DTY_PixelsNormal:
             case DTY_PixelsInterpolated:
             {
                 result->pixels.resize(profile_from_scanner->
-                                      rf627_profile->pixels_format.pixels_count);
+                                      rf627_profile2D->pixels_format.pixels_count);
 
                 for(size_t i = 0; i < result->pixels.size(); i++)
                 {
                     result->pixels[i] = profile_from_scanner->
-                            rf627_profile->pixels_format.pixels[i];
+                            rf627_profile2D->pixels_format.pixels[i];
                 }
 
-                if(profile_from_scanner->rf627_profile->intensity_count > 0)
+                if(profile_from_scanner->rf627_profile2D->intensity_count > 0)
                 {
                     result->intensity.resize(
-                                profile_from_scanner->rf627_profile->intensity_count);
+                                profile_from_scanner->rf627_profile2D->intensity_count);
                     for (size_t i = 0; i < result->intensity.size(); i++)
                         result->intensity[i] =
-                                profile_from_scanner->rf627_profile->intensity[i];
+                                profile_from_scanner->rf627_profile2D->intensity[i];
                 }
 
                 break;
@@ -248,37 +249,169 @@ profile_t* rf627old::get_profile(PROTOCOLS protocol)
             case DTY_ProfileInterpolated:
             {
                 result->points.resize(profile_from_scanner->
-                                      rf627_profile->profile_format.points_count);
+                                      rf627_profile2D->profile_format.points_count);
 
                 for(size_t i = 0; i < result->points.size(); i++)
                 {
-                    result->points[i].x = profile_from_scanner->rf627_profile->
+                    result->points[i].x = profile_from_scanner->rf627_profile2D->
                             profile_format.points[i].x;
-                    result->points[i].z = profile_from_scanner->rf627_profile->
+                    result->points[i].z = profile_from_scanner->rf627_profile2D->
                             profile_format.points[i].z;
                 }
 
-                if(profile_from_scanner->rf627_profile->intensity_count > 0)
+                if(profile_from_scanner->rf627_profile2D->intensity_count > 0)
                 {
                     result->intensity.resize(
-                                profile_from_scanner->rf627_profile->intensity_count);
+                                profile_from_scanner->rf627_profile2D->intensity_count);
                     for (size_t i = 0; i < result->intensity.size(); i++)
                         result->intensity[i] =
-                                profile_from_scanner->rf627_profile->intensity[i];
+                                profile_from_scanner->rf627_profile2D->intensity[i];
                 }
                 break;
             }
             default:
                 break;
             }
-            free(profile_from_scanner->rf627_profile->intensity);
-            free(profile_from_scanner->rf627_profile->pixels_format.pixels);
-            free(profile_from_scanner->rf627_profile);
+            free(profile_from_scanner->rf627_profile2D->intensity);
+            free(profile_from_scanner->rf627_profile2D->pixels_format.pixels);
+            free(profile_from_scanner->rf627_profile2D);
             free(profile_from_scanner);
             return result;
         }
 
-        free(profile_from_scanner->rf627_profile);
+        free(profile_from_scanner->rf627_profile2D);
+        free(profile_from_scanner);
+        delete result;
+    }
+    default:
+        break;
+    }
+
+    return NULL;
+
+}
+
+profile3D_t* rf627old::get_profile3D(float step_size, float k,
+                                     COUNT_TYPES count_type,
+                                     bool zero_points,
+                                     PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Get profile from scanner's data stream by Service Protocol.
+        rf627_profile3D_t* profile_from_scanner = get_profile3D_from_scanner(
+                    (scanner_base_t*)scanner_base, step_size, k, (count_types_t)count_type, zero_points, kSERVICE);
+
+        profile3D_t* result = new profile3D_t;
+
+        if(profile_from_scanner->rf627_profile3D != NULL)
+        {
+            result->header.data_type =
+                    profile_from_scanner->rf627_profile3D->header.data_type;
+            result->header.flags =
+                    profile_from_scanner->rf627_profile3D->header.flags;
+            result->header.device_type =
+                    profile_from_scanner->rf627_profile3D->header.device_type;
+            result->header.serial_number =
+                    profile_from_scanner->rf627_profile3D->header.serial_number;
+            result->header.system_time =
+                    profile_from_scanner->rf627_profile3D->header.system_time;
+
+            result->header.proto_version_major =
+                    profile_from_scanner->rf627_profile3D->header.proto_version_major;
+            result->header.proto_version_minor =
+                    profile_from_scanner->rf627_profile3D->header.proto_version_minor;
+            result->header.hardware_params_offset =
+                    profile_from_scanner->rf627_profile3D->header.hardware_params_offset;
+            result->header.data_offset =
+                    profile_from_scanner->rf627_profile3D->header.data_offset;
+            result->header.packet_count =
+                    profile_from_scanner->rf627_profile3D->header.packet_count;
+            result->header.measure_count =
+                    profile_from_scanner->rf627_profile3D->header.measure_count;
+
+            result->header.zmr =
+                    profile_from_scanner->rf627_profile3D->header.zmr;
+            result->header.xemr =
+                    profile_from_scanner->rf627_profile3D->header.xemr;
+            result->header.discrete_value =
+                    profile_from_scanner->rf627_profile3D->header.discrete_value;
+
+            result->header.exposure_time =
+                    profile_from_scanner->rf627_profile3D->header.exposure_time;
+            result->header.laser_value =
+                    profile_from_scanner->rf627_profile3D->header.laser_value;
+            result->header.step_count =
+                    profile_from_scanner->rf627_profile3D->header.step_count;
+            result->header.dir =
+                    profile_from_scanner->rf627_profile3D->header.dir;
+
+            switch (result->header.data_type) {
+            case DTY_PixelsNormal:
+            case DTY_PixelsInterpolated:
+            {
+                result->pixels.resize(profile_from_scanner->
+                                      rf627_profile3D->pixels_format.pixels_count);
+
+                for(size_t i = 0; i < result->pixels.size(); i++)
+                {
+                    result->pixels[i] = profile_from_scanner->
+                            rf627_profile3D->pixels_format.pixels[i];
+                }
+
+                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
+                {
+                    result->intensity.resize(
+                                profile_from_scanner->rf627_profile3D->intensity_count);
+                    for (size_t i = 0; i < result->intensity.size(); i++)
+                        result->intensity[i] =
+                                profile_from_scanner->rf627_profile3D->intensity[i];
+                }
+
+                break;
+            }
+            case DTY_ProfileNormal:
+            case DTY_ProfileInterpolated:
+            {
+                result->points.resize(profile_from_scanner->
+                                      rf627_profile3D->profile_format.points_count);
+
+                for(size_t i = 0; i < result->points.size(); i++)
+                {
+                    result->points[i].x = profile_from_scanner->rf627_profile3D->
+                            profile_format.points[i].x;
+                    result->points[i].z = profile_from_scanner->rf627_profile3D->
+                            profile_format.points[i].z;
+                }
+
+                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
+                {
+                    result->intensity.resize(
+                                profile_from_scanner->rf627_profile3D->intensity_count);
+                    for (size_t i = 0; i < result->intensity.size(); i++)
+                        result->intensity[i] =
+                                profile_from_scanner->rf627_profile3D->intensity[i];
+                }
+                break;
+            }
+            default:
+                break;
+            }
+            free(profile_from_scanner->rf627_profile3D->intensity);
+            free(profile_from_scanner->rf627_profile3D->pixels_format.pixels);
+            free(profile_from_scanner->rf627_profile3D);
+            free(profile_from_scanner);
+            return result;
+        }
+
+        free(profile_from_scanner->rf627_profile3D);
         free(profile_from_scanner);
         delete result;
     }
@@ -299,12 +432,12 @@ bool rf627old::read_params(PROTOCOLS protocol)
         p = protocol;
 
     switch (p) {
-    case PROTOCOLS::SERVICE_PROTOKOL:
+    case PROTOCOLS::SERVICE:
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = read_params_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
+                    (scanner_base_t*)scanner_base, kSERVICE);
         return result;
         break;
     }
@@ -324,12 +457,12 @@ bool rf627old::write_params(PROTOCOLS protocol)
         p = protocol;
 
     switch (p) {
-    case PROTOCOLS::SERVICE_PROTOKOL:
+    case PROTOCOLS::SERVICE:
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = write_params_to_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE_PROTOKOL);
+                    (scanner_base_t*)scanner_base, kSERVICE);
         return result;
         break;
     }
@@ -801,22 +934,53 @@ bool rf627old::set_param(param_t* param)
     }
     return false;
 }
-
-rf627old::Command::Command(rf627old* parent)
+bool rf627old::set_param(const char* param_name, ...)
 {
-    _parent = parent;
+    va_list valist;
+    va_start(valist, param_name);
+
+    bool result = set_parameter_by_name(
+                (scanner_base_t*)this->scanner_base, param_name, valist);
+
+    va_end(valist);
+
+    return result;
 }
-rf627old::Command::~Command()
+bool rf627old::set_param(int param_id, ...)
 {
+    va_list valist;
+    va_start(valist, param_id);
 
+    bool result = set_parameter_by_name(
+                (scanner_base_t*)this->scanner_base, parameter_names[param_id].c_str(), valist);
+
+    va_end(valist);
+
+    return result;
 }
 
-bool rf627old::Command::set_counters(int profile_counter, int packet_counter)
+bool rf627old::send_cmd(const char* command_name, ...)
 {
-    // Establish connection to the RF627 device by Service Protocol.
-    bool result = false;
-    result = rf627_old_command_set_counters(
-                ((scanner_base_t*)_parent->scanner_base)->rf627_old, profile_counter, packet_counter);
+    va_list valist;
+    va_start(valist, command_name);
+
+    //int arg1 = va_arg(valist, int);
+    //int arg2 = va_arg(valist, int);
+
+    command_t cmd = {0};
+    cmd.name = command_name;
+    cmd.arg_list = valist;
+
+
+    int arg3 = va_arg(valist, int);
+    int arg4 = va_arg(valist, int);
+
+
+
+    bool result = send_command((scanner_base_t*)this->scanner_base, &cmd);
+
+    va_end(valist);
+
     return result;
 }
 

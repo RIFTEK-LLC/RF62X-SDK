@@ -19,7 +19,7 @@ int main()
     // Create value for scanners vector's type
     std::vector<rf627old*> scanners;
     // Search for RF627old devices over network
-    scanners = rf627old::search(PROTOCOLS::SERVICE_PROTOKOL);
+    scanners = rf627old::search(PROTOCOLS::SERVICE);
 
 
     // Iterate over all discovered rf627-old in network, connect to each of
