@@ -684,7 +684,7 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
                         pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
                                 (rfDouble)(profile->header.discrete_value);
 
-                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points[profile->profile_format.points_count] = pt;
                         profile->profile_format.points_count++;
                         if (profile->header.flags & 0x01)
                         {
