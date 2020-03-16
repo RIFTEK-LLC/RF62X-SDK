@@ -765,6 +765,7 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
 
     rfInt nret = network_platform.network_methods.recv_data(
                 scanner->m_data_sock, RX, RX_SIZE);
+
     if(nret > 0)
     {
         rfSize profile_header_size =
