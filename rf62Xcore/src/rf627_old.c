@@ -836,8 +836,8 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                 {
                 case DTY_ProfileNormal:
                 case DTY_ProfileInterpolated:
-                    z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
                     x = *(rfInt16*)(&RX[profile_header_size + i*4]);
+                    z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
                     if (zero_points == 0 && z > 0 && x != 0)
                     {
                         pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
