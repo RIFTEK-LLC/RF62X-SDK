@@ -688,7 +688,7 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
                         profile->profile_format.points_count++;
                         if (profile->header.flags & 0x01)
                         {
-                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
                             profile->intensity_count++;
                         }
                     }else if(zero_points != 0)
@@ -698,11 +698,11 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
                         pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
                                 (rfDouble)(profile->header.discrete_value);
 
-                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points[profile->profile_format.points_count] = pt;
                         profile->profile_format.points_count++;
                         if (profile->header.flags & 0x01)
                         {
-                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
                             profile->intensity_count++;
                         }
                     }
@@ -712,11 +712,11 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
                     z = *(rfUint16*)(&RX[profile_header_size + i*2]);
                     //pt.x = i;
 
-                    profile->pixels_format.pixels[i] = z;
+                    profile->pixels_format.pixels[profile->pixels_format.pixels_count] = z;
                     profile->pixels_format.pixels_count++;
                     if (profile->header.flags & 0x01)
                     {
-                        profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                        profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
                         profile->intensity_count++;
                     }
 
@@ -849,11 +849,11 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                         pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
                                 (rfDouble)(profile->header.discrete_value);
 
-                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points[profile->profile_format.points_count] = pt;
                         profile->profile_format.points_count++;
                         if (profile->header.flags & 0x01)
                         {
-                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
                             profile->intensity_count++;
                         }
                     }else if(zero_points != 0)
@@ -867,11 +867,11 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                         pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
                                 (rfDouble)(profile->header.discrete_value);
 
-                        profile->profile_format.points[i] = pt;
+                        profile->profile_format.points[profile->profile_format.points_count] = pt;
                         profile->profile_format.points_count++;
                         if (profile->header.flags & 0x01)
                         {
-                            profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
                             profile->intensity_count++;
                         }
                     }
@@ -881,11 +881,11 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
                     z = *(rfUint16*)(&RX[profile_header_size + i*2]);
                     //pt.x = i;
 
-                    profile->pixels_format.pixels[i] = z;
+                    profile->pixels_format.pixels[profile->pixels_format.pixels_count] = z;
                     profile->pixels_format.pixels_count++;
                     if (profile->header.flags & 0x01)
                     {
-                        profile->intensity[i] = RX[profile_header_size + pt_count*4 + i];
+                        profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
                         profile->intensity_count++;
                     }
                     //pt.z = (rfDouble)(z) / (rfDouble)(profile->header.discrete_value);
