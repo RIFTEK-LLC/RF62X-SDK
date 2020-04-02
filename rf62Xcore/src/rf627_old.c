@@ -164,7 +164,7 @@ typedef enum{
 
 valuesEnum_t		boolEnum			= {2, {{0, "false"}, {1, "true"}}};
 
-valuesEnum_t		flipEnum			= {4, {{FM_NO, "no"}, {FM_X, "X"}, {FM_Z, "Z"}, {FM_XZ, "XZ"}}};
+valuesEnum_t		flipEnum			= {4, {{FM_NO, "No"}, {FM_X, "X"}, {FM_Z, "Z"}, {FM_XZ, "XZ"}}};
 
 valuesEnum_t		roiPosModeEnum		= {2, {{RPM_MANUAL, "manual"}, {RPM_AUTO, "auto"}}};
 
@@ -364,7 +364,7 @@ uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
                         {
                             if (!memory_platform.
                                     rf_memcmp(((scanner_base_t*)vector_get(result, i))->
-                                              rf627_old->factory_params.Network.MAC,
+                                              rf627_old->factory_params.network.mac,
                                               response_payload_msg.hardware_address, 6))
                             {
                                 existing = 1;
@@ -404,25 +404,27 @@ rf627_old_t* rf627_old_create_from_hello_msg(
 {
     rf627_old_t* rf627_old = memory_platform.rf_calloc(1, sizeof (rf627_old_t));
 
+    vector_init(&rf627_old->params_list);
+
     // copy device name
     memory_platform.rf_memcpy(
                 rf627_old->user_params.general.name,
                 ((rf627_old_device_info_t*)msg_info)->name, 64);
 
     // copy device_id
-    rf627_old->factory_params.General.DeviceID =
+    rf627_old->factory_params.general.device_id =
             ((rf627_old_device_info_t*)msg_info)->device_id;
 
     // copy serial_number
-    rf627_old->factory_params.General.Serial =
+    rf627_old->factory_params.general.serial =
             ((rf627_old_device_info_t*)msg_info)->serial_number;
 
     // copy firmware_version
-    rf627_old->factory_params.General.FirmWareVer =
+    rf627_old->factory_params.general.firmware_ver =
             ((rf627_old_device_info_t*)msg_info)->firmware_version;
 
     // copy hardware_version
-    rf627_old->factory_params.General.HardWareVer =
+    rf627_old->factory_params.general.hardware_ver =
             ((rf627_old_device_info_t*)msg_info)->hardware_version;
 
     // copy config_version
@@ -430,23 +432,23 @@ rf627_old_t* rf627_old_create_from_hello_msg(
             ((rf627_old_device_info_t*)msg_info)->config_version;
 
     // copy fsbl_version
-    rf627_old->factory_params.General.FSBL_Version =
+    rf627_old->factory_params.general.fsbl_version =
             ((rf627_old_device_info_t*)msg_info)->fsbl_version;
 
     // copy z_begin
-    rf627_old->factory_params.General.BaseZ =
+    rf627_old->factory_params.general.base_z =
             ((rf627_old_device_info_t*)msg_info)->z_begin;
 
     // copy z_range
-    rf627_old->factory_params.General.RangeZ =
+    rf627_old->factory_params.general.range_z =
             ((rf627_old_device_info_t*)msg_info)->z_range;
 
     // copy x_smr
-    rf627_old->factory_params.General.RangeXStart =
+    rf627_old->factory_params.general.range_x_start =
             ((rf627_old_device_info_t*)msg_info)->x_smr;
 
     // copy x_emr
-    rf627_old->factory_params.General.RangeXEnd =
+    rf627_old->factory_params.general.range_x_end =
             ((rf627_old_device_info_t*)msg_info)->x_emr;
 
     // copy eth_speed
@@ -483,7 +485,7 @@ rf627_old_t* rf627_old_create_from_hello_msg(
 
     // copy hardware_address
     memory_platform.rf_memcpy(
-                rf627_old->factory_params.Network.MAC,
+                rf627_old->factory_params.network.mac,
                 ((rf627_old_device_info_t*)msg_info)->hardware_address, 6);
 
 //    // copy max_payload_size
@@ -612,9 +614,31 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
         rf627_old_profile2D_t* profile =
                 memory_platform.rf_calloc(1, sizeof(rf627_old_profile2D_t));
 
-        profile->header = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
+        rf627_old_stream_msg_t header_from_msg = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
 
-        if(profile->header.serial_number == scanner->factory_params.General.Serial)
+        profile->header.data_type = header_from_msg.data_type;
+        profile->header.flags = header_from_msg.flags;
+        profile->header.device_type = header_from_msg.device_type;
+        profile->header.serial_number = header_from_msg.serial_number;
+        profile->header.system_time = header_from_msg.system_time;
+
+        profile->header.proto_version_major = header_from_msg.proto_version_major;
+        profile->header.proto_version_minor = header_from_msg.proto_version_minor;
+        profile->header.hardware_params_offset = header_from_msg.hardware_params_offset;
+        profile->header.data_offset = header_from_msg.data_offset;
+        profile->header.packet_count = header_from_msg.packet_count;
+        profile->header.measure_count = header_from_msg.measure_count;
+
+        profile->header.zmr = header_from_msg.zmr;
+        profile->header.xemr = header_from_msg.xemr;
+        profile->header.discrete_value = header_from_msg.discrete_value;
+
+        profile->header.exposure_time = header_from_msg.exposure_time;
+        profile->header.laser_value = header_from_msg.laser_value;
+        profile->header.step_count = header_from_msg.step_count;
+        profile->header.dir = header_from_msg.dir;
+
+        if(profile->header.serial_number == scanner->factory_params.general.serial)
         {
             rfInt16 x;
             rfUint16 z;
@@ -774,9 +798,31 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
         rf627_old_profile3D_t* profile =
                 memory_platform.rf_calloc(1, sizeof(rf627_old_profile3D_t));
 
-        profile->header = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
+        rf627_old_stream_msg_t header_from_msg = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
 
-        if(profile->header.serial_number == scanner->factory_params.General.Serial)
+        profile->header.data_type = header_from_msg.data_type;
+        profile->header.flags = header_from_msg.flags;
+        profile->header.device_type = header_from_msg.device_type;
+        profile->header.serial_number = header_from_msg.serial_number;
+        profile->header.system_time = header_from_msg.system_time;
+
+        profile->header.proto_version_major = header_from_msg.proto_version_major;
+        profile->header.proto_version_minor = header_from_msg.proto_version_minor;
+        profile->header.hardware_params_offset = header_from_msg.hardware_params_offset;
+        profile->header.data_offset = header_from_msg.data_offset;
+        profile->header.packet_count = header_from_msg.packet_count;
+        profile->header.measure_count = header_from_msg.measure_count;
+
+        profile->header.zmr = header_from_msg.zmr;
+        profile->header.xemr = header_from_msg.xemr;
+        profile->header.discrete_value = header_from_msg.discrete_value;
+
+        profile->header.exposure_time = header_from_msg.exposure_time;
+        profile->header.laser_value = header_from_msg.laser_value;
+        profile->header.step_count = header_from_msg.step_count;
+        profile->header.dir = header_from_msg.dir;
+
+        if(profile->header.serial_number == scanner->factory_params.general.serial)
         {
             rfInt16 x;
             rfUint16 z;
@@ -961,7 +1007,7 @@ parameter_t* create_parameter_from_type(const rfChar* type)
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_UINT32], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
-        p->arr_uint = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
+        p->arr_uint = memory_platform.rf_calloc(1, sizeof (array_uint32_t));
         p->base.type = pvtKey[PVT_ARRAY_UINT32];
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_UINT64], type) == 0)
     {
@@ -971,7 +1017,7 @@ parameter_t* create_parameter_from_type(const rfChar* type)
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_INT32], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
-        p->arr_int = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
+        p->arr_int = memory_platform.rf_calloc(1, sizeof (array_int32_t));
         p->base.type = pvtKey[PVT_ARRAY_INT32];
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_INT64], type) == 0)
     {
@@ -1062,7 +1108,7 @@ rfBool set_value_by_key(parameter_t* p, char* key)
 
 
 
-rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner)
+rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 {
 
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
@@ -1081,7 +1127,7 @@ rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner)
     rf627_old_header_msg_t read_user_params_msg =
             rf627_protocol_old_create_read_user_params_msg_request(
                 kRF627_OLD_PROTOCOL_HEADER_CONFIRMATION_ON,
-                scanner->factory_params.General.Serial,
+                scanner->factory_params.general.serial,
                 scanner->msg_count);
 
     // pack hello msg request to packet
@@ -1118,13 +1164,12 @@ rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner)
             rf627_old_header_msg_t header =
                     rf627_protocol_old_unpack_header_msg_from_user_params_packet(RX);
 
-            if(header.serial_number == scanner->factory_params.General.Serial)
+            if(header.serial_number == scanner->factory_params.general.serial)
             {
-                scanner->user_params =
-                    rf627_protocol_old_unpack_payload_msg_from_user_params_packet(RX);
+                rf627_old_user_params_msg_t user_param_msg =
+                        rf627_protocol_old_unpack_payload_msg_from_user_params_packet(RX);
 
-                vector_init(&scanner->params_list);
-
+                scanner->user_params = *(rf627_old_user_params_t*)&user_param_msg;
 
 
                 rfUint16 index = 0;
@@ -2617,6 +2662,818 @@ rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner)
     return ret;
 }
 
+rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
+{
+
+    rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
+    rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
+    rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
+    rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
+
+
+    rf_sockaddr_in send_addr;
+    rfBool ret = 1;
+
+    //std::cout << __LINE__ << " _mx[0].lock();" << std::endl << std::flush;
+    //_mx[0].lock();
+
+    // create read_params msg request
+    rf627_old_header_msg_t read_factory_params_msg =
+            rf627_protocol_old_create_read_factory_params_msg_request(
+                kRF627_OLD_PROTOCOL_HEADER_CONFIRMATION_ON,
+                scanner->factory_params.general.serial,
+                scanner->msg_count);
+
+    // pack hello msg request to packet
+    rfUint32 request_packet_size =
+            rf627_protocol_old_pack_read_factory_params_msg_request_to_packet(
+                (rfUint8*)TX, TX_SIZE, &read_factory_params_msg);
+
+    send_addr.sin_family = AF_INET;
+    send_addr.sin_addr = scanner->user_params.network.ip_address;
+    send_addr.sin_port = network_platform.network_methods.hton_short(
+                scanner->user_params.network.service_port);
+
+
+
+    if (rf627_protocol_send_packet_by_udp(
+                scanner->m_svc_sock, TX, request_packet_size, &send_addr, 0, NULL))
+    {
+        scanner->msg_count++;
+        const rfInt data_len =
+                rf627_protocol_old_get_size_of_response_read_factory_params_packet();
+        rfInt nret = network_platform.network_methods.recv_data(
+                    scanner->m_svc_sock, RX, data_len);
+        if (nret == data_len)
+        {
+            rfSize confirm_packet_size =
+                    rf627_protocol_old_create_confirm_packet_from_response_packet(
+                        TX, TX_SIZE, RX, RX_SIZE);
+            if(confirm_packet_size > 0)
+            {
+                rf627_protocol_send_packet_by_udp(
+                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+            }
+
+            rf627_old_header_msg_t header =
+                    rf627_protocol_old_unpack_header_msg_from_factory_params_packet(RX);
+
+            if(header.serial_number == scanner->factory_params.general.serial)
+            {
+                rf627_old_factory_params_msg_t factory_msg =
+                        rf627_protocol_old_unpack_payload_msg_from_factory_params_packet(RX);
+
+                scanner->factory_params = *(rf627_old_factory_params_t*)&factory_msg;
+
+
+                rfUint16 index = 0;
+                parameter_t* p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_DEVICETYPE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 0;
+                p->base.size = sizeof(scanner->factory_params.general.device_id);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.device_id;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_SERIAL];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 2;
+                p->base.size = sizeof(scanner->factory_params.general.serial);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.serial;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4294967295;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_PCBSERIAL];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 6;
+                p->base.size = sizeof(scanner->factory_params.general.serial_of_pcb);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.serial_of_pcb;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4294967295;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_LIFETIME];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 10;
+                p->base.size = sizeof(scanner->factory_params.general.operating_time_h);
+                p->base.units = "s";
+
+                p->val_uint->value =
+                        scanner->factory_params.general.operating_time_h * 60 * 60 +
+                        scanner->factory_params.general.operating_time_m * 60 +
+                        scanner->factory_params.general.operating_time_s;
+                p->val_uint->min = 0;
+                p->val_uint->max = 1577846272;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_WORKTIME];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 16;
+                p->base.size = sizeof(scanner->factory_params.general.runtime_h);
+                p->base.units = "s";
+
+                p->val_uint->value =
+                        scanner->factory_params.general.runtime_h * 60 * 60 +
+                        scanner->factory_params.general.runtime_m * 60 +
+                        scanner->factory_params.general.runtime_s;
+                p->val_uint->min = 0;
+                p->val_uint->max = 1577846272;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_STARTSCOUNT];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 22;
+                p->base.size = sizeof(scanner->factory_params.general.startup_counter);
+                p->base.units = "count";
+
+                p->val_uint->value = scanner->factory_params.general.startup_counter;
+                p->val_uint->min = 0;
+                p->val_uint->max = 8760;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_FIRMWAREREV];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 26;
+                p->base.size = sizeof(scanner->factory_params.general.firmware_ver);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.firmware_ver;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4294967295;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_HARDWAREREV];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 30;
+                p->base.size = sizeof(scanner->factory_params.general.hardware_ver);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.hardware_ver;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4294967295;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_CUSTOMERID];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 34;
+                p->base.size = sizeof(scanner->factory_params.general.customer_id);
+                p->base.units = "id";
+
+                p->val_uint->value = scanner->factory_params.general.customer_id;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4294967295;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_FPGAFREQ];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 38;
+                p->base.size = sizeof(scanner->factory_params.general.fpga_freq);
+                p->base.units = "Hz";
+
+                p->val_uint->value = scanner->factory_params.general.fpga_freq;
+                p->val_uint->min = 100000000;
+                p->val_uint->max = 100000000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_SMR];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 42;
+                p->base.size = sizeof(scanner->factory_params.general.base_z);
+                p->base.units = "mm";
+
+                p->val_uint->value = scanner->factory_params.general.base_z;
+                p->val_uint->min = 0;
+                p->val_uint->max = 10000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_MR];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 46;
+                p->base.size = sizeof(scanner->factory_params.general.range_z);
+                p->base.units = "mm";
+
+                p->val_uint->value = scanner->factory_params.general.range_z;
+                p->val_uint->min = 0;
+                p->val_uint->max = 10000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_XSMR];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 50;
+                p->base.size = sizeof(scanner->factory_params.general.range_x_start);
+                p->base.units = "mm";
+
+                p->val_uint->value = scanner->factory_params.general.range_x_start;
+                p->val_uint->min = 0;
+                p->val_uint->max = 10000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_XEMR];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 54;
+                p->base.size = sizeof(scanner->factory_params.general.range_x_end);
+                p->base.units = "mm";
+
+                p->val_uint->value = scanner->factory_params.general.range_x_end;
+                p->val_uint->min = 0;
+                p->val_uint->max = 20000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_PIXDIVIDER];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 58;
+                p->base.size = sizeof(scanner->factory_params.general.pixels_divider);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.pixels_divider;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 8;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_PROFDIVIDER];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 60;
+                p->base.size = sizeof(scanner->factory_params.general.profiles_divider);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.profiles_divider;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 8;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_GENERAL_FSBLREV];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 62;
+                p->base.size = sizeof(scanner->factory_params.general.fsbl_version);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.general.fsbl_version;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4294967295;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_STRING]);
+                p->base.name = parameter_names_array[FACT_GENERAL_OEMDEVNAME];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 66;
+                p->base.size = rf_strlen(scanner->factory_params.general.oem_device_name) + 1;
+                p->base.units = "";
+
+                p->val_str->value = memory_platform.rf_calloc(1, sizeof(rfChar) * p->base.size);
+                memory_platform.rf_memcpy(
+                            (void*)p->val_str->value,
+                            scanner->factory_params.general.oem_device_name,
+                            p->base.size);
+                p->val_str->maxLen = sizeof (scanner->factory_params.general.oem_device_name);
+                p->val_str->defValue = "Laser scanner";
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_STRING]);
+                p->base.name = parameter_names_array[FACT_SENSOR_NAME];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 158;
+                p->base.size = rf_strlen(scanner->factory_params.sensor.name) + 1;
+                p->base.units = "";
+
+                p->val_str->value = memory_platform.rf_calloc(1, sizeof(rfChar) * p->base.size);
+                memory_platform.rf_memcpy(
+                            (void*)p->val_str->value,
+                            scanner->factory_params.sensor.name,
+                            p->base.size);
+                p->val_str->maxLen = sizeof (scanner->factory_params.sensor.name);
+                p->val_str->defValue = "TYPE1";
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_WIDTH];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 190;
+                p->base.size = sizeof(scanner->factory_params.sensor.width);
+                p->base.units = "pixels";
+
+                p->val_uint->value = scanner->factory_params.sensor.width;
+                p->val_uint->min = 648;
+                p->val_uint->max = 648;
+                p->val_uint->step = 4;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_HEIGHT];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 192;
+                p->base.size = sizeof(scanner->factory_params.sensor.height);
+                p->base.units = "lines";
+
+                p->val_uint->value = scanner->factory_params.sensor.height;
+                p->val_uint->min = 488;
+                p->val_uint->max = 488;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_PIXFREQ];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 194;
+                p->base.size = sizeof(scanner->factory_params.sensor.pixel_clock);
+                p->base.units = "Hz";
+
+                p->val_uint->value = scanner->factory_params.sensor.pixel_clock;
+                p->val_uint->min = 40000000;
+                p->val_uint->max = 40000000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_BLACKODD];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 198;
+                p->base.size = sizeof(scanner->factory_params.sensor.black_odd_lines);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.sensor.black_odd_lines;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_BLACKEVEN];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 200;
+                p->base.size = sizeof(scanner->factory_params.sensor.black_even_lines);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.sensor.black_even_lines;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_FRMCONSTPART];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 202;
+                p->base.size = sizeof(scanner->factory_params.sensor.frame_cycle_const_part);
+                p->base.units = "ticks";
+
+                p->val_uint->value = scanner->factory_params.sensor.frame_cycle_const_part;
+                p->val_uint->min = 6500;
+                p->val_uint->max = 6500;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_FRMPERLINEPART];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 206;
+                p->base.size = sizeof(scanner->factory_params.sensor.frame_cycle_per_line_part);
+                p->base.units = "ticks";
+
+                p->val_uint->value = scanner->factory_params.sensor.frame_cycle_per_line_part;
+                p->val_uint->min = 410;
+                p->val_uint->max = 410;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_FPSOREXP];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 210;
+                p->base.size = sizeof(scanner->factory_params.sensor.frame_rate_or_exposure);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.sensor.frame_rate_or_exposure;
+                p->val_uint->min = 0;
+                p->val_uint->max = 1;
+                p->val_uint->step = 0;
+                p->val_uint->enumValues = &boolEnum;
+                rfInt* def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                if (def != NULL)
+                    p->val_uint->defValue = *def;
+                else p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_MINEXPOSURE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 211;
+                p->base.size = sizeof(scanner->factory_params.sensor.min_exposure);
+                p->base.units = "ns";
+
+                p->val_uint->value = scanner->factory_params.sensor.min_exposure;
+                p->val_uint->min = 0;
+                p->val_uint->max = 100000000;
+                p->val_uint->step = 10;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_IMGFLIP];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 215;
+                p->base.size = sizeof(scanner->factory_params.sensor.image_flipping);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.sensor.image_flipping;
+                p->val_uint->min = 0;
+                p->val_uint->max = 3;
+                p->val_uint->step = 0;
+                p->val_uint->enumValues = &flipEnum;
+                def = get_value_by_key_from_enum(p->val_uint->enumValues, "No");
+                if (def != NULL)
+                    p->val_uint->defValue = *def;
+                else p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_SENSOR_MAXEXPOSURE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 216;
+                p->base.size = sizeof(scanner->factory_params.sensor.max_exposure);
+                p->base.units = "ns";
+
+                p->val_uint->value = scanner->factory_params.sensor.max_exposure;
+                p->val_uint->min = 0;
+                p->val_uint->max = 300000000;
+                p->val_uint->step = 10;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+                //edr_point1_value
+                //edr_point2_value
+                //edr_point1_pos
+                //edr_point2_pos
+                //init_regs
+
+
+                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
+                p->base.name = parameter_names_array[FACT_NETWORK_MACADDR];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 595;
+                p->base.size = sizeof (scanner->factory_params.network.mac);
+                p->base.units = "";
+
+                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * p->base.size);
+                for (rfUint32 i = 0; i < p->base.size; i++)
+                    p->arr_uint->value[i] = scanner->factory_params.network.mac[i];
+                p->arr_uint->min = 0;
+                p->arr_uint->max = 255;
+                p->arr_uint->step = 0;
+                p->arr_uint->defCount = 6;
+                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * p->base.size);
+                rfUint32 de_arr[6] = {0, 10, 53, 1, 2, 3};
+                for (rfUint32 i = 0; i < p->base.size; i++)
+                    p->arr_uint->defValue[i] = de_arr[i];
+                p->arr_uint->maxCount = 6;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_EIP_IDENTITY_VENDORID];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 601;
+                p->base.size = sizeof(scanner->factory_params.network.eip_vendor_id);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.network.eip_vendor_id;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_EIP_IDENTITY_DEVICETYPE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 603;
+                p->base.size = sizeof(scanner->factory_params.network.eip_device_type);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.network.eip_device_type;
+                p->val_uint->min = 0;
+                p->val_uint->max = 65535;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_NETWORK_FORCEAUTONEGTIME];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 605;
+                p->base.size = sizeof(scanner->factory_params.network.force_autoneg_time);
+                p->base.units = "s";
+
+                p->val_uint->value = scanner->factory_params.network.force_autoneg_time;
+                p->val_uint->min = 0;
+                p->val_uint->max = 255;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_LASER_WAVELENGTH];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 637;
+                p->base.size = sizeof(scanner->factory_params.laser.wave_length);
+                p->base.units = "nm";
+
+                p->val_uint->value = scanner->factory_params.laser.wave_length;
+                p->val_uint->min = 0;
+                p->val_uint->max = 10000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_LASER_KOEFF1];
+                p->base.access = patKey[PAT_READ_ONLY];
+                p->base.index = index++;
+                p->base.offset = 639;
+                p->base.size = sizeof(scanner->factory_params.laser.koeff1);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.laser.koeff1;
+                p->val_uint->min = 0;
+                p->val_uint->max = 255;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_LASER_KOEFF2];
+                p->base.access = patKey[PAT_READ_ONLY];
+                p->base.index = index++;
+                p->base.offset = 640;
+                p->base.size = sizeof(scanner->factory_params.laser.koeff2);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.laser.koeff2;
+                p->val_uint->min = 0;
+                p->val_uint->max = 255;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_LASER_MINVALUE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 641;
+                p->base.size = sizeof(scanner->factory_params.laser.min_value);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.laser.min_value;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4095;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_LASER_MAXVALUE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 645;
+                p->base.size = sizeof(scanner->factory_params.laser.max_value);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.laser.max_value;
+                p->val_uint->min = 0;
+                p->val_uint->max = 4095;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+                //enable_mode_change
+
+
+                //in1_min_delay
+                //in1_max_delay
+                //max_divider_in1
+                //min_divider_in1
+
+                //out1_min_delay
+                //out1_max_delay
+                //out1_min_pulse_width
+                //out1_max_pulse_width
+                //out2_min_delay
+                //out2_max_delay
+                //out2_min_pulse_width
+                //out2_max_pulse_width
+
+
+                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p->base.name = parameter_names_array[FACT_PROFILES_MAXDUMPSIZE];
+                p->base.access = patKey[PAT_LOCKED];
+                p->base.index = index++;
+                p->base.offset = 809;
+                p->base.size = sizeof(scanner->factory_params.profiles.max_dump_size);
+                p->base.units = "";
+
+                p->val_uint->value = scanner->factory_params.profiles.max_dump_size;
+                p->val_uint->min = 0;
+                p->val_uint->max = 80000;
+                p->val_uint->step = 0;
+                p->val_uint->defValue = p->val_uint->value;
+                vector_add(scanner->params_list, p);
+
+
+                ret = 0;
+            }
+
+
+        }
+    }
+//    _mx[0].unlock();
+
+    memory_platform.rf_free(RX);
+    memory_platform.rf_free(TX);
+    return ret;
+}
+
+
 rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
 {
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
@@ -2632,7 +3489,7 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
     rf627_old_header_msg_t write_user_params_msg =
             rf627_protocol_old_create_write_user_params_msg_request(
                 kRF627_OLD_PROTOCOL_HEADER_CONFIRMATION_ON,
-                scanner->factory_params.General.Serial,
+                scanner->factory_params.general.serial,
                 scanner->msg_count);
 
     // pack hello msg request to packet
@@ -2882,7 +3739,7 @@ rfUint8 rf627_old_command_set_counters(
     rf627_old_header_msg_t reset_counters_msg =
             rf627_protocol_old_create_command_set_counters_msg(
                 kRF627_OLD_PROTOCOL_HEADER_CONFIRMATION_ON,
-                scanner->factory_params.General.Serial,
+                scanner->factory_params.general.serial,
                 scanner->msg_count,
                 profile_counter,
                 packet_counter);

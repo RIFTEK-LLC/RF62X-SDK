@@ -7,7 +7,7 @@
 typedef struct
 {
     config_options_t options;
-    factory_params_t factory_params;
+    rf627_old_factory_params_t factory_params;
     rf627_old_user_params_t user_params;
 
     void* m_svc_sock;
@@ -98,7 +98,15 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(
  * @param scanner - ptr to scanner
  * @return 0 on success
  */
-rfBool rf627_old_read_params_from_scanner(rf627_old_t* scanner);
+rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner);
+
+/**
+ * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.
+ * This structure is accessible via get_params() function
+ * @param scanner - ptr to scanner
+ * @return 0 on success
+ */
+rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner);
 
 /**
  * @brief rf627_old_write_params_to_scanner - Write current parameters to device.

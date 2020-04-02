@@ -2,6 +2,8 @@
 #include <stdarg.h>
 #include "custom_string.h"
 #include "platform_types.h"
+#include "netwok_platform.h"
+#include "memory_platform.h"
 
 void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
 {
@@ -218,7 +220,71 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
     case kRF627_OLD:
         switch (protocol) {
         case kSERVICE:
-            return rf627_old_read_params_from_scanner(device->rf627_old);
+            for(rfUint32 i = 0; i < vector_count(device->rf627_old->params_list); i++)
+            {
+                parameter_t* p = vector_get(device->rf627_old->params_list, i);
+
+                if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
+                {
+                    memory_platform.rf_free(p->val_uint);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
+                {
+                    memory_platform.rf_free(p->val_uint64);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
+                {
+                    memory_platform.rf_free(p->val_int);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
+                {
+                    memory_platform.rf_free(p->val_int64);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_FLOAT]) == 0)
+                {
+                    memory_platform.rf_free(p->val_flt);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_DOUBLE]) == 0)
+                {
+                    memory_platform.rf_free(p->val_dbl);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_uint->value);
+                    memory_platform.rf_free(p->arr_uint->defValue);
+                    memory_platform.rf_free(p->arr_uint);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT64]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_uint64);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_INT32]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_int);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_INT64]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_int64);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_FLT]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_flt);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_DBL]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_dbl);
+                    memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, pvtKey[PVT_STRING]) == 0)
+                {
+                    memory_platform.rf_free(p->val_str->value);
+                    memory_platform.rf_free(p->val_str);
+                    memory_platform.rf_free(p);
+                }
+                vector_delete(p,i);
+            }
+            rf627_old_read_user_params_from_scanner(device->rf627_old);
+            rf627_old_read_factory_params_from_scanner(device->rf627_old);
+            return 0;
             break;
         case kETHERNET_IP:
         case kMODBUS_TCP:

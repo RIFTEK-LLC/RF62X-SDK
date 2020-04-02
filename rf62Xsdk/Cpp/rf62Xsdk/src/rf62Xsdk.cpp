@@ -302,124 +302,124 @@ profile3D_t* rf627old::get_profile3D(float step_size, float k,
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
-    {
-        // Get profile from scanner's data stream by Service Protocol.
-        rf627_profile3D_t* profile_from_scanner = get_profile3D_from_scanner(
-                    (scanner_base_t*)scanner_base, step_size, k, (count_types_t)count_type, zero_points, kSERVICE);
+//    switch (p) {
+//    case PROTOCOLS::SERVICE:
+//    {
+//        // Get profile from scanner's data stream by Service Protocol.
+//        rf627_profile3D_t* profile_from_scanner = get_profile3D_from_scanner(
+//                    (scanner_base_t*)scanner_base, step_size, k, (count_types_t)count_type, zero_points, kSERVICE);
 
-        profile3D_t* result = new profile3D_t;
+//        profile3D_t* result = new profile3D_t;
 
-        if(profile_from_scanner->rf627_profile3D != NULL)
-        {
-            result->header.data_type =
-                    profile_from_scanner->rf627_profile3D->header.data_type;
-            result->header.flags =
-                    profile_from_scanner->rf627_profile3D->header.flags;
-            result->header.device_type =
-                    profile_from_scanner->rf627_profile3D->header.device_type;
-            result->header.serial_number =
-                    profile_from_scanner->rf627_profile3D->header.serial_number;
-            result->header.system_time =
-                    profile_from_scanner->rf627_profile3D->header.system_time;
+//        if(profile_from_scanner->rf627_profile3D != NULL)
+//        {
+//            result->header.data_type =
+//                    profile_from_scanner->rf627_profile3D->header.data_type;
+//            result->header.flags =
+//                    profile_from_scanner->rf627_profile3D->header.flags;
+//            result->header.device_type =
+//                    profile_from_scanner->rf627_profile3D->header.device_type;
+//            result->header.serial_number =
+//                    profile_from_scanner->rf627_profile3D->header.serial_number;
+//            result->header.system_time =
+//                    profile_from_scanner->rf627_profile3D->header.system_time;
 
-            result->header.proto_version_major =
-                    profile_from_scanner->rf627_profile3D->header.proto_version_major;
-            result->header.proto_version_minor =
-                    profile_from_scanner->rf627_profile3D->header.proto_version_minor;
-            result->header.hardware_params_offset =
-                    profile_from_scanner->rf627_profile3D->header.hardware_params_offset;
-            result->header.data_offset =
-                    profile_from_scanner->rf627_profile3D->header.data_offset;
-            result->header.packet_count =
-                    profile_from_scanner->rf627_profile3D->header.packet_count;
-            result->header.measure_count =
-                    profile_from_scanner->rf627_profile3D->header.measure_count;
+//            result->header.proto_version_major =
+//                    profile_from_scanner->rf627_profile3D->header.proto_version_major;
+//            result->header.proto_version_minor =
+//                    profile_from_scanner->rf627_profile3D->header.proto_version_minor;
+//            result->header.hardware_params_offset =
+//                    profile_from_scanner->rf627_profile3D->header.hardware_params_offset;
+//            result->header.data_offset =
+//                    profile_from_scanner->rf627_profile3D->header.data_offset;
+//            result->header.packet_count =
+//                    profile_from_scanner->rf627_profile3D->header.packet_count;
+//            result->header.measure_count =
+//                    profile_from_scanner->rf627_profile3D->header.measure_count;
 
-            result->header.zmr =
-                    profile_from_scanner->rf627_profile3D->header.zmr;
-            result->header.xemr =
-                    profile_from_scanner->rf627_profile3D->header.xemr;
-            result->header.discrete_value =
-                    profile_from_scanner->rf627_profile3D->header.discrete_value;
+//            result->header.zmr =
+//                    profile_from_scanner->rf627_profile3D->header.zmr;
+//            result->header.xemr =
+//                    profile_from_scanner->rf627_profile3D->header.xemr;
+//            result->header.discrete_value =
+//                    profile_from_scanner->rf627_profile3D->header.discrete_value;
 
-            result->header.exposure_time =
-                    profile_from_scanner->rf627_profile3D->header.exposure_time;
-            result->header.laser_value =
-                    profile_from_scanner->rf627_profile3D->header.laser_value;
-            result->header.step_count =
-                    profile_from_scanner->rf627_profile3D->header.step_count;
-            result->header.dir =
-                    profile_from_scanner->rf627_profile3D->header.dir;
+//            result->header.exposure_time =
+//                    profile_from_scanner->rf627_profile3D->header.exposure_time;
+//            result->header.laser_value =
+//                    profile_from_scanner->rf627_profile3D->header.laser_value;
+//            result->header.step_count =
+//                    profile_from_scanner->rf627_profile3D->header.step_count;
+//            result->header.dir =
+//                    profile_from_scanner->rf627_profile3D->header.dir;
 
-            switch (result->header.data_type) {
-            case DTY_PixelsNormal:
-            case DTY_PixelsInterpolated:
-            {
-                result->pixels.resize(profile_from_scanner->
-                                      rf627_profile3D->pixels_format.pixels_count);
+//            switch (result->header.data_type) {
+//            case DTY_PixelsNormal:
+//            case DTY_PixelsInterpolated:
+//            {
+//                result->pixels.resize(profile_from_scanner->
+//                                      rf627_profile3D->pixels_format.pixels_count);
 
-                for(size_t i = 0; i < result->pixels.size(); i++)
-                {
-                    result->pixels[i] = profile_from_scanner->
-                            rf627_profile3D->pixels_format.pixels[i];
-                }
+//                for(size_t i = 0; i < result->pixels.size(); i++)
+//                {
+//                    result->pixels[i] = profile_from_scanner->
+//                            rf627_profile3D->pixels_format.pixels[i];
+//                }
 
-                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
-                {
-                    result->intensity.resize(
-                                profile_from_scanner->rf627_profile3D->intensity_count);
-                    for (size_t i = 0; i < result->intensity.size(); i++)
-                        result->intensity[i] =
-                                profile_from_scanner->rf627_profile3D->intensity[i];
-                }
+//                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
+//                {
+//                    result->intensity.resize(
+//                                profile_from_scanner->rf627_profile3D->intensity_count);
+//                    for (size_t i = 0; i < result->intensity.size(); i++)
+//                        result->intensity[i] =
+//                                profile_from_scanner->rf627_profile3D->intensity[i];
+//                }
 
-                break;
-            }
-            case DTY_ProfileNormal:
-            case DTY_ProfileInterpolated:
-            {
-                result->points.resize(profile_from_scanner->
-                                      rf627_profile3D->profile_format.points_count);
+//                break;
+//            }
+//            case DTY_ProfileNormal:
+//            case DTY_ProfileInterpolated:
+//            {
+//                result->points.resize(profile_from_scanner->
+//                                      rf627_profile3D->profile_format.points_count);
 
-                for(size_t i = 0; i < result->points.size(); i++)
-                {
-                    result->points[i].x = profile_from_scanner->rf627_profile3D->
-                            profile_format.points[i].x;
-                    result->points[i].y = profile_from_scanner->rf627_profile3D->
-                            profile_format.points[i].y;
-                    result->points[i].z = profile_from_scanner->rf627_profile3D->
-                            profile_format.points[i].z;
-                }
+//                for(size_t i = 0; i < result->points.size(); i++)
+//                {
+//                    result->points[i].x = profile_from_scanner->rf627_profile3D->
+//                            profile_format.points[i].x;
+//                    result->points[i].y = profile_from_scanner->rf627_profile3D->
+//                            profile_format.points[i].y;
+//                    result->points[i].z = profile_from_scanner->rf627_profile3D->
+//                            profile_format.points[i].z;
+//                }
 
-                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
-                {
-                    result->intensity.resize(
-                                profile_from_scanner->rf627_profile3D->intensity_count);
-                    for (size_t i = 0; i < result->intensity.size(); i++)
-                        result->intensity[i] =
-                                profile_from_scanner->rf627_profile3D->intensity[i];
-                }
-                break;
-            }
-            default:
-                break;
-            }
-            free(profile_from_scanner->rf627_profile3D->intensity);
-            free(profile_from_scanner->rf627_profile3D->pixels_format.pixels);
-            free(profile_from_scanner->rf627_profile3D);
-            free(profile_from_scanner);
-            return result;
-        }
+//                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
+//                {
+//                    result->intensity.resize(
+//                                profile_from_scanner->rf627_profile3D->intensity_count);
+//                    for (size_t i = 0; i < result->intensity.size(); i++)
+//                        result->intensity[i] =
+//                                profile_from_scanner->rf627_profile3D->intensity[i];
+//                }
+//                break;
+//            }
+//            default:
+//                break;
+//            }
+//            free(profile_from_scanner->rf627_profile3D->intensity);
+//            free(profile_from_scanner->rf627_profile3D->pixels_format.pixels);
+//            free(profile_from_scanner->rf627_profile3D);
+//            free(profile_from_scanner);
+//            return result;
+//        }
 
-        free(profile_from_scanner->rf627_profile3D);
-        free(profile_from_scanner);
-        delete result;
-    }
-    default:
-        break;
-    }
+//        free(profile_from_scanner->rf627_profile3D);
+//        free(profile_from_scanner);
+//        delete result;
+//    }
+//    default:
+//        break;
+//    }
 
     return NULL;
 
@@ -534,9 +534,9 @@ param_t* create_param_from_type(std::string type)
     return p;
 }
 
-param_t *rf627old::get_param(parameter_name_keys_t param_name)
+param_t *rf627old::get_param(PARAM_NAME_KEY param_name)
 {
-    return get_param(parameter_names[param_name]);
+    return get_param(parameter_names[(uint8_t)param_name]);
 }
 
 param_t *rf627old::get_param(std::string param_name)
@@ -828,67 +828,67 @@ parameter_t* create_parameter_from_type(std::string type)
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_uint = (value_uint32_t*)calloc(1, sizeof (p->val_uint));
-        p->base.type = param_value_types[UINT_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT_PARAM_TYPE].c_str();
     }else if (type == pvtKey[PVT_UINT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_uint64 = (value_uint64_t*)calloc(1, sizeof (p->val_uint64));
-        p->base.type = param_value_types[UINT64_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_INT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_int = (value_int32_t*)calloc(1, sizeof (p->val_int));
-        p->base.type = param_value_types[INT_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_INT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_int64 = (value_int64_t*)calloc(1, sizeof (p->val_int64));
-        p->base.type = param_value_types[INT64_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_FLOAT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_flt = (value_flt_t*)calloc(1, sizeof (p->val_flt));
-        p->base.type = param_value_types[FLOAT_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLOAT_PARAM_TYPE].c_str();
     }else if(type ==  pvtKey[PVT_DOUBLE])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_dbl = (value_dbl_t*)calloc(1, sizeof (p->val_dbl));
-        p->base.type = param_value_types[DOUBLE_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::DOUBLE_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_UINT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_uint = (array_uint32_t*)calloc(1, sizeof (p->arr_uint));
-        p->base.type = param_value_types[UINT32_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_UINT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_uint64 = (array_uint64_t*)calloc(1, sizeof (p->arr_uint64));
-        p->base.type = param_value_types[UINT64_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_INT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_int = (array_int32_t*)calloc(1, sizeof (p->arr_int));
-        p->base.type = param_value_types[INT32_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT32_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_INT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_int64 = (array_int64_t*)calloc(1, sizeof (p->arr_int64));
-        p->base.type = param_value_types[INT64_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_FLT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_flt = (array_flt_t*)calloc(1, sizeof (p->arr_flt));
-        p->base.type = param_value_types[FLT_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLT_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_DBL])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_dbl = (array_dbl_t*)calloc(1, sizeof (p->arr_dbl));
-        p->base.type = param_value_types[DBL_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::DBL_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_STRING])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_str = (value_str_t*)calloc(1, sizeof (p->val_str));
-        p->base.type = param_value_types[STRING_PARAM_TYPE].c_str();
+        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::STRING_PARAM_TYPE].c_str();
     }
     return p;
 }

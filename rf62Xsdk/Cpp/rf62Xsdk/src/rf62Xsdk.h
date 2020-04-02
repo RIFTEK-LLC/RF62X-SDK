@@ -109,7 +109,7 @@ public:
      * @return param on success, else - null
      */
     param_t* get_param(std::string param_name);
-    param_t* get_param(parameter_name_keys_t param_name);
+    param_t* get_param(PARAM_NAME_KEY param_name);
     /**
      * @brief set_param - set parameter
      * @param param - prt to parameter
