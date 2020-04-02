@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>RF62X Wrappers &mdash; RF62X-SDK 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="RF62X Core" href="rf62X_core.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RF62X-SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X Core</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RF62X Wrappers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#c-library">C++ Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-compile">How to compile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cmake">CMake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qt-creator">Qt Creator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visual-studio">Visual Studio</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use">How to use</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#search-for-rf62x-devices">Search for RF62X devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-profile-from-rf62x-devices">Get Profile from RF62X devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-set-rf62x-old-parameters">Get/Set RF62X-old parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#net-library">.NET Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">How to compile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Visual Studio</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">How to use</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Search for RF62X devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Get Profile from RF62X devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Get/Set RF62X-old parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RF62X-SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>RF62X Wrappers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/rf62X_wrappers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rf62x-wrappers">
+<h1>RF62X Wrappers<a class="headerlink" href="#rf62x-wrappers" title="Permalink to this headline">¶</a></h1>
+<p>Wrappers are help to make programs in different languages and for
+different platforms using the rf62Xcore library easier.</p>
+<div class="section" id="c-library">
+<h2>C++ Library<a class="headerlink" href="#c-library" title="Permalink to this headline">¶</a></h2>
+<p>This project is a C++ library that simplifies the integration of C++
+applications with following scanner series: * RF627-old * RF627-smart</p>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 63%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Compiler</p></th>
+<th class="head"><p>64bit</p></th>
+<th class="head"><p>Includes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MinGW 7.3.0</p></td>
+<td><p><a class="reference external" href="/uploads/ecbe8feab6232f0885b5b1e6db607aa8/rf62Xsdk.dll">rf62Xsdk.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip">include.zip</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MSVC2017</p></td>
+<td><p><a class="reference external" href="/uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll">rf62Xsdk.dll</a>, <a class="reference external" href="/uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib">rf62Xsdk.lib</a></p></td>
+<td><p><a class="reference external" href="/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip">include.zip</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Clang 9.1.0</p></td>
+<td><p><a class="reference external" href="/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll">rf62Xsdk.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip">include.zip</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="how-to-compile">
+<h3>How to compile<a class="headerlink" href="#how-to-compile" title="Permalink to this headline">¶</a></h3>
+<p>RF62X SDK (C++) can be built on the console or in an IDE.
+Firstly, you should download the project (if you have already done it, skip next commands)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+<span class="nb">cd</span> RF62X-SDK
+git submodule update --init --recursive
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>for more information about project downloading steps, see an <a class="reference external" href="#overview">overview</a></p>
+</div>
+<div class="section" id="cmake">
+<h4>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h4>
+<p>To build the С++ wrapper:</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> wrappers/cpp/CMake/rf62Xsdk
+cmake .
+cmake --build .
+</pre></div>
+</div>
+</div>
+<div class="section" id="qt-creator">
+<h4>Qt Creator<a class="headerlink" href="#qt-creator" title="Permalink to this headline">¶</a></h4>
+<p>To build the code:</p>
+<ul class="simple">
+<li><p>Load the CMakeLists.txt file from the <strong>wrappers/cpp/CMake/rf62Xsdk</strong>
+folder via <strong>File &gt; Open File or Project</strong> (Select the CMakeLists.txt file)</p></li>
+<li><p>Select compiler (MinGW, MSVC2017, Clang, etc..) and click <strong>Configure Project</strong></p></li>
+<li><p>Compile project</p></li>
+</ul>
+</div>
+<div class="section" id="visual-studio">
+<h4>Visual Studio<a class="headerlink" href="#visual-studio" title="Permalink to this headline">¶</a></h4>
+<p>To build the code:</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> wrappers/cpp/CMake/rf62Xsdk
+cmake .
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Open rf62Xsdk.sln with Visual Studio</p></li>
+<li><p>Compile</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="how-to-use">
+<h3>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h3>
+<p>Beside the examples below, you may want to check the documentation where
+each function contains a separate code example. All example project can
+be compiled and executed.</p>
+<div class="section" id="search-for-rf62x-devices">
+<h4>Search for RF62X devices<a class="headerlink" href="#search-for-rf62x-devices" title="Permalink to this headline">¶</a></h4>
+<p>Here are some examples how to use search methods</p>
+<div class="section" id="search-for-rf627-old-devices-over-network-by-service-protocol">
+<h5>Search for RF627-old devices over network by service protocol<a class="headerlink" href="#search-for-rf627-old-devices-over-network-by-service-protocol" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SCANNERS</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">RF62X</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+
+    <span class="c1">// Initialize sdk library</span>
+    <span class="n">sdk_init</span><span class="p">();</span>
+    <span class="c1">// Print return rf62X sdk version</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sdk_version</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="c1">// Create value for scanners vector&#39;s type</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">list</span><span class="p">;</span>
+    <span class="c1">// Search for RF627old devices over network</span>
+    <span class="n">list</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE_PROTOKOL</span><span class="p">);</span>
+
+
+    <span class="c1">// Print count of discovered rf627-old in network by Service Protocol</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Discovered &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; rf627-old&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can open and build this example by <strong>Qt Creator</strong>:</p>
+<ul class="simple">
+<li><p>Load the CMakeLists.txt file from the
+<strong>samples/win64/CMake/RF627_search</strong> folder via <strong>File &gt; Open File or Project</strong>
+(Select the CMakeLists.txt file)</p></li>
+<li><p>Select compiler (MinGW, MSVC2017, Clang, etc..) and click <strong>Configure Project</strong></p></li>
+<li><p>Compile project</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-profile-from-rf62x-devices">
+<h4>Get Profile from RF62X devices<a class="headerlink" href="#get-profile-from-rf62x-devices" title="Permalink to this headline">¶</a></h4>
+<p>Here are some examples how to use get profile methods</p>
+<div class="section" id="get-profile-from-rf627-old-devices-over-network-by-service-protocol">
+<h5>Get Profile from RF627-old devices over network by service protocol<a class="headerlink" href="#get-profile-from-rf627-old-devices-over-network-by-service-protocol" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SCANNERS</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">RF62X</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+
+    <span class="c1">// Initialize sdk library</span>
+    <span class="n">sdk_init</span><span class="p">();</span>
+    <span class="c1">// Print return rf62X sdk version</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sdk_version</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="c1">// Create value for scanners vector&#39;s type</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">scanners</span><span class="p">;</span>
+    <span class="c1">// Search for RF627old devices over network</span>
+    <span class="n">scanners</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE_PROTOKOL</span><span class="p">);</span>
+
+
+    <span class="c1">// Iterate over all discovered rf627-old in network, connect to each of</span>
+    <span class="c1">// them and get a profile.</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">scanners</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Establish connection to the RF627 device by Service Protocol.</span>
+        <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">();</span>
+
+
+        <span class="c1">// Get profile from scanner&#39;s data stream by Service Protocol.</span>
+        <span class="n">profile_t</span><span class="o">*</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_profile</span><span class="p">();</span>
+        <span class="c1">// Print the serial number of the scanner to which the profile belongs.</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">profile</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">serial_number</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can open and build this example by <strong>Qt Creator</strong>:</p>
+<ul class="simple">
+<li><p>Load the CMakeLists.txt file from the
+<strong>samples/win64/CMake/RF627_profile</strong> folder via <strong>File &gt; Open File or Project</strong>
+(Select the CMakeLists.txt file)</p></li>
+<li><p>Select compiler (MinGW, MSVC2017, Clang, etc..) and click <strong>Configure Project</strong></p></li>
+<li><p>Compile project</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="get-set-rf62x-old-parameters">
+<h4>Get/Set RF62X-old parameters<a class="headerlink" href="#get-set-rf62x-old-parameters" title="Permalink to this headline">¶</a></h4>
+<p>Here are some examples how to work with device’s parameters</p>
+<div class="section" id="get-set-rf627-old-parameters-devices-over-network">
+<h5>Get/Set RF627-old parameters devices over network<a class="headerlink" href="#get-set-rf627-old-parameters-devices-over-network" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SCANNERS</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">RF62X</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Initialize sdk library</span>
+    <span class="n">sdk_init</span><span class="p">();</span>
+    <span class="c1">// Print return rf62X sdk version</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sdk_version</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="c1">// Create value for scanners vector&#39;s type</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">scanners</span><span class="p">;</span>
+    <span class="c1">// Search for RF627old devices over network</span>
+    <span class="n">scanners</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE_PROTOKOL</span><span class="p">);</span>
+
+
+    <span class="c1">// Iterate over all discovered rf627-old in network, connect to each of</span>
+    <span class="c1">// them and read/set parameters.</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">scanners</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Establish connection to the RF627 device by Service Protocol.</span>
+        <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">();</span>
+
+
+        <span class="c1">// read params from RF627 device by Service Protocol.</span>
+        <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">read_params</span><span class="p">();</span>
+
+
+        <span class="c1">// Get parameter by it&#39;s name from last read</span>
+        <span class="n">param_t</span><span class="o">*</span> <span class="n">param</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_param</span><span class="p">(</span><span class="n">USER_GENERAL_DEVICENAME</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">param</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">param_value_types</span><span class="p">[</span><span class="n">STRING_PARAM_TYPE</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="c1">// Print current scanner&#39;s name</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">param</span><span class="o">-&gt;</span><span class="n">get_value</span><span class="o">&lt;</span><span class="n">value_str_t</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+            <span class="c1">// set new scanner&#39;s name and write changed parameters to scanner</span>
+            <span class="n">param</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="o">&lt;</span><span class="n">value_str_t</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Test Name&quot;</span><span class="p">);</span>
+            <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">set_param</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+            <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">write_params</span><span class="p">();</span>
+        <span class="p">}</span>
+
+
+        <span class="c1">// Check that the parameter is set correctly</span>
+        <span class="c1">// Read arain all params from RF627 device by Service Protocol.</span>
+        <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">read_params</span><span class="p">();</span>
+
+
+        <span class="c1">// Get device name</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_param</span><span class="p">(</span><span class="n">USER_GENERAL_DEVICENAME</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">param</span><span class="o">-&gt;</span><span class="n">get_value</span><span class="o">&lt;</span><span class="n">value_str_t</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;Test Name&quot;</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Changed parameters write successfully&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Error changing parameters&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can open and build this example by <strong>Qt Creator</strong>:</p>
+<ul class="simple">
+<li><p>Load the CMakeLists.txt file from the
+<strong>samples/win64/CMake/RF627_params</strong> folder via <strong>File &gt; Open File or Project</strong>
+(Select the CMakeLists.txt file)</p></li>
+<li><p>Select compiler (MinGW, MSVC2017, Clang, etc..) and click <strong>Configure Project</strong></p></li>
+<li><p>Compile project</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="net-library">
+<h2>.NET Library<a class="headerlink" href="#net-library" title="Permalink to this headline">¶</a></h2>
+<p>This project is a .NET library, written in C# language, that simplifies
+the integration of C#, Visual Basic .NET, C++/CLI and JScript .NET
+applications with following scanner series: * RF627-old * RF627-smart</p>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 41%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Platform</p></th>
+<th class="head"><p>64bit</p></th>
+<th class="head"><p>Dependencies (x64)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>.NET Framework 4.5 (or above)</p></td>
+<td><p><a class="reference external" href="/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll">rf62Xsdk.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll">rf62Xcore.dll</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h3>How to compile<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>RF62X SDK (C#) can be built in an Visual Studio IDE.
+Firstly, you should download the project (if you have already done it, skip next commands)</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+<span class="k">cd</span> RF62X-SDK
+git submodule update --init --recursive
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>for more information about project downloading steps, see an <a class="reference external" href="#overview">overview</a></p>
+</div>
+<div class="section" id="id2">
+<h4>Visual Studio<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>To build the code:</p>
+<ul class="simple">
+<li><p>Open rf62Xsdk.sln from the <strong>wrappers/csharp/VS2019/rf62Xsdk</strong> folder
+with Visual Studio</p></li>
+<li><p>Compile</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>How to use<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Beside the examples below, you may want to check the documentation where
+each function contains a separate code example. All example project can
+be compiled and executed.</p>
+<p>You can open and build these examples by <strong>Visual Studio</strong>:</p>
+<ul class="simple">
+<li><p>Open <strong>RF627_TESTS.sln</strong> from the
+<strong>wrappers/csharp/VS2019/RF627_TESTS</strong> folder with Visual Studio</p></li>
+<li><p>Select <strong>x64 Debug</strong> or <strong>x64 Release</strong> target platform</p></li>
+<li><p>Add the <strong>rf62Xsdk.dll</strong> library to project’s <strong>references</strong></p></li>
+<li><p>Copy the <strong>rf62Xcore.dll</strong> into the path of the project executable
+(<strong>../bin/x64/Debug/</strong> or <strong>../bin/x64/Release/</strong>)</p></li>
+<li><p>Compile project</p></li>
+</ul>
+<div class="section" id="id4">
+<h4>Search for RF62X devices<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<p>Here are some examples how to use search methods</p>
+<div class="section" id="id5">
+<h5>Search for RF627-old devices over network by service protocol<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">RF627_search</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+
+            <span class="c1">// Start initialization of the library core</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkInit</span><span class="p">();</span>
+
+            <span class="c1">// Print return rf62X sdk version</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Current rf62X sdk version: {0}&quot;</span><span class="p">,</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkVersion</span><span class="p">());</span>
+
+
+            <span class="c1">// Search for RF627old devices over network</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;- Start searching device&quot;</span><span class="p">);</span>
+            <span class="n">List</span><span class="p">&lt;</span><span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">&gt;</span> <span class="n">Scanners</span> <span class="p">=</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">.</span><span class="n">Search</span><span class="p">();</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;+ {0} scanners detected&quot;</span><span class="p">,</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h4>Get Profile from RF62X devices<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>Here are some examples how to use get profile methods</p>
+<div class="section" id="id7">
+<h5>Get Profile from RF627-old devices over network by service protocol<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">RF627_profile</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+
+            <span class="c1">// Start initialization of the library core</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkInit</span><span class="p">();</span>
+
+
+            <span class="c1">// Search for RF627old devices over network</span>
+            <span class="n">List</span><span class="p">&lt;</span><span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">&gt;</span> <span class="n">Scanners</span> <span class="p">=</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">.</span><span class="n">Search</span><span class="p">();</span>
+
+
+            <span class="c1">// foreach over an scanners list</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+            <span class="p">{</span>
+                <span class="c1">// Establish connection to the RF627 device</span>
+                <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Connect</span><span class="p">();</span>
+
+
+                <span class="c1">//Receive profile</span>
+                <span class="n">RF62X</span><span class="p">.</span><span class="n">Profile</span> <span class="n">profile</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetProfile</span><span class="p">();</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="n">header</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+                    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Received profile successfully);</span>
+                <span class="k">else</span>
+                    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Profile is null&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h4>Get/Set RF62X-old parameters<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<p>Here are some examples how to work with device’s parameters</p>
+<div class="section" id="id9">
+<h5>Get/Set RF627-old parameters devices over network<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">RF627_params</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
+
+            <span class="c1">// Start initialization of the library core</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkInit</span><span class="p">();</span>
+
+
+            <span class="c1">// Search for RF627old devices over network</span>
+            <span class="n">List</span><span class="p">&lt;</span><span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">&gt;</span> <span class="n">Scanners</span> <span class="p">=</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">.</span><span class="n">Search</span><span class="p">();</span>
+
+
+            <span class="c1">// foreach over an scanners list</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+            <span class="p">{</span>
+                <span class="c1">// Establish connection to the RF627 device</span>
+                <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Connect</span><span class="p">();</span>
+
+
+                <span class="c1">// Try to read params</span>
+                <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ReadParams</span><span class="p">();</span>
+
+
+                <span class="c1">// Get scanner&#39;s name</span>
+                <span class="n">RF62X</span><span class="p">.</span><span class="n">Param</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">deviceName</span> <span class="p">=</span>
+                        <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetParam</span><span class="p">(</span><span class="n">RF62X</span><span class="p">.</span><span class="n">Params</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">General</span><span class="p">.</span><span class="n">deviceName</span><span class="p">);</span>
+
+
+                <span class="c1">// Set new scanner&#39;s name and write changed parameters to scanner</span>
+                <span class="n">deviceName</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="s">&quot;New Name&quot;</span><span class="p">);</span>
+                <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">SetParam</span><span class="p">(</span><span class="n">deviceName</span><span class="p">);</span>
+
+
+                <span class="c1">// Send command to scanner to write changed parameters</span>
+                <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">WriteParams</span><span class="p">();</span>
+
+
+                <span class="c1">// Check that the parameter is set correctly</span>
+                <span class="c1">// Read again all params from RF627 device.</span>
+                <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ReadParams</span><span class="p">();</span>
+
+
+                <span class="c1">// Get scanner&#39;s name</span>
+                <span class="n">RF62X</span><span class="p">.</span><span class="n">Param</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">newDeviceName</span> <span class="p">=</span>
+                        <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetParam</span><span class="p">(</span><span class="n">RF62X</span><span class="p">.</span><span class="n">Params</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">General</span><span class="p">.</span><span class="n">deviceName</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">newDeviceName</span><span class="p">.</span><span class="n">GetValue</span><span class="p">()</span> <span class="p">==</span> <span class="s">&quot;New Name&quot;</span><span class="p">)</span>
+                    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Changed parameters write successfully&quot;</span><span class="p">);</span>
+                <span class="k">else</span>
+                    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Error changing parameters&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="rf62X_core.html" class="btn btn-neutral float-left" title="RF62X Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Vladislav Kuzmin
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
