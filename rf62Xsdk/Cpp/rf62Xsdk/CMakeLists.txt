@@ -16,15 +16,21 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Enabling export of all symbols to create a dynamic library
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+# creating output directory architecture in accordance with GNU guidelines
+set(BINARY_DIR "${CMAKE_BINARY_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BINARY_DIR}/lib")
+
 # set rf627core path variable
 set(RF62XCORE_DIR "../../../rf62Xcore")
 
 # add subdirectory of rf627core lib
-add_subdirectory(${RF62XCORE_DIR} CMAKE_CURRENT_SOURCE_DIR)
+add_subdirectory(${RF62XCORE_DIR} rf62Xcore)
 
 # create glob files for *.h, *.cpp
-file (GLOB H_FILES   ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
-file (GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file (GLOB H_FILES   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
+file (GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 # concatenate the results (glob files) to variable
 set  (SOURCES ${CPP_FILES} ${H_FILES})
 
@@ -37,7 +43,7 @@ add_library(${PROJECT_NAME} STATIC ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/
     )
 
 target_link_libraries(${PROJECT_NAME} rf62Xcore)

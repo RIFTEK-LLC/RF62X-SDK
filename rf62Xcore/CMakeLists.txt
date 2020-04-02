@@ -19,19 +19,19 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 # create glob files for *.h, *.c
 file(GLOB C_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/endian_conv/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/custom_vector/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/custom_string/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/platform_methods/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/protocols/rf627protocol/*.c
     )
 file(GLOB H_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/endian_conv/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/custom_vector/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/custom_string/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/platform_methods/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/protocols/rf627protocol/*.h
     )
 # concatenate the results (glob files) to variable
 set  (SOURCES ${C_FILES} ${H_FILES})
@@ -41,17 +41,17 @@ set  (SOURCES ${C_FILES} ${H_FILES})
 ## TARGET
 ## create target and add include path
 ##
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/endian_conv/
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_vector/
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/custom_string/
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/utils/platform_methods/
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/protocols/rf627protocol/
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/endian_conv/
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/custom_vector/
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/custom_string/
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/utils/platform_methods/
+    ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/protocols/rf627protocol/
     )
 
 
