@@ -70,9 +70,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="rf62Xsdk">
-      <HintPath>..\..\..\..\..\..\wrappers\csharp\VS2019\rf62Xsdk\rf62Xsdk\bin\x64\Release\rf62Xsdk.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -100,6 +97,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\rf62Xsdk\CSharp\rf62Xsdk\rf62Xsdk\rf62Xsdk.csproj">
+      <Project>{5f966733-8e45-4844-8d56-5397a76f3edd}</Project>
+      <Name>rf62Xsdk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
