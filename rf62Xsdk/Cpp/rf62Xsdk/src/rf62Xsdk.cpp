@@ -13,6 +13,7 @@ extern "C"{
 #include <winsock.h>
 #else
 #include <arpa/inet.h>
+typedef int BOOL;
 #endif
 
 
@@ -971,8 +972,7 @@ bool rf627old::send_cmd(const char* command_name, ...)
 
     command_t cmd = {0};
     cmd.name = command_name;
-    cmd.arg_list = valist;
-
+    va_copy (cmd.arg_list, valist);
 
     int arg3 = va_arg(valist, int);
     int arg4 = va_arg(valist, int);

@@ -49,8 +49,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 target_link_libraries(${PROJECT_NAME} rf62Xcore)
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} ws2_32)
+    target_link_libraries(${PROJECT_NAME} iphlpapi)
 endif(MINGW)
-target_link_libraries(${PROJECT_NAME} iphlpapi)
+
+
 
 
 ##
