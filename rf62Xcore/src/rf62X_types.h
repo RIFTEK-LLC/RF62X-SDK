@@ -4,6 +4,7 @@
 
 #include "platform_types.h"
 #include <stddef.h>
+#include <stdarg.h>
 
 
 typedef struct{
