@@ -520,7 +520,7 @@ namespace SDK
             private struct valuesEnum_t
             {
                 public int recCount;
-                public enumRec_t* rec;
+                public enumRec_t rec;
             };
 
             [StructLayout(LayoutKind.Sequential, Pack = 8)]
@@ -821,7 +821,7 @@ namespace SDK
             [DllImport("rf62Xcore.dll")]
             private static extern byte disconnect_from_scanner(scanner_base_t* device, PROTOCOLS_TYPES protocol);
             [DllImport("rf62Xcore.dll")]
-            private static extern rf627_profile_t* get_profile_from_scanner(scanner_base_t* device, PROTOCOLS_TYPES protocol);
+            private static extern rf627_profile_t* get_profile2D_from_scanner(scanner_base_t* device, bool zero_points, PROTOCOLS_TYPES protocol);
             [DllImport("rf62Xcore.dll")]
             private static extern rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner);
             [DllImport("rf62Xcore.dll")]
@@ -932,7 +932,7 @@ namespace SDK
                     {
                         public static Description deviceState { get; } = new Description()
                         {
-                            Key = "user_general_deviceName",
+                            Key = "user_general_deviceState",
                             Type = "uint32_t"
                         };
                         public static Description deviceName { get; } = new Description()
@@ -1169,22 +1169,22 @@ namespace SDK
                         public static Description ip { get; } = new Description()
                         {
                             Key = "user_network_ip",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
                         public static Description mask { get; } = new Description()
                         {
                             Key = "user_network_mask",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
                         public static Description gateway { get; } = new Description()
                         {
                             Key = "user_network_gateway",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
                         public static Description hostIP { get; } = new Description()
                         {
                             Key = "user_network_hostIP",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
                         public static Description hostPort { get; } = new Description()
                         {
@@ -1377,7 +1377,7 @@ namespace SDK
                         public static Description samples { get; } = new Description()
                         {
                             Key = "user_input1_samples",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
 
                         //public static Description delay { get; } = new Description()
@@ -1407,7 +1407,7 @@ namespace SDK
                         public static Description samples { get; } = new Description()
                         {
                             Key = "user_input2_samples",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
                         //public static Description inverse { get; } = new Description()
                         //{
@@ -1431,7 +1431,7 @@ namespace SDK
                         public static Description samples { get; } = new Description()
                         {
                             Key = "user_input3_samples",
-                            Type = "u32_arr_t"
+                            Type = "uint32_t"
                         };
                     }
 
@@ -1601,6 +1601,126 @@ namespace SDK
                         };
                     }
                 }
+
+                public static List<Description> GetParamsDescriptionList()
+                {
+                    List<Description> list = new List<Description>();
+
+                    list.Add(User.General.deviceName);
+                    list.Add(User.General.deviceState);
+                    list.Add(User.General.saveLog);
+
+                    list.Add(User.SysMon.fpgaTemp);
+                    list.Add(User.SysMon.paramsChanged);
+                    list.Add(User.SysMon.tempSens00);
+                    list.Add(User.SysMon.tempSens00Max);
+                    list.Add(User.SysMon.tempSens00Min);
+                    list.Add(User.SysMon.tempSens01);
+                    list.Add(User.SysMon.tempSens01Max);
+                    list.Add(User.SysMon.tempSens01Min);
+                    list.Add(User.SysMon.tempSens10);
+                    list.Add(User.SysMon.tempSens10Max);
+                    list.Add(User.SysMon.tempSens10Min);
+                    list.Add(User.SysMon.tempSens11);
+                    list.Add(User.SysMon.tempSens11Max);
+                    list.Add(User.SysMon.tempSens11Min);
+
+                    list.Add(User.Sensor.doubleSpeedEnabled);
+                    list.Add(User.Sensor.edrColumnDivider);
+                    list.Add(User.Sensor.edrType);
+                    list.Add(User.Sensor.exposureControl);
+                    list.Add(User.Sensor.framerate);
+                    list.Add(User.Sensor.maxExposure);
+                    list.Add(User.Sensor.maxFramerate);
+                    list.Add(User.Sensor.syncSource);
+                    list.Add(User.Sensor.user_sensor_exposure1);
+                    list.Add(User.Sensor.user_sensor_exposure2);
+                    list.Add(User.Sensor.user_sensor_exposure3);
+                    list.Add(User.Sensor.user_sensor_exposure4);
+
+                    list.Add(User.Roi.active);
+                    list.Add(User.Roi.enable);
+                    list.Add(User.Roi.maxPos);
+                    list.Add(User.Roi.pos);
+                    list.Add(User.Roi.posMode);
+                    list.Add(User.Roi.reqProfSize);
+                    list.Add(User.Roi.size);
+
+                    list.Add(User.NetWork.autoNeg);
+                    list.Add(User.NetWork.gateway);
+                    list.Add(User.NetWork.hostIP);
+                    list.Add(User.NetWork.hostPort);
+                    list.Add(User.NetWork.ip);
+                    list.Add(User.NetWork.mask);
+                    list.Add(User.NetWork.requiredSpeed);
+
+                    list.Add(User.Streams.format);
+                    list.Add(User.Streams.includeIntensity);
+                    list.Add(User.Streams.pointsCount);
+                    list.Add(User.Streams.udpEnable);
+
+                    list.Add(User.Processing.bilateralMode);
+                    list.Add(User.Processing.flip);
+                    list.Add(User.Processing.medianMode);
+                    list.Add(User.Processing.peakMode);
+                    list.Add(User.Processing.profPerSec);
+                    list.Add(User.Processing.threshold);
+
+                    list.Add(User.Laser.enabled);
+                    list.Add(User.Laser.params_mask);
+                    list.Add(User.Laser.preset);
+                    list.Add(User.Laser.value);
+
+                    list.Add(User.Trigger.Counter.maxValue);
+                    list.Add(User.Trigger.Counter.maxValueEnabled);
+                    list.Add(User.Trigger.Counter.resetTimerEnabled);
+                    list.Add(User.Trigger.Counter.resetTimerValue);
+                    list.Add(User.Trigger.Counter.type);
+                    list.Add(User.Trigger.Counter.value);
+
+                    list.Add(User.Trigger.Sync.delay);
+                    list.Add(User.Trigger.Sync.divider);
+                    list.Add(User.Trigger.Sync.source);
+                    list.Add(User.Trigger.Sync.strictEnabled);
+
+                    list.Add(User.Inputs1.enabled);
+                    list.Add(User.Inputs1.mode);
+                    list.Add(User.Inputs1.samples);
+
+                    list.Add(User.Inputs2.enabled);
+                    list.Add(User.Inputs2.mode);
+                    list.Add(User.Inputs2.samples);
+
+                    list.Add(User.Inputs3.enabled);
+                    list.Add(User.Inputs3.mode);
+                    list.Add(User.Inputs3.samples);
+
+                    list.Add(User.Outputs1.enabled);
+                    list.Add(User.Outputs1.mode);
+                    list.Add(User.Outputs1.pulseWidth);
+
+                    list.Add(User.Outputs2.enabled);
+                    list.Add(User.Outputs2.mode);
+                    list.Add(User.Outputs2.pulseWidth);
+
+                    list.Add(User.Dump.capacity);
+                    list.Add(User.Dump.enabled);
+                    list.Add(User.Dump.size);
+                    list.Add(User.Dump.timeStamp);
+
+                    list.Add(User.Dump.View3D.decimation);
+                    list.Add(User.Dump.View3D.motionType);
+                    list.Add(User.Dump.View3D.paintMode);
+                    list.Add(User.Dump.View3D.ySource);
+                    list.Add(User.Dump.View3D.yStep);
+
+                    list.Add(User.Compatibility.rf625Enabled);
+                    list.Add(User.Compatibility.rf625TCPPort);
+
+                    return list;
+
+                }
+
             }
 
             public enum SCANNERS_TYPES
@@ -1958,8 +2078,8 @@ namespace SDK
 
 
 
-                                rf627_profile_t* profile_from_scanner = get_profile_from_scanner(
-                                            (scanner_base_t*)_base, PROTOCOLS_TYPES.SERVICE_PROTOKOL);
+                                rf627_profile_t* profile_from_scanner = get_profile2D_from_scanner(
+                                            (scanner_base_t*)_base, false, PROTOCOLS_TYPES.SERVICE_PROTOKOL);
 
                                 if (profile_from_scanner->rf627_profile != null)
                                 {
@@ -2008,174 +2128,174 @@ namespace SDK
                     Marshal.Copy(bytes, 0, unmanagedPointer, bytes.Length);
 
                     parameter_t* param = get_parameter((scanner_base_t*)_base, (byte*)unmanagedPointer);
+                    if (param != null)
+                        switch (Marshal.PtrToStringAnsi((IntPtr)param->_base.type))
+                        {
+                            case "unkn_t":
+                                {
+                                    break;
+                                }
+                            case "uint32_t":
+                                {
+                                    List<Param<uint>.ValuesEnum> valEnum = new List<Param<uint>.ValuesEnum>();
+                                    if (param->val_uint->enumValues != null)
+                                        for (int i = 0; i < param->val_uint->enumValues->recCount; i++)
+                                            valEnum.Add(
+                                                new Param<uint>.ValuesEnum(
+                                                    (uint)param->val_uint->enumValues->rec.value,
+                                                    Marshal.PtrToStringAnsi((IntPtr)param->val_uint->enumValues->rec.key)));
 
-                    switch (Marshal.PtrToStringAnsi((IntPtr)param->_base.type))
-                    {
-                        case "unkn_t":
-                            {
-                                break;
-                            }
-                        case "uint32_t":
-                            {
-                                List<Param<uint>.ValuesEnum> valEnum = new List<Param<uint>.ValuesEnum>();
-                                if (param->val_uint->enumValues != null)
-                                    for (int i = 0; i < param->val_uint->enumValues->recCount; i++)
-                                        valEnum.Add(
-                                            new Param<uint>.ValuesEnum(
-                                                (uint)param->val_uint->enumValues->rec->value,
-                                                Marshal.PtrToStringAnsi((IntPtr)param->val_uint->enumValues->rec->key)));
+                                    Param<uint> result = new Param<uint>(
+                                        param,
+                                        param->val_uint->min,
+                                        param->val_uint->max,
+                                        1,
+                                        1,
+                                        param->val_uint->defValue,
+                                        valEnum,
+                                        param->val_uint->step,
+                                        param->val_uint->value);
+                                    return result;
+                                    break;
+                                }
+                            case "uint64_t":
+                                {
+                                    List<Param<ulong>.ValuesEnum> valEnum = new List<Param<ulong>.ValuesEnum>();
+                                    if (param->val_uint64->enumValues != null)
+                                        for (int i = 0; i < param->val_uint64->enumValues->recCount; i++)
+                                            valEnum.Add(
+                                                new Param<ulong>.ValuesEnum(
+                                                    (ulong)param->val_uint64->enumValues->rec.value,
+                                                    Marshal.PtrToStringAnsi((IntPtr)param->val_uint64->enumValues->rec.key)));
 
-                                Param<uint> result = new Param<uint>(
-                                    param,
-                                    param->val_uint->min,
-                                    param->val_uint->max,
-                                    1,
-                                    1,
-                                    param->val_uint->defValue,
-                                    valEnum,
-                                    param->val_uint->step,
-                                    param->val_uint->value);
-                                return result;
-                                break;
-                            }
-                        case "uint64_t":
-                            {
-                                List<Param<ulong>.ValuesEnum> valEnum = new List<Param<ulong>.ValuesEnum>();
-                                if (param->val_uint64->enumValues != null)
-                                    for (int i = 0; i < param->val_uint64->enumValues->recCount; i++)
-                                        valEnum.Add(
-                                            new Param<ulong>.ValuesEnum(
-                                                (ulong)param->val_uint64->enumValues->rec->value,
-                                                Marshal.PtrToStringAnsi((IntPtr)param->val_uint64->enumValues->rec->key)));
+                                    Param<ulong> result = new Param<ulong>(
+                                        param,
+                                        param->val_uint64->min,
+                                        param->val_uint64->max,
+                                        1,
+                                        1,
+                                        param->val_uint64->defValue,
+                                        valEnum,
+                                        param->val_uint64->step,
+                                        param->val_uint64->value);
+                                    break;
+                                }
+                            case "int32_t":
+                                {
+                                    List<Param<int>.ValuesEnum> valEnum = new List<Param<int>.ValuesEnum>();
+                                    if (param->val_int->enumValues != null)
+                                        for (int i = 0; i < param->val_int->enumValues->recCount; i++)
+                                            valEnum.Add(
+                                                new Param<int>.ValuesEnum(
+                                                    (int)param->val_int->enumValues->rec.value,
+                                                    Marshal.PtrToStringAnsi((IntPtr)param->val_int->enumValues->rec.key)));
 
-                                Param<ulong> result = new Param<ulong>(
-                                    param,
-                                    param->val_uint64->min,
-                                    param->val_uint64->max,
-                                    1,
-                                    1,
-                                    param->val_uint64->defValue,
-                                    valEnum,
-                                    param->val_uint64->step,
-                                    param->val_uint64->value);
-                                break;
-                            }
-                        case "int32_t":
-                            {
-                                List<Param<int>.ValuesEnum> valEnum = new List<Param<int>.ValuesEnum>();
-                                if (param->val_int->enumValues != null)
-                                    for (int i = 0; i < param->val_int->enumValues->recCount; i++)
-                                        valEnum.Add(
-                                            new Param<int>.ValuesEnum(
-                                                (int)param->val_int->enumValues->rec->value,
-                                                Marshal.PtrToStringAnsi((IntPtr)param->val_int->enumValues->rec->key)));
+                                    Param<int> result = new Param<int>(
+                                        param,
+                                        param->val_int->min,
+                                        param->val_int->max,
+                                        1,
+                                        1,
+                                        param->val_int->defValue,
+                                        valEnum,
+                                        param->val_int->step,
+                                        param->val_int->value);
+                                    return result;
+                                    break;
+                                }
+                            case "int64_t":
+                                {
+                                    List<Param<long>.ValuesEnum> valEnum = new List<Param<long>.ValuesEnum>();
+                                    if (param->val_int64->enumValues != null)
+                                        for (int i = 0; i < param->val_int64->enumValues->recCount; i++)
+                                            valEnum.Add(
+                                                new Param<long>.ValuesEnum(
+                                                    (long)param->val_int64->enumValues->rec.value,
+                                                    Marshal.PtrToStringAnsi((IntPtr)param->val_int64->enumValues->rec.key)));
 
-                                Param<int> result = new Param<int>(
-                                    param,
-                                    param->val_int->min,
-                                    param->val_int->max,
-                                    1,
-                                    1,
-                                    param->val_int->defValue,
-                                    valEnum,
-                                    param->val_int->step,
-                                    param->val_int->value);
-                                return result;
-                                break;
-                            }
-                        case "int64_t":
-                            {
-                                List<Param<long>.ValuesEnum> valEnum = new List<Param<long>.ValuesEnum>();
-                                if (param->val_int64->enumValues != null)
-                                    for (int i = 0; i < param->val_int64->enumValues->recCount; i++)
-                                        valEnum.Add(
-                                            new Param<long>.ValuesEnum(
-                                                (long)param->val_int64->enumValues->rec->value,
-                                                Marshal.PtrToStringAnsi((IntPtr)param->val_int64->enumValues->rec->key)));
-
-                                Param<long> result = new Param<long>(
-                                    param,
-                                    param->val_int64->min,
-                                    param->val_int64->max,
-                                    1,
-                                    1,
-                                    param->val_int64->defValue,
-                                    valEnum,
-                                    param->val_int64->step,
-                                    param->val_int64->value);
-                                break;
-                            }
-                        case "float_t":
-                            {
-                                Param<float> result = new Param<float>(
-                                    param,
-                                    param->val_flt->min,
-                                    param->val_flt->max,
-                                    1,
-                                    1,
-                                    param->val_flt->defValue,
-                                    null,
-                                    param->val_flt->step,
-                                    param->val_flt->value);
-                                break;
-                            }
-                        case "double_t":
-                            {
-                                Param<double> result = new Param<double>(
-                                    param,
-                                    param->val_dbl->min,
-                                    param->val_dbl->max,
-                                    1,
-                                    1,
-                                    param->val_dbl->defValue,
-                                    null,
-                                    param->val_dbl->step,
-                                    param->val_dbl->value);
-                                break;
-                            }
-                        case "u32_arr_t":
-                            {
-                                break;
-                            }
-                        case "u64_arr_t":
-                            {
-                                break;
-                            }
-                        case "i32_arr_t":
-                            {
-                                break;
-                            }
-                        case "i64_arr_t":
-                            {
-                                break;
-                            }
-                        case "flt_array_t":
-                            {
-                                break;
-                            }
-                        case "dbl_array_t":
-                            {
-                                break;
-                            }
-                        case "string_t":
-                            {
-                                Param<string> result = new Param<string>(
-                                    param,
-                                    "0",
-                                    param->val_str->maxLen.ToString(),
-                                    1,
-                                    1,
-                                    Marshal.PtrToStringAnsi((IntPtr)(param->val_str->defValue)),
-                                    null,
-                                    "",
-                                    Marshal.PtrToStringAnsi((IntPtr)(param->val_str->value)));
-                                return result;
-                            }
-                        default:
-                            {
-                                return null;
-                            }
-                    }
+                                    Param<long> result = new Param<long>(
+                                        param,
+                                        param->val_int64->min,
+                                        param->val_int64->max,
+                                        1,
+                                        1,
+                                        param->val_int64->defValue,
+                                        valEnum,
+                                        param->val_int64->step,
+                                        param->val_int64->value);
+                                    break;
+                                }
+                            case "float_t":
+                                {
+                                    Param<float> result = new Param<float>(
+                                        param,
+                                        param->val_flt->min,
+                                        param->val_flt->max,
+                                        1,
+                                        1,
+                                        param->val_flt->defValue,
+                                        null,
+                                        param->val_flt->step,
+                                        param->val_flt->value);
+                                    break;
+                                }
+                            case "double_t":
+                                {
+                                    Param<double> result = new Param<double>(
+                                        param,
+                                        param->val_dbl->min,
+                                        param->val_dbl->max,
+                                        1,
+                                        1,
+                                        param->val_dbl->defValue,
+                                        null,
+                                        param->val_dbl->step,
+                                        param->val_dbl->value);
+                                    break;
+                                }
+                            case "u32_arr_t":
+                                {
+                                    break;
+                                }
+                            case "u64_arr_t":
+                                {
+                                    break;
+                                }
+                            case "i32_arr_t":
+                                {
+                                    break;
+                                }
+                            case "i64_arr_t":
+                                {
+                                    break;
+                                }
+                            case "flt_array_t":
+                                {
+                                    break;
+                                }
+                            case "dbl_array_t":
+                                {
+                                    break;
+                                }
+                            case "string_t":
+                                {
+                                    Param<string> result = new Param<string>(
+                                        param,
+                                        "0",
+                                        param->val_str->maxLen.ToString(),
+                                        1,
+                                        1,
+                                        Marshal.PtrToStringAnsi((IntPtr)(param->val_str->defValue)),
+                                        null,
+                                        "",
+                                        Marshal.PtrToStringAnsi((IntPtr)(param->val_str->value)));
+                                    return result;
+                                }
+                            default:
+                                {
+                                    return null;
+                                }
+                        }
 
                     return null;
 
