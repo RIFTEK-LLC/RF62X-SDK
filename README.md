@@ -27,7 +27,7 @@
 
 ## OVERVIEW
 
-**RF627X SDK** is a library that supports rapid development of software that deals with scanners series RF62X (RF627-old, RF627-smart).
+**RF62X SDK** is a library that supports rapid development of software that deals with scanners series RF62X (RF627-old, RF627-smart).
 
 The RF627X SDK consist of two parts:
 *  **RF62X CORE** is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
@@ -55,7 +55,7 @@ This project uses [git](http://git-scm.com/) for source code management and [Git
 ## GETTING STARTED
 
 **For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).\
-**For others** who want to ~~go through hell~~ do their life more interesting and **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
+**For others** who want to **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
 
 ### Installing software
 
@@ -87,7 +87,7 @@ Here a basic example how to use method for searching RF62X devices in different 
 You can create a new project yourself or you can just open an existing project example and build it.
 #### Compiling examples in C++ from source
 ##### 1) Open and compile examples project in **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **samples/Cpp/RF627_TESTS** folder via 
+*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_TESTS** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 
 ![](/uploads/78032febfdfd6b2954b93ff3cfac2967/Аннотация_2020-03-10_153146.jpg)
@@ -101,7 +101,7 @@ You can create a new project yourself or you can just open an existing project e
 ##### 2) Generate a project for **Visual Studio** and compile examples
 *  Generate Visual Studio solution by calling CMake from the console
 ```bash
-cd samples/Cpp/RF627_TESTS
+cd examples/Cpp/RF627_TESTS
 mkdir build
 cd build
 
@@ -281,7 +281,7 @@ git submodule update --init --recursive
 To build the С++ wrapper:
 
 ```bash
-cd wrappers/cpp/CMake/rf62Xsdk
+cd rf62Xsdk/Cpp/rf62Xsdk
 cmake .
 cmake --build . 
 ```
@@ -297,7 +297,7 @@ To build the code:
 To build the code:
 
 ```bash
-cd wrappers/cpp/CMake/rf62Xsdk
+cd rf62Xsdk/Cpp/rf62Xsdk
 cmake .
 ```
 *  Open rf62Xsdk.sln with Visual Studio
@@ -494,7 +494,7 @@ git submodule update --init --recursive
 ###### Visual Studio
 To build the code:
 
-*  Open rf62Xsdk.sln from the **wrappers/csharp/VS2019/rf62Xsdk** folder with Visual Studio
+*  Open rf62Xsdk.sln from the **rf62Xsdk/CSharp/rf62Xsdk** folder with Visual Studio
 *  Compile
 
 #### HOW TO USE
@@ -502,7 +502,7 @@ Beside the examples below, you may want to check the documentation where each fu
 contains a separate code example. All example project can be compiled and executed.
 
 You can open and build these examples by **Visual Studio**:  
-*  Open **RF627_TESTS.sln** from the **wrappers/csharp/VS2019/RF627_TESTS** folder with Visual Studio
+*  Open **RF627_TESTS.sln** from the **examples/CSharp/RF627_TESTS** folder with Visual Studio
 *  Select **x64 Debug** or **x64 Release** target platform
 *  Add the **rf62Xsdk.dll** library to project's **references** 
 *  Copy the **rf62Xcore.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
