@@ -25,6 +25,6 @@ add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)
 # add subdirectories of examples
 add_subdirectory(RF627_search)
 #add_subdirectory(RF627_profile)
-#add_subdirectory(RF627_params)
+add_subdirectory(RF627_params)
 
 

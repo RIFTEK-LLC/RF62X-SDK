@@ -828,7 +828,7 @@ parameter_t* create_parameter_from_type(std::string type)
     if (type == pvtKey[PVT_UINT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
-        p->val_uint = (value_uint32_t*)calloc(1, sizeof (value_uint32_t));
+        p->val_uint = (value_uint32_t*)calloc(1, sizeof (p->val_uint));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT_PARAM_TYPE].c_str();
     }else if (type == pvtKey[PVT_UINT64])
     {

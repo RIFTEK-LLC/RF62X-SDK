@@ -34,71 +34,26 @@ int main()
         scanners[i]->read_params();
 
         // Get parameter by it's name from last read
-        param_t* param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
-        if (param->type == param_value_types[STRING_PARAM_TYPE])
+        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
+        if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
         {
-            std::cout << param->get_value<value_str>() << std::endl;
+            std::cout << ip_addr->get_value<value_uint32>();
+        }
+
+        // Get parameter by it's name from last read
+        param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
+        if (name->type == param_value_types[(int)PARAM_VALUE_TYPE::STRING_PARAM_TYPE])
+        {
+            std::cout << name->get_value<value_str>() << std::endl;
 
             // set new scanner's name and write changed parameters to scanner
-            param->set_value<value_str>("Test Name");
-            scanners[i]->set_param(param);
+            name->set_value<value_str>("Test Name");
+            scanners[i]->set_param(name);
             scanners[i]->write_params();
         }
 
-        // Check that the parameter is set correctly
-        // Read again all params from RF627 device by Service Protocol.
-        scanners[i]->read_params();
 
-        // Get device name
-        param = scanners[i]->get_param(USER_GENERAL_DEVICENAME);
-        if (param->get_value<value_str>() == "Test Name")
-            std::cout << "Changed parameters write successfully" << std::endl;
-        else std::cout << "Error changing parameters" << std::endl;
-
-
-//           for(size_t j = 0; j < parameter_names->size(); j++)
-//           {
-//               // Get parameter by it's name from last read
-//               a = list[i]->get_param(parameter_names[j]);
-//               if (a->type == pvtKey[PVT_STRING])
-//               {
-//                   std::cout << a->get_value<value_str_t>() << std::endl;
-//               a->set_value<value_str_t>("test");
-//               list[i]->set_param(a);
-//               a = list[i]->get_param(parameter_names[j]);
-//               list[i]->write_params();
-//               }
-
-
-//               std::cout << parameter_names[j] << " ";
-//               if(a != nullptr)
-//               {
-//                   if (a->type == pvtKey[PVT_STRING])
-//                       std::cout << a->get_value<value_str_t>() << std::endl;
-//                   else
-//                       if (a->type == pvtKey[PVT_INT])
-//                           std::cout << a->get_value<value_int32_t>() << std::endl;
-//                       else
-//                           if (a->type == pvtKey[PVT_INT64])
-//                               std::cout << a->get_value<value_int64_t>() << std::endl;
-//                           else
-//                               if (a->type == pvtKey[PVT_UINT])
-//                                   std::cout << a->get_value<value_uint32_t>() << std::endl;
-//                               else
-//                                   if (a->type == pvtKey[PVT_UINT64])
-//                                       std::cout << a->get_value<value_uint64_t>() << std::endl;
-//                                   else
-//                                       if (a->type == pvtKey[PVT_FLOAT])
-//                                           std::cout << a->get_value<value_flt_t>() << std::endl;
-//                                       else
-//                                           if (a->type == pvtKey[PVT_DOUBLE])
-//                                               std::cout << a->get_value<value_dbl_t>() << std::endl;
-//               }else
-//               {
-//                   std::cout << "null" << std::endl;
-//               }
-//           }
-       }
+    }
 
 }
 
