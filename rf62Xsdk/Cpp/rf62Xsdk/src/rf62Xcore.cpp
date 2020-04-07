@@ -7,6 +7,7 @@ extern "C"{
 }
 
 #ifdef _WIN32
+#include <Ws2tcpip.h>
 #include <winsock.h>
 #else
 #include <string.h>
@@ -140,7 +141,7 @@ memory_platform_dependent_methods_t memory_methods = {
  */
 rfInt platform_printf(const rfChar* msg, ...)
 {
-    return printf(msg);
+    return printf("%s", msg);
 }
 
 
@@ -202,11 +203,49 @@ rfUint16 platform_ntohs(rfUint16 netshort)
  * - On success: If no error occurs, modbusCreateTcpSocket_t returns a descriptor referencing the new socket
  * - On error: NULL
  */
-void* platform_create_socket(rfInt32 af, rfInt32 type, rfInt32 protocol)
+void* platform_create_udp_socket()
 {
     SOCKET* s = new SOCKET;
-    *s = socket(af, type, protocol);
+    *s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     return (void*)*s;
+}
+
+/** @brief Pointer to the function that sets a socket option.
+ *
+ * @param socket - A descriptor that identifies a socket.
+ * @param level - The level at which the option is defined.
+ * @param optname - The socket option for which the value is to be set.
+ * @param optval - A pointer to the buffer in which the value for the requested option is specified.
+ * @param optlen - The size, in bytes, of the buffer pointed to by the optval parameter.
+ *  @return
+ * - On success: If no error occurs, modbusSetSocketOption_t returns zero
+ * - On error: -1
+ */
+rfInt8 platform_set_broadcast_socket_option(void* socket)
+{
+    int nret = 1;
+    std::size_t address = reinterpret_cast<std::size_t>(socket);
+    int ret = setsockopt(address, SOL_SOCKET, SO_BROADCAST, (char*)&nret, sizeof(nret));
+    return ret;
+}
+
+/** @brief Pointer to the function that sets a socket option.
+ *
+ * @param socket - A descriptor that identifies a socket.
+ * @param level - The level at which the option is defined.
+ * @param optname - The socket option for which the value is to be set.
+ * @param optval - A pointer to the buffer in which the value for the requested option is specified.
+ * @param optlen - The size, in bytes, of the buffer pointed to by the optval parameter.
+ *  @return
+ * - On success: If no error occurs, modbusSetSocketOption_t returns zero
+ * - On error: -1
+ */
+rfInt8 platform_set_reuseaddr_socket_option(void* socket)
+{
+    int nret = 1;
+    std::size_t address = reinterpret_cast<std::size_t>(socket);
+    int ret = setsockopt(address, SOL_SOCKET, SO_REUSEADDR, (char*)&nret, sizeof(nret));
+    return ret;
 }
 
 /** @brief Pointer to the function that sets a socket option.
@@ -277,11 +316,15 @@ rfUint8 platform_socket_connect(
  * - On success: If no error occurs, modbusSocketBind_t returns zero
  * - On error: -1
  */
-rfUint8 platform_socket_bind(
-        void* socket, rf_sockaddr_in* name, rfInt32 namelen)
+rfInt platform_socket_bind(
+        void* socket, rfUint32 ip_addr, rfUint16 port)
 {
     std::size_t address = reinterpret_cast<std::size_t>(socket);
-    return bind(address, (sockaddr*)name, namelen);
+    sockaddr_in addr = {0};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = ip_addr;
+    return bind(address, (sockaddr*)&addr, sizeof(sockaddr));
 }
 
 /** @brief Pointer to the function that places a socket in a state in which it is listening for an incoming connection.
@@ -377,14 +420,20 @@ rfInt platform_send_tcp_data(void* socket, const void *buf, rfSize len)
  */
 rfInt platform_send_udp_data(
         void* socket, const void *data, rfSize len,
-        rf_sockaddr_in *dest_addr, rf_socklen_t addrlen)
+        rfUint32 dest_ip_addr, rfUint16 dest_port)
 {
     if (!data || !len) {
         return -1;
     }
     std::size_t address = reinterpret_cast<std::size_t>(socket);
+
+    sockaddr_in addr = {0};
+    addr.sin_family = AF_INET;
+    addr.sin_port = dest_port;
+    addr.sin_addr.s_addr = dest_ip_addr;
+
     return sendto(address, (char*)data, len,
-                  0, (sockaddr*)dest_addr, sizeof(rf_sockaddr_in));
+                  0, (sockaddr*)&addr, sizeof(sockaddr));
 }
 
 /**
@@ -456,7 +505,9 @@ network_platform_dependent_methods_t network_methods = {
     platform_htons,
     platform_ntohs,
 
-    platform_create_socket,
+    platform_create_udp_socket,
+    platform_set_broadcast_socket_option,
+    platform_set_reuseaddr_socket_option,
     platform_set_socket_option,
     platform_set_socket_recv_timeout,
     platform_socket_connect,
