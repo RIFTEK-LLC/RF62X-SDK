@@ -576,7 +576,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
     }
 
 
-    return 0;
+    return 1;
 }
 
 void rf627_old_disconnect(rf627_old_t* scanner)
