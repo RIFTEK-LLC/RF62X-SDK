@@ -225,7 +225,8 @@ rfInt8 platform_set_socket_option(
         const rfChar* optval, rfInt32 optlen)
 {
     std::size_t address = reinterpret_cast<std::size_t>(socket);
-    return setsockopt(address, level, optname, optval, optlen);
+    int ret = setsockopt(address, level, optname, optval, optlen);
+    return ret;
 }
 
 /** @brief Pointer to the function that sets a timeout for socket receive.
