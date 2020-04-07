@@ -32,13 +32,16 @@ int main()
 
         // read params from RF627 device by Service Protocol.
         scanners[i]->read_params();
+        scanners[i]->read_params();
+        scanners[i]->read_params();
 
         // Get parameter by it's name from last read
-        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
+        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
         if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
         {
             std::cout << ip_addr->get_value<value_uint32>();
         }
+
 
         // Get parameter by it's name from last read
         param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
@@ -51,7 +54,6 @@ int main()
             scanners[i]->set_param(name);
             scanners[i]->write_params();
         }
-
 
     }
 
