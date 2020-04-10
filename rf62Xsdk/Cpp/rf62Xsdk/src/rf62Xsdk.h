@@ -22,7 +22,7 @@ namespace RF62X {
  * @brief sdk_version - Return info about SDK version
  * @return SDK version
  */
-API_EXPORT int sdk_version();
+API_EXPORT std::string sdk_version();
 
 /**
  * @brief sdk_init - Initialize sdk library
@@ -41,6 +41,64 @@ class API_EXPORT rf627old
 {
 
 public:
+    class hello_info
+    {
+    public:
+        class version{
+        public:
+            uint8_t major;
+            uint8_t minor;
+            uint8_t patch;
+
+            std::string to_string();
+            uint32_t to_uint();
+
+            friend std::ostream& operator<<(std::ostream& out, const version &v);
+            friend bool operator == (const version& v1, const version &v2);
+            friend bool operator != (const version& v1, const version &v2);
+            friend bool operator <= (const version& v1, const version &v2);
+            friend bool operator >= (const version& v1, const version &v2);
+            friend bool operator < (const version& v1, const version &v2);
+            friend bool operator > (const version& v1, const version &v2);
+
+            version();
+            version(uint32_t value);
+            ~version();
+        private:
+            uint32_t _value;
+        };
+        const std::string& device_name();
+        const uint32_t& serial_number();
+        const std::string& ip_address();
+        const std::string& mac_address();
+        const uint16_t& profile_port();
+        const uint16_t& service_port();
+        const version& firmware_version();
+        const version& hardware_version();
+        const uint32_t& z_smr();
+        const uint32_t& z_mr();
+        const uint32_t& x_smr();
+        const uint32_t& x_emr();
+
+        hello_info(void* scanner_base);
+        ~hello_info();
+
+    private:
+        std::string _device_name;
+        uint32_t _serial_number;
+        std::string _ip_address;
+        std::string _mac_address;
+        uint16_t _profile_port;
+        uint16_t _service_port;
+        version _firmware_version;
+        version _hardware_version;
+        uint32_t _z_smr;
+        uint32_t _z_mr;
+        uint32_t _x_smr;
+        uint32_t _x_emr;
+    };
+
+public:
     /**
      * @brief search - Search for RF627old devices over network
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -48,6 +106,7 @@ public:
      */
     static std::vector<rf627old*> search(PROTOCOLS protocol);
 
+    const hello_info& info();
     /**
      * @brief connect - Establish connection to the RF627old device
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -83,10 +142,11 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return ptr to profile3D_t structure if success, else - null
      */
-    profile3D_t* get_profile3D(float step_size, float k = 0,
-                               COUNT_TYPES count_type = COUNT_TYPES::MEASURE,
-                               bool zero_points = true,
-                               PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    profile3D_t* get_profile3D(
+            float step_size, float k = 0,
+            COUNT_TYPES count_type = COUNT_TYPES::MEASURE,
+            bool zero_points = true,
+            PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief read_params - Read parameters from device to internal structure.
@@ -127,7 +187,7 @@ public:
 private:
     void* scanner_base = NULL;
     PROTOCOLS current_protocol;
-
+    hello_info _hello_info;
 };
 
 }

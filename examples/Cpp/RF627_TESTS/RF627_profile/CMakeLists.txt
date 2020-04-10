@@ -29,7 +29,4 @@ set  (SOURCES ${CPP_FILES} ${H_FILES})
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} rf62Xsdk)
-if(MINGW)
-    target_link_libraries(${PROJECT_NAME} ws2_32)
-endif(MINGW)
-target_link_libraries(${PROJECT_NAME} iphlpapi)
+

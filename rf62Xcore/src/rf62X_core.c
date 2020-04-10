@@ -1,10 +1,11 @@
 #include "rf62X_core.h"
 #include "endian_conv.h"
 
+#define CORE_VERSION "1.3.0"
 
-rfUint32 core_version()
+rfChar* core_version()
 {
-    return 1;
+    return CORE_VERSION;
 }
 
 void init_platform_dependent_methods(

@@ -2,6 +2,12 @@
 #include <rf62Xtypes.h>
 #include <iostream>
 
+#ifdef _WIN32
+#include <winsock.h>
+#else
+#include <arpa/inet.h>
+#endif
+
 using namespace SDK;
 using namespace SCANNERS;
 using namespace RF62X;
@@ -12,8 +18,8 @@ int main()
     // Initialize sdk library
     sdk_init();
 
-    // Print return rf627 sdk version
-    std::cout << sdk_version() << std::endl;
+    // Print return rf62X SDK version
+    std::cout << "SDK version: " << sdk_version() << std::endl;
 
 
     // Create value for scanners vector's type
@@ -29,19 +35,21 @@ int main()
         // Establish connection to the RF627 device by Service Protocol.
         scanners[i]->connect();
 
-
         // read params from RF627 device by Service Protocol.
-        scanners[i]->read_params();
-        scanners[i]->read_params();
         scanners[i]->read_params();
 
         // Get parameter by it's name from last read
-        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
+        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
         if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
         {
             std::cout << ip_addr->get_value<value_uint32>();
-        }
 
+            // The first way to set a new parameter and
+            // write the changes to the scanner
+            int param_id = (int)PARAM_NAME_KEY::USER_NETWORK_IP;
+            scanners[i]->set_param(param_id, inet_addr("192.168.1.31"));
+            scanners[i]->write_params();
+        }
 
         // Get parameter by it's name from last read
         param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
@@ -49,8 +57,9 @@ int main()
         {
             std::cout << name->get_value<value_str>() << std::endl;
 
-            // set new scanner's name and write changed parameters to scanner
-            name->set_value<value_str>("Test Name");
+            // The second way to set a new parameter and
+            // write the changes to the scanner
+            name->set_value<value_str>("RF627");
             scanners[i]->set_param(name);
             scanners[i]->write_params();
         }

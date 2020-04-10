@@ -20,7 +20,7 @@ namespace RF62X {
  * @brief version - Return info about CORE version
  * @return SDK version
  */
-API_EXPORT int version();
+API_EXPORT std::string version();
 
 /**
  * @brief init - Initialize CORE library

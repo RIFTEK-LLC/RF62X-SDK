@@ -206,7 +206,7 @@ u_long GetUDPCompatibleInterface(u_long HostIP)
 
 void DumpInterfaces()
 {
-    printf("detected network interfaces(%u):\n", _ifs_cnt);
+    printf("detected network interfaces(%d):\n", _ifs_cnt);
     for (int i=0; i<_ifs_cnt; i++) {
         puts(_ifs[i]);
     }

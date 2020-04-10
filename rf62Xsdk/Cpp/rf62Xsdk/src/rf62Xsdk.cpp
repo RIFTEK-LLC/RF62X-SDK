@@ -3,6 +3,8 @@
 #include "rf62Xcore.h"
 #include <memory>
 #include <iostream>
+#include <algorithm>
+#include <sstream>
 
 extern "C"{
 #include <rf62X_sdk.h>
@@ -25,7 +27,7 @@ extern const char* GetAdapterAddress(int index);
 extern BOOL WinSockInit();
 
 
-int SDK::SCANNERS::RF62X::sdk_version()
+std::string SDK::SCANNERS::RF62X::sdk_version()
 {
     /*
      * Get rf627 core version
@@ -42,6 +44,68 @@ bool SDK::SCANNERS::RF62X::sdk_init()
 namespace SDK {
 namespace SCANNERS {
 namespace RF62X {
+
+class convert{
+    public:
+    static std::string to_hex(int to_convert, int precision_specifier, bool uppercase = false)
+    {
+        std::string hex_result = "";
+        std::string value;
+        std::stringstream ss;
+        ss << std::hex <<to_convert;
+        ss >> value;
+        for (int i = 0; i < (int)(precision_specifier - value.size()); i++)
+            hex_result+="0";
+
+        if (uppercase)
+        {
+            // convert string to upper case
+            std::for_each(value.begin(), value.end(), [](char & c){
+                c = ::toupper(c);
+            });
+        }
+
+        hex_result += value;
+        return hex_result;
+    }
+
+
+    static std::string to_oct(int to_convert){
+        std::string result;
+        std::stringstream ss;
+        ss << std::oct << to_convert;
+        ss >> result;
+        return result;
+    }
+
+    static std::string to_bin(int to_convert){
+        return int_to_bin(to_convert);
+    }
+    private:
+          static std::string int_to_bin(int number){
+              std::string result;
+              int level = 0;
+              level++;
+              if (number > 0){
+                  result += (number % 2 == 0) ? "0" : "1";
+                  int_to_bin(number / 2);
+                  level--;
+              }
+              if (level == 1) return reverse(result);
+              return result;
+          }
+
+          static std::string reverse(std::string to_reverse){
+              std::string result;
+              for (int i = to_reverse.length()-1; i >=0 ; i--)
+                  result += to_reverse[i];
+              return result;
+          }
+};
+
+
+
+
 
 
 
@@ -99,7 +163,13 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 
 }
 
-rf627old::rf627old(void* base)
+const rf627old::hello_info& rf627old::info()
+{
+    return _hello_info;
+}
+
+rf627old::rf627old(void* base) :
+    _hello_info(rf627old::hello_info(base))
 {
     this->scanner_base = base;
 }
@@ -974,17 +1044,177 @@ bool rf627old::send_cmd(const char* command_name, ...)
     cmd.name = command_name;
     va_copy (cmd.arg_list, valist);
 
-    int arg3 = va_arg(valist, int);
-    int arg4 = va_arg(valist, int);
-
-
-
     bool result = send_command((scanner_base_t*)this->scanner_base, &cmd);
 
     va_end(valist);
 
     return result;
 }
+
+const std::string& rf627old::hello_info::device_name()
+{
+    return _device_name;
+}
+
+const uint32_t& rf627old::hello_info::serial_number()
+{
+    return _serial_number;
+}
+
+const std::string& rf627old::hello_info::ip_address()
+{
+    return _ip_address;
+}
+
+const std::string& rf627old::hello_info::mac_address()
+{
+    return _mac_address;
+}
+
+const uint16_t& rf627old::hello_info::profile_port()
+{
+    return _profile_port;
+}
+
+const uint16_t& rf627old::hello_info::service_port()
+{
+    return _service_port;
+}
+
+const rf627old::hello_info::version& rf627old::hello_info::firmware_version()
+{
+    return _firmware_version;
+}
+
+const rf627old::hello_info::version& rf627old::hello_info::hardware_version()
+{
+    return _hardware_version;
+}
+
+const uint32_t& rf627old::hello_info::z_smr()
+{
+    return _z_smr;
+}
+
+const uint32_t& rf627old::hello_info::z_mr()
+{
+    return _z_mr;
+}
+
+const uint32_t& rf627old::hello_info::x_smr()
+{
+    return _x_smr;
+}
+
+const uint32_t& rf627old::hello_info::x_emr()
+{
+    return _x_emr;
+}
+
+
+rf627old::hello_info::hello_info(void *scanner_base)
+{
+    _device_name = ((scanner_base_t*)scanner_base)->rf627_old->info.device_name;
+    _serial_number = ((scanner_base_t*)scanner_base)->rf627_old->info.serial_number;
+
+    in_addr addr = {0};
+    addr.s_addr = ((scanner_base_t*)scanner_base)->rf627_old->info.ip_address;
+    _ip_address = inet_ntoa(addr);
+    _mac_address = "";
+
+    for (int i = 0; i < 6; i++)
+    {
+        if (i != 0)
+            _mac_address += ":";
+        _mac_address += convert::to_hex(((scanner_base_t*)scanner_base)->rf627_old->info.mac_address[i], 2);
+    }
+
+    _profile_port = ((scanner_base_t*)scanner_base)->rf627_old->info.profile_port;
+    _service_port = ((scanner_base_t*)scanner_base)->rf627_old->info.service_port;
+
+    _firmware_version = hello_info::version(((scanner_base_t*)scanner_base)->rf627_old->info.firmware_version);
+    _hardware_version = hello_info::version(((scanner_base_t*)scanner_base)->rf627_old->info.hardware_version);
+
+    _z_smr = ((scanner_base_t*)scanner_base)->rf627_old->info.z_begin;
+    _z_mr = ((scanner_base_t*)scanner_base)->rf627_old->info.z_range;
+    _x_smr = ((scanner_base_t*)scanner_base)->rf627_old->info.x_begin;
+    _x_emr = ((scanner_base_t*)scanner_base)->rf627_old->info.x_end;
+}
+
+rf627old::hello_info::~hello_info()
+{
+
+}
+
+std::ostream &operator<<(std::ostream &out, rf627old::hello_info::version const &v)
+{
+    out << std::to_string(v.major) << "."
+        << std::to_string(v.minor) << "."
+        << std::to_string(v.patch);
+    return out;
+}
+
+bool operator ==(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator !=(const rf627old::hello_info::version &v1,const  rf627old::hello_info::version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator <=(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <=
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator >=(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >=
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator <(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator >(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+
+std::string rf627old::hello_info::version::to_string()
+{
+    std::string s;
+    s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
+    return s;
+}
+
+uint32_t rf627old::hello_info::version::to_uint()
+{
+    return _value;
+}
+
+rf627old::hello_info::version::version()
+{
+    version(0);
+}
+
+rf627old::hello_info::version::version(uint32_t value)
+{
+    major = (((uint8_t*)(void*)(&value))[3]);
+    minor = (((uint8_t*)(void*)(&value))[2]);
+    patch = (((uint8_t*)(void*)(&value))[1]);
+    _value = value;
+}
+
+rf627old::hello_info::version::~version()
+{
+
+}
+
 
 //typedef enum
 //{

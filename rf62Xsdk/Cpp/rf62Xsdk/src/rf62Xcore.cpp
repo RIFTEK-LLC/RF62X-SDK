@@ -538,12 +538,12 @@ extern const char* GetAdapterAddress(int index);
 extern BOOL WinSockInit();
 
 
-int SDK::CORES::RF62X::version()
+std::string SDK::CORES::RF62X::version()
 {
     /*
      * Get rf627 core version
      */
-    return core_version();
+    return std::string(core_version());
 }
 
 bool SDK::CORES::RF62X::init()

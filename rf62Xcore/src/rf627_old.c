@@ -410,7 +410,8 @@ rf627_old_t* rf627_old_create_from_hello_msg(
     // copy device name
     memory_platform.rf_memcpy(
                 rf627_old->user_params.general.name,
-                ((rf627_old_device_info_t*)msg_info)->name, 64);
+                ((rf627_old_device_info_t*)msg_info)->name,
+                rf_strlen(((rf627_old_device_info_t*)msg_info)->name) + 1);
 
     // copy device_id
     rf627_old->factory_params.general.device_id =
@@ -500,6 +501,32 @@ rf627_old_t* rf627_old_create_from_hello_msg(
     // copy stream_format
     rf627_old->user_params.stream.format =
             ((rf627_old_device_info_t*)msg_info)->stream_format;
+
+
+
+    rf627_old->info.device_name = memory_platform.rf_calloc(
+                1, rf_strlen(rf627_old->user_params.general.name) + 1);
+
+    memory_platform.rf_memcpy(rf627_old->info.device_name,
+                              rf627_old->user_params.general.name,
+                              rf_strlen(rf627_old->user_params.general.name) + 1);
+
+    rf627_old->info.serial_number = rf627_old->factory_params.general.serial;
+
+    rf627_old->info.ip_address = rf627_old->user_params.network.ip_address;
+
+    memory_platform.rf_memcpy(
+                rf627_old->info.mac_address,
+                rf627_old->factory_params.network.mac, 6);
+
+    rf627_old->info.profile_port = rf627_old->user_params.network.stream_port;
+    rf627_old->info.service_port = rf627_old->user_params.network.service_port;
+    rf627_old->info.firmware_version = rf627_old->factory_params.general.firmware_ver;
+    rf627_old->info.hardware_version = rf627_old->factory_params.general.hardware_ver;
+    rf627_old->info.z_begin = rf627_old->factory_params.general.base_z;
+    rf627_old->info.z_range = rf627_old->factory_params.general.range_z;
+    rf627_old->info.x_begin = rf627_old->factory_params.general.range_x_start;
+    rf627_old->info.x_end = rf627_old->factory_params.general.range_x_end;
 
     rf627_old->msg_count = init_msg_count;
     return rf627_old;
@@ -1861,10 +1888,10 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 490;
-                p->base.size = sizeof(scanner->user_params.network.ip_address);
+                p->base.size = sizeof(scanner->user_params.network.net_mask);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.ip_address;
+                p->val_uint->value = scanner->user_params.network.net_mask;
                 p->val_uint->min = 0;
                 p->val_uint->max = 0xFFFFFFFF;
                 p->val_uint->step = 0;

@@ -16,7 +16,7 @@
 
 /*! Return rf627 sdk version
  */
-dllexport rfUint32 core_version();
+dllexport rfChar* core_version();
 
 /**
  * @brief init_platform_dependent_methods - init platform dependent methods and settings
