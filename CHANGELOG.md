@@ -18,7 +18,7 @@
     * Zmr
     * Xsmr
     * Xemr
- - Versions:
+  - Versions:
     * Firmware
     * Hardware
 - Added new methods of getting additional information about scanners to examples of searching.
