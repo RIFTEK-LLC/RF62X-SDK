@@ -273,8 +273,8 @@ int rf627_old_mutex_unlock()
 uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
 {
     void* s;
-    rf_sockaddr_in send_addr, from_addr;
-    rf_socklen_t from_len;
+    rfUint32 dst_ip_addr, srs_ip_addr;
+    rfUint16 dst_port, srs_port;
     rfInt nret;
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
@@ -307,31 +307,28 @@ uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
 
     //send_addr.sin_family = RF_AF_INET;
     //send_addr.sin_addr = network_platform.network_methods.hton_long(RF_INADDR_BROADCAST);
-    send_addr.sin_addr = network_platform.network_methods.hton_long(0xffffffff);
-    send_addr.sin_port = network_platform.network_methods.hton_short(RF627_SERVICE_PORT);
+    dst_ip_addr = 0xffffffff;
+    dst_port = RF627_SERVICE_PORT;
 
     //from_addr.sin_family = RF_AF_INET;
-    from_addr.sin_port = network_platform.network_methods.hton_short(0);
-    from_addr.sin_addr = ip_addr;
+    srs_ip_addr  = ip_addr;
+    srs_port = 0;
 
-    nret = network_platform.network_methods.socket_bind(s, from_addr.sin_addr, from_addr.sin_port);
+    nret = network_platform.network_methods.socket_bind(s, srs_ip_addr, srs_port);
             //network_methods.socket_bind(s, &from_addr, sizeof(from_addr));
 
 
     if (nret != (rfInt)RF_SOCKET_ERROR)
     {
         if (rf627_protocol_send_packet_by_udp(
-                    s, TX, request_packet_size, &send_addr, 0, NULL))
+                    s, TX, request_packet_size, dst_ip_addr, dst_port, 0, NULL))
         {
-            from_len = sizeof(from_addr);
-            memory_platform.rf_memset(&from_addr, 0, from_len);
-
             rfUint32 response_packet_size =
                     rf627_protocol_old_get_size_of_response_hello_packet();
             do
             {
                 nret = network_platform.network_methods.recv_data_from(
-                            s, RX, RX_SIZE, &from_addr, &from_len);
+                            s, RX, RX_SIZE, &srs_ip_addr, &srs_port);
 
                 if (nret == RF_SOCKET_ERROR)
                 {
@@ -345,9 +342,9 @@ uint8_t rf627_old_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
                                 TX, TX_SIZE, RX, RX_SIZE);
                     if(confirm_packet_size > 0)
                     {
-                        from_addr.sin_port = send_addr.sin_port;
+                        srs_port = dst_port;
                         rf627_protocol_send_packet_by_udp(
-                                    s, TX, confirm_packet_size, &from_addr, 0, NULL);
+                                    s, TX, confirm_packet_size, srs_ip_addr, srs_port, 0, NULL);
                     }
 
                     rf627_old_header_msg_t response_header_msg =
@@ -535,7 +532,8 @@ rf627_old_t* rf627_old_create_from_hello_msg(
 
 rfBool rf627_old_connect(rf627_old_t* scanner)
 {
-    rf_sockaddr_in recv_addr;
+    rfUint32 recv_ip_addr;
+    rfUint16 recv_port;
     rfInt nret;
 
     if (scanner->options.version > rf627_old_api_version())
@@ -557,12 +555,12 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
 
 
     //recv_addr.sin_family = RF_AF_INET;
-    recv_addr.sin_port = 0;
-    recv_addr.sin_addr = 0;
+    recv_ip_addr = 0;
+    recv_port = 0;
     //recv_addr.sin_addr = RF_INADDR_ANY;
 
     nret = network_platform.network_methods.socket_bind(
-                scanner->m_svc_sock, recv_addr.sin_addr, recv_addr.sin_port);
+                scanner->m_svc_sock, recv_ip_addr, recv_port);
     if (nret == RF_SOCKET_ERROR)
     {
         network_platform.network_methods.close_socket(scanner->m_svc_sock);
@@ -581,14 +579,13 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
         network_platform.network_methods.set_socket_recv_timeout(
                     scanner->m_data_sock, RF627_RECV_TIMEOUT);
         //recv_addr.sin_family = RF_AF_INET;
-        recv_addr.sin_port = network_platform.network_methods.hton_short(
-                    scanner->user_params.network.stream_port);
+        recv_port = scanner->user_params.network.stream_port;
 
         //recv_addr.sin_addr = RF_INADDR_ANY;
-        recv_addr.sin_addr = 0;
+        recv_ip_addr = 0;
 
         nret = network_platform.network_methods.socket_bind(
-                    scanner->m_data_sock, recv_addr.sin_addr, recv_addr.sin_port);
+                    scanner->m_data_sock, recv_ip_addr, recv_port);
         if (nret == RF_SOCKET_ERROR)
         {
             network_platform.network_methods.close_socket(scanner->m_data_sock);
@@ -1143,7 +1140,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
 
 
-    rf_sockaddr_in send_addr;
+    rfUint32 dst_ip_addr;
+    rfUint16 dst_port;
     rfBool ret = 1;
 
     //std::cout << __LINE__ << " _mx[0].lock();" << std::endl << std::flush;
@@ -1162,14 +1160,13 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 (rfUint8*)TX, TX_SIZE, &read_user_params_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    send_addr.sin_addr = scanner->user_params.network.ip_address;
-    send_addr.sin_port = network_platform.network_methods.hton_short(
-                scanner->user_params.network.service_port);
+    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_port = scanner->user_params.network.service_port;
 
 
 
     if (rf627_protocol_send_packet_by_udp(
-                scanner->m_svc_sock, TX, request_packet_size, &send_addr, 0, NULL))
+                scanner->m_svc_sock, TX, request_packet_size, dst_ip_addr, dst_port, 0, NULL))
     {
         scanner->msg_count++;
         const rfInt data_len =
@@ -1184,7 +1181,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
             if(confirm_packet_size > 0)
             {
                 rf627_protocol_send_packet_by_udp(
-                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+                            scanner->m_svc_sock, TX, confirm_packet_size, dst_ip_addr, dst_port, 0, 0);
             }
 
             rf627_old_header_msg_t header =
@@ -2697,7 +2694,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
 
 
-    rf_sockaddr_in send_addr;
+    rfUint32 dst_ip_addr;
+    rfUint16 dst_port;
     rfBool ret = 1;
 
     //std::cout << __LINE__ << " _mx[0].lock();" << std::endl << std::flush;
@@ -2716,14 +2714,13 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 (rfUint8*)TX, TX_SIZE, &read_factory_params_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    send_addr.sin_addr = scanner->user_params.network.ip_address;
-    send_addr.sin_port = network_platform.network_methods.hton_short(
-                scanner->user_params.network.service_port);
+    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_port = scanner->user_params.network.service_port;
 
 
 
     if (rf627_protocol_send_packet_by_udp(
-                scanner->m_svc_sock, TX, request_packet_size, &send_addr, 0, NULL))
+                scanner->m_svc_sock, TX, request_packet_size, dst_ip_addr, dst_port, 0, NULL))
     {
         scanner->msg_count++;
         const rfInt data_len =
@@ -2738,7 +2735,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
             if(confirm_packet_size > 0)
             {
                 rf627_protocol_send_packet_by_udp(
-                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+                            scanner->m_svc_sock, TX, confirm_packet_size, dst_ip_addr, dst_port, 0, 0);
             }
 
             rf627_old_header_msg_t header =
@@ -3508,7 +3505,8 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
     rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
 
 
-    rf_sockaddr_in send_addr;
+    rfUint32 dst_ip_addr;
+    rfUint16 dst_port;
     rfBool ret = 1;
 
     // create write_params msg request
@@ -3524,9 +3522,8 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
                 (rfUint8*)TX, TX_SIZE, &write_user_params_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    send_addr.sin_addr = scanner->user_params.network.ip_address;
-    send_addr.sin_port = network_platform.network_methods.hton_short(
-                scanner->user_params.network.service_port);
+    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_port = scanner->user_params.network.service_port;
 
 
     rfUint8 payload[RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE];
@@ -3603,7 +3600,7 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
             sizeof(scanner->user_params.outputs.out2_invert));
 
     if (rf627_protocol_send_packet_by_udp(
-                scanner->m_svc_sock, TX, request_packet_size, &send_addr, payload_size, payload))
+                scanner->m_svc_sock, TX, request_packet_size, dst_ip_addr, dst_port, payload_size, payload))
     {
         scanner->msg_count++;
 
@@ -3619,7 +3616,7 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
             if(confirm_packet_size > 0)
             {
                 rf627_protocol_send_packet_by_udp(
-                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+                            scanner->m_svc_sock, TX, confirm_packet_size, dst_ip_addr, dst_port, 0, 0);
             }
         }
     }
@@ -3758,7 +3755,8 @@ rfUint8 rf627_old_command_set_counters(
     rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
 
-    rf_sockaddr_in send_addr;
+    rfUint32 dst_ip_addr;
+    rfUint16 dst_port;
     rfBool ret = 1;
 
     // create write_params msg request
@@ -3776,9 +3774,8 @@ rfUint8 rf627_old_command_set_counters(
                 (rfUint8*)TX, TX_SIZE, &reset_counters_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    send_addr.sin_addr = scanner->user_params.network.ip_address;
-    send_addr.sin_port = network_platform.network_methods.hton_short(
-                scanner->user_params.network.service_port);
+    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_port = scanner->user_params.network.service_port;
 
     rfUint32 payload_size = 0;
     if(reset_counters_msg.payload_size != 0)
@@ -3790,7 +3787,7 @@ rfUint8 rf627_old_command_set_counters(
                     payload, profile_counter, packet_counter);
 
         if (rf627_protocol_send_packet_by_udp(
-                    scanner->m_svc_sock, TX, command_packet_size, &send_addr, payload_size, payload))
+                    scanner->m_svc_sock, TX, command_packet_size, dst_ip_addr, dst_port, payload_size, payload))
         {
             scanner->msg_count++;
 
@@ -3806,12 +3803,12 @@ rfUint8 rf627_old_command_set_counters(
                 if(confirm_packet_size > 0)
                 {
                     rf627_protocol_send_packet_by_udp(
-                                scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+                                scanner->m_svc_sock, TX, confirm_packet_size, dst_ip_addr, dst_port, 0, 0);
                 }
             }
         }
     }else if (rf627_protocol_send_packet_by_udp(
-                scanner->m_svc_sock, TX, command_packet_size, &send_addr, payload_size, 0))
+                scanner->m_svc_sock, TX, command_packet_size, dst_ip_addr, dst_port, payload_size, 0))
     {
         scanner->msg_count++;
 
@@ -3827,7 +3824,7 @@ rfUint8 rf627_old_command_set_counters(
             if(confirm_packet_size > 0)
             {
                 rf627_protocol_send_packet_by_udp(
-                            scanner->m_svc_sock, TX, confirm_packet_size, &send_addr, 0, 0);
+                            scanner->m_svc_sock, TX, confirm_packet_size, dst_ip_addr, dst_port, 0, 0);
 //                network_platform.network_methods.send_tcp_data(
 //                            scanner->m_data_sock, TX, TX_SIZE);
             }

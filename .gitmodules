@@ -13,3 +13,6 @@
 [submodule "rf62Xcore/3rdparty/utils/custom_string"]
 	path = rf62Xcore/3rdparty/utils/custom_string
 	url = https://gitlab.com/riftek_llc/software/utilities/custom_string.git
+[submodule "tests/Cpp/3rdparty/googletest"]
+	path = tests/Cpp/3rdparty/googletest
+	url = https://github.com/google/googletest.git

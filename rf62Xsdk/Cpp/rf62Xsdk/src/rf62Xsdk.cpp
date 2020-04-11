@@ -36,9 +36,8 @@ std::string SDK::SCANNERS::RF62X::sdk_version()
 }
 
 bool SDK::SCANNERS::RF62X::sdk_init()
-{
-    SDK::CORES::RF62X::init();
-    return true;
+{   
+    return SDK::CORES::RF62X::init();
 }
 
 namespace SDK {
@@ -131,8 +130,8 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
         for (int i=0; i<GetAdaptersCount(); i++)
         {
             // get another IP Addr and set this changes in network adapter settings.
-            uint32_t host_ip_addr = inet_addr(GetAdapterAddress(i));
-            uint32_t host_mask = inet_addr("255.255.255.0");
+            uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
+            uint32_t host_mask = ntohl(inet_addr("255.255.255.0"));
             // call the function to change adapter settings inside the library.
             set_platform_adapter_settings(host_mask, host_ip_addr);
 

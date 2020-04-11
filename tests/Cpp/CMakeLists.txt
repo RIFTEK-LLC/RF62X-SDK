@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 
 ##
 ## PROJECT
 ## name and version
 ##
-project(RF627_TESTS LANGUAGES CXX)
+project(Tests LANGUAGES CXX)
 
 
 ##
@@ -17,14 +17,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BINARY_DIR}/lib")
 
 # set rf627sdk path variable
-set(RF62XSDK_DIR "../../../rf62Xsdk/Cpp/rf62Xsdk")
+set(RF62XSDK_DIR "../../rf62Xsdk/Cpp/rf62Xsdk")
 
 # add subdirectory of rf627sdk lib
 add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)
+add_subdirectory(3rdparty/googletest)
 
 # add subdirectories of examples
-add_subdirectory(RF627_search)
-add_subdirectory(RF627_profile)
-add_subdirectory(RF627_params)
-
-
+add_subdirectory(rf62Xsdk_tst)

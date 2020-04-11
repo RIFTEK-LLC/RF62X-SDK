@@ -224,8 +224,8 @@ void* platform_create_udp_socket()
 rfInt8 platform_set_broadcast_socket_option(void* socket)
 {
     int nret = 1;
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    int ret = setsockopt(address, SOL_SOCKET, SO_BROADCAST, (char*)&nret, sizeof(nret));
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    int ret = setsockopt(s, SOL_SOCKET, SO_BROADCAST, (char*)&nret, sizeof(nret));
     return ret;
 }
 
@@ -243,8 +243,8 @@ rfInt8 platform_set_broadcast_socket_option(void* socket)
 rfInt8 platform_set_reuseaddr_socket_option(void* socket)
 {
     int nret = 1;
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    int ret = setsockopt(address, SOL_SOCKET, SO_REUSEADDR, (char*)&nret, sizeof(nret));
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    int ret = setsockopt(s, SOL_SOCKET, SO_REUSEADDR, (char*)&nret, sizeof(nret));
     return ret;
 }
 
@@ -263,8 +263,8 @@ rfInt8 platform_set_socket_option(
         void* socket, rfInt32 level, rfInt32 optname,
         const rfChar* optval, rfInt32 optlen)
 {
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    int ret = setsockopt(address, level, optname, optval, optlen);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    int ret = setsockopt(s, level, optname, optval, optlen);
     return ret;
 }
 
@@ -286,9 +286,9 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
     t.tv_usec = (msec % 1000) * 1000;
 #endif
 
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
 
-    return (setsockopt(address, SOL_SOCKET, SO_RCVTIMEO, (char*)&t, sizeof(t)));
+    return (setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char*)&t, sizeof(t)));
 }
 
 /** @brief Pointer to the function that establishes a connection to a specified socket
@@ -301,10 +301,13 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
  * - On error: -1
  */
 rfUint8 platform_socket_connect(
-        void* socket, rf_sockaddr_in* name, rfInt32 namelen)
+        void* socket, rfUint32 dst_ip_addr, rfUint16 dst_port)
 {
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    return connect(address, (sockaddr*)name, namelen);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    sockaddr_in addr = {0};
+    addr.sin_addr.s_addr = htonl(dst_ip_addr);
+    addr.sin_port = htons(dst_port);
+    return connect(s, (sockaddr*)&addr, sizeof(sockaddr));
 }
 
 /** @brief Pointer to the function that associates a local address with a socket.
@@ -319,12 +322,12 @@ rfUint8 platform_socket_connect(
 rfInt platform_socket_bind(
         void* socket, rfUint32 ip_addr, rfUint16 port)
 {
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
     sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
-    addr.sin_addr.s_addr = ip_addr;
-    return bind(address, (sockaddr*)&addr, sizeof(sockaddr));
+    addr.sin_addr.s_addr = htonl(ip_addr);
+    return bind(s, (sockaddr*)&addr, sizeof(sockaddr));
 }
 
 /** @brief Pointer to the function that places a socket in a state in which it is listening for an incoming connection.
@@ -338,8 +341,8 @@ rfInt platform_socket_bind(
 rfUint8 platform_socket_listen(
         void* socket, rfInt32 backlog)
 {
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    return listen(address, backlog);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    return listen(s, backlog);
 }
 
 /** @brief Pointer to the function that permits an incoming connection attempt on a socket.
@@ -359,12 +362,16 @@ rfUint8 platform_socket_listen(
  * - On error  : NULL
  */
 void* platform_socket_accept(
-        void* socket, rf_sockaddr_in* addr, rfInt32* addrlen)
+        void* socket, rfUint32* srs_ip_addr, rfUint16* srs_port)
 {
-    SOCKET* s = new SOCKET();
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    *s = accept(address, (sockaddr*)addr, (socklen_t*)addrlen);
-    return (void*)*s;
+    SOCKET* s_new = new SOCKET();
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    sockaddr_in addr = {0};
+    socklen_t len = 0;
+    *s_new = accept(s, (sockaddr*)&addr, &len);
+    *srs_ip_addr = ntohl(addr.sin_addr.s_addr);
+    *srs_port = ntohs(addr.sin_port);
+    return (void*)*s_new;
 }
 
 /** @brief Pointer to the function that closes an existing socket.
@@ -376,12 +383,12 @@ void* platform_socket_accept(
  */
 rfUint8 platform_close_socket(void* socket)
 {
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    if (address != INVALID_SOCKET) {
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    if (s != INVALID_SOCKET) {
 #ifdef _WIN32
-        return closesocket(address);
+        return closesocket(s);
 #else
-        return close(address);
+        return close(s);
 #endif
     }
     return -1;
@@ -402,8 +409,8 @@ rfInt platform_send_tcp_data(void* socket, const void *buf, rfSize len)
     if (!buf || !len) {
         return -1;
     }
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    return send(address, (char*)buf, len, 0);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    return send(s, (char*)buf, len, 0);
 }
 
 /** @brief Pointer to the send function that sends data on a UDP socket
@@ -425,14 +432,14 @@ rfInt platform_send_udp_data(
     if (!data || !len) {
         return -1;
     }
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
 
     sockaddr_in addr = {0};
     addr.sin_family = AF_INET;
-    addr.sin_port = dest_port;
-    addr.sin_addr.s_addr = dest_ip_addr;
+    addr.sin_port = htons(dest_port);
+    addr.sin_addr.s_addr = htonl(dest_ip_addr);
 
-    return sendto(address, (char*)data, len,
+    return sendto(s, (char*)data, len,
                   0, (sockaddr*)&addr, sizeof(sockaddr));
 }
 
@@ -447,22 +454,23 @@ rfInt platform_send_udp_data(
  */
 rfInt platform_recv_from(
         void* socket, void *buf, rfSize len,
-        rf_sockaddr_in *src_addr, rf_socklen_t *addrlen)
+        rfUint32* srs_ip_addr, rfUint16* srs_port)
 {
-    rfInt nret;
-    rf_socklen_t from_size;
-    rf_sockaddr_in from_addr;
+    int nret;
+    socklen_t from_size;
+    sockaddr_in from_addr;
     from_size = sizeof(from_addr);
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    if (address == INVALID_SOCKET) {
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    if (s == INVALID_SOCKET) {
         return -1;
     }
-    nret = recvfrom(address, (char*)buf, (int)len, 0, (sockaddr*)&from_addr, (socklen_t*)addrlen);
+    nret = recvfrom(s, (char*)buf, (int)len, 0, (sockaddr*)&from_addr, (socklen_t*)&from_size);
 
     if (nret > 0)
     {
-        if (src_addr) {
-            memcpy(src_addr, &from_addr, sizeof(from_addr));
+        if (srs_ip_addr != nullptr && srs_port != nullptr) {
+            *srs_ip_addr = ntohl(from_addr.sin_addr.s_addr);
+            *srs_port = ntohs(from_addr.sin_port);
         }
         return nret;
     }
@@ -482,11 +490,11 @@ rfInt platform_recv_from(
 rfInt platform_recv(void* socket, void *buf, rfSize len)
 {
     rfInt nret;
-    std::size_t address = reinterpret_cast<std::size_t>(socket);
-    if (address == INVALID_SOCKET) {
+    std::size_t s = reinterpret_cast<std::size_t>(socket);
+    if (s == INVALID_SOCKET) {
         return -1;
     }
-    nret = recv(address, (char*)buf, len, 0);
+    nret = recv(s, (char*)buf, len, 0);
 
     if (nret > 0)
     {
