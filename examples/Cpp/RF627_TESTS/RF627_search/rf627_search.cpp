@@ -51,12 +51,6 @@ int main()
         std::cout << "-----------------------------------------" << std::endl;
 
     }
-
-    if(((rf627old::hello_info)list[0]->info()).firmware_version() >
-            ((rf627old::hello_info)list[1]->info()).firmware_version())
-    {
-
-    }else std::cout << ((rf627old::hello_info)list[1]->info()).device_name() << std::endl;
 }
 
 
