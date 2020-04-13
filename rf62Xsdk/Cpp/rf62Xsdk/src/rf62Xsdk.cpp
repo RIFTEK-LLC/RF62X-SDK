@@ -162,13 +162,33 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 
 }
 
-const rf627old::hello_info& rf627old::info()
+rf627old::hello_info rf627old::get_info(PROTOCOLS protocol)
 {
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        hello_information info = get_info_about_scanner(((scanner_base_t*)this->scanner_base), kSERVICE);
+
+        hello_info _hello_info = hello_info(info.rf627old.hello_info_service_protocol, PROTOCOLS::SERVICE);
+
+        return _hello_info;
+        break;
+    }
+    default:
+        break;
+    }
+
+    hello_info _hello_info = hello_info(nullptr, PROTOCOLS::CURRENT);
     return _hello_info;
 }
 
-rf627old::rf627old(void* base) :
-    _hello_info(rf627old::hello_info(base))
+rf627old::rf627old(void* base)
 {
     this->scanner_base = base;
 }
@@ -1111,33 +1131,42 @@ const uint32_t& rf627old::hello_info::x_emr()
 }
 
 
-rf627old::hello_info::hello_info(void *scanner_base)
+rf627old::hello_info::hello_info(void* info, PROTOCOLS protocol)
 {
-    _device_name = ((scanner_base_t*)scanner_base)->rf627_old->info.device_name;
-    _serial_number = ((scanner_base_t*)scanner_base)->rf627_old->info.serial_number;
-
-    in_addr addr = {0};
-    addr.s_addr = ((scanner_base_t*)scanner_base)->rf627_old->info.ip_address;
-    _ip_address = inet_ntoa(addr);
-    _mac_address = "";
-
-    for (int i = 0; i < 6; i++)
+    switch (protocol) {
+    case PROTOCOLS::SERVICE:
     {
-        if (i != 0)
-            _mac_address += ":";
-        _mac_address += convert::to_hex(((scanner_base_t*)scanner_base)->rf627_old->info.mac_address[i], 2);
+        _device_name = ((rf627_old_hello_info_by_service_protocol*)info)->device_name;
+        _serial_number = ((rf627_old_hello_info_by_service_protocol*)info)->serial_number;
+
+        in_addr addr = {0};
+        addr.s_addr = ((rf627_old_hello_info_by_service_protocol*)info)->ip_address;
+        _ip_address = inet_ntoa(addr);
+        _mac_address = "";
+
+        for (int i = 0; i < 6; i++)
+        {
+            if (i != 0)
+                _mac_address += ":";
+            _mac_address += convert::to_hex(((rf627_old_hello_info_by_service_protocol*)info)->mac_address[i], 2);
+        }
+
+        _profile_port = ((rf627_old_hello_info_by_service_protocol*)info)->profile_port;
+        _service_port = ((rf627_old_hello_info_by_service_protocol*)info)->service_port;
+
+        _firmware_version = hello_info::version(((rf627_old_hello_info_by_service_protocol*)info)->firmware_version);
+        _hardware_version = hello_info::version(((rf627_old_hello_info_by_service_protocol*)info)->hardware_version);
+
+        _z_smr = ((rf627_old_hello_info_by_service_protocol*)info)->z_begin;
+        _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
+        _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
+        _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
+        break;
+    }
+    default:
+        break;
     }
 
-    _profile_port = ((scanner_base_t*)scanner_base)->rf627_old->info.profile_port;
-    _service_port = ((scanner_base_t*)scanner_base)->rf627_old->info.service_port;
-
-    _firmware_version = hello_info::version(((scanner_base_t*)scanner_base)->rf627_old->info.firmware_version);
-    _hardware_version = hello_info::version(((scanner_base_t*)scanner_base)->rf627_old->info.hardware_version);
-
-    _z_smr = ((scanner_base_t*)scanner_base)->rf627_old->info.z_begin;
-    _z_mr = ((scanner_base_t*)scanner_base)->rf627_old->info.z_range;
-    _x_smr = ((scanner_base_t*)scanner_base)->rf627_old->info.x_begin;
-    _x_emr = ((scanner_base_t*)scanner_base)->rf627_old->info.x_end;
 }
 
 rf627old::hello_info::~hello_info()

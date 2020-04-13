@@ -16,20 +16,7 @@ typedef struct
 
     vector_t *params_list;
 
-    struct{
-        rfChar* device_name;
-        rfUint32 serial_number;
-        rfUint32 ip_address;
-        rfUint8 mac_address[6];
-        rfUint16 profile_port;
-        rfUint16 service_port;
-        rfUint32 firmware_version;
-        rfUint32 hardware_version;
-        rfUint32 z_begin;
-        rfUint32 z_range;
-        rfUint32 x_begin;
-        rfUint32 x_end;
-    }info;
+    rf627_old_hello_info_by_service_protocol info_by_service_protocol;
 
 }rf627_old_t;
 
@@ -73,6 +60,14 @@ int rf627_old_mutex_unlock();
  */
 rf627_old_t* rf627_old_create_from_hello_msg(
         void* msg_info, rfUint16 init_msg_count);
+
+/**
+ * @brief get_hello_info_of_scanners - Get information about scanner from hello packet
+ * @param device - prt to scanner
+ * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @return 0 on success
+ */
+rf627_old_hello_info_by_service_protocol* rf627_old_get_info_about_scanner_by_service_protocol(rf627_old_t* scanner);
 
 /**
  * @brief rf627_old_connect - Establish connection to the device

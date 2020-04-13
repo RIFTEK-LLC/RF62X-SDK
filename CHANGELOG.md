@@ -2,11 +2,9 @@
 
 ## [Unreleased]
 
-## [1.3.1] - 2020-04-11
+## [1.3.1] - 2020-04-13
 ### Added
 - Google tests (Gtest) for SDK
-
-### Changed
 
 ### Removed
 - Removed dependency in core-lib from struct sockaddr_in and changed it to ip addr and port

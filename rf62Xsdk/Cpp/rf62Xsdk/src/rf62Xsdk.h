@@ -80,7 +80,7 @@ public:
         const uint32_t& x_smr();
         const uint32_t& x_emr();
 
-        hello_info(void* scanner_base);
+        hello_info(void* base_hello, PROTOCOLS protocol);
         ~hello_info();
 
     private:
@@ -106,7 +106,7 @@ public:
      */
     static std::vector<rf627old*> search(PROTOCOLS protocol);
 
-    const hello_info& info();
+    hello_info get_info(PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
      * @brief connect - Establish connection to the RF627old device
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -187,7 +187,6 @@ public:
 private:
     void* scanner_base = NULL;
     PROTOCOLS current_protocol;
-    hello_info _hello_info;
 };
 
 }

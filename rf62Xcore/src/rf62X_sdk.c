@@ -49,6 +49,61 @@ rfUint8 search_scanners(vector_t *list, scanner_types_t model, protocol_types_t 
 }
 
 
+hello_information get_info_about_scanner(scanner_base_t *device, protocol_types_t protocol)
+{
+    hello_information _hello_info = {0};
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            _hello_info.scanner_type = kRF627_OLD;
+            _hello_info.protocol_type = kSERVICE;
+            _hello_info.rf627old.hello_info_service_protocol = rf627_old_get_info_about_scanner_by_service_protocol(device->rf627_old);
+
+            return _hello_info;
+            break;
+        }
+
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+        {
+            return _hello_info; // RF627-old doesn't support this protocol
+            break;
+        }
+
+        default:
+        {
+            return _hello_info; // RF627-old doesn't support this protocol
+            break;
+        }
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+            break;
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+        {
+            return _hello_info; // RF627-old doesn't support this protocol
+            break;
+        }
+        }
+        break;
+    default:
+    {
+        return _hello_info; // RF627-old doesn't support this protocol
+        break;
+    }
+    }
+    return _hello_info; // RF627-old doesn't support this protocol
+}
+
+
 rfUint8 connect_to_scanner(scanner_base_t *device, protocol_types_t protocol)
 {
     switch (device->type) {
@@ -426,3 +481,4 @@ rfUint8 send_command(
     }
     return 1;
 }
+

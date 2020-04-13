@@ -29,7 +29,7 @@ int main()
 
     for (size_t i = 0; i < list.size(); i++)
     {
-        rf627old::hello_info info = list[i]->info();
+        rf627old::hello_info info = list[i]->get_info();
 
         std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
         std::cout << "-----------------------------------------" << std::endl;

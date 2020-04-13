@@ -470,7 +470,22 @@ namespace SDK
                 fixed byte reserved[283];
             };
 
-
+            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            private struct rf627_old_hello_info_by_service_protocol
+            {
+                public byte* device_name;
+                public uint serial_number;
+                public uint ip_address;
+                public fixed byte mac_address[6];
+                public ushort profile_port;
+                public ushort service_port;
+                public uint firmware_version;
+                public uint hardware_version;
+                public uint z_begin;
+                public uint z_range;
+                public uint x_begin;
+                public uint x_end;
+            };
 
             [StructLayout(LayoutKind.Sequential, Pack = 8)]
             private struct rf627_smart_t
@@ -494,6 +509,8 @@ namespace SDK
                 public ushort msg_count;
 
                 public vector_t* params_list;
+
+                public rf627_old_hello_info_by_service_protocol info_by_service_protocol;
             };
 
             [StructLayout(LayoutKind.Explicit)]

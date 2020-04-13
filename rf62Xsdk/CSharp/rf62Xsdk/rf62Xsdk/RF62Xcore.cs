@@ -162,7 +162,13 @@ namespace SDK
             delegate ushort ntoh_short_t(ushort netshort);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-            delegate void* create_socket_t(int af, int type, int protocol);
+            delegate void* create_udp_socket_t();
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            delegate byte set_broadcast_socket_option_t(void* socket);
+
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            delegate byte set_reuseaddr_socket_option_t(void* socket);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate byte set_socket_option_t(
@@ -172,35 +178,14 @@ namespace SDK
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate byte set_socket_recv_timeout_t(void* socket, int msec);
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
-            unsafe struct SockAddr
-            {
-                public ushort sa_family;
-                public fixed byte sa_data[14]; // Note: sizeof(byte) == 2 in C#
-            }
-
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
-            unsafe struct SockAddr_In
-            {
-                public short sin_family;
-                public ushort sin_port;
-                public uint sin_addr;
-                public fixed byte sin_zero[8];
-            }
-
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
-            struct In_Addr
-            {
-                public byte s_b1, s_b2, s_b3, s_b4;
-            }
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate byte socket_connect_t(
-                void* socket, SockAddr_In* name, int namelen);
+                void* socket, uint dst_ip_addr, ushort dst_port);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate byte socket_bind_t(
-                void* socket, SockAddr_In* name, int namelen);
+                void* socket, uint ip_addr, ushort port);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate byte socket_listen_t(
@@ -208,7 +193,7 @@ namespace SDK
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate void* socket_accept_t(
-                void* socket, SockAddr_In* addr, int* addrlen);
+                void* socket, uint* srs_ip_addr, ushort* srs_port);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate byte close_socket_t(void* socket);
@@ -219,12 +204,12 @@ namespace SDK
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate int send_udp_data_t(
                 void* socket, void* data, UIntPtr len,
-                SockAddr_In* dest_addr, uint addrlen);
+                uint dest_ip_addr, ushort dest_port);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate int recv_data_from_t(
                 void* sockfd, void* buf, UIntPtr len,
-                SockAddr_In* src_addr, uint* addrlen);
+                uint* srs_ip_addr, ushort* srs_port);
 
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             delegate int recv_data_t(void* socket, void* buf, UIntPtr len);
@@ -237,7 +222,9 @@ namespace SDK
                 public hton_short_t hton_short;
                 public ntoh_short_t ntoh_short;
 
-                public create_socket_t create_socket;
+                public create_udp_socket_t create_udp_socket;
+                public set_broadcast_socket_option_t set_broadcast_socket_option;
+                public set_reuseaddr_socket_option_t set_reuseaddr_socket_option;
                 public set_socket_option_t set_socket_option;
                 public set_socket_recv_timeout_t set_socket_recv_timeout;
                 public socket_connect_t socket_connect;
@@ -366,10 +353,37 @@ namespace SDK
 
 
             static List<Socket> sockets = new List<Socket>();
-            private static void* PlatformCreateSocket(int af, int type, int protocol)
+            private static void* PlatformCreateUdpSocket()
             {
-                sockets.Add(new Socket((AddressFamily)af, (SocketType)type, (ProtocolType)protocol));
+                sockets.Add(new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp));
                 return (void*)((sockets[sockets.Count - 1]).Handle);
+            }
+
+            private static byte PlatformSetBroadcastSocketOption(void* socket)
+            {
+                for (int i = 0; i < sockets.Count; i++)
+                {
+                    if (sockets[i].Handle.ToPointer() == socket)
+                    {
+                        sockets[i].SetSocketOption(SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.Broadcast, true);
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+
+            private static byte PlatformSetReuseAddressSocketOption(void* socket)
+            {
+                for (int i = 0; i < sockets.Count; i++)
+                {
+                    if (sockets[i].Handle.ToPointer() == socket)
+                    {
+                        sockets[i].SetSocketOption(SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.ReuseAddress, true);
+                        sockets[i].SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ExclusiveAddressUse, false);
+                        return 0;
+                    }
+                }
+                return 1;
             }
 
             private static byte PlatformSetSocketOption(
@@ -404,20 +418,20 @@ namespace SDK
                 return 1;
             }
 
-            private static byte PlatformSocketConnect(void* socket, SockAddr_In* name, int namelen)
+            private static byte PlatformSocketConnect(void* socket, uint dst_ip_addr, ushort dst_port)
             {
                 for (int i = 0; i < sockets.Count; i++)
                 {
                     if ((void*)(sockets[i].Handle) == socket)
                     {
-                        sockets[i].Connect(new IPAddress((long)name->sin_addr), name->sin_port);
+                        sockets[i].Connect(new IPAddress(dst_ip_addr), dst_port);
                         return 0;
                     }
                 }
                 return 1;
             }
 
-            private static byte PlatformSocketBind(void* socket, SockAddr_In* name, int namelen)
+            private static byte PlatformSocketBind(void* socket, uint ip_addr, ushort port)
             {
                 for (int i = 0; i < sockets.Count; i++)
                 {
@@ -425,7 +439,7 @@ namespace SDK
                     {
                         try
                         {
-                            sockets[i].Bind(new IPEndPoint(new IPAddress((long)name->sin_addr), name->sin_port));
+                            sockets[i].Bind(new IPEndPoint(new IPAddress(ip_addr), port));
                         }
                         catch (Exception)
                         {
@@ -451,7 +465,7 @@ namespace SDK
                 return 1;
             }
 
-            private static void* PlatformSocketAccept(void* socket, SockAddr_In* addr, int* addrlen)
+            private static void* PlatformSocketAccept(void* socket, uint* srs_ip_addr, ushort* srs_port)
             {
                 for (int i = 0; i < sockets.Count; i++)
                 {
@@ -494,7 +508,7 @@ namespace SDK
             }
 
             private static int PlatformSendUdpData(void* socket, void* buf, UIntPtr len,
-                SockAddr_In* addr, uint addrlen)
+                uint dest_ip_addr, ushort dest_port)
             {
                 for (int i = 0; i < sockets.Count; i++)
                 {
@@ -502,7 +516,7 @@ namespace SDK
                     {
                         byte[] arr = new byte[(int)len];
                         Marshal.Copy((IntPtr)buf, arr, 0, (int)len);
-                        IPEndPoint ip = new IPEndPoint(new IPAddress((long)addr->sin_addr), addr->sin_port);
+                        IPEndPoint ip = new IPEndPoint(new IPAddress(dest_ip_addr), dest_port);
                         int send = sockets[i].SendTo(arr, ip);
 
                         return (int)len;
@@ -512,7 +526,7 @@ namespace SDK
             }
 
             private static int PlatformRecvFrom(void* socket, void* buf, UIntPtr len,
-                SockAddr_In* src_addr, uint* addrlen)
+               uint* srs_ip_addr, ushort* srs_port)
             {
                 for (int i = 0; i < sockets.Count; i++)
                 {
@@ -524,8 +538,8 @@ namespace SDK
                         {
                             int r = sockets[i].ReceiveFrom(arr, ref remoteEndPoint);
                             byte[] bytes = ((IPEndPoint)remoteEndPoint).Address.GetAddressBytes();
-                            src_addr->sin_addr = (uint)((bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0]);
-                            src_addr->sin_port = (ushort)((IPEndPoint)remoteEndPoint).Port;
+                            *srs_ip_addr = (uint)((bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0]);
+                            *srs_port = (ushort)((IPEndPoint)remoteEndPoint).Port;
                             Marshal.Copy(arr, 0, (IntPtr)buf, r);
                             return r;
                         }
@@ -610,7 +624,9 @@ namespace SDK
                     hton_short = PlatformHToNS,
                     ntoh_short = PlatformNToHS,
 
-                    create_socket = PlatformCreateSocket,
+                    create_udp_socket = PlatformCreateUdpSocket,
+                    set_broadcast_socket_option = PlatformSetBroadcastSocketOption,
+                    set_reuseaddr_socket_option = PlatformSetReuseAddressSocketOption,
                     set_socket_option = PlatformSetSocketOption,
                     set_socket_recv_timeout = PlatformSetSocketRecvTimeout,
                     socket_connect = PlatformSocketConnect,

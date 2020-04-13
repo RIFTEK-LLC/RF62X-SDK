@@ -516,6 +516,22 @@ typedef struct
 }rf627_smart_profile3D_t;
 
 
+typedef struct
+{
+    rfChar* device_name;
+    rfUint32 serial_number;
+    rfUint32 ip_address;
+    rfUint8 mac_address[6];
+    rfUint16 profile_port;
+    rfUint16 service_port;
+    rfUint32 firmware_version;
+    rfUint32 hardware_version;
+    rfUint32 z_begin;
+    rfUint32 z_range;
+    rfUint32 x_begin;
+    rfUint32 x_end;
+}rf627_old_hello_info_by_service_protocol;
+
 //Типы значений параметров
 typedef enum
 {
@@ -1156,5 +1172,21 @@ typedef struct
         rf627_smart_profile3D_t* rf627smart_profile3D;
     };
 }rf627_profile3D_t;
+
+/*! Structure of hello info about scanner
+ */
+typedef struct
+{
+    scanner_types_t scanner_type;
+    protocol_types_t protocol_type;
+    union{
+        union{
+            rf627_old_hello_info_by_service_protocol* hello_info_service_protocol;
+        }rf627old;
+        union{
+            rf627_old_hello_info_by_service_protocol* hello_info_service_protocol;
+        }rf627smart;
+    };
+}hello_information;
 
 #endif // RF62X_TYPES_H
