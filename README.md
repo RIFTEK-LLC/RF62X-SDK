@@ -54,7 +54,7 @@ This project uses [git](http://git-scm.com/) for source code management and [Git
 
 ## GETTING STARTED
 
-**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).\
+**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#net-library), [PYTHON](#how-to-use-2)).\
 **For others** who want to **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
 
 ### Installing software
