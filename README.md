@@ -54,7 +54,7 @@ This project uses [git](http://git-scm.com/) for source code management and [Git
 
 ## GETTING STARTED
 
-**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#how-to-use-1), [PYTHON](#how-to-use-2)).\
+**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#net-library), [PYTHON](#how-to-use-2)).\
 **For others** who want to **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
 
 ### Installing software
@@ -101,7 +101,7 @@ You can create a new project yourself or you can just open an existing project e
 ##### 2) Generate a project for **Visual Studio** and compile examples
 *  Generate Visual Studio solution by calling CMake from the console
 ```bash
-cd examples/Cpp/RF627_TESTS
+cd examples/Cpp/RF627_old
 mkdir build
 cd build
 
@@ -109,7 +109,7 @@ cd build
 cmake -G "Visual Studio 15 2017 Win64" ..
 cmake -G "Visual Studio 16 2019 Win64" ..
 ```
-*  Open the **ALL_BUILD.vcxproj** from the **samples/Cpp/RF627_TESTS** folder by Visual Studio
+*  Open the **ALL_BUILD.vcxproj** from the **examples/Cpp/RF627_old** folder by Visual Studio
 *  Select the build type and target platform - **x64 Debug** or **x64 Release**
 *  Rebuild the **ALL_BUILD** target
 *  Choose one of the examples, Compile and Run it
@@ -206,9 +206,9 @@ This library was written in C programming language in accordance with C99 Sdanda
 
 | Compiler | 64bit | Includes |
 | ------   | ------| ------|
-| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
-| MSVC2017 | [rf62Xcore.dll](/uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
-| Clang 9.1.0 | [rf62Xcore.dll](/uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll) | [include.zip](/uploads/94210ce658946e97df0facd217d9d230/include.zip) |
+| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/371108d8ea80d3865aec88d2e194282e/rf62Xcore.dll) | [include.zip](/uploads/a526db902d8fc61a61db37341354815c/include.zip) |
+| MSVC2017 | [rf62Xcore.dll](/uploads/c95087a6f5d18a0a01eacee2bdc1ce5e/rf62Xcore.dll) | [include.zip](/uploads/406956fd8a722ef55097b555cf8425d9/include.zip) |
+| Clang 9.1.0 | [rf62Xcore.dll](/uploads/c5e6ec52a8955a369669c4edeedd5aa8/rf62Xcore.dll) | [include.zip](/uploads/62aa9d4dd96e056570a84576c947d3cd/include.zip) |
 
 ***
 
@@ -228,8 +228,10 @@ To build the code:
 
 ```bash
 cd rf62Xcore
-cmake .
-cmake --build . 
+mkdir build
+cd build
+cmake ..
+cmake --build .
 ```
 
 ###### Qt Creator
@@ -245,7 +247,9 @@ To build the code:
 
 ```bash
 cd rf62Xcore
-cmake .
+mkdir build
+cd build
+cmake ..
 ```
 *  Open rf62Xcore.sln with Visual Studio
 *  Compile
@@ -263,9 +267,9 @@ applications with following scanner series:
 
 | Compiler | 64bit | Includes |
 | ------ | ------ | ------|
-| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/ecbe8feab6232f0885b5b1e6db607aa8/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
-| MSVC2017 | [rf62Xsdk.dll](/uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll), [rf62Xsdk.lib](/uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
-| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll) | [include.zip](/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip) |
+| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/fbb23942872b3bfda058b72361b8210a/rf62Xsdk.dll) | [include.zip](/uploads/8e63d0af13b2f921c724468da426d7b3/include.zip) |
+| MSVC2017 | [rf62Xsdk.dll](/uploads/ffb7e3e02403f448008f8892c60cdedb/rf62Xsdk.dll), [rf62Xsdk.lib](/uploads/8ad08a8bfbc71f5dde329eb60cc3ff1b/rf62Xsdk.lib) | [include.zip](/uploads/1c58da93d1843013eef422b850168c22/include.zip) |
+| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/0bc7dd16f5834330c453f6fafeafc018/rf62Xsdk.dll) | [include.zip](/uploads/b4e28e11321de2962bb38972cd4ea816/include.zip) |
 
 #### HOW TO COMPILE
 RF62X SDK (C++) can be built on the console or in an IDE.\
@@ -282,13 +286,15 @@ To build the С++ wrapper:
 
 ```bash
 cd rf62Xsdk/Cpp/rf62Xsdk
-cmake .
+mkdir build
+cd build
+cmake ..
 cmake --build . 
 ```
 
 ###### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file from the **wrappers/cpp/CMake/rf62Xsdk** folder via 
+*  Load the CMakeLists.txt file from the **rf62Xsdk/Cpp/rf62Xsdk** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
@@ -298,7 +304,9 @@ To build the code:
 
 ```bash
 cd rf62Xsdk/Cpp/rf62Xsdk
-cmake .
+mkdir build
+cd build
+cmake ..
 ```
 *  Open rf62Xsdk.sln with Visual Studio
 *  Compile
@@ -339,7 +347,7 @@ int main()
 }
 ```
 You can open and build this example by **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_search** folder via 
+*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_old/RF627_search** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
@@ -389,7 +397,7 @@ int main()
 }
 ```
 You can open and build this example by **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_profile** folder via 
+*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_old/RF627_profile** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
@@ -463,7 +471,7 @@ int main()
 }
 ```
 You can open and build this example by **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **samples/win64/CMake/RF627_params** folder via 
+*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_old/RF627_params** folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Compile project
@@ -478,7 +486,7 @@ Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner 
 
 | Platform | 64bit | Dependencies (x64) |
 | ------ | ------ |------ |
-| .NET Framework 4.5 (or above) | [rf62Xsdk.dll](/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll) |
+| .NET Framework 4.5 (or above) | [rf62Xsdk.dll](/uploads/2d04f23757e4cc36dadd1e0e36e6e880/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/18b4411bcea75af28b588d1368215049/rf62Xcore.dll) |
 
 
 #### HOW TO COMPILE
@@ -494,7 +502,7 @@ git submodule update --init --recursive
 ###### Visual Studio
 To build the code:
 
-*  Open rf62Xsdk.sln from the **rf62Xsdk/CSharp/rf62Xsdk** folder with Visual Studio
+*  Open rf62Xsdk.sln from the **rf62Xsdk/CSharp/RF627_old** folder with Visual Studio
 *  Compile
 
 #### HOW TO USE
@@ -502,7 +510,7 @@ Beside the examples below, you may want to check the documentation where each fu
 contains a separate code example. All example project can be compiled and executed.
 
 You can open and build these examples by **Visual Studio**:  
-*  Open **RF627_TESTS.sln** from the **examples/CSharp/RF627_TESTS** folder with Visual Studio
+*  Open **RF627_TESTS.sln** from the **rf62Xsdk/CSharp/RF627_old** folder with Visual Studio
 *  Select **x64 Debug** or **x64 Release** target platform
 *  Add the **rf62Xsdk.dll** library to project's **references** 
 *  Copy the **rf62Xcore.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
@@ -649,6 +657,16 @@ namespace RF627_params
     }
 }
 ```
+
+
+Also you can open and build **Windows Forms** application for searching, getting/setting parameters and viewing profiles:  
+*  Open **RF62X_WinForms.sln** from the **rf62Xsdk/CSharp/RF62X_WinForms** folder with Visual Studio
+*  Select **x64 Debug** or **x64 Release** target platform
+*  Add the **rf62Xsdk.dll** library to project's **references** 
+*  Copy the **rf62Xcore.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Compile project
+
+![photo_2020-04-13_17-50-20](/uploads/36ec7848dc4b2e2d9a4f0993208e63da/photo_2020-04-13_17-50-20.jpg)
 
 ### PYTHON LIBRARY
 #### HOW TO COMPILE
