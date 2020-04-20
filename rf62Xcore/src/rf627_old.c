@@ -1147,7 +1147,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
     rfUint32 dst_ip_addr;
     rfUint16 dst_port;
-    rfBool ret = 1;
+    rfBool ret = 0;
 
     //std::cout << __LINE__ << " _mx[0].lock();" << std::endl << std::flush;
     //_mx[0].lock();
@@ -2677,7 +2677,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                else p->val_uint->defValue = p->val_uint->value;
 //                vector_add(scanner->params_list, p);
 
-                ret = 0;
+                ret = 1;
             }
 
 

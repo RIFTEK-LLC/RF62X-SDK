@@ -277,6 +277,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
         case kSERVICE:
         {
             rfUint16 count = 0;
+            rfBool ret = 0;
             while (vector_count(device->rf627_old->params_list) > 0) {
                 parameter_t* p = vector_get(device->rf627_old->params_list, vector_count(device->rf627_old->params_list)-1);
 
@@ -340,17 +341,17 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
                 memory_platform.rf_free(p);
                 count++;
             }
-            rf627_old_read_user_params_from_scanner(device->rf627_old);
+            ret = rf627_old_read_user_params_from_scanner(device->rf627_old);
             //rf627_old_read_factory_params_from_scanner(device->rf627_old);
-            return 0;
+            return ret;
             break;
         }
         case kETHERNET_IP:
         case kMODBUS_TCP:
-            return 1; // RF627-old doesn't support this protocol
+            return 0; // RF627-old doesn't support this protocol
             break;
         default:
-            return 1; // Unknown protocol type
+            return 0; // Unknown protocol type
             break;
         }
         break;
@@ -363,12 +364,12 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
         case kMODBUS_TCP:
             break;
         default:
-            return 1; // Unknown protocol type
+            return 0; // Unknown protocol type
             break;
         }
         break;
     default:
-        return 2; // Unknown device type
+        return 0; // Unknown device type
         break;
     }
     return 0;

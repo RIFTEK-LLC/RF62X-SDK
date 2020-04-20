@@ -1140,7 +1140,7 @@ rf627old::hello_info::hello_info(void* info, PROTOCOLS protocol)
         _serial_number = ((rf627_old_hello_info_by_service_protocol*)info)->serial_number;
 
         in_addr addr = {0};
-        addr.s_addr = ((rf627_old_hello_info_by_service_protocol*)info)->ip_address;
+        addr.s_addr = htonl(((rf627_old_hello_info_by_service_protocol*)info)->ip_address);
         _ip_address = inet_ntoa(addr);
         _mac_address = "";
 
