@@ -1,6 +1,7 @@
 #include <rf62Xsdk.h>
 #include <rf62Xtypes.h>
 #include <iostream>
+#include <string>
 
 #ifdef _WIN32
 #include <winsock.h>
@@ -65,6 +66,8 @@ int main()
         }
 
     }
+
+    system("pause");
 
 }
 

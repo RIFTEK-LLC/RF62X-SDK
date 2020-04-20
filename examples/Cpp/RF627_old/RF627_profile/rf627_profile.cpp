@@ -1,5 +1,6 @@
 #include <rf62Xsdk.h>
 #include <rf62Xtypes.h>
+#include <string>
 #include <iostream>
 
 using namespace SDK;
@@ -37,6 +38,8 @@ int main()
             std::cout << profile->header.serial_number << std::endl;
         }
     }
+
+    system("pause");
 }
 
 

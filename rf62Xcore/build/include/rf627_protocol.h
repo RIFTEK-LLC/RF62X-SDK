@@ -100,9 +100,19 @@ typedef enum
 #define RF627_PROTOCOL_OLD_USER_RESPONSE_PACKET_SIZE 1400
 
 /**
+ * @brief RF627_PROTOCOL_OLD_FACTORY_RESPONSE_PACKET_SIZE - Packet size is 1120 bytes.
+ */
+#define RF627_PROTOCOL_OLD_FACTORY_RESPONSE_PACKET_SIZE 1120
+
+/**
  * @brief RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE - Packet size is 1400 bytes.
  */
 #define RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE 1400
+
+/**
+ * @brief RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE - Packet size is 1400 bytes.
+ */
+#define RF627_PROTOCOL_OLD_FACTORY_REQUEST_PAYLOAD_PACKET_SIZE 1120
 
 /**
  * @brief RF627_PROTOCOL_OLD_COMMAND_SET_COUNTERS - Payload size is 8 bytes.
@@ -324,187 +334,300 @@ typedef struct
 }
 rf627_old_device_info_t;
 
+typedef struct
+{
+    struct
+    {
+        rfChar        name[64];
+        rfUint8     save_log_to_spi;
+        rfUint8		reserved[127];
+    }general;
+
+    struct
+    {
+        rfInt16		fpga_temp;
+        rfUint8		params_changed;			//Параметры были изменены, но не сохранены: 1 - factory, 2 - user, 3 - factory & user
+        rfInt16		sens00_temp;
+        rfInt16		sens00_max;
+        rfInt16		sens00_min;
+        rfInt16		sens01_temp;
+        rfInt16		sens01_max;
+        rfInt16		sens01_min;
+        rfInt16		sens10_temp;
+        rfInt16		sens10_max;
+        rfInt16		sens10_min;
+        rfInt16		sens11_temp;
+        rfInt16		sens11_max;
+        rfInt16		sens11_min;
+        rfUint8		reserved[55];
+    }sysmon;
+
+    struct
+    {
+        rfUint8		enable;
+        rfUint16	tcp_port;
+        rfUint8		reserved[32];
+    }rf625compat;
+
+    struct
+    {
+        rfUint8		dhs;
+        rfUint8		gain_analog;
+        rfUint8		gain_digital;
+        rfUint32	exposure;
+        rfUint32	max_exposure;
+        rfUint32	frame_rate;
+        rfUint32	max_frame_rate;
+        rfUint8     exposure_hdr_mode;
+        rfUint8     auto_exposure;
+        rfUint8		column_edr_mode;
+        rfUint8		column_exposure_div;
+        rfUint8     column_exposure_max_div;
+        rfUint8		reserved[59];
+    }sensor;
+
+    struct
+    {
+        rfUint8		enable;
+        rfUint8		active;
+        rfUint16	size;
+        rfUint8		position_mode;
+        rfUint16	manual_position;
+        rfUint16	auto_position;
+        rfUint16	required_profile_size;
+        rfUint8		reserved[80];
+    }roi;
+
+    struct
+    {
+        rfUint16	speed;
+        rfUint8		autonegotiation;
+        rfUint32    ip_address;
+        rfUint32    net_mask;
+        rfUint32    gateway_ip;
+        rfUint32    host_ip;
+        rfUint16    stream_port;
+        rfUint16    http_port;
+        rfUint16    service_port;
+    //    rfUint16    eip_broadcast_port;
+    //    rfUint16    eip_port;
+        rfUint8		reserved[68];
+    }network;
+
+    struct
+    {
+        rfUint8		enable;
+        rfUint8		format;
+        rfUint8		ack;
+        rfUint8     include_intensivity;
+        rfUint8		reserved[31];
+    }stream;
+
+    struct
+    {
+        rfUint32	brightness_threshold;
+        rfUint8		filter_width;
+        rfUint8		processing_mode;
+        rfUint8		reduce_noise;
+        rfUint32    frame_rate;
+        rfUint8		median_filter_mode;
+        rfUint8		bilateral_filter_mode;
+        rfUint8     peak_select_mode;
+        rfUint8     profile_flip;
+        rfUint8		reserved[56];
+    }image_processing;
+
+    struct
+    {
+        rfUint8		enable;
+        rfUint8		level_mode;
+        rfUint16	level;
+        rfUint8		reserved[32];
+    }laser;
+
+    struct
+    {
+        rfUint8                 preset_index;
+        struct
+        {
+            rfUint16    params_mask;
+            rfUint8		in1_enable;
+            rfUint8		in1_mode;
+            rfUint32	in1_delay;
+            rfUint8		in1_decimation;
+            rfUint8		in2_enable;
+            rfUint8		in2_mode;
+            rfUint8		in2_invert;
+            rfUint8		in3_enable;
+            rfUint8		in3_mode;
+            rfUint8		reserved[12];
+        }params[12];
+        rfUint8                 reserved[32];
+    }inputs;
+
+    struct
+    {
+        rfUint8		out1_enable;
+        rfUint8		out1_mode;
+        rfUint32	out1_delay;
+        rfUint32	out1_pulse_width;
+        rfUint8		out1_invert;
+        rfUint8		out2_enable;
+        rfUint8		out2_mode;
+        rfUint32	out2_delay;
+        rfUint32	out2_pulse_width;
+        rfUint8		out2_invert;
+        rfUint8		reserved[32];
+    }outputs;
+
+    rfUint8                   reserved[283];
+}rf627_old_user_params_msg_t;
 
 typedef struct
 {
-    rfChar      name[64];
-    rfUint8     save_log_to_spi;
-    rfUint8		reserved[127];
-}
-rf627_old_general_params_t;
+/*-------Общие параметры устройства-----------------------*/
+    struct
+    {
+        rfUint16					device_id;			//Идентификатор типа сканера
+        rfUint32					serial;				//Серийный номер сканера
+        rfUint32					serial_of_pcb;		//Серийный номер электроники
+        rfUint32					operating_time_h;	//Наработка сканера, часов
+        rfUint8						operating_time_m;	//Наработка сканера, минут
+        rfUint8						operating_time_s;	//Наработка сканера, секунд
+        rfUint32					runtime_h;			//Время работы после запуска, часов
+        rfUint8						runtime_m;	        //Время работы после запуска, минут
+        rfUint8						runtime_s;	        //Время работы после запуска, секунд
+        rfUint32					startup_counter;    //Количество запусков сканера
+        rfUint32					firmware_ver;		//Версия прошивки
+        rfUint32					hardware_ver;		//Версия аппаратного обеспечения
+        rfUint32					customer_id;
+        rfUint32					pl_system_clk;		//Системная тактовая для PL - частота AXI в Гц
+        rfUint32					base_z;
+        rfUint32					range_z;
+        rfUint32					range_x_start;
+        rfUint32					range_x_end;
+        rfUint16					pixels_divider;
+        rfUint16					profiles_divider;
+        rfUint32					fsbl_version;		//Версия загрузчика
+        rfChar                      oem_device_name[16];
+        rfUint8						reserved[76];
+    }general;
+/*-------Параметры установленной матрицы-------------------*/
+    struct
+    {
+        rfChar						name[32];					//Имя матрицы - для отображения
+        rfUint16					width;						//Количество пикселов по горизонтали
+        rfUint16					height;						//Количество пикселов но вертикали
+        rfUint32					pixel_clock;					//Пиксельная частота в Гц
+        rfUint16					black_odd_lines;
+        rfUint16					black_even_lines;
+        rfUint32					frame_cycle_const_part;
+        rfUint32					frame_cycle_per_line_part;
+        rfUint8						frame_rate_or_exposure;		//Селектор по чем настраивать матрицу - по частоте кадров или экспозиции: 0 - по частоте, 1 - по экспозиции
+        rfUint32					min_exposure;				//Минимальное время экспозиции в нс.
+        rfUint8						image_flipping;				//Режим отражения изображения: 0 - без отражения, 1 - по X, 2 - по Y, 3 - и по X и по Y
+        rfUint32					max_exposure;				//Максимальное время экспозиции, заданное при настройке сканера
+        rfUint8						edr_point1_value;				//Значение напряжения (в условных единицах 0..63) в 1-й точке излома прямой накопления (стр.30-31 даташита CMV300)
+        rfUint8						edr_point2_value;				//Значение напряжения (в условных единицах 0..63) во 2-й точке излома прямой накопления (стр.30-31 даташита CMV300)
+        rfUint16					edr_point1_pos;				//Положение в 1/1000 точки относительно начала экспозиции, т.е. 0 - одновременно с началом экспозиции, 999 - сразу в конце
+        rfUint16					edr_point2_pos;				//Положение в 1/1000 точки относительно начала экспозиции, т.е. 0 - одновременно с началом экспозиции, 999 - сразу в конце
+        rfUint8						reserved[113];
+        struct
+        {
+            rfUint16 addr;
+            rfUint16 value;
+        }init_regs[64];               //Структура с параметрами инициализации регистров матрицы
+    }sensor;
+/*-------Параметры сетевого подключения-------------------*/
+    struct
+    {
+        rfUint8						mac[6];
+        rfUint16					eip_vendor_id;
+        rfUint16					eip_device_type;
+        rfUint8						force_autoneg_time;			//Количество секунд, через которое сканер установит автосогласование принудительно в случае отсутствия связи по Ethernet
+        rfUint8						reserved[31];
+    }network;
+/*-------Параметры управления лазером----------------------*/
+    struct
+    {
+        rfUint16					wave_length;				//Длина волны в нм
+        rfUint8						koeff1;					//Коээфициент крутизны регулирования отпределяется как Koeff1/128
+        rfUint8						koeff2;
+        rfUint32					min_value;				//Значение, при котором лазер зажигается
+        rfUint32					max_value;				//Максимальное допустимое значение
+        rfUint8						enable_mode_change;		//Разрешение изменения режима работы лазера: 0 - запрещено, 1 - разрешено
+        rfUint8						reserved[31];
+    }laser;
+/*------------Параметры входных каналов--------------------*/
+    struct
+    {
+        rfUint16					in1_min_delay;			//Минимальная задержка в нс
+        rfUint32					in1_max_delay;			//Максимальная задержка в нс
+        rfUint16					max_divider_in1;			//Максимальное значение делителя частоты кадров
+        rfUint16					min_divider_in1;			//Минимальное значение делителя частоты кадров
+        rfUint8						reserved[62];
+    }inputs;
+/*------------Параметры выходных каналов-------------------*/
+    struct
+    {
+        rfUint16					out1_min_delay;
+        rfUint32					out1_max_delay;
+        rfUint16					out1_min_pulse_width;
+        rfUint32					out1_max_pulse_width;
+        rfUint16					out2_min_delay;
+        rfUint32					out2_max_delay;
+        rfUint16					out2_min_pulse_width;
+        rfUint32					out2_max_pulse_width;
+        rfUint8						reserved[32];
+    }outputs;
+    /*------------Параметры обработки профилей-----------------*/
+    struct
+    {
+        rfUint32					max_dump_size;
+        rfUint8						reserved[60];
+    }profiles;
+    /*------------Параметры протокола EthernetIP---------------*/
+    struct
+    {
+        struct
+        {
+            rfUint16				vendor_iD;				// Attribute 1: Vendor ID - идентификационный номер производителя устройства
+            rfUint16				device_type;				// Attribute 2: Device Type - тип устройства, который определяет его область использования
+            rfUint16				product_code;			// Attribute 3: Product Code - идентифицирует номер конкретного продукта
+            struct
+            {	uint8_t					major_rev;			// Attribute 4: Revision	USINT Major
+                rfUint8					minor_rev;			//							USINT Minor
+            }revision;										// Структура, хранящая EIP-версию девайса
+        }identity;
 
+        struct
+        {
+            rfUint32				config_capability;		// Attribute 2: Данный атрибут описывает поддержку устройством дополнительных возможностей конфигурации сети
+            struct
+            {	uint16_t				path_size;			// Path size in 16 bit words (path_size * 16 bit)
+                rfUint16				classId;			// Class ID of the linked object
+                rfUint16				instance_number;		// Requested Instance Number of the linked object
+                rfUint16				attribute_number;	// Requested Attribute Number of the linked object
+            }phyLinkObject;									// Attribute 4: Этот атрибут идентифицирует объект, связанный с базовым физическим интерфейсом связи (Ethernet Link Object)
+        }tcpInterface;
 
+        rfUint8						intrf_type;				//Type of rfInterface: twisted pair, fiber, rfInternal, etc
+        struct
+        {	uint16_t					capability_bits;
+            rfUint8						speed_dup_count;
+            struct
+            {
+                rfUint16					speed;
+                rfUint8						duplex;
+            }speedDuplex[4];
+        }intrfCapability;									//Path to physical link object
 
-typedef struct
-{
-    rfInt16		fpga_temp;
-    rfUint8		params_changed;			//Параметры были изменены, но не сохранены: 1 - factory, 2 - user, 3 - factory & user
-    rfInt16		sens00_temp;
-    rfInt16		sens00_max;
-    rfInt16		sens00_min;
-    rfInt16		sens01_temp;
-    rfInt16		sens01_max;
-    rfInt16		sens01_min;
-    rfInt16		sens10_temp;
-    rfInt16		sens10_max;
-    rfInt16		sens10_min;
-    rfInt16		sens11_temp;
-    rfInt16		sens11_max;
-    rfInt16		sens11_min;
-    rfUint8		reserved[55];
-}rf627_old_sysmon_params_t;
-
-
-
-typedef struct
-{
-    rfUint8		dhs;
-    rfUint8		gain_analog;
-    rfUint8		gain_digital;
-    rfUint32	exposure;
-    rfUint32	max_exposure;
-    rfUint32	frame_rate;
-    rfUint32	max_frame_rate;
-    rfUint8     exposure_hdr_mode;
-    rfUint8     auto_exposure;
-    rfUint8		column_edr_mode;
-    rfUint8		column_exposure_div;
-    rfUint8     column_exposure_max_div;
-    rfUint8		reserved[59];
-}rf627_old_sensor_params_t;
-
-
-
-typedef struct
-{
-    rfUint8		enable;
-    rfUint16	tcp_port;
-    rfUint8		reserved[32];
-}rf627_old_rf625compat_params_t;
-
-
-
-typedef struct
-{
-    rfUint8		enable;
-    rfUint8		active;
-    rfUint16	size;
-    rfUint8		position_mode;
-    rfUint16	manual_position;
-    rfUint16	auto_position;
-    rfUint16	required_profile_size;
-    rfUint8		reserved[80];
-}rf627_old_roi_params_t;
-
-
-
-typedef struct
-{
-    rfUint16	speed;
-    rfUint8		autonegotiation;
-    rfUint32    ip_address;
-    rfUint32    net_mask;
-    rfUint32    gateway_ip;
-    rfUint32    host_ip;
-    rfUint16    stream_port;
-    rfUint16    http_port;
-    rfUint16    service_port;
-    rfUint8		reserved[68];
-}rf627_old_network_params_t;
-
-
-typedef struct
-{
-    rfUint8		enable;
-    rfUint8		format;
-    rfUint8		ack;
-    rfUint8     include_intensivity;
-    rfUint8		reserved[31];
-}rf627_old_stream_params_t;
-
-
-typedef struct
-{
-    rfUint32	brightness_threshold;
-    rfUint8		filter_width;
-    rfUint8		processing_mode;
-    rfUint8		reduce_noise;
-    rfUint32    frame_rate;
-    rfUint8		median_filter_mode;
-    rfUint8		bilateral_filter_mode;
-    rfUint8     peak_select_mode;
-    rfUint8     profile_flip;
-    rfUint8		reserved[56];
-}rf627_old_image_processing_params_t;
-
-
-typedef struct
-{
-    rfUint8		enable;
-    rfUint8		level_mode;
-    rfUint16	level;
-    rfUint8		reserved[32];
-}rf627_old_laser_params_t;
-
-
-
-typedef struct
-{
-    rfUint16    params_mask;
-    rfUint8		in1_enable;
-    rfUint8		in1_mode;
-    rfUint32	in1_delay;
-    rfUint8		in1_decimation;
-    rfUint8		in2_enable;
-    rfUint8		in2_mode;
-    rfUint8		in2_invert;
-    rfUint8		in3_enable;
-    rfUint8		in3_mode;
-    rfUint8		reserved[12];
-}rf627_old_inputs_preset_t;
-
-
-
-typedef struct
-{
-    rfUint8                 preset_index;
-    rf627_old_inputs_preset_t   params[12];
-    rfUint8                 reserved[32];
-}rf627_old_inputs_params_t;
-
-
-typedef struct
-{
-    rfUint8		out1_enable;
-    rfUint8		out1_mode;
-    rfUint32	out1_delay;
-    rfUint32	out1_pulse_width;
-    rfUint8		out1_invert;
-    rfUint8		out2_enable;
-    rfUint8		out2_mode;
-    rfUint32	out2_delay;
-    rfUint32	out2_pulse_width;
-    rfUint8		out2_invert;
-    rfUint8		reserved[32];
-}rf627_old_outputs_params_t;
-
-
-typedef struct
-{
-    rf627_old_general_params_t          general;
-    rf627_old_sysmon_params_t           sysmon;
-    rf627_old_rf625compat_params_t      rf625compat;
-    rf627_old_sensor_params_t           sensor;
-    rf627_old_roi_params_t              roi;
-    rf627_old_network_params_t          network;
-    rf627_old_stream_params_t           stream;
-    rf627_old_image_processing_params_t image_processing;
-    rf627_old_laser_params_t            laser;
-    rf627_old_inputs_params_t           inputs;
-    rf627_old_outputs_params_t          outputs;
-    rfUint8                         reserved[283];
-}rf627_old_user_params_t;
-
+        rfUint8						reserved[44];
+    }eip;
+    /*-------Резерв--------------------------------------------*/
+    rfUint8							reserved[167];
+    /*---------------------------------------------------------*/
+}rf627_old_factory_params_msg_t;
 
 typedef struct{
     struct{
@@ -587,6 +710,11 @@ rfUint32 rf627_protocol_old_get_size_of_response_profile_header_packet();
  */
 rfUint32 rf627_protocol_old_get_size_of_response_read_user_params_packet();
 /**
+ * @brief rf627_protocol_old_get_size_of_response_read_user_params_packet
+ * @return Size of response profile header in packet from rf627old
+ */
+rfUint32 rf627_protocol_old_get_size_of_response_read_factory_params_packet();
+/**
  * @brief rf627_protocol_old_get_size_of_response_profile_header_packet
  * @return Size of response profile header in packet from rf627old
  */
@@ -644,6 +772,16 @@ rf627_old_header_msg_t rf627_protocol_old_create_hello_msg_request();
  * @return old request read_params msg
  */
 rf627_old_header_msg_t rf627_protocol_old_create_read_user_params_msg_request(
+        rf627_protocol_old_header_confirmation_t confirmation,
+        rfUint32                                 serial_number,
+        rfUint16                                 msg_count
+        );
+
+/**
+ * @brief rf627_protocol_old_create_read_params_msg_request
+ * @return old request read_params msg
+ */
+rf627_old_header_msg_t rf627_protocol_old_create_read_factory_params_msg_request(
         rf627_protocol_old_header_confirmation_t confirmation,
         rfUint32                                 serial_number,
         rfUint16                                 msg_count
@@ -735,6 +873,13 @@ rfSize rf627_protocol_old_pack_read_user_params_msg_request_to_packet(
         rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* msg);
 
 /**
+ * @brief rf627_protocol_old_create_read_params_msg_request
+ * @return old request read_params msg
+ */
+rfSize rf627_protocol_old_pack_read_factory_params_msg_request_to_packet(
+        rfUint8* buffer, rfUint32 buffer_size, rf627_old_header_msg_t* msg);
+
+/**
  * @brief rf627_protocol_old_pack_write_user_params_msg_request_to_packet
  * @return old request read_params msg
  */
@@ -817,20 +962,36 @@ rf627_old_header_msg_t rf627_protocol_old_unpack_header_msg_from_user_params_pac
 
 /**
  * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
+ * user_params header msg from network packet
+ * @param buffer - ptr to network buffer
+ * @return rf627_old_header_msg_t
+ */
+rf627_old_header_msg_t rf627_protocol_old_unpack_header_msg_from_factory_params_packet(
+        rfUint8* buffer);
+
+/**
+ * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
  * payload msg from user_params network packet
  * @param buffer - ptr to network buffer
  * @return rf627_old_user_params_t
  */
-rf627_old_user_params_t rf627_protocol_old_unpack_payload_msg_from_user_params_packet(
+rf627_old_user_params_msg_t rf627_protocol_old_unpack_payload_msg_from_user_params_packet(
         rfUint8* buffer);
 
-
+/**
+ * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
+ * payload msg from user_params network packet
+ * @param buffer - ptr to network buffer
+ * @return rf627_old_user_params_t
+ */
+rf627_old_factory_params_msg_t rf627_protocol_old_unpack_payload_msg_from_factory_params_packet(
+        rfUint8* buffer);
 
 
 
 rfBool rf627_protocol_send_packet_by_udp(
         void* s, rfUint8* msg, rfUint32 size,
-        rf_sockaddr_in *send_addr,
+        rfUint32 ip_addr, rfUint16 port,
         rfUint32 payload_length, void* payload);
 
 

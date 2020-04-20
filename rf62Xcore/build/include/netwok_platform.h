@@ -3,70 +3,70 @@
 #include "platform_types.h"
 
 
-typedef struct rf_in_addr {
-  union {
-    struct { rfUint8  s_b1, s_b2, s_b3, s_b4; } rf_S_un_b;
-    struct { rfUint16 s_w1, s_w2; } rf_S_un_w;
-    rfUint32 rf_S_addr;
-  } rf_S_un;
-} RF_IN_ADDR, *RF_PIN_ADDR, *RF_LPIN_ADDR;
+//typedef struct rf_in_addr {
+//  union {
+//    struct { rfUint8  s_b1, s_b2, s_b3, s_b4; } rf_S_un_b;
+//    struct { rfUint16 s_w1, s_w2; } rf_S_un_w;
+//    rfUint32 rf_S_addr;
+//  } rf_S_un;
+//} RF_IN_ADDR, *RF_PIN_ADDR, *RF_LPIN_ADDR;
 
-#define rf_s_addr	rf_S_un.rf_S_addr
-#define rf_s_host	rf_S_un.rf_S_un_b.s_b2
-#define rf_s_net	rf_S_un.rf_S_un_b.s_b1
-#define rf_s_imp	rf_S_un.rf_S_un_w.s_w2
-#define rf_s_impno	rf_S_un.rf_S_un_b.s_b4
-#define rf_s_lh	    rf_S_un.rf_S_un_b.s_b3
-
-
-typedef struct {
-    rfInt16    sin_family;   // e.g. AF_INET
-    rfUint16   sin_port;     // e.g. htons(3490)
-    rfUint32   sin_addr;     // see struct in_addr, below
-    rfChar     sin_zero[8];  // zero this if you want to
-}rf_sockaddr_in;
+//#define rf_s_addr	rf_S_un.rf_S_addr
+//#define rf_s_host	rf_S_un.rf_S_un_b.s_b2
+//#define rf_s_net	rf_S_un.rf_S_un_b.s_b1
+//#define rf_s_imp	rf_S_un.rf_S_un_w.s_w2
+//#define rf_s_impno	rf_S_un.rf_S_un_b.s_b4
+//#define rf_s_lh	    rf_S_un.rf_S_un_b.s_b3
 
 
+//typedef struct {
+//    rfInt16    sin_family;   // e.g. AF_INET
+//    rfUint16   sin_port;     // e.g. htons(3490)
+//    rfUint32   sin_addr;     // see struct in_addr, below
+//    rfChar     sin_zero[8];  // zero this if you want to
+//}rf_sockaddr_in;
 
 
 
-typedef rfUint32 rf_socklen_t;
 
-#ifndef AF_INET
-#define AF_INET		  2	/* rfInternet IP Protocol 	*/
-#endif
 
-#ifndef SOCK_DGRAM
-#define SOCK_DGRAM	  2	/* datagram (conn.less) socket	*/
-#endif
+//typedef rfUint32 rf_socklen_t;
 
-#ifndef IPPROTO_UDP
-#define IPPROTO_UDP  17 /* User Datagram Protocol.  */
-#endif
 
-#ifndef SOCKET_ERROR
-#define SOCKET_ERROR -1 /* Socket error  */
-#endif
+//#define RF_AF_INET		  2	/* rfInternet IP Protocol 	*/
 
-#ifndef INADDR_BROADCAST
-#define INADDR_BROADCAST 0xffffffff
-#endif
 
-#ifndef INADDR_ANY
-#define INADDR_ANY 0x00000000
-#endif
 
-#ifndef SOL_SOCKET
-#define SOL_SOCKET 0xffff
-#endif
+//#define RF_SOCK_DGRAM 2	/* datagram (conn.less) socket	*/
 
-#ifndef SO_BROADCAST
-#define SO_BROADCAST 0x0020
-#endif
 
-#ifndef SO_REUSEADDR
-#define SO_REUSEADDR 0x0004
-#endif
+//#define RF_IPPROTO_UDP  17 /* User Datagram Protocol.  */
+
+
+#define RF_SOCKET_ERROR -1 /* Socket error  */
+
+
+
+//#define RF_INADDR_BROADCAST 0xffffffff
+
+
+//#define RF_INADDR_ANY 0x00000000
+
+
+
+//#define RF_SOL_SOCKET 0xffff
+//#define RF_SOL_SOCKET 0x0001
+
+
+
+//#define RF_SO_BROADCAST 0x0020
+//#define RF_SO_BROADCAST 0x0006
+
+
+
+//#define RF_SO_REUSEADDR 0x0004
+//#define RF_SO_REUSEADDR 0x0002
+
 
 /** @brief The modbusHtoN_long_t function converts a u_long from host to TCP/IP
  *         network byte order (which is big-endian).
@@ -108,7 +108,33 @@ typedef rfUint16 (*ntoh_short_t)(rfUint16 netshort);
  * - On success: If no error occurs, modbusCreateTcpSocket_t returns a descriptor referencing the new socket
  * - On error: NULL
  */
-typedef void* (*create_socket_t)(rfInt32 af, rfInt32 type, rfInt32 protocol);
+typedef void* (*create_udp_socket_t)();
+
+/** @brief Pointer to the function that sets a socket option.
+ *
+ * @param socket - A descriptor that identifies a socket.
+ * @param level - The level at which the option is defined.
+ * @param optname - The socket option for which the value is to be set.
+ * @param optval - A pointer to the buffer in which the value for the requested option is specified.
+ * @param optlen - The size, in bytes, of the buffer pointed to by the optval parameter.
+ *  @return
+ * - On success: If no error occurs, modbusSetSocketOption_t returns zero
+ * - On error: -1
+ */
+typedef rfInt8 (*set_broadcast_socket_option_t)(void* socket);
+
+/** @brief Pointer to the function that sets a socket option.
+ *
+ * @param socket - A descriptor that identifies a socket.
+ * @param level - The level at which the option is defined.
+ * @param optname - The socket option for which the value is to be set.
+ * @param optval - A pointer to the buffer in which the value for the requested option is specified.
+ * @param optlen - The size, in bytes, of the buffer pointed to by the optval parameter.
+ *  @return
+ * - On success: If no error occurs, modbusSetSocketOption_t returns zero
+ * - On error: -1
+ */
+typedef rfInt8 (*set_reuseaddr_socket_option_t)(void* socket);
 
 /** @brief Pointer to the function that sets a socket option.
  *
@@ -145,7 +171,7 @@ typedef rfInt8 (*set_socket_recv_timeout_t)(void* socket, rfInt32 msec);
  * - On error: -1
  */
 typedef rfUint8 (*socket_connect_t)(
-        void* socket, rf_sockaddr_in* name, rfInt32 namelen);
+        void* socket, rfUint32 dst_ip_addr, rfUint16 dst_port);
 
 /** @brief Pointer to the function that associates a local address with a socket.
  *
@@ -156,8 +182,8 @@ typedef rfUint8 (*socket_connect_t)(
  * - On success: If no error occurs, modbusSocketBind_t returns zero
  * - On error: -1
  */
-typedef rfUint8 (*socket_bind_t)(
-        void* socket, rf_sockaddr_in* name, rfInt32 namelen);
+typedef rfInt (*socket_bind_t)(
+        void* socket, rfUint32 ip_addr, rfUint16 port);
 
 /** @brief Pointer to the function that places a socket in a state in which it is listening for an incoming connection.
  *
@@ -187,7 +213,7 @@ typedef rfUint8 (*socket_listen_t)(
  * - On error  : NULL
  */
 typedef void* (*socket_accept_t)(
-        void* socket, rf_sockaddr_in* addr, rfInt32* addrlen);
+        void* socket, rfUint32* srs_ip_addr, rfUint16* srs_port);
 
 /** @brief Pointer to the function that closes an existing socket.
  *
@@ -224,7 +250,7 @@ typedef rfInt (*send_tcp_data_t)(void* socket, const void *buf, rfSize len);
  */
 typedef rfInt (*send_udp_data_t)(
         void* socket, const void *data, rfSize len,
-        rf_sockaddr_in *dest_addr, rf_socklen_t addrlen);
+        rfUint32 dest_ip_addr, rfUint16 dest_port);
 
 /**
  * @brief Pointer to the function that receive message from socket and capture address of sender.
@@ -237,7 +263,7 @@ typedef rfInt (*send_udp_data_t)(
  */
 typedef rfInt (*recv_data_from_t)(
         void* sockfd, void *buf, rfSize len,
-        rf_sockaddr_in *src_addr, rf_socklen_t *addrlen);
+        rfUint32* srs_ip_addr, rfUint16* srs_port);
 
 /**
  * @brief Pointer to the function that receive message from socket and capture address of sender.
@@ -257,7 +283,9 @@ typedef struct
     hton_short_t hton_short;
     ntoh_short_t ntoh_short;
 
-    create_socket_t create_socket;
+    create_udp_socket_t create_udp_socket;
+    set_broadcast_socket_option_t set_broadcast_socket_option;
+    set_reuseaddr_socket_option_t set_reuseaddr_socket_option;
     set_socket_option_t set_socket_option;
     set_socket_recv_timeout_t set_socket_recv_timeout;
     socket_connect_t socket_connect;

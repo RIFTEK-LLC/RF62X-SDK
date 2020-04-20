@@ -30,6 +30,15 @@ dllexport rfUint8 search_scanners(
         vector_t *list, scanner_types_t model, protocol_types_t protocol);
 
 /**
+ * @brief get_hello_info_of_scanners - Get information about scanner from hello packet
+ * @param device - prt to scanner
+ * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @return 0 on success
+ */
+dllexport hello_information get_info_about_scanner(
+        scanner_base_t *device, protocol_types_t protocol);
+
+/**
  * @brief connect - Establish connection to the RF627 device
  * @param device - prt to scanner
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)

@@ -1,7 +1,7 @@
 ﻿#ifndef PLATFORM_TYPES_H
 #define PLATFORM_TYPES_H
 #include <stdint.h>
-
+#include <stddef.h>
 
 /** @brief	Определения типов данных
  */
