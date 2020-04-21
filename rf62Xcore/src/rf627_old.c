@@ -1008,7 +1008,7 @@ parameter_t* create_parameter_from_type(const rfChar* type)
     if(rf_strcmp(pvtKey[PVT_UINT], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
-        p->val_uint = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
+        p->val_uint32 = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
         p->base.type = pvtKey[PVT_UINT];
 //        rfUint16 len = rf_strlen(type) + 1;
 //        p->base.type = memory_platform.rf_calloc(1, sizeof(rfChar) * len);
@@ -1021,7 +1021,7 @@ parameter_t* create_parameter_from_type(const rfChar* type)
     }else if(rf_strcmp(pvtKey[PVT_INT], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
-        p->val_int = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
+        p->val_int32 = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
         p->base.type = pvtKey[PVT_INT];
     }else if(rf_strcmp(pvtKey[PVT_INT64], type) == 0)
     {
@@ -1041,7 +1041,7 @@ parameter_t* create_parameter_from_type(const rfChar* type)
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_UINT32], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
-        p->arr_uint = memory_platform.rf_calloc(1, sizeof (array_uint32_t));
+        p->arr_uint32 = memory_platform.rf_calloc(1, sizeof (array_uint32_t));
         p->base.type = pvtKey[PVT_ARRAY_UINT32];
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_UINT64], type) == 0)
     {
@@ -1051,7 +1051,7 @@ parameter_t* create_parameter_from_type(const rfChar* type)
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_INT32], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
-        p->arr_int = memory_platform.rf_calloc(1, sizeof (array_int32_t));
+        p->arr_int32 = memory_platform.rf_calloc(1, sizeof (array_int32_t));
         p->base.type = pvtKey[PVT_ARRAY_INT32];
     }else if(rf_strcmp(pvtKey[PVT_ARRAY_INT64], type) == 0)
     {
@@ -1094,22 +1094,22 @@ rfBool set_value_by_key(parameter_t* p, char* key)
 {
     if (rf_strcmp(pvtKey[PVT_INT], p->base.type))
     {
-        for (rfInt32 idx = 0; idx < p->val_int->enumValues->recCount; idx++)
+        for (rfInt32 idx = 0; idx < p->val_int32->enumValues->recCount; idx++)
         {
-            if (rf_strcmp(p->val_int->enumValues->rec[idx].key, key) == 0)
+            if (rf_strcmp(p->val_int32->enumValues->rec[idx].key, key) == 0)
             {
-                p->val_int->value = p->val_int->enumValues->rec[idx].value;
+                p->val_int32->value = p->val_int32->enumValues->rec[idx].value;
                 return 0;
             }
         }
     }else
     if (rf_strcmp(pvtKey[PVT_UINT], p->base.type))
     {
-        for (rfInt32 idx = 0; idx < p->val_uint->enumValues->recCount; idx++)
+        for (rfInt32 idx = 0; idx < p->val_uint32->enumValues->recCount; idx++)
         {
-            if (rf_strcmp(p->val_uint->enumValues->rec[idx].key, key) == 0)
+            if (rf_strcmp(p->val_uint32->enumValues->rec[idx].key, key) == 0)
             {
-                p->val_uint->value = p->val_uint->enumValues->rec[idx].value;
+                p->val_uint32->value = p->val_uint32->enumValues->rec[idx].value;
                 return 0;
             }
         }
@@ -1237,15 +1237,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.general.save_log_to_spi);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.general.save_log_to_spi;
-                p->val_uint->min = 0;
-                p->val_uint->max = 0;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                rfInt* def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.general.save_log_to_spi;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 0;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                rfInt* def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1275,11 +1275,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sysmon.params_changed);
                 p->base.units = "°C";
 
-                p->val_uint->value = scanner->user_params.sysmon.params_changed;
-                p->val_uint->min = 0;
-                p->val_uint->max = 7;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
+                p->val_uint32->value = scanner->user_params.sysmon.params_changed;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 7;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
                 vector_add(scanner->params_list, p);
 
 
@@ -1496,16 +1496,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.rf625compat.enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.rf625compat.enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.rf625compat.enable;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1517,11 +1517,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.rf625compat.tcp_port);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.rf625compat.tcp_port;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 620;
+                p->val_uint32->value = scanner->user_params.rf625compat.tcp_port;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 620;
                 vector_add(scanner->params_list, p);
 
 
@@ -1534,16 +1534,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.dhs);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.sensor.dhs;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.sensor.dhs;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1555,11 +1555,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.gain_analog);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.sensor.gain_analog;
-                p->val_uint->min = 0;
-                p->val_uint->max = 7;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 2;
+                p->val_uint32->value = scanner->user_params.sensor.gain_analog;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 7;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 2;
                 vector_add(scanner->params_list, p);
 
 
@@ -1572,11 +1572,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.gain_digital);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.sensor.gain_digital;
-                p->val_uint->min = 0;
-                p->val_uint->max = 63;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 48;
+                p->val_uint32->value = scanner->user_params.sensor.gain_digital;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 63;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 48;
                 vector_add(scanner->params_list, p);
 
 
@@ -1589,11 +1589,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.exposure);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->user_params.sensor.exposure;
-                p->val_uint->min = 3000;
-                p->val_uint->max = 300000000;
-                p->val_uint->step = 100;
-                p->val_uint->defValue = 300000;
+                p->val_uint32->value = scanner->user_params.sensor.exposure;
+                p->val_uint32->min = 3000;
+                p->val_uint32->max = 300000000;
+                p->val_uint32->step = 100;
+                p->val_uint32->defValue = 300000;
                 vector_add(scanner->params_list, p);
 
 
@@ -1606,11 +1606,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.max_exposure);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->user_params.sensor.max_exposure;
-                p->val_uint->min = 3000;
-                p->val_uint->max = 2147483647;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 1443298;
+                p->val_uint32->value = scanner->user_params.sensor.max_exposure;
+                p->val_uint32->min = 3000;
+                p->val_uint32->max = 2147483647;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 1443298;
                 vector_add(scanner->params_list, p);
 
 
@@ -1623,11 +1623,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.frame_rate);
                 p->base.units = "Hz";
 
-                p->val_uint->value = scanner->user_params.sensor.frame_rate;
-                p->val_uint->min = 0;
-                p->val_uint->max = 20000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 485;
+                p->val_uint32->value = scanner->user_params.sensor.frame_rate;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 20000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 485;
                 vector_add(scanner->params_list, p);
 
 
@@ -1640,11 +1640,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.max_frame_rate);
                 p->base.units = "Hz";
 
-                p->val_uint->value = scanner->user_params.sensor.max_frame_rate;
-                p->val_uint->min = 0;
-                p->val_uint->max = 20000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 485;
+                p->val_uint32->value = scanner->user_params.sensor.max_frame_rate;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 20000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 485;
                 vector_add(scanner->params_list, p);
 
 
@@ -1659,16 +1659,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.auto_exposure);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.sensor.auto_exposure;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.sensor.auto_exposure;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1681,16 +1681,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.column_edr_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.sensor.column_edr_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.sensor.column_edr_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1703,11 +1703,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.sensor.column_exposure_div);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.sensor.column_exposure_div;
-                p->val_uint->min = 2;
-                p->val_uint->max = 32;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 2;
+                p->val_uint32->value = scanner->user_params.sensor.column_exposure_div;
+                p->val_uint32->min = 2;
+                p->val_uint32->max = 32;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 2;
                 vector_add(scanner->params_list, p);
 
 
@@ -1724,16 +1724,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.roi.enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.roi.enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.roi.enable;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1746,16 +1746,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.roi.active);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.roi.active;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.roi.active;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1768,11 +1768,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.roi.size);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.roi.size;
-                p->val_uint->min = 1;
-                p->val_uint->max = 1024;
-                p->val_uint->step = 8;
-                p->val_uint->defValue = 64;
+                p->val_uint32->value = scanner->user_params.roi.size;
+                p->val_uint32->min = 1;
+                p->val_uint32->max = 1024;
+                p->val_uint32->step = 8;
+                p->val_uint32->defValue = 64;
                 vector_add(scanner->params_list, p);
 
 
@@ -1785,16 +1785,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.roi.position_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.roi.position_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.roi.position_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1807,11 +1807,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.roi.manual_position);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.roi.manual_position;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1280;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 100;
+                p->val_uint32->value = scanner->user_params.roi.manual_position;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1280;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 100;
                 vector_add(scanner->params_list, p);
 
                 //auto_position
@@ -1824,11 +1824,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.roi.required_profile_size);
                 p->base.units = "points";
 
-                p->val_uint->value = scanner->user_params.roi.required_profile_size;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1280;
-                p->val_uint->step = 64;
-                p->val_uint->defValue = 320;
+                p->val_uint32->value = scanner->user_params.roi.required_profile_size;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1280;
+                p->val_uint32->step = 64;
+                p->val_uint32->defValue = 320;
                 vector_add(scanner->params_list, p);
 
 
@@ -1841,16 +1841,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.speed);
                 p->base.units = "points";
 
-                p->val_uint->value = scanner->user_params.network.speed;
-                p->val_uint->min = 10;
-                p->val_uint->max = 1000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 1000;
-                p->val_uint->enumValues = &netSpeedEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "1000");
+                p->val_uint32->value = scanner->user_params.network.speed;
+                p->val_uint32->min = 10;
+                p->val_uint32->max = 1000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 1000;
+                p->val_uint32->enumValues = &netSpeedEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "1000");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1863,16 +1863,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.autonegotiation);
                 p->base.units = "points";
 
-                p->val_uint->value = scanner->user_params.network.autonegotiation;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 1;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "true");
+                p->val_uint32->value = scanner->user_params.network.autonegotiation;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 1;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "true");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -1886,19 +1886,19 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.ip_address);
                 p->base.units = "";
 
-                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                p->arr_uint32->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
                 for (rfUint32 i = 0; i < p->base.size; i++)
-                    p->arr_uint->value[i] = scanner->user_params.network.ip_address[i];
-                p->arr_uint->min = 0;
-                p->arr_uint->max = 255;
-                p->arr_uint->step = 0;
-                p->arr_uint->defCount = 4;
-                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                    p->arr_uint32->value[i] = scanner->user_params.network.ip_address[i];
+                p->arr_uint32->min = 0;
+                p->arr_uint32->max = 255;
+                p->arr_uint32->step = 0;
+                p->arr_uint32->defCount = 4;
+                p->arr_uint32->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
                 rfUint32 IP_arr[4] = {0xC0, 0xA8, 0x01, 0x1E};
                 for (rfUint32 i = 0; i < 4; i++)
-                    p->arr_uint->defValue[i] = IP_arr[i];
-                p->arr_uint->maxCount = 4;
-                p->arr_uint->count = 4;
+                    p->arr_uint32->defValue[i] = IP_arr[i];
+                p->arr_uint32->maxCount = 4;
+                p->arr_uint32->count = 4;
                 vector_add(scanner->params_list, p);
 
 
@@ -1911,19 +1911,19 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.net_mask);
                 p->base.units = "";
 
-                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                p->arr_uint32->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
                 for (rfUint32 i = 0; i < p->base.size; i++)
-                    p->arr_uint->value[i] = scanner->user_params.network.net_mask[i];
-                p->arr_uint->min = 0;
-                p->arr_uint->max = 255;
-                p->arr_uint->step = 0;
-                p->arr_uint->defCount = 4;
-                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                    p->arr_uint32->value[i] = scanner->user_params.network.net_mask[i];
+                p->arr_uint32->min = 0;
+                p->arr_uint32->max = 255;
+                p->arr_uint32->step = 0;
+                p->arr_uint32->defCount = 4;
+                p->arr_uint32->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
                 rfUint32 MASK_arr[4] = {0xC0, 0xA8, 0x01, 0x1E};
                 for (rfUint32 i = 0; i < 4; i++)
-                    p->arr_uint->defValue[i] = MASK_arr[i];
-                p->arr_uint->maxCount = 4;
-                p->arr_uint->count = 4;
+                    p->arr_uint32->defValue[i] = MASK_arr[i];
+                p->arr_uint32->maxCount = 4;
+                p->arr_uint32->count = 4;
                 vector_add(scanner->params_list, p);
 
 
@@ -1936,19 +1936,19 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.gateway_ip);
                 p->base.units = "";
 
-                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                p->arr_uint32->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
                 for (rfUint32 i = 0; i < p->base.size; i++)
-                    p->arr_uint->value[i] = scanner->user_params.network.gateway_ip[i];
-                p->arr_uint->min = 0;
-                p->arr_uint->max = 255;
-                p->arr_uint->step = 0;
-                p->arr_uint->defCount = 4;
-                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                    p->arr_uint32->value[i] = scanner->user_params.network.gateway_ip[i];
+                p->arr_uint32->min = 0;
+                p->arr_uint32->max = 255;
+                p->arr_uint32->step = 0;
+                p->arr_uint32->defCount = 4;
+                p->arr_uint32->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
                 rfUint32 GATEWAY_arr[4] = {0xFF, 0xFF, 0xFF, 0x00};
                 for (rfUint32 i = 0; i < 4; i++)
-                    p->arr_uint->defValue[i] = GATEWAY_arr[i];
-                p->arr_uint->maxCount = 4;
-                p->arr_uint->count = 4;
+                    p->arr_uint32->defValue[i] = GATEWAY_arr[i];
+                p->arr_uint32->maxCount = 4;
+                p->arr_uint32->count = 4;
                 vector_add(scanner->params_list, p);
 
 
@@ -1961,19 +1961,19 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.host_ip);
                 p->base.units = "";
 
-                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                p->arr_uint32->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
                 for (rfUint32 i = 0; i < p->base.size; i++)
-                    p->arr_uint->value[i] = scanner->user_params.network.host_ip[i];
-                p->arr_uint->min = 0;
-                p->arr_uint->max = 255;
-                p->arr_uint->step = 0;
-                p->arr_uint->defCount = 4;
-                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                    p->arr_uint32->value[i] = scanner->user_params.network.host_ip[i];
+                p->arr_uint32->min = 0;
+                p->arr_uint32->max = 255;
+                p->arr_uint32->step = 0;
+                p->arr_uint32->defCount = 4;
+                p->arr_uint32->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
                 rfUint32 HOSTIP_arr[4] = {0xC0, 0xA8, 0x01, 0x02};
                 for (rfUint32 i = 0; i < 4; i++)
-                    p->arr_uint->defValue[i] = HOSTIP_arr[i];
-                p->arr_uint->maxCount = 4;
-                p->arr_uint->count = 4;
+                    p->arr_uint32->defValue[i] = HOSTIP_arr[i];
+                p->arr_uint32->maxCount = 4;
+                p->arr_uint32->count = 4;
                 vector_add(scanner->params_list, p);
 
 
@@ -1986,11 +1986,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.stream_port);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.stream_port;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 50001;
+                p->val_uint32->value = scanner->user_params.network.stream_port;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 50001;
                 vector_add(scanner->params_list, p);
 
 
@@ -2003,11 +2003,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.http_port);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.http_port;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 80;
+                p->val_uint32->value = scanner->user_params.network.http_port;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 80;
                 vector_add(scanner->params_list, p);
 
 
@@ -2020,11 +2020,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.service_port);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.service_port;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 50011;
+                p->val_uint32->value = scanner->user_params.network.service_port;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 50011;
                 vector_add(scanner->params_list, p);
 
 
@@ -2037,16 +2037,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.stream.enable);
                 p->base.units = "points";
 
-                p->val_uint->value = scanner->user_params.stream.enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 1;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.stream.enable;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 1;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2059,16 +2059,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.stream.format);
                 p->base.units = "points";
 
-                p->val_uint->value = scanner->user_params.stream.format;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 1;
-                p->val_uint->enumValues = &streamsFormatEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Profile");
+                p->val_uint32->value = scanner->user_params.stream.format;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 1;
+                p->val_uint32->enumValues = &streamsFormatEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Profile");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2081,15 +2081,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.stream.include_intensivity);
                 p->base.units = "points";
 
-                p->val_uint->value = scanner->user_params.stream.include_intensivity;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.stream.include_intensivity;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2103,11 +2103,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.image_processing.brightness_threshold);
                 p->base.units = "%";
 
-                p->val_uint->value = scanner->user_params.image_processing.brightness_threshold;
-                p->val_uint->min = 0;
-                p->val_uint->max = 100;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 10;
+                p->val_uint32->value = scanner->user_params.image_processing.brightness_threshold;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 100;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 10;
                 vector_add(scanner->params_list, p);
 
                 //filter_width
@@ -2120,15 +2120,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->base.size = sizeof(scanner->user_params.image_processing.processing_mode);
 //                p->base.units = "";
 
-//                p->val_uint->value = scanner->user_params.image_processing.processing_mode;
-//                p->val_uint->min = 0;
-//                p->val_uint->max = 1;
-//                p->val_uint->step = 0;
-//                p->val_uint->enumValues = &processingModeEnum;
-//                def = get_value_by_key_from_enum(p->val_uint->enumValues, "High accuracy");
+//                p->val_uint32->value = scanner->user_params.image_processing.processing_mode;
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 1;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->enumValues = &processingModeEnum;
+//                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "High accuracy");
 //                if (def != NULL)
-//                    p->val_uint->defValue = *def;
-//                else p->val_uint->defValue = p->val_uint->value;
+//                    p->val_uint32->defValue = *def;
+//                else p->val_uint32->defValue = p->val_uint32->value;
 //                vector_add(scanner->params_list, p);
 
                 //reduce_noise
@@ -2141,11 +2141,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.image_processing.frame_rate);
                 p->base.units = "pps";
 
-                p->val_uint->value = scanner->user_params.image_processing.frame_rate;
-                p->val_uint->min = 0;
-                p->val_uint->max = 20000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 485;
+                p->val_uint32->value = scanner->user_params.image_processing.frame_rate;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 20000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 485;
                 vector_add(scanner->params_list, p);
 
 
@@ -2158,15 +2158,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.image_processing.median_filter_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.image_processing.median_filter_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &medianFilterEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Off");
+                p->val_uint32->value = scanner->user_params.image_processing.median_filter_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &medianFilterEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Off");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2179,15 +2179,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.image_processing.bilateral_filter_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.image_processing.bilateral_filter_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &bilateralFilterEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Off");
+                p->val_uint32->value = scanner->user_params.image_processing.bilateral_filter_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &bilateralFilterEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Off");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2200,15 +2200,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.image_processing.peak_select_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.image_processing.peak_select_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 7;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &peakModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Max intensity");
+                p->val_uint32->value = scanner->user_params.image_processing.peak_select_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 7;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &peakModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Max intensity");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2221,15 +2221,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.image_processing.profile_flip);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.image_processing.profile_flip;
-                p->val_uint->min = 0;
-                p->val_uint->max = 7;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &flipEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "no");
+                p->val_uint32->value = scanner->user_params.image_processing.profile_flip;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 7;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &flipEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "no");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2243,15 +2243,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.laser.enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.laser.enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.laser.enable;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2264,15 +2264,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.laser.level_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.laser.level_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &laserModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Expose sync");
+                p->val_uint32->value = scanner->user_params.laser.level_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &laserModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Expose sync");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2285,11 +2285,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.laser.level);
                 p->base.units = "%";
 
-                p->val_uint->value = scanner->user_params.laser.level;
-                p->val_uint->min = 0;
-                p->val_uint->max = 100;
-                p->val_uint->step = 5;
-                p->val_uint->defValue = 50;
+                p->val_uint32->value = scanner->user_params.laser.level;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 100;
+                p->val_uint32->step = 5;
+                p->val_uint32->defValue = 50;
                 vector_add(scanner->params_list, p);
 
 
@@ -2302,11 +2302,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->base.size = sizeof(scanner->user_params.inputs.preset_index);
 //                p->base.units = "";
 
-//                p->val_uint->value = scanner->user_params.inputs.preset_index;
-//                p->val_uint->min = 0;
-//                p->val_uint->max = 11;
-//                p->val_uint->step = 0;
-//                p->val_uint->defValue = 0;
+//                p->val_uint32->value = scanner->user_params.inputs.preset_index;
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 11;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->defValue = 0;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2320,12 +2320,12 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                                      scanner->user_params.inputs.preset_index].params_mask);
 //                p->base.units = "";
 
-//                p->val_uint->value = scanner->user_params.inputs.params[
+//                p->val_uint32->value = scanner->user_params.inputs.params[
 //                        scanner->user_params.inputs.preset_index].params_mask;
-//                p->val_uint->min = 0;
-//                p->val_uint->max = 511;
-//                p->val_uint->step = 0;
-//                p->val_uint->defValue = 0;
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 511;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->defValue = 0;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2338,16 +2338,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in1_enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in1_enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2361,16 +2361,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in1_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in1_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 3;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &input1ModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Rise");
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 3;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &input1ModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Rise");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2384,12 +2384,12 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                                      scanner->user_params.inputs.preset_index].in1_delay);
 //                p->base.units = "ns";
 
-//                p->val_uint->value = scanner->user_params.inputs.params[
+//                p->val_uint32->value = scanner->user_params.inputs.params[
 //                        scanner->user_params.inputs.preset_index].in1_delay ;
-//                p->val_uint->min = 30;
-//                p->val_uint->max = 1000000000;
-//                p->val_uint->step = 10;
-//                p->val_uint->defValue = 30;
+//                p->val_uint32->min = 30;
+//                p->val_uint32->max = 1000000000;
+//                p->val_uint32->step = 10;
+//                p->val_uint32->defValue = 30;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2403,12 +2403,12 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in1_decimation);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in1_decimation ;
-                p->val_uint->min = 1;
-                p->val_uint->max = 4096;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 1;
+                p->val_uint32->min = 1;
+                p->val_uint32->max = 4096;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 1;
                 vector_add(scanner->params_list, p);
 
 
@@ -2422,16 +2422,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in2_enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in2_enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2445,16 +2445,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in2_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in2_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &input2ModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Level");
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &input2ModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Level");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2468,16 +2468,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                                      scanner->user_params.inputs.preset_index].in2_invert);
 //                p->base.units = "";
 
-//                p->val_uint->value = scanner->user_params.inputs.params[
+//                p->val_uint32->value = scanner->user_params.inputs.params[
 //                        scanner->user_params.inputs.preset_index].in2_invert;
-//                p->val_uint->min = 0;
-//                p->val_uint->max = 1;
-//                p->val_uint->step = 0;
-//                p->val_uint->enumValues = &boolEnum;
-//                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 1;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->enumValues = &boolEnum;
+//                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
 //                if (def != NULL)
-//                    p->val_uint->defValue = *def;
-//                else p->val_uint->defValue = p->val_uint->value;
+//                    p->val_uint32->defValue = *def;
+//                else p->val_uint32->defValue = p->val_uint32->value;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2490,16 +2490,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in3_enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in3_enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2513,16 +2513,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                                       scanner->user_params.inputs.preset_index].in3_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.inputs.params[
+                p->val_uint32->value = scanner->user_params.inputs.params[
                         scanner->user_params.inputs.preset_index].in3_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &input3ModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Rise");
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &input3ModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Rise");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2535,15 +2535,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.outputs.out1_enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.outputs.out1_enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.outputs.out1_enable;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2556,15 +2556,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.outputs.out1_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.outputs.out1_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 10;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &outputModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Exposure start");
+                p->val_uint32->value = scanner->user_params.outputs.out1_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 10;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &outputModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Exposure start");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2577,11 +2577,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->base.size = sizeof(scanner->user_params.outputs.out1_delay);
 //                p->base.units = "ns";
 
-//                p->val_uint->value = scanner->user_params.outputs.out1_delay ;
-//                p->val_uint->min = 220;
-//                p->val_uint->max = 1000000000;
-//                p->val_uint->step = 10;
-//                p->val_uint->defValue = 220;
+//                p->val_uint32->value = scanner->user_params.outputs.out1_delay ;
+//                p->val_uint32->min = 220;
+//                p->val_uint32->max = 1000000000;
+//                p->val_uint32->step = 10;
+//                p->val_uint32->defValue = 220;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2594,11 +2594,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.outputs.out1_pulse_width);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->user_params.outputs.out1_pulse_width ;
-                p->val_uint->min = 10;
-                p->val_uint->max = 10000;
-                p->val_uint->step = 10;
-                p->val_uint->defValue = 10;
+                p->val_uint32->value = scanner->user_params.outputs.out1_pulse_width ;
+                p->val_uint32->min = 10;
+                p->val_uint32->max = 10000;
+                p->val_uint32->step = 10;
+                p->val_uint32->defValue = 10;
                 vector_add(scanner->params_list, p);
 
 
@@ -2611,15 +2611,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->base.size = sizeof(scanner->user_params.outputs.out1_invert);
 //                p->base.units = "";
 
-//                p->val_uint->value = scanner->user_params.outputs.out1_invert;
-//                p->val_uint->min = 0;
-//                p->val_uint->max = 1;
-//                p->val_uint->step = 0;
-//                p->val_uint->enumValues = &boolEnum;
-//                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+//                p->val_uint32->value = scanner->user_params.outputs.out1_invert;
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 1;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->enumValues = &boolEnum;
+//                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
 //                if (def != NULL)
-//                    p->val_uint->defValue = *def;
-//                else p->val_uint->defValue = p->val_uint->value;
+//                    p->val_uint32->defValue = *def;
+//                else p->val_uint32->defValue = p->val_uint32->value;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2632,15 +2632,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.outputs.out2_enable);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.outputs.out2_enable;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->user_params.outputs.out2_enable;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2653,15 +2653,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.outputs.out2_mode);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.outputs.out2_mode;
-                p->val_uint->min = 0;
-                p->val_uint->max = 10;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &outputModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "Exposure start");
+                p->val_uint32->value = scanner->user_params.outputs.out2_mode;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 10;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &outputModeEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Exposure start");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2674,11 +2674,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->base.size = sizeof(scanner->user_params.outputs.out2_delay);
 //                p->base.units = "ns";
 
-//                p->val_uint->value = scanner->user_params.outputs.out2_delay ;
-//                p->val_uint->min = 220;
-//                p->val_uint->max = 1000000000;
-//                p->val_uint->step = 10;
-//                p->val_uint->defValue = 220;
+//                p->val_uint32->value = scanner->user_params.outputs.out2_delay ;
+//                p->val_uint32->min = 220;
+//                p->val_uint32->max = 1000000000;
+//                p->val_uint32->step = 10;
+//                p->val_uint32->defValue = 220;
 //                vector_add(scanner->params_list, p);
 
 
@@ -2691,11 +2691,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.outputs.out2_pulse_width);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->user_params.outputs.out2_pulse_width ;
-                p->val_uint->min = 10;
-                p->val_uint->max = 10000;
-                p->val_uint->step = 10;
-                p->val_uint->defValue = 10;
+                p->val_uint32->value = scanner->user_params.outputs.out2_pulse_width ;
+                p->val_uint32->min = 10;
+                p->val_uint32->max = 10000;
+                p->val_uint32->step = 10;
+                p->val_uint32->defValue = 10;
                 vector_add(scanner->params_list, p);
 
 
@@ -2708,15 +2708,15 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->base.size = sizeof(scanner->user_params.outputs.out2_invert);
 //                p->base.units = "";
 
-//                p->val_uint->value = scanner->user_params.outputs.out2_invert;
-//                p->val_uint->min = 0;
-//                p->val_uint->max = 1;
-//                p->val_uint->step = 0;
-//                p->val_uint->enumValues = &boolEnum;
-//                def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+//                p->val_uint32->value = scanner->user_params.outputs.out2_invert;
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 1;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->enumValues = &boolEnum;
+//                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
 //                if (def != NULL)
-//                    p->val_uint->defValue = *def;
-//                else p->val_uint->defValue = p->val_uint->value;
+//                    p->val_uint32->defValue = *def;
+//                else p->val_uint32->defValue = p->val_uint32->value;
 //                vector_add(scanner->params_list, p);
 
                 ret = 1;
@@ -2808,11 +2808,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.device_id);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.device_id;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.device_id;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2825,11 +2825,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.serial);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.serial;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4294967295;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.serial;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4294967295;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2842,11 +2842,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.serial_of_pcb);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.serial_of_pcb;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4294967295;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.serial_of_pcb;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4294967295;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2859,14 +2859,14 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.operating_time_h);
                 p->base.units = "s";
 
-                p->val_uint->value =
+                p->val_uint32->value =
                         scanner->factory_params.general.operating_time_h * 60 * 60 +
                         scanner->factory_params.general.operating_time_m * 60 +
                         scanner->factory_params.general.operating_time_s;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1577846272;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1577846272;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2879,14 +2879,14 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.runtime_h);
                 p->base.units = "s";
 
-                p->val_uint->value =
+                p->val_uint32->value =
                         scanner->factory_params.general.runtime_h * 60 * 60 +
                         scanner->factory_params.general.runtime_m * 60 +
                         scanner->factory_params.general.runtime_s;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1577846272;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1577846272;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2899,11 +2899,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.startup_counter);
                 p->base.units = "count";
 
-                p->val_uint->value = scanner->factory_params.general.startup_counter;
-                p->val_uint->min = 0;
-                p->val_uint->max = 8760;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.startup_counter;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 8760;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2916,11 +2916,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.firmware_ver);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.firmware_ver;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4294967295;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.firmware_ver;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4294967295;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2933,11 +2933,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.hardware_ver);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.hardware_ver;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4294967295;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.hardware_ver;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4294967295;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2950,11 +2950,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.customer_id);
                 p->base.units = "id";
 
-                p->val_uint->value = scanner->factory_params.general.customer_id;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4294967295;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.customer_id;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4294967295;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2967,11 +2967,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.fpga_freq);
                 p->base.units = "Hz";
 
-                p->val_uint->value = scanner->factory_params.general.fpga_freq;
-                p->val_uint->min = 100000000;
-                p->val_uint->max = 100000000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.fpga_freq;
+                p->val_uint32->min = 100000000;
+                p->val_uint32->max = 100000000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -2984,11 +2984,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.base_z);
                 p->base.units = "mm";
 
-                p->val_uint->value = scanner->factory_params.general.base_z;
-                p->val_uint->min = 0;
-                p->val_uint->max = 10000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.base_z;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 10000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3001,11 +3001,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.range_z);
                 p->base.units = "mm";
 
-                p->val_uint->value = scanner->factory_params.general.range_z;
-                p->val_uint->min = 0;
-                p->val_uint->max = 10000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.range_z;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 10000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3018,11 +3018,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.range_x_start);
                 p->base.units = "mm";
 
-                p->val_uint->value = scanner->factory_params.general.range_x_start;
-                p->val_uint->min = 0;
-                p->val_uint->max = 10000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.range_x_start;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 10000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3035,11 +3035,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.range_x_end);
                 p->base.units = "mm";
 
-                p->val_uint->value = scanner->factory_params.general.range_x_end;
-                p->val_uint->min = 0;
-                p->val_uint->max = 20000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.range_x_end;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 20000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3052,11 +3052,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.pixels_divider);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.pixels_divider;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 8;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.pixels_divider;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 8;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3069,11 +3069,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.profiles_divider);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.profiles_divider;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 8;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.profiles_divider;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 8;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3086,11 +3086,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.general.fsbl_version);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.general.fsbl_version;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4294967295;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.general.fsbl_version;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4294967295;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3141,11 +3141,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.width);
                 p->base.units = "pixels";
 
-                p->val_uint->value = scanner->factory_params.sensor.width;
-                p->val_uint->min = 648;
-                p->val_uint->max = 648;
-                p->val_uint->step = 4;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.width;
+                p->val_uint32->min = 648;
+                p->val_uint32->max = 648;
+                p->val_uint32->step = 4;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3158,11 +3158,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.height);
                 p->base.units = "lines";
 
-                p->val_uint->value = scanner->factory_params.sensor.height;
-                p->val_uint->min = 488;
-                p->val_uint->max = 488;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.height;
+                p->val_uint32->min = 488;
+                p->val_uint32->max = 488;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3175,11 +3175,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.pixel_clock);
                 p->base.units = "Hz";
 
-                p->val_uint->value = scanner->factory_params.sensor.pixel_clock;
-                p->val_uint->min = 40000000;
-                p->val_uint->max = 40000000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.pixel_clock;
+                p->val_uint32->min = 40000000;
+                p->val_uint32->max = 40000000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3192,11 +3192,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.black_odd_lines);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.sensor.black_odd_lines;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.black_odd_lines;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3209,11 +3209,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.black_even_lines);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.sensor.black_even_lines;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.black_even_lines;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3226,11 +3226,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.frame_cycle_const_part);
                 p->base.units = "ticks";
 
-                p->val_uint->value = scanner->factory_params.sensor.frame_cycle_const_part;
-                p->val_uint->min = 6500;
-                p->val_uint->max = 6500;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.frame_cycle_const_part;
+                p->val_uint32->min = 6500;
+                p->val_uint32->max = 6500;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3243,11 +3243,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.frame_cycle_per_line_part);
                 p->base.units = "ticks";
 
-                p->val_uint->value = scanner->factory_params.sensor.frame_cycle_per_line_part;
-                p->val_uint->min = 410;
-                p->val_uint->max = 410;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.frame_cycle_per_line_part;
+                p->val_uint32->min = 410;
+                p->val_uint32->max = 410;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3260,15 +3260,15 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.frame_rate_or_exposure);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.sensor.frame_rate_or_exposure;
-                p->val_uint->min = 0;
-                p->val_uint->max = 1;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &boolEnum;
-                rfInt* def = get_value_by_key_from_enum(p->val_uint->enumValues, "false");
+                p->val_uint32->value = scanner->factory_params.sensor.frame_rate_or_exposure;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 1;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &boolEnum;
+                rfInt* def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3281,11 +3281,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.min_exposure);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->factory_params.sensor.min_exposure;
-                p->val_uint->min = 0;
-                p->val_uint->max = 100000000;
-                p->val_uint->step = 10;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.min_exposure;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 100000000;
+                p->val_uint32->step = 10;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3298,15 +3298,15 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.image_flipping);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.sensor.image_flipping;
-                p->val_uint->min = 0;
-                p->val_uint->max = 3;
-                p->val_uint->step = 0;
-                p->val_uint->enumValues = &flipEnum;
-                def = get_value_by_key_from_enum(p->val_uint->enumValues, "No");
+                p->val_uint32->value = scanner->factory_params.sensor.image_flipping;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 3;
+                p->val_uint32->step = 0;
+                p->val_uint32->enumValues = &flipEnum;
+                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "No");
                 if (def != NULL)
-                    p->val_uint->defValue = *def;
-                else p->val_uint->defValue = p->val_uint->value;
+                    p->val_uint32->defValue = *def;
+                else p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3319,11 +3319,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.sensor.max_exposure);
                 p->base.units = "ns";
 
-                p->val_uint->value = scanner->factory_params.sensor.max_exposure;
-                p->val_uint->min = 0;
-                p->val_uint->max = 300000000;
-                p->val_uint->step = 10;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.sensor.max_exposure;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 300000000;
+                p->val_uint32->step = 10;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
                 //edr_point1_value
@@ -3341,18 +3341,18 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof (scanner->factory_params.network.mac);
                 p->base.units = "";
 
-                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 6);
+                p->arr_uint32->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 6);
                 for (rfUint32 i = 0; i < p->base.size; i++)
-                    p->arr_uint->value[i] = scanner->factory_params.network.mac[i];
-                p->arr_uint->min = 0;
-                p->arr_uint->max = 255;
-                p->arr_uint->step = 0;
-                p->arr_uint->defCount = 6;
-                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 6);
+                    p->arr_uint32->value[i] = scanner->factory_params.network.mac[i];
+                p->arr_uint32->min = 0;
+                p->arr_uint32->max = 255;
+                p->arr_uint32->step = 0;
+                p->arr_uint32->defCount = 6;
+                p->arr_uint32->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 6);
                 rfUint32 de_arr[6] = {0, 10, 53, 1, 2, 3};
                 for (rfUint32 i = 0; i < 6; i++)
-                    p->arr_uint->defValue[i] = de_arr[i];
-                p->arr_uint->maxCount = 6;
+                    p->arr_uint32->defValue[i] = de_arr[i];
+                p->arr_uint32->maxCount = 6;
                 vector_add(scanner->params_list, p);
 
 
@@ -3366,11 +3366,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.network.eip_vendor_id);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.network.eip_vendor_id;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.network.eip_vendor_id;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3384,11 +3384,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.network.eip_device_type);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.network.eip_device_type;
-                p->val_uint->min = 0;
-                p->val_uint->max = 65535;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.network.eip_device_type;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 65535;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3402,11 +3402,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.network.force_autoneg_time);
                 p->base.units = "s";
 
-                p->val_uint->value = scanner->factory_params.network.force_autoneg_time;
-                p->val_uint->min = 0;
-                p->val_uint->max = 255;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.network.force_autoneg_time;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 255;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3420,11 +3420,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.laser.wave_length);
                 p->base.units = "nm";
 
-                p->val_uint->value = scanner->factory_params.laser.wave_length;
-                p->val_uint->min = 0;
-                p->val_uint->max = 10000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.laser.wave_length;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 10000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3438,11 +3438,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.laser.koeff1);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.laser.koeff1;
-                p->val_uint->min = 0;
-                p->val_uint->max = 255;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.laser.koeff1;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 255;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3456,11 +3456,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.laser.koeff2);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.laser.koeff2;
-                p->val_uint->min = 0;
-                p->val_uint->max = 255;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.laser.koeff2;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 255;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3474,11 +3474,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.laser.min_value);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.laser.min_value;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4095;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.laser.min_value;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4095;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3492,11 +3492,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.laser.max_value);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.laser.max_value;
-                p->val_uint->min = 0;
-                p->val_uint->max = 4095;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.laser.max_value;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 4095;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
                 //enable_mode_change
@@ -3525,11 +3525,11 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->factory_params.profiles.max_dump_size);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->factory_params.profiles.max_dump_size;
-                p->val_uint->min = 0;
-                p->val_uint->max = 80000;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = p->val_uint->value;
+                p->val_uint32->value = scanner->factory_params.profiles.max_dump_size;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 80000;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = p->val_uint32->value;
                 vector_add(scanner->params_list, p);
 
 
@@ -3580,9 +3580,7 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
 
 
     rfUint8 payload[RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE];
-
-    rfUint32 payload_size = rf627_protocol_old_pack_payload_msg_to_user_params_packet(
-                payload, scanner->params_list);
+    memory_platform.rf_memset(payload, 0, RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE);
 
     memory_platform.rf_memcpy(
             &payload[328],
@@ -3600,12 +3598,17 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
             sizeof (scanner->user_params.roi.auto_position));
 
     memory_platform.rf_memcpy(
+            &payload[615],
+            &scanner->user_params.image_processing.filter_width,
+            sizeof (scanner->user_params.image_processing.filter_width));
+
+    memory_platform.rf_memcpy(
             &payload[616],
             &scanner->user_params.image_processing.processing_mode,
             sizeof (scanner->user_params.image_processing.processing_mode));
 
     memory_platform.rf_memcpy(
-            &payload[616],
+            &payload[617],
             &scanner->user_params.image_processing.reduce_noise,
             sizeof (scanner->user_params.image_processing.reduce_noise));
 
@@ -3614,23 +3617,69 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
             &scanner->user_params.inputs.preset_index,
             sizeof (scanner->user_params.inputs.preset_index));
 
-    memory_platform.rf_memcpy(
-            &payload[719 + 26*scanner->user_params.inputs.preset_index],
-            &scanner->user_params.inputs.preset_index,
-            sizeof (scanner->user_params.inputs.params[
-                                 scanner->user_params.inputs.preset_index].params_mask));
+    for (rfUint16 i = 0; i < 12; i++)
+    {
+        memory_platform.rf_memcpy(
+                    &payload[719 + 26*i],
+                &scanner->user_params.inputs.params[i].params_mask,
+                sizeof (scanner->user_params.inputs.params[i].params_mask));
+
+        memory_platform.rf_memcpy(
+                    &payload[721 + 26*i],
+                &scanner->user_params.inputs.params[i].in1_enable,
+                sizeof (scanner->user_params.inputs.params[i].in1_enable));
+
+        memory_platform.rf_memcpy(
+                    &payload[722 + 26*i],
+                &scanner->user_params.inputs.params[i].in1_mode,
+                sizeof (scanner->user_params.inputs.params[i].in1_mode));
+
+        memory_platform.rf_memcpy(
+                    &payload[723 + 26*i],
+                &scanner->user_params.inputs.params[i].in1_delay,
+                sizeof (scanner->user_params.inputs.params[i].in1_delay));
+
+        memory_platform.rf_memcpy(
+                    &payload[727 + 26*i],
+                &scanner->user_params.inputs.params[i].in1_decimation,
+                sizeof (scanner->user_params.inputs.params[i].in1_decimation));
+
+        memory_platform.rf_memcpy(
+                    &payload[728 + 26*i],
+                &scanner->user_params.inputs.params[i].in2_enable,
+                sizeof (scanner->user_params.inputs.params[i].in2_enable));
+
+        memory_platform.rf_memcpy(
+                    &payload[729 + 26*i],
+                &scanner->user_params.inputs.params[i].in2_mode,
+                sizeof (scanner->user_params.inputs.params[i].in2_mode));
+
+        memory_platform.rf_memcpy(
+                    &payload[730 + 26*i],
+                &scanner->user_params.inputs.params[i].in2_invert,
+                sizeof (scanner->user_params.inputs.params[i].in2_invert));
+
+        memory_platform.rf_memcpy(
+                    &payload[731 + 26*i],
+                &scanner->user_params.inputs.params[i].in3_enable,
+                sizeof (scanner->user_params.inputs.params[i].in3_enable));
+
+        memory_platform.rf_memcpy(
+                    &payload[732 + 26*i],
+                &scanner->user_params.inputs.params[i].in3_mode,
+                sizeof (scanner->user_params.inputs.params[i].in3_mode));
+    }
+
 
     memory_platform.rf_memcpy(
-            &payload[723 + 26*scanner->user_params.inputs.preset_index],
-            &scanner->user_params.inputs.preset_index,
-            sizeof (scanner->user_params.inputs.params[
-                                 scanner->user_params.inputs.preset_index].params_mask));
+            &payload[1063],
+            &scanner->user_params.outputs.out1_enable,
+            sizeof(scanner->user_params.outputs.out1_enable));
 
     memory_platform.rf_memcpy(
-            &payload[730 + 26*scanner->user_params.inputs.preset_index],
-            &scanner->user_params.inputs.preset_index,
-            sizeof(scanner->user_params.inputs.params[
-                                 scanner->user_params.inputs.preset_index].in2_invert));
+            &payload[1064],
+            &scanner->user_params.outputs.out1_mode,
+            sizeof(scanner->user_params.outputs.out1_mode));
 
     memory_platform.rf_memcpy(
             &payload[1065],
@@ -3638,19 +3687,42 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
             sizeof(scanner->user_params.outputs.out1_delay));
 
     memory_platform.rf_memcpy(
+            &payload[1069],
+            &scanner->user_params.outputs.out1_pulse_width,
+            sizeof(scanner->user_params.outputs.out1_pulse_width));
+
+    memory_platform.rf_memcpy(
             &payload[1073],
             &scanner->user_params.outputs.out1_invert,
             sizeof(scanner->user_params.outputs.out1_invert));
 
     memory_platform.rf_memcpy(
-            &payload[1073],
+            &payload[1074],
+            &scanner->user_params.outputs.out2_enable,
+            sizeof(scanner->user_params.outputs.out2_enable));
+
+    memory_platform.rf_memcpy(
+            &payload[1075],
+            &scanner->user_params.outputs.out2_mode,
+            sizeof(scanner->user_params.outputs.out2_mode));
+
+    memory_platform.rf_memcpy(
+            &payload[1076],
             &scanner->user_params.outputs.out2_delay,
             sizeof(scanner->user_params.outputs.out2_delay));
+
+    memory_platform.rf_memcpy(
+            &payload[1080],
+            &scanner->user_params.outputs.out2_pulse_width,
+            sizeof(scanner->user_params.outputs.out2_pulse_width));
 
     memory_platform.rf_memcpy(
             &payload[1084],
             &scanner->user_params.outputs.out2_invert,
             sizeof(scanner->user_params.outputs.out2_invert));
+
+    rfUint32 payload_size = rf627_protocol_old_pack_payload_msg_to_user_params_packet(
+                payload, scanner->params_list);
 
     if (rf627_protocol_send_packet_by_udp(
                 scanner->m_svc_sock, TX, request_packet_size, dst_ip_addr, dst_port, payload_size, payload))
@@ -3714,7 +3786,7 @@ rfUint8 rf627_old_set_parameter(
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
             {
-                p->val_int->value = param->val_int->value;
+                p->val_int32->value = param->val_int32->value;
                 return 0;
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
@@ -3724,7 +3796,7 @@ rfUint8 rf627_old_set_parameter(
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
             {
-                p->val_uint->value = param->val_uint->value;
+                p->val_uint32->value = param->val_uint32->value;
                 return 0;
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
@@ -3744,8 +3816,8 @@ rfUint8 rf627_old_set_parameter(
             }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
             {
                 memory_platform.rf_memcpy(
-                            (void*)p->arr_uint->value,
-                            param->arr_uint->value,
+                            (void*)p->arr_uint32->value,
+                            param->arr_uint32->value,
                             param->base.size);
                 //p->base.size = param->base.size;
                 return 0;
@@ -3776,7 +3848,7 @@ rfUint8 rf627_old_set_parameter_by_name(
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
             {
-                p->val_int->value = va_arg(value, rfInt32);
+                p->val_int32->value = va_arg(value, rfInt32);
                 return 0;
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
@@ -3786,7 +3858,7 @@ rfUint8 rf627_old_set_parameter_by_name(
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
             {
-                p->val_uint->value = va_arg(value, rfUint32);
+                p->val_uint32->value = va_arg(value, rfUint32);
                 return 0;
             }
             else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
@@ -3807,10 +3879,10 @@ rfUint8 rf627_old_set_parameter_by_name(
             else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
             {
                 rfUint32 size = 4;
-                if (p->arr_uint->count != 0)
-                    size = p->base.size / p->arr_uint->count;
-                else if (p->arr_uint->defCount != 0)
-                    size = p->base.size / p->arr_uint->defCount;
+                if (p->arr_uint32->count != 0)
+                    size = p->base.size / p->arr_uint32->count;
+                else if (p->arr_uint32->defCount != 0)
+                    size = p->base.size / p->arr_uint32->defCount;
 
                 const rfUint32* str_value = va_arg(value, const rfUint32*);
                 switch (size) {
@@ -3818,30 +3890,30 @@ rfUint8 rf627_old_set_parameter_by_name(
                 {
                     for(rfSize j = 0; j < count; j++)
                     {
-                        p->arr_uint->value[j] = (rfUint8)str_value[j];
+                        p->arr_uint32->value[j] = (rfUint8)str_value[j];
                     }
                     p->base.size = count;
-                    p->arr_uint->count = count;
+                    p->arr_uint32->count = count;
                     break;
                 }
                 case 2:
                 {
                     for(rfSize j = 0; j < count; j++)
                     {
-                        p->arr_uint->value[j] = (rfUint16)str_value[j];
+                        p->arr_uint32->value[j] = (rfUint16)str_value[j];
                     }
                     p->base.size = count * 2;
-                    p->arr_uint->count = count;
+                    p->arr_uint32->count = count;
                     break;
                 }
                 case 4:
                 {
                     for(rfSize j = 0; j < count; j++)
                     {
-                        p->arr_uint->value[j] = (rfUint32)str_value[j];
+                        p->arr_uint32->value[j] = (rfUint32)str_value[j];
                     }
                     p->base.size = count * 4;
-                    p->arr_uint->count = count;
+                    p->arr_uint32->count = count;
                     break;
                 }
                 default:

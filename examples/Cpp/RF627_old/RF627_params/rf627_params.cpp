@@ -43,12 +43,12 @@ int main()
         param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
         if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE])
         {
-            std::vector <uint32_t> ip = ip_addr->get_value<array_uint>();
+            std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
             for (auto i: ip)
                 std::cout << std::to_string(i) << ".";
 
             // The first way to set a new parameter
-            ip_addr->set_value<array_uint>(std::vector<uint32_t> {192,168,1,33});
+            ip_addr->set_value<array_uint32>(std::vector<uint32_t> {192,168,1,32});
             scanners[i]->set_param(ip_addr);
         }
 
@@ -59,8 +59,19 @@ int main()
             std::cout << name->get_value<value_str>() << std::endl;
 
             // The second way to set a new parameter
-            name->set_value<value_str>("RF627");
+            name->set_value<value_str>("RF6271");
             scanners[i]->set_param(name);
+        }
+
+        // Get parameter by it's name from last read
+        param_t* laser_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
+        if (laser_enabled->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+        {
+            std::cout << laser_enabled->get_value<value_uint32>() << std::endl;
+
+            // The second way to set a new parameter
+            laser_enabled->set_value<value_uint32>(false);
+            scanners[i]->set_param(laser_enabled);
         }
 
         //  Write changes parameters to the device's memory

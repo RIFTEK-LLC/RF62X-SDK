@@ -594,7 +594,7 @@ param_t* create_param_from_type(std::string type)
         p->type = type;
     }else if(type == pvtKey[PVT_ARRAY_UINT32])
     {
-        p = new array_uint();
+        p = new array_uint32();
         p->type = type;
     }else if(type == pvtKey[PVT_ARRAY_UINT64])
     {
@@ -640,7 +640,7 @@ param_t *rf627old::get_param(std::string param_name)
 
         if (result->type == pvtKey[PVT_UINT])
         {
-            result->set_value<value_uint32_t>(p->val_uint->value);
+            result->set_value<value_uint32_t>(p->val_uint32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -648,16 +648,16 @@ param_t *rf627old::get_param(std::string param_name)
             result->size = p->base.size;
             result->units = p->base.units;
 
-            ((value_uint32*)result)->defaultValue = p->val_uint->defValue;
-            ((value_uint32*)result)->value = p->val_uint->value;
-            ((value_uint32*)result)->min = p->val_uint->min;
-            ((value_uint32*)result)->max = p->val_uint->max;
+            ((value_uint32*)result)->defaultValue = p->val_uint32->defValue;
+            ((value_uint32*)result)->value = p->val_uint32->value;
+            ((value_uint32*)result)->min = p->val_uint32->min;
+            ((value_uint32*)result)->max = p->val_uint32->max;
 
-            if(p->val_uint->enumValues != NULL)
-            for(int i = 0; i < p->val_uint->enumValues->recCount; i++)
+            if(p->val_uint32->enumValues != NULL)
+            for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
                 ((value_uint32*)result)->valuesEnum.push_back(std::make_pair(
-                            p->val_uint->enumValues->rec[i].value,
-                            p->val_uint->enumValues->rec[i].key));
+                            p->val_uint32->enumValues->rec[i].value,
+                            p->val_uint32->enumValues->rec[i].key));
         }
         else if (result->type == pvtKey[PVT_UINT64])
         {
@@ -682,7 +682,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == pvtKey[PVT_INT])
         {
-            result->set_value<value_int32_t>(p->val_int->value);
+            result->set_value<value_int32_t>(p->val_int32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -690,16 +690,16 @@ param_t *rf627old::get_param(std::string param_name)
             result->size = p->base.size;
             result->units = p->base.units;
 
-            ((value_int32*)result)->defaultValue = p->val_int->defValue;
-            ((value_int32*)result)->value = p->val_int->value;
-            ((value_int32*)result)->min = p->val_int->min;
-            ((value_int32*)result)->max = p->val_int->max;
+            ((value_int32*)result)->defaultValue = p->val_int32->defValue;
+            ((value_int32*)result)->value = p->val_int32->value;
+            ((value_int32*)result)->min = p->val_int32->min;
+            ((value_int32*)result)->max = p->val_int32->max;
 
-            if(p->val_int->enumValues != NULL)
-            for(int i = 0; i < p->val_int->enumValues->recCount; i++)
+            if(p->val_int32->enumValues != NULL)
+            for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
                 ((value_int32*)result)->valuesEnum.push_back(std::make_pair(
-                            p->val_int->enumValues->rec[i].value,
-                            p->val_int->enumValues->rec[i].key));
+                            p->val_int32->enumValues->rec[i].value,
+                            p->val_int32->enumValues->rec[i].key));
 
         }
         else if (result->type == pvtKey[PVT_INT64])
@@ -756,7 +756,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == pvtKey[PVT_ARRAY_UINT32])
         {
-            //result->set_value<array_uint32_t>(p->arr_uint->value);
+            //result->set_value<array_uint32_t>(p->arr_uint32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -764,15 +764,15 @@ param_t *rf627old::get_param(std::string param_name)
             result->size = p->base.size;
             result->units = p->base.units;
 
-            for(size_t i = 0; i < p->arr_uint->defCount; i++)
-                ((array_uint*)result)->defaultValue.push_back(p->arr_uint->defValue[i]);
-            for(size_t i = 0; i < p->arr_uint->count; i++)
-                ((array_uint*)result)->value.push_back(p->arr_uint->value[i]);
-            ((array_uint*)result)->min = p->arr_uint->min;
-            ((array_uint*)result)->max = p->arr_uint->max;
-            ((array_uint*)result)->maxCount = p->arr_uint->maxCount;
-            ((array_uint*)result)->defCount = p->arr_uint->defCount;
-            ((array_uint*)result)->count = p->arr_uint->count;
+            for(size_t i = 0; i < p->arr_uint32->defCount; i++)
+                ((array_uint32*)result)->defaultValue.push_back(p->arr_uint32->defValue[i]);
+            for(size_t i = 0; i < p->arr_uint32->count; i++)
+                ((array_uint32*)result)->value.push_back(p->arr_uint32->value[i]);
+            ((array_uint32*)result)->min = p->arr_uint32->min;
+            ((array_uint32*)result)->max = p->arr_uint32->max;
+            ((array_uint32*)result)->maxCount = p->arr_uint32->maxCount;
+            ((array_uint32*)result)->defCount = p->arr_uint32->defCount;
+            ((array_uint32*)result)->count = p->arr_uint32->count;
 //            parse_string_param(p, array_uint_t, name);
 //            parse_string_param(p, array_uint_t, type);
 //            parse_string_param(p, array_uint_t, access);
@@ -934,7 +934,7 @@ parameter_t* create_parameter_from_type(std::string type)
     if (type == pvtKey[PVT_UINT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
-        p->val_uint = (value_uint32_t*)calloc(1, sizeof (p->val_uint));
+        p->val_uint32 = (value_uint32_t*)calloc(1, sizeof (p->val_uint32));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT_PARAM_TYPE].c_str();
     }else if (type == pvtKey[PVT_UINT64])
     {
@@ -944,7 +944,7 @@ parameter_t* create_parameter_from_type(std::string type)
     }else if (type ==  pvtKey[PVT_INT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
-        p->val_int = (value_int32_t*)calloc(1, sizeof (value_int32_t));
+        p->val_int32 = (value_int32_t*)calloc(1, sizeof (value_int32_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_INT64])
     {
@@ -964,7 +964,7 @@ parameter_t* create_parameter_from_type(std::string type)
     }else if (type ==  pvtKey[PVT_ARRAY_UINT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
-        p->arr_uint = (array_uint32_t*)calloc(1, sizeof (array_uint32_t));
+        p->arr_uint32 = (array_uint32_t*)calloc(1, sizeof (array_uint32_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_UINT64])
     {
@@ -974,7 +974,7 @@ parameter_t* create_parameter_from_type(std::string type)
     }else if (type ==  pvtKey[PVT_ARRAY_INT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
-        p->arr_int = (array_int32_t*)calloc(1, sizeof (array_int32_t));
+        p->arr_int32 = (array_int32_t*)calloc(1, sizeof (array_int32_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT32_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  pvtKey[PVT_ARRAY_INT64])
     {
@@ -1016,34 +1016,34 @@ bool rf627old::set_param(param_t* param)
         }
         else if (param->type == pvtKey[PVT_INT])
         {
-            p->val_int->value = param->get_value<value_int32_t>();
+            p->val_int32->value = param->get_value<value_int32>();
         }
         else if (param->type == pvtKey[PVT_INT64])
         {
-            p->val_int64->value = param->get_value<value_int64_t>();
+            p->val_int64->value = param->get_value<value_int64>();
         }
         else if (param->type == pvtKey[PVT_UINT])
         {
-            p->val_uint->value = param->get_value<value_uint32_t>();
+            p->val_uint32->value = param->get_value<value_uint32>();
         }
         else if (param->type == pvtKey[PVT_UINT64])
         {
-            p->val_uint64->value = param->get_value<value_uint64_t>();
+            p->val_uint64->value = param->get_value<value_uint64>();
         }
         else if (param->type == pvtKey[PVT_FLOAT])
         {
-            p->val_flt->value = param->get_value<value_flt_t>();
+            p->val_flt->value = param->get_value<value_flt>();
         }
         else if (param->type ==  pvtKey[PVT_DOUBLE])
         {
-            p->val_dbl->value = param->get_value<value_dbl_t>();
+            p->val_dbl->value = param->get_value<value_dbl>();
         }
         else if (param->type ==  pvtKey[PVT_ARRAY_UINT32])
         {
-            std::vector<uint32_t> v = param->get_value<array_uint>();
-            p->arr_uint->value = (rfUint32*)calloc(v.size(), sizeof (rfUint32));
-            for (int j = 0; j < v.size(); j++)
-                p->arr_uint->value[j] = v[j];
+            std::vector<uint32_t> v = param->get_value<array_uint32>();
+            p->arr_uint32->value = (rfUint32*)calloc(v.size(), sizeof (rfUint32));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_uint32->value[j] = v[j];
             p->base.size = v.size() * sizeof (rfUint32);
         }
         set_parameter((scanner_base_t*)this->scanner_base, p);

@@ -1106,15 +1106,15 @@ typedef struct
     value_base_t			base;
     union{
         void*				rawData;
-        value_uint32_t*		val_uint;
+        value_uint32_t*		val_uint32;
         value_uint64_t*		val_uint64;
-        value_int32_t*		val_int;
+        value_int32_t*		val_int32;
         value_int64_t*		val_int64;
         value_flt_t*		val_flt;
         value_dbl_t*		val_dbl;
-        array_uint32_t*		arr_uint;
+        array_uint32_t*		arr_uint32;
         array_uint64_t*		arr_uint64;
-        array_int32_t*		arr_int;
+        array_int32_t*		arr_int32;
         array_int64_t*		arr_int64;
         array_flt_t*		arr_flt;
         array_dbl_t*		arr_dbl;
