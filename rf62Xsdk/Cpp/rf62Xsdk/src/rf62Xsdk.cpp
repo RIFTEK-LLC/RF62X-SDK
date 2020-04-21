@@ -756,6 +756,23 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == pvtKey[PVT_ARRAY_UINT32])
         {
+            //result->set_value<array_uint32_t>(p->arr_uint->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            result->units = p->base.units;
+
+            for(size_t i = 0; i < p->arr_uint->defCount; i++)
+                ((array_uint*)result)->defaultValue.push_back(p->arr_uint->defValue[i]);
+            for(size_t i = 0; i < p->arr_uint->count; i++)
+                ((array_uint*)result)->value.push_back(p->arr_uint->value[i]);
+            ((array_uint*)result)->min = p->arr_uint->min;
+            ((array_uint*)result)->max = p->arr_uint->max;
+            ((array_uint*)result)->maxCount = p->arr_uint->maxCount;
+            ((array_uint*)result)->defCount = p->arr_uint->defCount;
+            ((array_uint*)result)->count = p->arr_uint->count;
 //            parse_string_param(p, array_uint_t, name);
 //            parse_string_param(p, array_uint_t, type);
 //            parse_string_param(p, array_uint_t, access);
@@ -1021,40 +1038,48 @@ bool rf627old::set_param(param_t* param)
         {
             p->val_dbl->value = param->get_value<value_dbl_t>();
         }
+        else if (param->type ==  pvtKey[PVT_ARRAY_UINT32])
+        {
+            std::vector<uint32_t> v = param->get_value<array_uint>();
+            p->arr_uint->value = (rfUint32*)calloc(v.size(), sizeof (rfUint32));
+            for (int j = 0; j < v.size(); j++)
+                p->arr_uint->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfUint32);
+        }
         set_parameter((scanner_base_t*)this->scanner_base, p);
         return true;
     }
     return false;
 }
-bool rf627old::set_param(const char* param_name, ...)
+bool rf627old::set_param(const char* param_name, int arg_count, ...)
 {
     va_list valist;
-    va_start(valist, param_name);
+    va_start(valist, arg_count);
 
     bool result = set_parameter_by_name(
-                (scanner_base_t*)this->scanner_base, param_name, valist);
+                (scanner_base_t*)this->scanner_base, param_name, arg_count, valist);
 
     va_end(valist);
 
     return result;
 }
-bool rf627old::set_param(int param_id, ...)
+bool rf627old::set_param(int param_id, int arg_count, ...)
 {
     va_list valist;
-    va_start(valist, param_id);
+    va_start(valist, arg_count);
 
     bool result = set_parameter_by_name(
-                (scanner_base_t*)this->scanner_base, parameter_names[param_id].c_str(), valist);
+                (scanner_base_t*)this->scanner_base, parameter_names[param_id].c_str(), arg_count, valist);
 
     va_end(valist);
 
     return result;
 }
 
-bool rf627old::send_cmd(const char* command_name, ...)
+bool rf627old::send_cmd(const char* command_name, int arg_count, ...)
 {
     va_list valist;
-    va_start(valist, command_name);
+    va_start(valist, arg_count);
 
     //int arg1 = va_arg(valist, int);
     //int arg2 = va_arg(valist, int);
@@ -1140,7 +1165,11 @@ rf627old::hello_info::hello_info(void* info, PROTOCOLS protocol)
         _serial_number = ((rf627_old_hello_info_by_service_protocol*)info)->serial_number;
 
         in_addr addr = {0};
-        addr.s_addr = htonl(((rf627_old_hello_info_by_service_protocol*)info)->ip_address);
+        uint32_t ip = ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[0] << 24 |
+                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[1] << 16 |
+                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[2] << 8 |
+                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[3];
+        addr.s_addr = htonl(ip);
         _ip_address = inet_ntoa(addr);
         _mac_address = "";
 

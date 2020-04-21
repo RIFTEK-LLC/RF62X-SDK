@@ -151,7 +151,7 @@ rfUint8 rf627_old_set_parameter(
  * @return 0 on success
  */
 rfUint8 rf627_old_set_parameter_by_name(
-        rf627_old_t* scanner, const rfChar* param_name, va_list value);
+        rf627_old_t* scanner, const rfChar* param_name, rfUint32 count, va_list value);
 
 /**
  * @brief rf627_old_command_set_counters

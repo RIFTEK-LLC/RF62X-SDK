@@ -455,20 +455,24 @@ rf627_old_t* rf627_old_create_from_hello_msg(
             ((rf627_old_device_info_t*)msg_info)->eth_speed;
 
     // copy ip_address
-    rf627_old->user_params.network.ip_address =
-            ((rf627_old_device_info_t*)msg_info)->ip_address;
+    memory_platform.rf_memcpy(
+                rf627_old->user_params.network.ip_address,
+                ((rf627_old_device_info_t*)msg_info)->ip_address, 4);
 
     // copy net_mask
-    rf627_old->user_params.network.net_mask =
-            ((rf627_old_device_info_t*)msg_info)->net_mask;
+    memory_platform.rf_memcpy(
+                rf627_old->user_params.network.net_mask,
+                ((rf627_old_device_info_t*)msg_info)->net_mask, 4);
 
     // copy gateway_ip
-    rf627_old->user_params.network.gateway_ip =
-            ((rf627_old_device_info_t*)msg_info)->gateway_ip;
+    memory_platform.rf_memcpy(
+                rf627_old->user_params.network.gateway_ip,
+                ((rf627_old_device_info_t*)msg_info)->gateway_ip, 4);
 
     // copy host_ip
-    rf627_old->user_params.network.host_ip =
-            ((rf627_old_device_info_t*)msg_info)->host_ip;
+    memory_platform.rf_memcpy(
+                rf627_old->user_params.network.host_ip,
+                ((rf627_old_device_info_t*)msg_info)->host_ip, 4);
 
     // copy stream_port
     rf627_old->user_params.network.stream_port =
@@ -510,7 +514,9 @@ rf627_old_t* rf627_old_create_from_hello_msg(
 
     rf627_old->info_by_service_protocol.serial_number = rf627_old->factory_params.general.serial;
 
-    rf627_old->info_by_service_protocol.ip_address = rf627_old->user_params.network.ip_address;
+    memory_platform.rf_memcpy(
+                rf627_old->info_by_service_protocol.ip_address,
+                rf627_old->user_params.network.ip_address, 4);
 
     memory_platform.rf_memcpy(
                 rf627_old->info_by_service_protocol.mac_address,
@@ -1165,7 +1171,10 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 (rfUint8*)TX, TX_SIZE, &read_user_params_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_ip_addr = scanner->user_params.network.ip_address[0] << 24 |
+                  scanner->user_params.network.ip_address[1] << 16 |
+                  scanner->user_params.network.ip_address[2] << 8 |
+                  scanner->user_params.network.ip_address[3];
     dst_port = scanner->user_params.network.service_port;
 
 
@@ -1868,7 +1877,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+
+                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
                 p->base.name = parameter_names_array[USER_NETWORK_IP];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
@@ -1876,16 +1886,24 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.ip_address);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.ip_address;
-                p->val_uint->min = 0;
-                p->val_uint->max = 0xFFFFFFFF;
-                p->val_uint->step = 64;
-                p->val_uint->defValue = 0xC0A8011E;
+                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                for (rfUint32 i = 0; i < p->base.size; i++)
+                    p->arr_uint->value[i] = scanner->user_params.network.ip_address[i];
+                p->arr_uint->min = 0;
+                p->arr_uint->max = 255;
+                p->arr_uint->step = 0;
+                p->arr_uint->defCount = 4;
+                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                rfUint32 IP_arr[4] = {0xC0, 0xA8, 0x01, 0x1E};
+                for (rfUint32 i = 0; i < 4; i++)
+                    p->arr_uint->defValue[i] = IP_arr[i];
+                p->arr_uint->maxCount = 4;
+                p->arr_uint->count = 4;
                 vector_add(scanner->params_list, p);
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
                 p->base.name = parameter_names_array[USER_NETWORK_MASK];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
@@ -1893,16 +1911,24 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.net_mask);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.net_mask;
-                p->val_uint->min = 0;
-                p->val_uint->max = 0xFFFFFFFF;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0xFFFFFF00;
+                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                for (rfUint32 i = 0; i < p->base.size; i++)
+                    p->arr_uint->value[i] = scanner->user_params.network.net_mask[i];
+                p->arr_uint->min = 0;
+                p->arr_uint->max = 255;
+                p->arr_uint->step = 0;
+                p->arr_uint->defCount = 4;
+                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                rfUint32 MASK_arr[4] = {0xC0, 0xA8, 0x01, 0x1E};
+                for (rfUint32 i = 0; i < 4; i++)
+                    p->arr_uint->defValue[i] = MASK_arr[i];
+                p->arr_uint->maxCount = 4;
+                p->arr_uint->count = 4;
                 vector_add(scanner->params_list, p);
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
                 p->base.name = parameter_names_array[USER_NETWORK_GATEWAY];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
@@ -1910,16 +1936,24 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.gateway_ip);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.gateway_ip;
-                p->val_uint->min = 0;
-                p->val_uint->max = 0xFFFFFFFF;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0xC0A80101;
+                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                for (rfUint32 i = 0; i < p->base.size; i++)
+                    p->arr_uint->value[i] = scanner->user_params.network.gateway_ip[i];
+                p->arr_uint->min = 0;
+                p->arr_uint->max = 255;
+                p->arr_uint->step = 0;
+                p->arr_uint->defCount = 4;
+                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                rfUint32 GATEWAY_arr[4] = {0xFF, 0xFF, 0xFF, 0x00};
+                for (rfUint32 i = 0; i < 4; i++)
+                    p->arr_uint->defValue[i] = GATEWAY_arr[i];
+                p->arr_uint->maxCount = 4;
+                p->arr_uint->count = 4;
                 vector_add(scanner->params_list, p);
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
+                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
                 p->base.name = parameter_names_array[USER_NETWORK_HOSTIP];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
@@ -1927,11 +1961,19 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof(scanner->user_params.network.host_ip);
                 p->base.units = "";
 
-                p->val_uint->value = scanner->user_params.network.host_ip;
-                p->val_uint->min = 0;
-                p->val_uint->max = 0xFFFFFFFF;
-                p->val_uint->step = 0;
-                p->val_uint->defValue = 0xC0A80102;
+                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 4);
+                for (rfUint32 i = 0; i < p->base.size; i++)
+                    p->arr_uint->value[i] = scanner->user_params.network.host_ip[i];
+                p->arr_uint->min = 0;
+                p->arr_uint->max = 255;
+                p->arr_uint->step = 0;
+                p->arr_uint->defCount = 4;
+                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 4);
+                rfUint32 HOSTIP_arr[4] = {0xC0, 0xA8, 0x01, 0x02};
+                for (rfUint32 i = 0; i < 4; i++)
+                    p->arr_uint->defValue[i] = HOSTIP_arr[i];
+                p->arr_uint->maxCount = 4;
+                p->arr_uint->count = 4;
                 vector_add(scanner->params_list, p);
 
 
@@ -2719,7 +2761,10 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 (rfUint8*)TX, TX_SIZE, &read_factory_params_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_ip_addr = scanner->user_params.network.ip_address[0] << 24 |
+                  scanner->user_params.network.ip_address[1] << 16 |
+                  scanner->user_params.network.ip_address[2] << 8 |
+                  scanner->user_params.network.ip_address[3];
     dst_port = scanner->user_params.network.service_port;
 
 
@@ -3296,16 +3341,16 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->base.size = sizeof (scanner->factory_params.network.mac);
                 p->base.units = "";
 
-                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * p->base.size);
+                p->arr_uint->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 6);
                 for (rfUint32 i = 0; i < p->base.size; i++)
                     p->arr_uint->value[i] = scanner->factory_params.network.mac[i];
                 p->arr_uint->min = 0;
                 p->arr_uint->max = 255;
                 p->arr_uint->step = 0;
                 p->arr_uint->defCount = 6;
-                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * p->base.size);
+                p->arr_uint->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 6);
                 rfUint32 de_arr[6] = {0, 10, 53, 1, 2, 3};
-                for (rfUint32 i = 0; i < p->base.size; i++)
+                for (rfUint32 i = 0; i < 6; i++)
                     p->arr_uint->defValue[i] = de_arr[i];
                 p->arr_uint->maxCount = 6;
                 vector_add(scanner->params_list, p);
@@ -3527,7 +3572,10 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
                 (rfUint8*)TX, TX_SIZE, &write_user_params_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_ip_addr = scanner->user_params.network.ip_address[0] << 24 |
+                  scanner->user_params.network.ip_address[1] << 16 |
+                  scanner->user_params.network.ip_address[2] << 8 |
+                  scanner->user_params.network.ip_address[3];
     dst_port = scanner->user_params.network.service_port;
 
 
@@ -3693,14 +3741,23 @@ rfUint8 rf627_old_set_parameter(
             {
                 p->val_dbl->value = param->val_dbl->value;
                 return 0;
+            }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
+            {
+                memory_platform.rf_memcpy(
+                            (void*)p->arr_uint->value,
+                            param->arr_uint->value,
+                            param->base.size);
+                //p->base.size = param->base.size;
+                return 0;
             }
+
         }
     }
     return 1;
 }
 
 rfUint8 rf627_old_set_parameter_by_name(
-        rf627_old_t* scanner, const rfChar* param_name, va_list value)
+        rf627_old_t* scanner, const rfChar* param_name, rfUint32 count, va_list value)
 {
     for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
     {
@@ -3747,6 +3804,52 @@ rfUint8 rf627_old_set_parameter_by_name(
                 p->val_dbl->value = va_arg(value, rfDouble);
                 return 0;
             }
+            else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
+            {
+                rfUint32 size = 4;
+                if (p->arr_uint->count != 0)
+                    size = p->base.size / p->arr_uint->count;
+                else if (p->arr_uint->defCount != 0)
+                    size = p->base.size / p->arr_uint->defCount;
+
+                const rfUint32* str_value = va_arg(value, const rfUint32*);
+                switch (size) {
+                case 1:
+                {
+                    for(rfSize j = 0; j < count; j++)
+                    {
+                        p->arr_uint->value[j] = (rfUint8)str_value[j];
+                    }
+                    p->base.size = count;
+                    p->arr_uint->count = count;
+                    break;
+                }
+                case 2:
+                {
+                    for(rfSize j = 0; j < count; j++)
+                    {
+                        p->arr_uint->value[j] = (rfUint16)str_value[j];
+                    }
+                    p->base.size = count * 2;
+                    p->arr_uint->count = count;
+                    break;
+                }
+                case 4:
+                {
+                    for(rfSize j = 0; j < count; j++)
+                    {
+                        p->arr_uint->value[j] = (rfUint32)str_value[j];
+                    }
+                    p->base.size = count * 4;
+                    p->arr_uint->count = count;
+                    break;
+                }
+                default:
+                    break;
+                }
+
+                return 0;
+            }
         }
     }
     return 1;
@@ -3779,7 +3882,10 @@ rfUint8 rf627_old_command_set_counters(
                 (rfUint8*)TX, TX_SIZE, &reset_counters_msg);
 
     //send_addr.sin_family = RF_AF_INET;
-    dst_ip_addr = scanner->user_params.network.ip_address;
+    dst_ip_addr = scanner->user_params.network.ip_address[0] << 24 |
+                  scanner->user_params.network.ip_address[1] << 16 |
+                  scanner->user_params.network.ip_address[2] << 8 |
+                  scanner->user_params.network.ip_address[3];
     dst_port = scanner->user_params.network.service_port;
 
     rfUint32 payload_size = 0;

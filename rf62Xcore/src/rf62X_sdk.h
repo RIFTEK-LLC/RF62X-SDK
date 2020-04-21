@@ -118,7 +118,7 @@ dllexport rfUint8 set_parameter(
  * @return 0 if success
  */
 dllexport rfUint8 set_parameter_by_name(
-        scanner_base_t *device, const char* param_name, va_list value);
+        scanner_base_t *device, const char* param_name, rfUint32 count, va_list value);
 
 /**
  * @brief set_parameter - Search parameters by his name

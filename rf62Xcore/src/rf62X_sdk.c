@@ -445,12 +445,12 @@ rfUint8 set_parameter(scanner_base_t *device, parameter_t* param)
     return 1;
 }
 
-rfUint8 set_parameter_by_name(scanner_base_t *device, const char* param_name, va_list value)
+rfUint8 set_parameter_by_name(scanner_base_t *device, const char* param_name, rfUint32 count, va_list value)
 {
     switch (device->type) {
     case kRF627_OLD:
     {
-        return rf627_old_set_parameter_by_name(device->rf627_old, param_name, value);
+        return rf627_old_set_parameter_by_name(device->rf627_old, param_name, count, value);
         break;
     }
     case kRF627_SMART:

@@ -176,10 +176,10 @@ public:
      * @return true on success, else - false
      */
     bool set_param(param_t* param);
-    bool set_param(const char* param_name, ...);
-    bool set_param(int param_id, ...);
+    bool set_param(const char* param_name, int arg_count, ...);
+    bool set_param(int param_id, int arg_count, ...);
 
-    bool send_cmd(const char* command_name, ...);
+    bool send_cmd(const char* command_name, int arg_count, ...);
 
     rf627old(void* scanner_base);
     ~rf627old();

@@ -294,10 +294,10 @@ typedef struct
     {
         rfUint16	speed;
         rfUint8		autonegotiation;
-        rfUint32    ip_address;
-        rfUint32    net_mask;
-        rfUint32    gateway_ip;
-        rfUint32    host_ip;
+        rfUint8     ip_address[4];
+        rfUint8     net_mask[4];
+        rfUint8     gateway_ip[4];
+        rfUint8     host_ip[4];
         rfUint16    stream_port;
         rfUint16    http_port;
         rfUint16    service_port;
@@ -520,7 +520,7 @@ typedef struct
 {
     rfChar* device_name;
     rfUint32 serial_number;
-    rfUint32 ip_address;
+    rfUint8 ip_address[4];
     rfUint8 mac_address[6];
     rfUint16 profile_port;
     rfUint16 service_port;
