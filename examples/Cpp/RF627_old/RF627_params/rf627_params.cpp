@@ -74,6 +74,17 @@ int main()
             scanners[i]->set_param(laser_enabled);
         }
 
+        // Get parameter by it's name from last read
+        param_t* sync_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_TRIGGER_SYNC_SOURCE);
+        if (laser_enabled->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+        {
+            std::cout << sync_enabled->get_value<value_uint32>() << std::endl;
+
+            // The second way to set a new parameter
+            laser_enabled->set_value<value_uint32>(false);
+            scanners[i]->set_param(laser_enabled);
+        }
+
         //  Write changes parameters to the device's memory
         scanners[i]->write_params();
 

@@ -294,10 +294,10 @@ typedef struct
     {
         rfUint16	speed;
         rfUint8		autonegotiation;
-        rfUint32    ip_address;
-        rfUint32    net_mask;
-        rfUint32    gateway_ip;
-        rfUint32    host_ip;
+        rfUint8     ip_address[4];
+        rfUint8     net_mask[4];
+        rfUint8     gateway_ip[4];
+        rfUint8     host_ip[4];
         rfUint16    stream_port;
         rfUint16    http_port;
         rfUint16    service_port;
@@ -520,7 +520,7 @@ typedef struct
 {
     rfChar* device_name;
     rfUint32 serial_number;
-    rfUint32 ip_address;
+    rfUint8 ip_address[4];
     rfUint8 mac_address[6];
     rfUint16 profile_port;
     rfUint16 service_port;
@@ -1106,15 +1106,15 @@ typedef struct
     value_base_t			base;
     union{
         void*				rawData;
-        value_uint32_t*		val_uint;
+        value_uint32_t*		val_uint32;
         value_uint64_t*		val_uint64;
-        value_int32_t*		val_int;
+        value_int32_t*		val_int32;
         value_int64_t*		val_int64;
         value_flt_t*		val_flt;
         value_dbl_t*		val_dbl;
-        array_uint32_t*		arr_uint;
+        array_uint32_t*		arr_uint32;
         array_uint64_t*		arr_uint64;
-        array_int32_t*		arr_int;
+        array_int32_t*		arr_int32;
         array_int64_t*		arr_int64;
         array_flt_t*		arr_flt;
         array_dbl_t*		arr_dbl;

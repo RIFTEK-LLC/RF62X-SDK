@@ -8,9 +8,8 @@ namespace SDK
 {
     namespace SCANNERS
     {
-        public static unsafe class RF62X
+        public unsafe class RF62X
         {
-
             #region dll
 
             #region dll-types
@@ -818,36 +817,36 @@ namespace SDK
 
             #region dll-methods
 
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte search_scanners(vector_t* list, SCANNERS_TYPES model, PROTOCOLS_TYPES protocol);
 
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void vector_init(vector_t** vec);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern UIntPtr vector_count(vector_t* vec);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void* vector_get(vector_t* vec, UIntPtr index);
 
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte read_params_from_scanner(scanner_base_t* device, PROTOCOLS_TYPES protocol);
 
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern parameter_t* get_parameter(scanner_base_t* device, byte* param_name);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte connect_to_scanner(scanner_base_t* device, PROTOCOLS_TYPES protocol);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte disconnect_from_scanner(scanner_base_t* device, PROTOCOLS_TYPES protocol);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern rf627_profile_t* get_profile2D_from_scanner(scanner_base_t* device, bool zero_points, PROTOCOLS_TYPES protocol);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern rf627_old_profile_t* rf627_old_get_profile(rf627_old_t* scanner);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern parameter_t* create_parameter_from_type(byte* type);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte set_parameter(scanner_base_t* device, parameter_t* param);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte write_params_to_scanner(scanner_base_t* device, PROTOCOLS_TYPES protocol);
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void set_platform_adapter_settings(uint host_mask, uint host_ip_addr);
 
 
@@ -2021,6 +2020,7 @@ namespace SDK
                                             if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                                             {
                                                 set_platform_adapter_settings(BitConverter.ToUInt32(ip.IPv4Mask.GetAddressBytes(), 0), BitConverter.ToUInt32(ip.Address.GetAddressBytes(), 0));
+
                                                 search_scanners(scanners, SCANNERS_TYPES.RF627_OLD, PROTOCOLS_TYPES.SERVICE_PROTOKOL);
                                                 Console.WriteLine("Send hello packet from {0} IP Address", ip.Address.ToString());
                                             }

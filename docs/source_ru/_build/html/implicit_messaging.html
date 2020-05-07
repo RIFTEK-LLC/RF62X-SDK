@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Implicit Messaging &mdash; RF62X-SDK 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Discovery" href="discovery.html" />
+    <link rel="prev" title="Explicit Messaging" href="explicit_messaging.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RF62X-SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explicit_messaging.html">Explicit Messaging</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implicit Messaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discovery.html">Discovery</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RF62X-SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Implicit Messaging</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/implicit_messaging.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="implicit-messaging">
+<h1>Implicit Messaging<a class="headerlink" href="#implicit-messaging" title="Permalink to this headline">¶</a></h1>
+<p><strong>EtherNet/IP</strong> protocol allows to connect the scanner and the adapter by using
+IO connections, so that they can send data each other periodically or then the
+data have changed.</p>
+<p>In order to establish and handle IO connections through UDP, <strong>EIPScanner</strong> provides
+<em>ConnectionManager</em> class, that has <em>forwardOpen</em> method where we can pass all the parameters
+of the connections. The method returns an instance of <em>IOConnection</em> class, which we can use
+to handle the received data from the adapter and send the our data to it.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cip/connectionManager/NetworkConnectionParams.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SessionInfo.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ConnectionManager.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;utils/Logger.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;utils/Buffer.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">cip</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">SessionInfo</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">MessageRouter</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">ConnectionManager</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">cip</span><span class="o">::</span><span class="n">connectionManager</span><span class="o">::</span><span class="n">ConnectionParameters</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">cip</span><span class="o">::</span><span class="n">connectionManager</span><span class="o">::</span><span class="n">NetworkConnectionParams</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Buffer</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">Logger</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">eipScanner</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">LogLevel</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Logger</span><span class="o">::</span><span class="n">setLogLevel</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">kDEBUG</span><span class="p">);</span>
+        <span class="k">auto</span> <span class="n">si</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SessionInfo</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;172.28.1.3&quot;</span><span class="p">,</span> <span class="mh">0xAF12</span><span class="p">);</span>
+
+        <span class="c1">// Implicit messaging</span>
+        <span class="n">ConnectionManager</span> <span class="n">connectionManager</span><span class="p">;</span>
+
+        <span class="n">ConnectionParameters</span> <span class="n">parameters</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">connectionPath</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="mh">0x2C</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mh">0x2C</span><span class="p">,</span> <span class="mi">100</span><span class="p">};</span>  <span class="c1">// config Assm151, output Assm150, intput Assm100</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">o2tRealTimeFormat</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">originatorVendorId</span> <span class="o">=</span> <span class="mi">342</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">originatorSerialNumber</span> <span class="o">=</span> <span class="mi">32423</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">t2oNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">P2P</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">t2oNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">SCHEDULED_PRIORITY</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">t2oNetworkConnectionParams</span> <span class="o">|=</span> <span class="mi">32</span><span class="p">;</span> <span class="c1">//size of Assm100 =32</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">o2tNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">P2P</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">o2tNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">SCHEDULED_PRIORITY</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">o2tNetworkConnectionParams</span> <span class="o">|=</span> <span class="mi">32</span><span class="p">;</span> <span class="c1">//size of Assm150 = 32</span>
+
+        <span class="n">parameters</span><span class="p">.</span><span class="n">originatorSerialNumber</span> <span class="o">=</span> <span class="mh">0x12345</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">o2tRPI</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">t2oRPI</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+        <span class="n">parameters</span><span class="p">.</span><span class="n">transportTypeTrigger</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">CLASS1</span><span class="p">;</span>
+
+        <span class="k">auto</span> <span class="n">io</span> <span class="o">=</span> <span class="n">connectionManager</span><span class="p">.</span><span class="n">forwardOpen</span><span class="p">(</span><span class="n">si</span><span class="p">,</span> <span class="n">parameters</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">auto</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">io</span><span class="p">.</span><span class="n">lock</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">setDataToSend</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">));</span>
+
+                <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">setReceiveDataListener</span><span class="p">([](</span><span class="k">auto</span> <span class="n">realTimeHeader</span><span class="p">,</span> <span class="k">auto</span> <span class="n">sequence</span><span class="p">,</span> <span class="k">auto</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="n">ss</span><span class="p">;</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;secNum=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sequence</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data=&quot;</span><span class="p">;</span>
+                        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">byte</span> <span class="p">:</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;[&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">hex</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">byte</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;]&quot;</span><span class="p">;</span>
+                        <span class="p">}</span>
+
+                        <span class="n">Logger</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">kINFO</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Received: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+                <span class="p">});</span>
+
+                <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">setCloseListener</span><span class="p">([]()</span> <span class="p">{</span>
+                        <span class="n">Logger</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">kINFO</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Closed&quot;</span><span class="p">;</span>
+                <span class="p">});</span>
+        <span class="p">}</span>
+
+        <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">connectionManager</span><span class="p">.</span><span class="n">hasOpenConnections</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">count</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">connectionManager</span><span class="p">.</span><span class="n">handleConnections</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="n">connectionManager</span><span class="p">.</span><span class="n">forwardClose</span><span class="p">(</span><span class="n">si</span><span class="p">,</span> <span class="n">io</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There are many lines of code here. But let’s go through it step by step.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">si</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">SessionInfo</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;172.28.1.3&quot;</span><span class="p">,</span> <span class="mh">0xAF12</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><em>ConnectionManager</em> uses <a class="reference internal" href="explicit_messaging.html#explicit-messaging"><span class="std std-ref">Explicit Messaging</span></a>, so we need to establish <strong>EIP</strong> session before to
+call service <em>Forward_Open</em>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ConnectionManager</span> <span class="n">connectionManager</span><span class="p">;</span>
+
+<span class="n">ConnectionParameters</span> <span class="n">parameters</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">connectionPath</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x20</span><span class="p">,</span> <span class="mh">0x04</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="mh">0x2C</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mh">0x2C</span><span class="p">,</span> <span class="mi">100</span><span class="p">};</span>  <span class="c1">// config Assm151, output Assm150, intput Assm100</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">o2tRealTimeFormat</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">originatorVendorId</span> <span class="o">=</span> <span class="mi">342</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">originatorSerialNumber</span> <span class="o">=</span> <span class="mi">32423</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">t2oNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">P2P</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">t2oNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">SCHEDULED_PRIORITY</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">t2oNetworkConnectionParams</span> <span class="o">|=</span> <span class="mi">32</span><span class="p">;</span> <span class="c1">//size of Assm100 =32</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">o2tNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">P2P</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">o2tNetworkConnectionParams</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">SCHEDULED_PRIORITY</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">o2tNetworkConnectionParams</span> <span class="o">|=</span> <span class="mi">32</span><span class="p">;</span> <span class="c1">//size of Assm150 = 32</span>
+
+<span class="n">parameters</span><span class="p">.</span><span class="n">originatorSerialNumber</span> <span class="o">=</span> <span class="mh">0x12345</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">o2tRPI</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">t2oRPI</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">transportTypeTrigger</span> <span class="o">|=</span> <span class="n">NetworkConnectionParams</span><span class="o">::</span><span class="n">CLASS1</span><span class="p">;</span>
+
+<span class="k">auto</span> <span class="n">io</span> <span class="o">=</span> <span class="n">connectionManager</span><span class="p">.</span><span class="n">forwardOpen</span><span class="p">(</span><span class="n">si</span><span class="p">,</span> <span class="n">parameters</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>As you can see, IO connection has a lot of parameters. This tutorial doesn’t aim to give the whole information about all the
+options and parameters of the implicit messaging. Use please <strong>CIP</strong> specification for details. Moreover each <strong>EIP</strong>
+device can have its own set of parameters which it uses to establish the IO connection.
+Always see documentation or\and EDS files to figure out how to tune the parameters.</p>
+<p>However, there are some things that need clarifying:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Service <em>Forward_Open</em> opens two connections: Originator (Scanner) =&gt; Target (Adapter)
+and Target =&gt; Originator. Parameters that start with <strong>o2t</strong> defined for direction Originator =&gt; Target, <strong>t2o</strong> for
+Originator =&gt; Target.</p></li>
+<li><p><em>t2oNetworkConnectionParams</em> and <em>t2oNetworkConnectionParams</em> has last 9 bits for connection size. Use operator
+<strong>|=</strong> to set them</p></li>
+<li><p>IO connection path must be a vector of byte (as you see it in EDS file or specification):
+0x20 0x04 CONFIG_ASSEMBLY_ID 0x2C OUTPUT_ASSEMBLY_ID 0x2C INPUT_ASSEMBLY</p></li>
+<li><p><em>RPI</em> and <em>API</em> in microseconds</p></li>
+</ol>
+</div></blockquote>
+<p>If method <em>ConnectionManager::forwardOpen</em> has managed to open the connection it returns a weak pointer to it else null pointer:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="k">auto</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">io</span><span class="p">.</span><span class="n">lock</span><span class="p">())</span> <span class="p">{</span>
+        <span class="c1">// Set data to send</span>
+        <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">setDataToSend</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">32</span><span class="p">));</span>
+
+        <span class="c1">// Set callback for received data</span>
+        <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">setReceiveDataListener</span><span class="p">([](</span><span class="k">auto</span> <span class="n">realTimeHeader</span><span class="p">,</span> <span class="k">auto</span> <span class="n">sequence</span><span class="p">,</span> <span class="k">auto</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">ostringstream</span> <span class="n">ss</span><span class="p">;</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;secNum=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sequence</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data=&quot;</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">byte</span> <span class="p">:</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;[&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">hex</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">byte</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;]&quot;</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">Logger</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">kINFO</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Received: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+        <span class="p">});</span>
+
+        <span class="c1">// Set callback to no</span>
+        <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">setCloseListener</span><span class="p">([]()</span> <span class="p">{</span>
+                <span class="n">Logger</span><span class="p">(</span><span class="n">LogLevel</span><span class="o">::</span><span class="n">kINFO</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Closed&quot;</span><span class="p">;</span>
+        <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this snippet, we set the data to send and subscribe on the two events: the data is received and the connection is closed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Pay attention, that the size of the data is the same as the O=&gt;T connection size if the connection has the fixed size.
+Some device can ignore this data and close the connection by timeout.</p>
+</div>
+<p>To open a connection and set the listeners are not enough to make it work. <strong>EIPScanner</strong> is a single thread library and we
+need periodically to handle these connections:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">connectionManager</span><span class="p">.</span><span class="n">hasOpenConnections</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">count</span><span class="o">--</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">connectionManager</span><span class="p">.</span><span class="n">handleConnections</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This loop executes 200 times and while there are the open connections to handle. Method <em>ConnectionManager::handleConnections</em>
+does several things for each IO connection:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Checks if the new data received via UDP and calls the corresponding handler that has been set by
+<em>IOConnection::setReceiveDataListener</em>.</p></li>
+<li><p>Closes a connection if it hasn’t been receiving new data during <em>IOConnection::t2oAPI</em> x
+<em>ConnectionParameters::connectionTimeoutMultiplier</em> x 4 and calls the corresponding handler.</p></li>
+<li><p>Sends the data each <em>IOConnection::o2tAPI</em>.</p></li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should call method <em>ConnectionManager::handleConnections</em> more often than the least API of opened connections.</p>
+</div>
+<p>The last thing, we should do, is close the connection politely:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">connectionManager</span><span class="p">.</span><span class="n">forwardClose</span><span class="p">(</span><span class="n">si</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="discovery.html" class="btn btn-neutral float-right" title="Discovery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="explicit_messaging.html" class="btn btn-neutral float-left" title="Explicit Messaging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Vladislav Kuzmin
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

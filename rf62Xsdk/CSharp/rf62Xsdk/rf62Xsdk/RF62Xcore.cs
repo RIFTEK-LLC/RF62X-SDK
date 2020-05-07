@@ -577,10 +577,10 @@ namespace SDK
                 return 0;
             }
 
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern UInt32 core_version();
 
-            [DllImport("rf62Xcore.dll")]
+            [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void init_platform_dependent_methods(
             ref memory_platform_dependent_methods_t memory_methods,
             ref iostream_platform_dependent_methods_t iostream_methods,

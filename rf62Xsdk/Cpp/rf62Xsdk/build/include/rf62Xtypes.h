@@ -613,7 +613,7 @@ typedef struct value_dbl : param_t
   double        value;
 }value_dbl;
 
-typedef struct array_uint : param_t
+typedef struct array_uint32 : param_t
 {
   uint32_t    min;
   uint32_t    max;
@@ -622,7 +622,7 @@ typedef struct array_uint : param_t
   std::vector <uint32_t> defaultValue;
   uint32_t    count;
   std::vector <uint32_t> value;
-}array_uint;
+}array_uint32;
 
 typedef struct array_uint64 : param_t
 {

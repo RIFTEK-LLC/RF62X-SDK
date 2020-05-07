@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Компиляция из исходников &mdash; RF62X-SDK 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RF62X-SDK
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Руководство программиста</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Обзор</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_index.html">Подготовка к работе</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rf62X_core.html">RF62X Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rf62X_wrappers.html">RF62X Wrappers</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RF62X-SDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Компиляция из исходников</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/getting_started/compilation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>Компиляция из исходников<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>Библиотека содержит ряд модулей (программных классов). На рисунке ниже представлена UML
+диаграмма классов библиотеки:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/ClassDiagram(v2).jpg"><img alt="Рисунок 1 – UML диаграмма классов" src="getting_started\../_static/ClassDiagram(v2).jpg" style="width: 100%;" /></a>
+</div>
+<p>Описание программных классов библиотеки:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> (файл Channel.h) - Абстрактный класс, определяющий интерфейс для
+классов UDPChannel, SerialChannel, PureUDPChannel и PureSerialChannel. Этот
+класс определяет интерфейс класса обмена информацией для пользователя.</p></li>
+<li><p><strong>UDPPort</strong> (файлы UDPPort.h, UDPPort.cpp) - Класс обмена информацией через
+UDP порт. Класс реализует интерфейс приема и отправки данных через сокет UDP
+и предоставляет простой интерфейс работы с UDP портом.</p></li>
+<li><p><strong>SerialPort</strong> (файлы SerialPort.h, SerialPort.cpp) - Класс обмена информацией
+по последовательному порту. Класс реализует интерфейс приема и отправки
+данных через последовательный порт и предоставляет простой интерфейс работы
+с последовательным портом.</p></li>
+<li><p><strong>PureUDPChannel</strong> (файлы PureUDPChannel.h, PureUDPChannel.cpp) - Класс для
+организации обмена информацией через UDP-порт без дополнительной инкапсуляции
+данных в протокол приклодного уровня, иными словами - чистый обмен данными
+по UDP протоколу. Класс открывает сокеты и UDP порты и осуществляет обмен
+информацией через них. Один экземпляр класса позволяет организовать обмен
+информацией «точка-точка», при этом не допускается инициализации двух и более
+объектов класса для обмена информацией через один UDP порт.</p></li>
+<li><p><strong>PureSerialChannel</strong> (файлы PureSerialChannel.h, PureSerialChannel.cpp) - Класс
+для организации обмена информацией через COM-порт без дополнительной инкапсуляции
+данных в протокол приклодного уровня, иными словами - чистый обмен данными
+по СОМ-порту. Класс открывает файл последовательного порта и осуществляет обмен
+информацией через него. Один экземпляр класса позволяет организовать обмен информацией
+«точка-точка», при этом не допускается инициализации двух и более объектов класса для
+обмена через один последовательный порт.</p></li>
+<li><p><strong>ProtocolParser</strong> (файлы ProtocolParser.h, ProtocolParser.cpp) - Класс парсера
+информационных пакетов протокола <a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.
+Класс предназначен для кодирования/декодирования информационных пакетов,
+а также предназначен для осуществления логики информационного обмена протокола
+<a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.</p></li>
+<li><p><strong>UDPChannel</strong> (файлы UDPChannel.h, UDPChannel.cpp) - Класс для
+организации обмена информацией через UDP-порт посредством дополнительной инкапсуляции
+данных в протокол приклодного уровня - <a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.
+Класс открывает сокеты и UDP порты и осуществляет обмен информацией через них.
+Один экземпляр класса позволяет организовать обмен информацией «точка-точка»,
+при этом не допускается инициализации двух и более объектов класса для обмена
+информацией через один UDP порт.</p></li>
+<li><p><strong>SerialChannel</strong> (файлы SerialChannel.h, SerialChannel.cpp) - Класс для организации
+обмена информацией через COM-порт посредством дополнительной инкапсуляции
+данных в протокол приклодного уровня - <a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.
+Класс открывает файл последовательного порта и осуществляет обмен информацией через него.
+Один экземпляр класса позволяет организовать обмен информацией «точка-точка»,
+при этом не допускается инициализации двух и более объектов класса для обмена через
+один последовательный порт.</p></li>
+</ul>
+<p>Для использования библиотеки clib в проектах C++ разработчик может включить
+необходимые файлы библиотеки в свой проект, либо предварительно собрать
+статическую или динамическую программную библиотеки.</p>
+<p>Возможно, вы захотите собрать clib из исходного кода одним из предлагаемых нами
+методом.</p>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>В Windows мы советуем использовать Visual Studio 2017 или новее, поскольку clib
+в значительной степени опирается на языковые функции C++ 11.</p>
+<div class="section" id="id2">
+<h3>1. Зависимости<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Для удобства компиляции мы включили исходный код всех зависимых библиотек в
+папку <code class="docutils literal notranslate"><span class="pre">modules</span></code>. Поэтому вам не нужно устанавливать никаких зависимостей.</p>
+</div>
+<div class="section" id="clib">
+<h3>2. Сборка clib в качестве программной библиотеки<a class="headerlink" href="#clib" title="Permalink to this headline">¶</a></h3>
+<p>Для использования clib в разрабатываемом проекте в качестве программной
+библиотеки необходимо:
+1. В вверхнем меню Visual Studio выберите <strong>«Файл»</strong> &gt; <strong>«Создать»</strong> &gt; <strong>«Проект»</strong>,</p>
+<blockquote>
+<div><p>для открытия диалогового окно <strong>«Создание проекта»</strong>.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>В верхней части диалогового окна установите язык на <strong>C++</strong>, платформу для
+<strong>Windows</strong> и тип проекта в <strong>Библиотеку</strong>.</p></li>
+<li><p>В отфильтрованном списке типов проектов выберите
+<strong>мастер классических приложенией Windows</strong> и нажмите <strong>Далее</strong>:</p></li>
+</ol>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/vs2019_create_new_project.jpg"><img alt="Рисунок 1 – Создание нового проекта при помощи мастера" src="getting_started\../_static/vs2019_create_new_project.jpg" style="width: 100%;" /></a>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Илюстрации по созданию проекта могут различаться в зависимости от вашей версии Visual Studio.</p>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>На странице настройки нового проекта введите <em>clib</em> в поле <strong>Имя проекта</strong>,
+чтобы указать имя для проекта. Нажмите кнопку «Создать», чтобы открыть диалоговое окно
+<strong>«Проект классического приложения Windows»</strong>.</p></li>
+<li><p>В диалоговом окне <strong>«Проект классического приложения Windows»</strong> в разделе
+<strong>«Тип приложения»</strong> выбрать необходимый тип - Динамическая библиотека (.dll) или
+Статическая библиотека (.lib). В качестве примера демонстрируется создание статической библиотеки clib.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>В разделе <strong>«Дополнительные параметры»</strong> снимите флажок <strong>«Прекомпилированный заголовок»</strong>, если он установлен. Установите флажок <strong>Пустой проект</strong>.</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/vs2019_config_new_project.jpg"><img alt="Рисунок 2 – Настройка нового проекта при помощи мастера" src="getting_started\../_static/vs2019_config_new_project.jpg" style="width: 100%;" /></a>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Нажмите <strong>OK</strong>, чтобы создать проект.</p></li>
+<li><p>Добавьте необходимые исходные файлы в проект, выберите <em>x64 Debug</em> или <em>x64 Release</em>
+в качестве целевой платформы приложения и запустите локальный отладчик Windows.
+По окончанию сборки в выходном каталоге появится статическая библиотека clib.lib</p></li>
+</ol>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/vs2019_build_clib.jpg"><img alt="Рисунок 3 – Создание статической библиотека clib.lib" src="getting_started\../_static/vs2019_build_clib.jpg" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>3. Использования clib в качестве программной библиотеки<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><strong>Создание консольного приложения C++</strong></p>
+<ol class="arabic simple">
+<li><p>В <strong>обозревателе решений</strong> щелкните правой кнопкой мыши на верхний узел Решение <em>clib</em>,
+чтобы открыть контекстное меню. Выберите <strong>«Добавить»</strong> &gt; <strong>«Новый проект»</strong>, чтобы
+открыть диалоговое окно <strong>«Добавить новый проект»</strong>.</p></li>
+<li><p>В верхней части диалогового окна установите фильтр типа проекта <strong>«Консоль»</strong>.</p></li>
+<li><p>Из отфильтрованного списка типов проектов выберите <strong>Консольное приложение</strong>, затем нажмите <strong>Далее</strong>.
+На следующей странице введите <em>TestSender</em> в поле <strong>«Имя»</strong>, чтобы указать имя для проекта, нажмите кнопку <strong>«Создать»</strong></p></li>
+<li><p>После создания консольного приложения для вас создается пустая программа.
+Имя исходного файла совпадает с именем, которое вы выбрали ранее. В примере оно называется TestSender.cpp</p></li>
+</ol>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/vs2019_test_sender.jpg"><img alt="Рисунок 4 – Создание консольного приложения" src="getting_started\../_static/vs2019_test_sender.jpg" style="width: 100%;" /></a>
+</div>
+<p><strong>Использование функциональности библиотеки clib</strong></p>
+<ol class="arabic simple">
+<li><p>Прежде чем вы сможете использовать статическую библиотеку clib, вы должны обратиться к ней.
+Откройте контекстное меню для проекта TestSender в <strong>Обозревателе решений</strong>, а затем выберите <strong>«Добавить»</strong> &gt; <strong>«Ссылка»</strong> .</p></li>
+<li><p>В диалоговом окне <strong>«Добавить ссылку»</strong> перечислены библиотеки, на которые вы можете ссылаться.
+Откройте вкладку <strong>«Проекты»</strong>, установите флажок <strong>«clib»</strong> и нажмите кнопку <strong>«ОК»</strong>.</p></li>
+<li><p>Чтобы сослаться на заголовочные файлы библиотеки, вы должны изменить путь включенных каталогов.
+Для этого в <strong>обозревателе решений</strong> щелкните правой кнопкой мыши на проекте <em>TestSender</em>,
+чтобы открыть контекстное меню. Выберите <strong>«Свойства»</strong>, чтобы открыть диалоговое окно «Страницы свойств TestSender».</p></li>
+<li><p>На странице свойств установите настройки <strong>Конфигурация</strong> в <em>Все конфигурации</em> и <strong>«Платформа»</strong> выберите <em>Все платформы</em>.</p></li>
+<li><p>Далее выберите <strong>Свойства конфигурации</strong> &gt; <strong>C/C++</strong> &gt; <strong>Общие</strong>. В поле дополнительные каталоги включения укажите путь к clib каталогу.</p></li>
+<li><p>Теперь вы можете использовать методы статической библиотеки clib в консольном приложении. Ниже приведен пример передачи данных</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sender.cpp - example data-sender application</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PureSerialChannel.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">COM1;19200;128;2400&quot;</span><span class="p">;</span>
+   <span class="kt">uint32_t</span> <span class="n">dataSize</span> <span class="o">=</span> <span class="mi">2400</span><span class="p">;</span>
+   <span class="kt">float</span> <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="mi">19200</span> <span class="o">/</span> <span class="mf">1048576.0f</span><span class="p">;</span>
+
+   <span class="c1">// Create channel object</span>
+   <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureSerialChannel</span><span class="p">();</span>
+
+   <span class="c1">// Init channel</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+   <span class="c1">// Allocate memory for output data.</span>
+   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">dataSize</span><span class="p">];</span>
+   <span class="c1">// Value of data.</span>
+   <span class="kt">uint8_t</span> <span class="n">dataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="c1">// Fill data buffer.</span>
+   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start sending data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Sending loop</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Fill data by new value.</span>
+      <span class="o">++</span><span class="n">dataValue</span><span class="p">;</span>
+      <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
+
+      <span class="c1">// Send data to 0 logic port</span>
+      <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes was sent. Data value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">dataValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>4. Использования clib в качестве исходных файлов<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="udp">
+<h4>Обмен данными через UDP порт<a class="headerlink" href="#udp" title="Permalink to this headline">¶</a></h4>
+<p>При подключении исходных файлов clib в разрабатываемый вами проект по
+организации обмена информацией через порт UDP разработчик должен включить в
+свой проект следующие файлы:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Channel (<a href="#id5"><span class="problematic" id="id6">*</span></a>.h)</p></td>
+<td><p>Абстрактный класс-интерфейс</p></td>
+</tr>
+<tr class="row-even"><td><p>UDPPort (<a href="#id7"><span class="problematic" id="id8">*</span></a>.cpp, <a href="#id9"><span class="problematic" id="id10">*</span></a>.h)</p></td>
+<td><p>Враппер обмена данными через UDP порт</p></td>
+</tr>
+<tr class="row-odd"><td><p>PureUDPChannel (<a href="#id11"><span class="problematic" id="id12">*</span></a>.cpp, <a href="#id13"><span class="problematic" id="id14">*</span></a>.h)</p></td>
+<td><p>Чистый обмена данными по UDP (без инкапсуляции)</p></td>
+</tr>
+<tr class="row-even"><td><p>ProtocolParser (<a href="#id15"><span class="problematic" id="id16">*</span></a>.cpp, <a href="#id17"><span class="problematic" id="id18">*</span></a>.h)</p></td>
+<td><p>Парсер пакетов протокола TransportProtocol</p></td>
+</tr>
+<tr class="row-odd"><td><p>UDPChannel (<a href="#id19"><span class="problematic" id="id20">*</span></a>.cpp, <a href="#id21"><span class="problematic" id="id22">*</span></a>.h)</p></td>
+<td><p>Обмен данными по протоколу TransportProtocol через UDP</p></td>
+</tr>
+</tbody>
+</table>
+<p>Пример кода для организации обмена данными через UDP порт с использованием исходных файлов библиотеки clib:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sender.cpp - example data-sender application</span>
+<span class="c1">// destination port: 50020, source port: 50021</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;UDPChannel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PureUDPChannel.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE UDP DATA SENDER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">dstIP</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+   <span class="kt">uint32_t</span> <span class="n">dataSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kt">float</span> <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+
+   <span class="c1">// Dialogue to enter destination IP</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter reciever IP: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">dstIP</span><span class="p">;</span>
+   <span class="c1">// Dialogue to enter communication channel bandwidth</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter communication channel bandwidth in Mbps: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">bandwidthMbps</span><span class="p">;</span>
+
+   <span class="c1">// Calculate dataSize</span>
+   <span class="n">dataSize</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">bandwidthMbps</span> <span class="o">*</span> <span class="mf">131072.0f</span><span class="p">);</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes to send&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="c1">// Create channel object</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">UDPChannel</span><span class="p">();</span>
+   <span class="k">else</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureUDPChannel</span><span class="p">();</span>
+
+   <span class="c1">// Create initialization string</span>
+   <span class="n">initString</span> <span class="o">=</span> <span class="n">dstIP</span> <span class="o">+</span> <span class="s">&quot;;50020;50021;1024;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">dataSize</span><span class="p">);</span>
+
+
+   <span class="c1">// Init channel</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+   <span class="c1">// Allocate memory for output data.</span>
+   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">dataSize</span><span class="p">];</span>
+   <span class="c1">// Value of data.</span>
+   <span class="kt">uint8_t</span> <span class="n">dataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="c1">// Fill data buffer.</span>
+   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start sending data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Sending loop</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Fill data by new value.</span>
+      <span class="o">++</span><span class="n">dataValue</span><span class="p">;</span>
+      <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
+
+      <span class="c1">// Send data to 0 logic port</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+         <span class="c1">// Send data until confirmation during 2s.</span>
+         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
+      <span class="k">else</span>
+         <span class="c1">// Send data once.</span>
+         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes was sent. Data value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">dataValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Receiver.cpp - example data-receiver application</span>
+<span class="c1">// destination port: 50021, source port: 50020</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;UDPChannel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PureUDPChannel.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE UDP DATA RECEIVER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">dstIP</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">maxDataSize</span> <span class="o">=</span> <span class="mi">186624000</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter destination IP</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter sender IP: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">dstIP</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="c1">// Create channel object</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">UDPChannel</span><span class="p">();</span>
+   <span class="k">else</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureUDPChannel</span><span class="p">();</span>
+
+   <span class="c1">// Create initialization string</span>
+   <span class="n">initString</span> <span class="o">=</span> <span class="n">dstIP</span> <span class="o">+</span> <span class="s">&quot;;50021;50020;1024;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">maxDataSize</span><span class="p">);</span>
+
+
+   <span class="c1">// Init channel</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+   <span class="c1">// Allocate memory for output data.</span>
+   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">maxDataSize</span><span class="p">];</span>
+   <span class="c1">// Fill data buffer.</span>
+   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">);</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start reading data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Reading loop</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Wait data from 0 logic port without time limit.</span>
+      <span class="kt">uint32_t</span> <span class="n">inputSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">GetData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">,</span> <span class="n">inputSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+      <span class="p">{</span>
+         <span class="c1">// Print calculated bandwidth value.</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Recieved &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inputSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Результат вывода приложений Receiver и Sender при обмене данными через UDP порт с использование протокола TransportProtocol:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/UDPChannel_example.jpg"><img alt="Рисунок 2 – Результат запуска приложений Receiver и Sender" src="getting_started\../_static/UDPChannel_example.jpg" style="width: 100%;" /></a>
+</div>
+</div>
+<div class="section" id="com">
+<h4>Пример использования библиотеки для организации обмена данными через COM порт<a class="headerlink" href="#com" title="Permalink to this headline">¶</a></h4>
+<p>Для организации обмена информацией через последовательный порт разработчик
+должен включить в свой проект следующие файлы:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Channel (<a href="#id23"><span class="problematic" id="id24">*</span></a>.h)</p></td>
+<td><p>Абстрактный класс-интерфейс</p></td>
+</tr>
+<tr class="row-even"><td><p>SerialPort (<a href="#id25"><span class="problematic" id="id26">*</span></a>.cpp, <a href="#id27"><span class="problematic" id="id28">*</span></a>.h)</p></td>
+<td><p>Враппер обмена данными по COM порту</p></td>
+</tr>
+<tr class="row-odd"><td><p>PureSerialChannel (<a href="#id29"><span class="problematic" id="id30">*</span></a>.cpp, <a href="#id31"><span class="problematic" id="id32">*</span></a>.h)</p></td>
+<td><p>Чистый обмена данными по COM порту (без инкапсуляции)</p></td>
+</tr>
+<tr class="row-even"><td><p>ProtocolParser (<a href="#id33"><span class="problematic" id="id34">*</span></a>.cpp, <a href="#id35"><span class="problematic" id="id36">*</span></a>.h)</p></td>
+<td><p>Парсер пакетов протокола TransportProtocol</p></td>
+</tr>
+<tr class="row-odd"><td><p>SerialChannel (<a href="#id37"><span class="problematic" id="id38">*</span></a>.cpp, <a href="#id39"><span class="problematic" id="id40">*</span></a>.h)</p></td>
+<td><p>Обмен данными по протоколу TransportProtocol через COM порт</p></td>
+</tr>
+</tbody>
+</table>
+<p>Пример кода для организации обмена данными через COM порт с использованием исходных файлов библиотеки clib:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sender.cpp - example data-sender application</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SerialChannel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PureSerialChannel.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE SERIAL DATA SENDER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+   <span class="kt">uint32_t</span> <span class="n">dataSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kt">float</span> <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+
+   <span class="kt">int</span> <span class="n">serialPortNumToSend</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">serialPortBaudrate</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter serial port num to send data.</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port num to send data: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortNumToSend</span><span class="p">;</span>
+   <span class="c1">// Dialogue to enter baudrate value.</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port baudrate in bits per second: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortBaudrate</span><span class="p">;</span>
+
+
+   <span class="c1">// Calculate data size</span>
+   <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">serialPortBaudrate</span> <span class="o">/</span> <span class="mf">1048576.0f</span><span class="p">;</span>
+   <span class="n">dataSize</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">bandwidthMbps</span> <span class="o">*</span> <span class="mf">131072.0f</span><span class="p">);</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes to send&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="c1">// Create channel object</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">SerialChannel</span><span class="p">();</span>
+   <span class="k">else</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureSerialChannel</span><span class="p">();</span>
+
+   <span class="c1">// Create initialization string</span>
+   <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">serialPortNamePrefix</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">COM&quot;</span><span class="p">;</span>
+   <span class="n">initString</span> <span class="o">=</span> <span class="n">serialPortNamePrefix</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortNumToSend</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;&quot;</span> <span class="o">+</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortBaudrate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;128;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">dataSize</span><span class="p">);</span>
+
+
+   <span class="c1">// Init channel</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+   <span class="c1">// Allocate memory for output data.</span>
+   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">dataSize</span><span class="p">];</span>
+   <span class="c1">// Value of data.</span>
+   <span class="kt">uint8_t</span> <span class="n">dataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="c1">// Fill data buffer.</span>
+   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start sending data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Sending loop</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Fill data by new value.</span>
+      <span class="o">++</span><span class="n">dataValue</span><span class="p">;</span>
+      <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
+
+      <span class="c1">// Send data to 0 logic port</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+         <span class="c1">// Send data until confirmation during 2s.</span>
+         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
+      <span class="k">else</span>
+         <span class="c1">// Send data once.</span>
+         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes was sent. Data value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">dataValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Receiver.cpp - example data-receiver application</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;SerialChannel.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;PureSerialChannel.h&quot;</span><span class="cp"></span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE SERIAL DATA RECEIVER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">maxDataSize</span> <span class="o">=</span> <span class="mi">186624000</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">serialPortNumToRead</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kt">int</span> <span class="n">serialPortBaudrate</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter serial port num to send data.</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port num to read data: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortNumToRead</span><span class="p">;</span>
+   <span class="c1">// Dialogue to enter baudrate value.</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port baudrate in bits per second: &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortBaudrate</span><span class="p">;</span>
+
+   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="c1">// Create channel object</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">SerialChannel</span><span class="p">();</span>
+   <span class="k">else</span>
+      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureSerialChannel</span><span class="p">();</span>
+
+   <span class="c1">// Create initialization string</span>
+   <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">serialPortNamePrefix</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">COM&quot;</span><span class="p">;</span>
+   <span class="n">initString</span> <span class="o">=</span> <span class="n">serialPortNamePrefix</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortNumToRead</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;&quot;</span> <span class="o">+</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortBaudrate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;128;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">maxDataSize</span><span class="p">);</span>
+
+
+   <span class="c1">// Init channel</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+   <span class="c1">// Allocate memory for output data.</span>
+   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">maxDataSize</span><span class="p">];</span>
+   <span class="c1">// Fill data buffer.</span>
+   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">);</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start reading data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+   <span class="c1">// Reading loop</span>
+   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="c1">// Wait data from 0 logic port without time limit.</span>
+      <span class="kt">uint32_t</span> <span class="n">inputSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">GetData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">,</span> <span class="n">inputSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+      <span class="p">{</span>
+         <span class="c1">// Print calculated bandwidth value.</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Recieved &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inputSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Результат вывода приложений Receiver и Sender при обмене данными через COM порт с использование протокола TransportProtocol:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="getting_started\../_static/SerialChannel_example.jpg"><img alt="Рисунок 3 – Результат запуска приложений Receiver и Sender" src="getting_started\../_static/SerialChannel_example.jpg" style="width: 100%;" /></a>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="ubuntu">
+<h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id41">
+<h3>1. Установка зависимостей (опционально)<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id42">
+<h3>2. Конфигурирование проекта<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id43">
+<h3>2. Сборка и установка clib<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="macos">
+<h2>MacOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h2>
+<p>Шаги компиляции MacOS в основном идентичны Ubuntu.</p>
+<div class="section" id="id44">
+<h3>1. Установка зависимостей (опционально)<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id45">
+<h3>2. Конфигурирование проекта<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id46">
+<h3>2. Сборка и установка clib<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Vladislav Kuzmin
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
