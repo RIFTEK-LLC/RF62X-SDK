@@ -25,6 +25,7 @@ extern int GetAdaptersCount();
 extern const char* GetAdapterAddress(int index);
 /* windows sockets tweaks */
 extern BOOL WinSockInit();
+extern void WinSockDeinit();
 
 
 std::string SDK::SCANNERS::RF62X::sdk_version()
@@ -1270,6 +1271,14 @@ rf627old::hello_info::version::version(uint32_t value)
 rf627old::hello_info::version::~version()
 {
 
+}
+
+void sdk_cleanup()
+{
+#if (defined _WIN32)
+    FreeAdapterAddresses();
+    WinSockDeinit();
+#endif
 }
 
 

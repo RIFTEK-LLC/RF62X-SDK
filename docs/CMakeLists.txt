@@ -1,23 +1,43 @@
 find_package(Doxygen REQUIRED)
 
 # set rf627sdk path variable
-set(RF62XCORE_DIR "../rf62Xwrappers/Cpp/rf62Xsdk")
 set(RF62XCORE_DIR "../rf62Xcore")
 
 # Find all the public headers
-file(GLOB RF62X_CORE_HEADERS ${RF62XCORE_DIR}/src/*.h)
-set (HEADERS ${RF62X_CORE_HEADERS})
+file(GLOB RF62X_CORE_HEADERS ${RF62XCORE_DIR}/src/rf62X_core.h)
 
-message( ${HEADERS} )
+set(DOXYGEN_INPUT_FILES ${RF62X_CORE_HEADERS})
+set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build/doxygen)
+set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
+set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/source_ru/Doxyfile.in)
+set(DOXYFILE_OUT ${CMAKE_CURRENT_SOURCE_DIR}/source_ru/Doxyfile)
 
-#This will be the main output of our command
-set(DOXYGEN_INDEX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/html/index.html)
+#Replace variables inside @@ with the current values
+configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
+
+file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR}) #Doxygen won't create this for us
 
 add_custom_command(OUTPUT ${DOXYGEN_INDEX_FILE}
-                   DEPENDS ${HEADERS}
-                   COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
-                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/source_ru
-                   MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/source_ru/Doxyfile
+                   DEPENDS ${RF62X_CORE_HEADERS}
+                   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
+                   MAIN_DEPENDENCY ${DOXYFILE_OUT} ${DOXYFILE_IN}
                    COMMENT "Generating docs")
 
 add_custom_target(Doxygen ALL DEPENDS ${DOXYGEN_INDEX_FILE})
+
+
+# Add the cmake folder so the FindSphinx module is found
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
+
+find_package(Sphinx REQUIRED)
+
+set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source_ru)
+set(SPHINX_BUILD ${CMAKE_CURRENT_SOURCE_DIR}/build/sphinx)
+
+add_custom_target(Sphinx ALL
+                  COMMAND ${SPHINX_EXECUTABLE} -b html
+                  # Tell Breathe where to find the Doxygen output
+                  -Dbreathe_projects.rf62Xcore=${DOXYGEN_OUTPUT_DIR}/xml/
+                  ${SPHINX_SOURCE} ${SPHINX_BUILD}
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                  COMMENT "Generating documentation with Sphinx")

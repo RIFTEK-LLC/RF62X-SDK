@@ -18,12 +18,13 @@
  */
 dllexport rfChar* core_version();
 
-/**
- * @brief init_platform_dependent_methods - init platform dependent methods and settings
- * @param memory_methods
- * @param iostream_methods
- * @param network_methods
- * @param adapter_settings
+
+/*!
+ * \brief init_platform_dependent_methods - init platform dependent methods and settings
+ * \param memory_methods
+ * \param iostream_methods
+ * \param network_methods
+ * \param adapter_settings
  */
 dllexport void init_platform_dependent_methods(
         memory_platform_dependent_methods_t* memory_methods,

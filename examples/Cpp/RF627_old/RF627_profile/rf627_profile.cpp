@@ -74,8 +74,13 @@ int main()
             std::cout << "-----------------------------------------"<< std::endl;
         }
 
+        // Disconnect from scanner.
+        list[i]->disconnect();
+
     }
 
+    // Cleanup resources allocated with sdk_init()
+    sdk_cleanup();
     system("pause");
 }
 
