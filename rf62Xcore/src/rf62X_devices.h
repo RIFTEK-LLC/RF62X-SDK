@@ -13,6 +13,7 @@ typedef struct
     void* m_svc_sock;
     void* m_data_sock;
     rfUint16 msg_count;
+    rfUint32 host_ip;
 
     vector_t *params_list;
 

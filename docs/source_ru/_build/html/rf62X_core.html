@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>RF62X Core &mdash; RF62X-SDK 1.0.0 documentation</title>
+  <title>RF62X-CORE &mdash; документация RF62X-SDK 1.3.3</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,10 +34,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
     <link rel="next" title="RF62X Wrappers" href="rf62X_wrappers.html" />
-    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+    <link rel="prev" title="Компиляция из исходников" href="getting_started/compilation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,20 +81,28 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents</span></p>
+              <p class="caption"><span class="caption-text">Руководство программиста</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">RF62X Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-compile">How to compile</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cmake">CMake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#qt-creator">Qt Creator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#visual-studio">Visual Studio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started/_index.html">Подготовка к работе</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RF62X-CORE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Обзор платформозависимых функций</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-compile">How to compile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cmake">CMake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qt-creator">Qt Creator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visual-studio">Visual Studio</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rf62X_wrappers.html">RF62X Wrappers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Примеры использования</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/udp_port.html">Обмен через UDP-порт</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/com_port.html">Обмен по COM-порту</a></li>
 </ul>
 
             
@@ -139,7 +148,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>RF62X Core</li>
+      <li>RF62X-CORE</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -159,14 +168,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="rf62x-core">
-<h1>RF62X Core<a class="headerlink" href="#rf62x-core" title="Permalink to this headline">¶</a></h1>
-<p>RF62X CORE is the main library with basic functionality for work with
-scanners and platform dependent methods (such as memory, network,
-output/input methods, etc.) requiring initialization. This library was
-written in C programming language in accordance with C99 Sdandart
-(ISO/IEC 9899:1999).</p>
-<table class="docutils align-default" id="id1">
-<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<span id="rf62x-core-description"></span><h1>RF62X-CORE<a class="headerlink" href="#rf62x-core" title="Ссылка на этот заголовок">¶</a></h1>
+<p><strong>RF62X-CORE</strong> - это основная библиотека (ядро) с базовым набором функций для
+работы со сканерами, а также платформозависимыми функциями (такими как работа
+с памятью, работа с сетью, функциями ввода/вывода и т.п.),
+требующими предварительной инициализации. Библиотека написана на языке
+программирования CИ в соответствии со стандартом C99 (ISO / IEC 9899: 1999).</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Последние выпуски:</span><a class="headerlink" href="#id2" title="Постоянная ссылка на таблицу">¶</a></caption>
 <colgroup>
 <col style="width: 9%" />
 <col style="width: 47%" />
@@ -193,9 +202,21 @@ written in C programming language in accordance with C99 Sdandart
 </tr>
 </tbody>
 </table>
-<hr class="docutils" />
+<div class="section" id="id1">
+<h2>Обзор платформозависимых функций<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
+<p>В ядре RF62X-CORE платформозависимые функции (работа с памятью, работа с сетью,
+функции ввода/вывода и т.п.) представлены в виде указателей на функции. При желании
+разработчика использовать библиотеку RF62X-CORE вместо предоставляемых
+библиотек-«обёрток» на языках C++, C# и PYTHON, разработчику будет необходимо перед
+непосредственным использованием ядра самостоятельно реализовать платформозависимую часть.</p>
+<p>Указатели на платформозависимые функции объявлены в файлах <code class="docutils literal notranslate"><span class="pre">iostream_platform.h</span></code>,
+<code class="docutils literal notranslate"><span class="pre">memory_platform.h</span></code> и <code class="docutils literal notranslate"><span class="pre">network_platform.h</span></code>: После реализации всех платформозависимых
+функций разработчику необходимо инициализировать структуры <code class="docutils literal notranslate"><span class="pre">iostream_platform_dependent_methods_t</span></code>,
+<code class="docutils literal notranslate"><span class="pre">memory_platform_dependent_methods_t</span></code> и <code class="docutils literal notranslate"><span class="pre">network_platform_dependent_methods_t</span></code> путем
+присваивания указателей на реализованные им функции, а адреса проинициализированных
+экземпляров структур передавать в метод init_platform_dependent_methods перед использованием ядра</p>
 <div class="section" id="how-to-compile">
-<h2>How to compile<a class="headerlink" href="#how-to-compile" title="Permalink to this headline">¶</a></h2>
+<h3>How to compile<a class="headerlink" href="#how-to-compile" title="Ссылка на этот заголовок">¶</a></h3>
 <p>RF62X CORE can be built on the console or in an IDE.
 Firstly, you should download the project (if you have already done it, skip next commands)</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
@@ -204,11 +225,11 @@ git submodule update --init --recursive
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">Примечание</p>
 <p>for more information about project downloading steps, see an <a class="reference external" href="#overview">overview</a></p>
 </div>
 <div class="section" id="cmake">
-<h3>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h3>
+<h4>CMake<a class="headerlink" href="#cmake" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the code:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> rf62Xcore
 cmake .
@@ -217,7 +238,7 @@ cmake --build .
 </div>
 </div>
 <div class="section" id="qt-creator">
-<h3>Qt Creator<a class="headerlink" href="#qt-creator" title="Permalink to this headline">¶</a></h3>
+<h4>Qt Creator<a class="headerlink" href="#qt-creator" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the code:</p>
 <ul class="simple">
 <li><p>Load the CMakeLists.txt file from the <strong>rf62Xcore</strong> folder
@@ -228,7 +249,7 @@ and click <strong>Configure Project</strong> * Open <strong>Build Settings</stro
 </ul>
 </div>
 <div class="section" id="visual-studio">
-<h3>Visual Studio<a class="headerlink" href="#visual-studio" title="Permalink to this headline">¶</a></h3>
+<h4>Visual Studio<a class="headerlink" href="#visual-studio" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the code:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> rf62Xcore
 cmake .
@@ -238,6 +259,7 @@ cmake .
 <li><p>Open rf62Xcore.sln with Visual Studio</p></li>
 <li><p>Compile</p></li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -253,7 +275,7 @@ cmake .
         <a href="rf62X_wrappers.html" class="btn btn-neutral float-right" title="RF62X Wrappers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="getting_started/compilation.html" class="btn btn-neutral float-left" title="Компиляция из исходников" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

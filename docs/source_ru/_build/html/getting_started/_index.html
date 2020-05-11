@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Подготовка к работе &mdash; RF62X-SDK 1.0.0 documentation</title>
+  <title>Подготовка к работе &mdash; документация RF62X-SDK 1.3.3</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -33,9 +34,9 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="RF62X Core" href="../rf62X_core.html" />
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+    <link rel="next" title="Целевые платформы и совместимость" href="compatibility.html" />
     <link rel="prev" title="Обзор" href="../overview.html" /> 
 </head>
 
@@ -84,28 +85,18 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Обзор</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Подготовка к работе</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installing-software">Installing software</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-a-git-client-on-your-local-computer-if-you-havent-yet">1. Install a git client on your local computer (if you haven’t yet)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#open-a-command-prompt-terminal-on-your-computer">2. Open a command prompt/terminal on your computer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#clone-the-repository-using-the-following-commands">3. Clone the repository using the following commands:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html">Целевые платформы и совместимость</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_and_setup.html">Установка и настройка</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compilation.html">Компиляция из исходников</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#running-rf62x-sdk-tutorials">Running RF62X SDK tutorials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#compiling-examples-in-c-from-source">Compiling examples in C++ from source</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#open-and-compile-examples-project-in-qt-creator">1. Open and compile examples project in <strong>Qt Creator</strong>:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#generate-a-project-for-visual-studio-and-compile-examples">2. Generate a project for <strong>Visual Studio</strong> and compile examples</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-a-new-project-in-c-with-using-shared-or-static-sdk-library">Creating a new project in C++ with using shared or static SDK-library</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#create-a-new-project-in-qt-creator-by-make">1. Create a new project in <strong>Qt Creator</strong> by СMake</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../rf62X_core.html">RF62X Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rf62X_core.html">RF62X-CORE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rf62X_wrappers.html">RF62X Wrappers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Примеры использования</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/udp_port.html">Обмен через UDP-порт</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/com_port.html">Обмен по COM-порту</a></li>
 </ul>
 
             
@@ -171,7 +162,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1>Подготовка к работе<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1>Подготовка к работе<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
 <p>RF62X-SDK предоставляет пользователю простой интерфейс при разработки программного
 обеспечения для сканеров серии RF62X.</p>
 <p><strong>Для разработчиков</strong>, которые просто хотят использовать <strong>готовые библиотеки SDK</strong> для работы со
@@ -179,190 +170,27 @@
 (<a class="reference external" href="#how-to-use">C++</a>, <a class="reference external" href="#how-to-use-1">C#</a>, <a class="reference external" href="#how-to-use-2">PYTHON</a>).</p>
 <p><strong>Для разработчиков</strong>, которые предпочитают самостоятельно собрать <strong>библиотеки SDK из исходников</strong>,
 должны воспользоваться Git, а также выполнить некоторые <a class="reference external" href="#install-software">инструкции по установке</a></p>
-<div class="section" id="installing-software">
-<h2>Installing software<a class="headerlink" href="#installing-software" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="install-a-git-client-on-your-local-computer-if-you-havent-yet">
-<h3>1. Install a git client on your local computer (if you haven’t yet)<a class="headerlink" href="#install-a-git-client-on-your-local-computer-if-you-havent-yet" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>On Linux use the terminal command: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git</span></code></p></li>
-<li><p>On MacOS use the terminal command: <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git</span></code></p></li>
-<li><p>For other platforms see the <a class="reference external" href="https://git-scm.com/downloads">git installation
-documentation</a>.</p></li>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Оглавление</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compatibility.html">Целевые платформы и совместимость</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html#id2">Языки программирования</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html#id3">Целевые платформы</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html#id4">Поддерживаемые компиляторы</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html#id5">Ссылки</a></li>
 </ul>
-</div>
-<div class="section" id="open-a-command-prompt-terminal-on-your-computer">
-<h3>2. Open a command prompt/terminal on your computer<a class="headerlink" href="#open-a-command-prompt-terminal-on-your-computer" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>On Linux, click the launch bar and search for ‘terminal’</p></li>
-<li><p>On OS X, hit ⌘-space and search for ‘terminal’</p></li>
-<li><p>On Windows, click the Start menu and search for ‘command line’.</p></li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="install_and_setup.html">Установка и настройка</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install_and_setup.html#install-software">Установка программного обеспечения</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_and_setup.html#clone-rf62x-sdk">Загрузка проекта</a></li>
 </ul>
-</div>
-<div class="section" id="clone-the-repository-using-the-following-commands">
-<h3>3. Clone the repository using the following commands:<a class="headerlink" href="#clone-the-repository-using-the-following-commands" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
-<span class="nb">cd</span> RF62X-SDK
-git submodule update --init --recursive
-</pre></div>
-</div>
-<p>For developers who wish to download and build the latest code using Git
-from the IDE (Qt Creator or Visual Studio Community) should follow these
-instructions:</p>
-<ol class="arabic simple">
-<li><p>Create a Git project in one of the IDEs</p></li>
-<li><p>Clone <code class="docutils literal notranslate"><span class="pre">https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git</span></code></p></li>
-<li><p>Download submodules</p></li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>We recommend to use a git client for downloading and Qt Creator for
-project building</p>
-</div>
-</div>
-</div>
-<div class="section" id="running-rf62x-sdk-tutorials">
-<h2>Running RF62X SDK tutorials<a class="headerlink" href="#running-rf62x-sdk-tutorials" title="Permalink to this headline">¶</a></h2>
-<p>Here a basic example how to use method for searching RF62X devices in
-different languages by different ways. You can create a new project
-yourself or you can just open an existing project example and build it.</p>
-<div class="section" id="compiling-examples-in-c-from-source">
-<h3>Compiling examples in C++ from source<a class="headerlink" href="#compiling-examples-in-c-from-source" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="open-and-compile-examples-project-in-qt-creator">
-<h4>1. Open and compile examples project in <strong>Qt Creator</strong>:<a class="headerlink" href="#open-and-compile-examples-project-in-qt-creator" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>Load the CMakeLists.txt file from the <strong>samples/Cpp/RF627_TESTS</strong>
-folder via <strong>File &gt; Open File or Project</strong> (Select the CMakeLists.txt file)</p></li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compilation.html">Компиляция из исходников</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compilation.html#rf62x-core">RF62X CORE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compilation.html#rf62x-wrappers">RF62X WRAPPERS</a></li>
 </ul>
-<div class="figure align-default">
-<img alt="" src="getting_started\_static/note1.png" />
-</div>
-<ul class="simple">
-<li><p>Select compiler (MinGW, MSVC2017, Clang, etc..) and click <strong>Configure
-Project</strong></p></li>
+</li>
 </ul>
-<div class="figure align-default">
-<img alt="" src="getting_started\_static/note2.png" />
-</div>
-<ul class="simple">
-<li><p>Choose one of the examples, Compile and Run it</p></li>
-</ul>
-</div>
-<div class="section" id="generate-a-project-for-visual-studio-and-compile-examples">
-<h4>2. Generate a project for <strong>Visual Studio</strong> and compile examples<a class="headerlink" href="#generate-a-project-for-visual-studio-and-compile-examples" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>Generate Visual Studio solution by calling CMake from the console</p></li>
-</ul>
-<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> samples/Cpp/RF627_TESTS
-<span class="k">mkdir</span> build
-<span class="k">cd</span> build
-
-<span class="p">:</span><span class="c1">: Run one of the following lines based on your Visual Studio version</span>
-cmake -G <span class="s2">&quot;Visual Studio 15 2017 Win64&quot;</span> ..
-cmake -G <span class="s2">&quot;Visual Studio 16 2019 Win64&quot;</span> ..
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="creating-a-new-project-in-c-with-using-shared-or-static-sdk-library">
-<h3>Creating a new project in C++ with using shared or static SDK-library<a class="headerlink" href="#creating-a-new-project-in-c-with-using-shared-or-static-sdk-library" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="create-a-new-project-in-qt-creator-by-make">
-<h4>1. Create a new project in <strong>Qt Creator</strong> by СMake<a class="headerlink" href="#create-a-new-project-in-qt-creator-by-make" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>Open <strong>File &gt; New File or Project</strong>, select <strong>Qt Console Application</strong>
-and click <strong>Choose</strong> button</p></li>
-</ul>
-<div class="figure align-default">
-<img alt="" src="getting_started\_static/note3.png" />
-</div>
-<ul class="simple">
-<li><p>Enter project name, Browse project location and click <strong>Next</strong> button</p></li>
-<li><p>Choose <strong>CMake</strong> build system and click <strong>Next</strong> button twice</p></li>
-<li><p>Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click
-<strong>Next</strong> button and finish project setup.</p></li>
-<li><p><a class="reference external" href="#c-library">Download</a> <strong>include.zip</strong> archive and unzip it into
-the project directory. Also download <strong>rf62Xsdk.dll</strong> and copy it
-into the project directory next to the main.cpp file</p></li>
-</ul>
-<div class="figure align-default">
-<img alt="" src="getting_started\_static/note4.png" />
-</div>
-<ul class="simple">
-<li><p>Modify your <strong>CMakeLists.txt</strong> file according to the example below:</p></li>
-</ul>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.5</span><span class="p">)</span>
-
-<span class="nb">project</span><span class="p">(</span><span class="s">TestProject</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span><span class="p">)</span>
-
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_INCLUDE_CURRENT_DIR</span> <span class="s">ON</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span> <span class="s">11</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="s">ON</span><span class="p">)</span>
-
-<span class="nb">add_executable</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span> <span class="s">main.cpp</span><span class="p">)</span>
-
-<span class="c"># include *.h rf62Xsdk files from directory</span>
-<span class="nb">include_directories</span><span class="p">(</span><span class="s2">&quot;${CMAKE_CURRENT_SOURCE_DIR}/include&quot;</span><span class="p">)</span>
-
-<span class="c"># find rf62Xsdk lib in paths and copy full file name to RF62XSDK_LIBRARY</span>
-<span class="nb">find_library</span><span class="p">(</span>
-    <span class="s">RF62XSDK_LIBRARY</span>
-    <span class="s">rf62Xsdk</span>
-    <span class="s">PATHS</span> <span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span>
-    <span class="p">)</span>
-
-<span class="nb">target_link_libraries</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span> <span class="o">${</span><span class="nv">RF62XSDK_LIBRARY</span><span class="o">}</span><span class="p">)</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Modify your <strong>main.cpp</strong> file according to the example below:</p></li>
-</ul>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="o">::</span><span class="n">SCANNERS</span><span class="o">::</span><span class="n">RF62X</span><span class="p">;</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-<span class="p">{</span>
-
-  <span class="c1">// Initialize sdk library</span>
-  <span class="n">sdk_init</span><span class="p">();</span>
-
-
-  <span class="c1">// Create value for scanners vector&#39;s type</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">list</span><span class="p">;</span>
-  <span class="c1">// Search for RF627old devices over network</span>
-  <span class="n">list</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE_PROTOKOL</span><span class="p">);</span>
-
-
-  <span class="c1">// Print count of discovered rf627-old in network by Service Protocol</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Discovered &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; rf627-old&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Copy <strong>rf62Xsdk.dll</strong> into the path of the project executable (PROJECT_BINARY_DIR)</p></li>
-</ul>
-<p>You can do it in two ways:</p>
-<ol class="arabic simple">
-<li><p>Copy rf62Xsdk.dll to the executable folder (near with *.exe) yourself.</p></li>
-<li><p>Or add a “copy command” to the end of the CMakeLists.txt file:</p></li>
-</ol>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># copy rf62Xsdk lib from cmake current source directory to project build directory</span>
-<span class="nb">add_custom_command</span><span class="p">(</span>
-    <span class="s">TARGET</span> <span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span> <span class="s">POST_BUILD</span>
-    <span class="s">COMMAND</span> <span class="o">${</span><span class="nv">CMAKE_COMMAND</span><span class="o">}</span> <span class="s">-E</span> <span class="s">copy</span> <span class="o">${</span><span class="nv">RF62XSDK_LIBRARY</span><span class="o">}</span> <span class="o">${</span><span class="nv">PROJECT_BINARY_DIR</span><span class="o">}</span><span class="p">)</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Select <strong>Debug</strong> or <strong>Release</strong> build type, Run CMake and Run project</p></li>
-</ul>
-<p>Beside this example, you may want to check the documentation where each
-function contains a separate code example. All example project can be
-compiled and executed.</p>
-</div>
-</div>
 </div>
 </div>
 
@@ -374,7 +202,7 @@ compiled and executed.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../rf62X_core.html" class="btn btn-neutral float-right" title="RF62X Core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="compatibility.html" class="btn btn-neutral float-right" title="Целевые платформы и совместимость" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../overview.html" class="btn btn-neutral float-left" title="Обзор" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

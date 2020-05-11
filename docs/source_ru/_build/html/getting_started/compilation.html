@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Компиляция из исходников &mdash; RF62X-SDK 1.0.0 documentation</title>
+  <title>Компиляция из исходников &mdash; документация RF62X-SDK 1.3.3</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -33,8 +34,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+    <link rel="next" title="RF62X-CORE" href="../rf62X_core.html" />
+    <link rel="prev" title="Установка и настройка" href="install_and_setup.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -79,11 +82,32 @@
             
             
               <p class="caption"><span class="caption-text">Руководство программиста</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Обзор</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_index.html">Подготовка к работе</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rf62X_core.html">RF62X Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="_index.html">Подготовка к работе</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html">Целевые платформы и совместимость</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_and_setup.html">Установка и настройка</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Компиляция из исходников</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rf62x-core">RF62X CORE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-compile-rf62x-core">Как скомпилировать</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rf62x-wrappers">RF62X WRAPPERS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#c">Библиотека-«обёртка» на C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compilation-rf62x-sdk-csharp">Библиотека-«обёртка» на C#</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rf62X_core.html">RF62X-CORE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rf62X_wrappers.html">RF62X Wrappers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Примеры использования</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/udp_port.html">Обмен через UDP-порт</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/com_port.html">Обмен по COM-порту</a></li>
 </ul>
 
             
@@ -129,6 +153,8 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="_index.html">Подготовка к работе</a> &raquo;</li>
+        
       <li>Компиляция из исходников</li>
     
     
@@ -148,612 +174,838 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="id1">
-<h1>Компиляция из исходников<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<p>Библиотека содержит ряд модулей (программных классов). На рисунке ниже представлена UML
-диаграмма классов библиотеки:</p>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/ClassDiagram(v2).jpg"><img alt="Рисунок 1 – UML диаграмма классов" src="getting_started\../_static/ClassDiagram(v2).jpg" style="width: 100%;" /></a>
-</div>
-<p>Описание программных классов библиотеки:</p>
+  <div class="section" id="compilation">
+<span id="id1"></span><h1>Компиляция из исходников<a class="headerlink" href="#compilation" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Как упоминалось ранее, RF62X-SDK состоит из двух частей:</p>
 <ul class="simple">
-<li><p><strong>Channel</strong> (файл Channel.h) - Абстрактный класс, определяющий интерфейс для
-классов UDPChannel, SerialChannel, PureUDPChannel и PureSerialChannel. Этот
-класс определяет интерфейс класса обмена информацией для пользователя.</p></li>
-<li><p><strong>UDPPort</strong> (файлы UDPPort.h, UDPPort.cpp) - Класс обмена информацией через
-UDP порт. Класс реализует интерфейс приема и отправки данных через сокет UDP
-и предоставляет простой интерфейс работы с UDP портом.</p></li>
-<li><p><strong>SerialPort</strong> (файлы SerialPort.h, SerialPort.cpp) - Класс обмена информацией
-по последовательному порту. Класс реализует интерфейс приема и отправки
-данных через последовательный порт и предоставляет простой интерфейс работы
-с последовательным портом.</p></li>
-<li><p><strong>PureUDPChannel</strong> (файлы PureUDPChannel.h, PureUDPChannel.cpp) - Класс для
-организации обмена информацией через UDP-порт без дополнительной инкапсуляции
-данных в протокол приклодного уровня, иными словами - чистый обмен данными
-по UDP протоколу. Класс открывает сокеты и UDP порты и осуществляет обмен
-информацией через них. Один экземпляр класса позволяет организовать обмен
-информацией «точка-точка», при этом не допускается инициализации двух и более
-объектов класса для обмена информацией через один UDP порт.</p></li>
-<li><p><strong>PureSerialChannel</strong> (файлы PureSerialChannel.h, PureSerialChannel.cpp) - Класс
-для организации обмена информацией через COM-порт без дополнительной инкапсуляции
-данных в протокол приклодного уровня, иными словами - чистый обмен данными
-по СОМ-порту. Класс открывает файл последовательного порта и осуществляет обмен
-информацией через него. Один экземпляр класса позволяет организовать обмен информацией
-«точка-точка», при этом не допускается инициализации двух и более объектов класса для
-обмена через один последовательный порт.</p></li>
-<li><p><strong>ProtocolParser</strong> (файлы ProtocolParser.h, ProtocolParser.cpp) - Класс парсера
-информационных пакетов протокола <a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.
-Класс предназначен для кодирования/декодирования информационных пакетов,
-а также предназначен для осуществления логики информационного обмена протокола
-<a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.</p></li>
-<li><p><strong>UDPChannel</strong> (файлы UDPChannel.h, UDPChannel.cpp) - Класс для
-организации обмена информацией через UDP-порт посредством дополнительной инкапсуляции
-данных в протокол приклодного уровня - <a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.
-Класс открывает сокеты и UDP порты и осуществляет обмен информацией через них.
-Один экземпляр класса позволяет организовать обмен информацией «точка-точка»,
-при этом не допускается инициализации двух и более объектов класса для обмена
-информацией через один UDP порт.</p></li>
-<li><p><strong>SerialChannel</strong> (файлы SerialChannel.h, SerialChannel.cpp) - Класс для организации
-обмена информацией через COM-порт посредством дополнительной инкапсуляции
-данных в протокол приклодного уровня - <a class="reference external" href="https://constantrobotics.com">TransportProtocol</a>.
-Класс открывает файл последовательного порта и осуществляет обмен информацией через него.
-Один экземпляр класса позволяет организовать обмен информацией «точка-точка»,
-при этом не допускается инициализации двух и более объектов класса для обмена через
-один последовательный порт.</p></li>
+<li><p><strong>RF62X CORE</strong> - это основная библиотека (ядро) с базовым набором функций для
+работы со сканерами, а также платформозависимыми функциями (такими как работа
+с памятью, работа с сетью, функциями ввода/вывода и т.п.),
+требующими предварительной инициализации. Библиотека написана на языке
+программирования CИ в соответствии со стандартом C99 (ISO / IEC 9899: 1999).</p></li>
+<li><p><strong>RF62X WRAPPERS</strong> - это библиотеки-«обёртки», в которых уже реализованы
+платформозависимые функции библиотеки RF62X CORE для конкретной платформы.
+Тем самым, используя библиотеку-«обёртку», вы упрощаете процесс разработки приложений
+для работы со сканерами на удобном для вас языке программирования (С++, С#, PYTHON).</p></li>
 </ul>
-<p>Для использования библиотеки clib в проектах C++ разработчик может включить
-необходимые файлы библиотеки в свой проект, либо предварительно собрать
-статическую или динамическую программную библиотеки.</p>
-<p>Возможно, вы захотите собрать clib из исходного кода одним из предлагаемых нами
-методом.</p>
-<div class="section" id="windows">
-<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
-<p>В Windows мы советуем использовать Visual Studio 2017 или новее, поскольку clib
-в значительной степени опирается на языковые функции C++ 11.</p>
-<div class="section" id="id2">
-<h3>1. Зависимости<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>Для удобства компиляции мы включили исходный код всех зависимых библиотек в
-папку <code class="docutils literal notranslate"><span class="pre">modules</span></code>. Поэтому вам не нужно устанавливать никаких зависимостей.</p>
-</div>
-<div class="section" id="clib">
-<h3>2. Сборка clib в качестве программной библиотеки<a class="headerlink" href="#clib" title="Permalink to this headline">¶</a></h3>
-<p>Для использования clib в разрабатываемом проекте в качестве программной
-библиотеки необходимо:
-1. В вверхнем меню Visual Studio выберите <strong>«Файл»</strong> &gt; <strong>«Создать»</strong> &gt; <strong>«Проект»</strong>,</p>
-<blockquote>
-<div><p>для открытия диалогового окно <strong>«Создание проекта»</strong>.</p>
-</div></blockquote>
-<ol class="arabic simple" start="2">
-<li><p>В верхней части диалогового окна установите язык на <strong>C++</strong>, платформу для
-<strong>Windows</strong> и тип проекта в <strong>Библиотеку</strong>.</p></li>
-<li><p>В отфильтрованном списке типов проектов выберите
-<strong>мастер классических приложенией Windows</strong> и нажмите <strong>Далее</strong>:</p></li>
-</ol>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/vs2019_create_new_project.jpg"><img alt="Рисунок 1 – Создание нового проекта при помощи мастера" src="getting_started\../_static/vs2019_create_new_project.jpg" style="width: 100%;" /></a>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Илюстрации по созданию проекта могут различаться в зависимости от вашей версии Visual Studio.</p>
-</div>
-<ol class="arabic simple" start="4">
-<li><p>На странице настройки нового проекта введите <em>clib</em> в поле <strong>Имя проекта</strong>,
-чтобы указать имя для проекта. Нажмите кнопку «Создать», чтобы открыть диалоговое окно
-<strong>«Проект классического приложения Windows»</strong>.</p></li>
-<li><p>В диалоговом окне <strong>«Проект классического приложения Windows»</strong> в разделе
-<strong>«Тип приложения»</strong> выбрать необходимый тип - Динамическая библиотека (.dll) или
-Статическая библиотека (.lib). В качестве примера демонстрируется создание статической библиотеки clib.</p></li>
-</ol>
+<div class="section" id="rf62x-core">
+<span id="compilation-rf62x-core"></span><h2>RF62X CORE<a class="headerlink" href="#rf62x-core" title="Ссылка на этот заголовок">¶</a></h2>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">Последние выпуски:</span><a class="headerlink" href="#id17" title="Постоянная ссылка на таблицу">¶</a></caption>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 47%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Compiler</p></th>
+<th class="head"><p>64bit</p></th>
+<th class="head"><p>Includes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MinGW 7.3.0</p></td>
+<td><p><a class="reference external" href="/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll">rf62Xcore.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/94210ce658946e97df0facd217d9d230/include.zip">include.zip</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MSVC2017</p></td>
+<td><p><a class="reference external" href="/uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll">rf62Xcore.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/94210ce658946e97df0facd217d9d230/include.zip">include.zip</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Clang 9.1.0</p></td>
+<td><p><a class="reference external" href="/uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll">rf62Xcore.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/94210ce658946e97df0facd217d9d230/include.zip">include.zip</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="how-to-compile-rf62x-core">
+<span id="id2"></span><h3>Как скомпилировать<a class="headerlink" href="#how-to-compile-rf62x-core" title="Ссылка на этот заголовок">¶</a></h3>
+<p>RF62X CORE может быть скомпилирован при помощи консоли или среды разработки (Visual Studio, Qt Creator)</p>
+<p>Во-первых, вы должны загрузить проект (если не сделали этого ранее)</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>В разделе <strong>«Дополнительные параметры»</strong> снимите флажок <strong>«Прекомпилированный заголовок»</strong>, если он установлен. Установите флажок <strong>Пустой проект</strong>.</p>
+<p class="admonition-title">Примечание</p>
+<p>для получения дополнительной информации о шагах загрузки проекта см. <a class="reference internal" href="install_and_setup.html#clone-rf62x-sdk"><span class="std std-ref">Загрузка проекта</span></a></p>
 </div>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/vs2019_config_new_project.jpg"><img alt="Рисунок 2 – Настройка нового проекта при помощи мастера" src="getting_started\../_static/vs2019_config_new_project.jpg" style="width: 100%;" /></a>
-</div>
-<ol class="arabic simple" start="6">
-<li><p>Нажмите <strong>OK</strong>, чтобы создать проект.</p></li>
-<li><p>Добавьте необходимые исходные файлы в проект, выберите <em>x64 Debug</em> или <em>x64 Release</em>
-в качестве целевой платформы приложения и запустите локальный отладчик Windows.
-По окончанию сборки в выходном каталоге появится статическая библиотека clib.lib</p></li>
-</ol>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/vs2019_build_clib.jpg"><img alt="Рисунок 3 – Создание статической библиотека clib.lib" src="getting_started\../_static/vs2019_build_clib.jpg" style="width: 100%;" /></a>
-</div>
-</div>
-<div class="section" id="id3">
-<h3>3. Использования clib в качестве программной библиотеки<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p><strong>Создание консольного приложения C++</strong></p>
-<ol class="arabic simple">
-<li><p>В <strong>обозревателе решений</strong> щелкните правой кнопкой мыши на верхний узел Решение <em>clib</em>,
-чтобы открыть контекстное меню. Выберите <strong>«Добавить»</strong> &gt; <strong>«Новый проект»</strong>, чтобы
-открыть диалоговое окно <strong>«Добавить новый проект»</strong>.</p></li>
-<li><p>В верхней части диалогового окна установите фильтр типа проекта <strong>«Консоль»</strong>.</p></li>
-<li><p>Из отфильтрованного списка типов проектов выберите <strong>Консольное приложение</strong>, затем нажмите <strong>Далее</strong>.
-На следующей странице введите <em>TestSender</em> в поле <strong>«Имя»</strong>, чтобы указать имя для проекта, нажмите кнопку <strong>«Создать»</strong></p></li>
-<li><p>После создания консольного приложения для вас создается пустая программа.
-Имя исходного файла совпадает с именем, которое вы выбрали ранее. В примере оно называется TestSender.cpp</p></li>
-</ol>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/vs2019_test_sender.jpg"><img alt="Рисунок 4 – Создание консольного приложения" src="getting_started\../_static/vs2019_test_sender.jpg" style="width: 100%;" /></a>
-</div>
-<p><strong>Использование функциональности библиотеки clib</strong></p>
-<ol class="arabic simple">
-<li><p>Прежде чем вы сможете использовать статическую библиотеку clib, вы должны обратиться к ней.
-Откройте контекстное меню для проекта TestSender в <strong>Обозревателе решений</strong>, а затем выберите <strong>«Добавить»</strong> &gt; <strong>«Ссылка»</strong> .</p></li>
-<li><p>В диалоговом окне <strong>«Добавить ссылку»</strong> перечислены библиотеки, на которые вы можете ссылаться.
-Откройте вкладку <strong>«Проекты»</strong>, установите флажок <strong>«clib»</strong> и нажмите кнопку <strong>«ОК»</strong>.</p></li>
-<li><p>Чтобы сослаться на заголовочные файлы библиотеки, вы должны изменить путь включенных каталогов.
-Для этого в <strong>обозревателе решений</strong> щелкните правой кнопкой мыши на проекте <em>TestSender</em>,
-чтобы открыть контекстное меню. Выберите <strong>«Свойства»</strong>, чтобы открыть диалоговое окно «Страницы свойств TestSender».</p></li>
-<li><p>На странице свойств установите настройки <strong>Конфигурация</strong> в <em>Все конфигурации</em> и <strong>«Платформа»</strong> выберите <em>Все платформы</em>.</p></li>
-<li><p>Далее выберите <strong>Свойства конфигурации</strong> &gt; <strong>C/C++</strong> &gt; <strong>Общие</strong>. В поле дополнительные каталоги включения укажите путь к clib каталогу.</p></li>
-<li><p>Теперь вы можете использовать методы статической библиотеки clib в консольном приложении. Ниже приведен пример передачи данных</p></li>
-</ol>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sender.cpp - example data-sender application</span>
-
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;PureSerialChannel.h&quot;</span><span class="cp"></span>
-
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">COM1;19200;128;2400&quot;</span><span class="p">;</span>
-   <span class="kt">uint32_t</span> <span class="n">dataSize</span> <span class="o">=</span> <span class="mi">2400</span><span class="p">;</span>
-   <span class="kt">float</span> <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="mi">19200</span> <span class="o">/</span> <span class="mf">1048576.0f</span><span class="p">;</span>
-
-   <span class="c1">// Create channel object</span>
-   <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureSerialChannel</span><span class="p">();</span>
-
-   <span class="c1">// Init channel</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
-   <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
-
-
-   <span class="c1">// Allocate memory for output data.</span>
-   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">dataSize</span><span class="p">];</span>
-   <span class="c1">// Value of data.</span>
-   <span class="kt">uint8_t</span> <span class="n">dataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="c1">// Fill data buffer.</span>
-   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
-
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start sending data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-   <span class="c1">// Sending loop</span>
-   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="c1">// Fill data by new value.</span>
-      <span class="o">++</span><span class="n">dataValue</span><span class="p">;</span>
-      <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
-
-      <span class="c1">// Send data to 0 logic port</span>
-      <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
-
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes was sent. Data value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">dataValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-   <span class="p">}</span>
-
-   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="section" id="cmake">
+<span id="how-to-compile-rf62x-core-cmake"></span><h4>CMake<a class="headerlink" href="#cmake" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Находясь в папке с проектом, для построения RF62X CORE (rf62Xcore библиотеки)
+введите следующую команду в консоль (терминал):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> rf62Xcore
+mkdir build
+<span class="nb">cd</span> build
+cmake ..
+cmake --build .
 </pre></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h3>4. Использования clib в качестве исходных файлов<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="udp">
-<h4>Обмен данными через UDP порт<a class="headerlink" href="#udp" title="Permalink to this headline">¶</a></h4>
-<p>При подключении исходных файлов clib в разрабатываемый вами проект по
-организации обмена информацией через порт UDP разработчик должен включить в
-свой проект следующие файлы:</p>
-<table class="docutils align-default">
+<div class="section" id="qt-creator">
+<span id="how-to-compile-rf62x-core-qt-creator"></span><h4>Qt Creator<a class="headerlink" href="#qt-creator" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Для построения RF62X CORE (rf62Xcore библиотеки) с использованием IDE Qt Creator:</p>
+<ul class="simple">
+<li><p>Загрузите файл CMakeLists.txt из папки <strong>rf62Xcore</strong> через
+<strong>File &gt; Open File or Project</strong> (выберите файл CMakeLists.txt)</p></li>
+<li><p>Выберите компилятор (MinGW, MSVC2017, Clang)
+и нажмите <strong>Configure Project</strong></p></li>
+<li><p>Откройте <strong>Build Settings</strong> и отметьте пункт <strong>install</strong> для <strong>Build Steps</strong></p></li>
+<li><p>Скомпилируйте проект</p></li>
+</ul>
+</div>
+<div class="section" id="visual-studio">
+<span id="how-to-compile-rf62x-core-vs"></span><h4>Visual Studio<a class="headerlink" href="#visual-studio" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Находясь в папке с проектом, для построения RF62X CORE (rf62Xcore библиотеки)
+введите следующую команду в консоль (терминал):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> rf62Xcore
+mkdir build
+<span class="nb">cd</span> build
+cmake ..
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Откройте полученное решение rf62Xcore.sln в Visual Studio</p></li>
+<li><p>Скомпилируйте проект</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="rf62x-wrappers">
+<span id="compilation-rf62x-sdk"></span><h2>RF62X WRAPPERS<a class="headerlink" href="#rf62x-wrappers" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Библиотеки-«обёртки» помогают создавать программы для работы со сканерами серии
+RF62X на разных языках для различных платформ, тем самым упрощая использование
+RF62X CORE (rf62Xcore библиотеки).</p>
+<div class="section" id="c">
+<span id="compilation-rf62x-sdk-cpp"></span><h3>Библиотека-«обёртка» на C++<a class="headerlink" href="#c" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Эта библиотека позволяет упростить разработку приложений на языке C++</p>
+<p>Для её использования в проектах C++ разработчик должен включить необходимые
+h-файлы библиотеки в свой проект и собрать статическую или динамическую
+программную библиотеку.</p>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">Последние выпуски:</span><a class="headerlink" href="#id18" title="Постоянная ссылка на таблицу">¶</a></caption>
 <colgroup>
-<col style="width: 35%" />
-<col style="width: 65%" />
+<col style="width: 6%" />
+<col style="width: 63%" />
+<col style="width: 31%" />
 </colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Compiler</p></th>
+<th class="head"><p>64bit</p></th>
+<th class="head"><p>Includes</p></th>
+</tr>
+</thead>
 <tbody>
-<tr class="row-odd"><td><p>Channel (<a href="#id5"><span class="problematic" id="id6">*</span></a>.h)</p></td>
-<td><p>Абстрактный класс-интерфейс</p></td>
+<tr class="row-even"><td><p>MinGW 7.3.0</p></td>
+<td><p><a class="reference external" href="/uploads/ecbe8feab6232f0885b5b1e6db607aa8/rf62Xsdk.dll">rf62Xsdk.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip">include.zip</a></p></td>
 </tr>
-<tr class="row-even"><td><p>UDPPort (<a href="#id7"><span class="problematic" id="id8">*</span></a>.cpp, <a href="#id9"><span class="problematic" id="id10">*</span></a>.h)</p></td>
-<td><p>Враппер обмена данными через UDP порт</p></td>
+<tr class="row-odd"><td><p>MSVC2017</p></td>
+<td><p><a class="reference external" href="/uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll">rf62Xsdk.dll</a>, <a class="reference external" href="/uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib">rf62Xsdk.lib</a></p></td>
+<td><p><a class="reference external" href="/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip">include.zip</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>PureUDPChannel (<a href="#id11"><span class="problematic" id="id12">*</span></a>.cpp, <a href="#id13"><span class="problematic" id="id14">*</span></a>.h)</p></td>
-<td><p>Чистый обмена данными по UDP (без инкапсуляции)</p></td>
-</tr>
-<tr class="row-even"><td><p>ProtocolParser (<a href="#id15"><span class="problematic" id="id16">*</span></a>.cpp, <a href="#id17"><span class="problematic" id="id18">*</span></a>.h)</p></td>
-<td><p>Парсер пакетов протокола TransportProtocol</p></td>
-</tr>
-<tr class="row-odd"><td><p>UDPChannel (<a href="#id19"><span class="problematic" id="id20">*</span></a>.cpp, <a href="#id21"><span class="problematic" id="id22">*</span></a>.h)</p></td>
-<td><p>Обмен данными по протоколу TransportProtocol через UDP</p></td>
+<tr class="row-even"><td><p>Clang 9.1.0</p></td>
+<td><p><a class="reference external" href="/uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll">rf62Xsdk.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/c4e61f8dd8068d9360c42865408c7242/include.zip">include.zip</a></p></td>
 </tr>
 </tbody>
 </table>
-<p>Пример кода для организации обмена данными через UDP порт с использованием исходных файлов библиотеки clib:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sender.cpp - example data-sender application</span>
-<span class="c1">// destination port: 50020, source port: 50021</span>
-
+<div class="section" id="how-to-compile-rf62x-sdk-cpp">
+<span id="id3"></span><h4>Как скомпилировать<a class="headerlink" href="#how-to-compile-rf62x-sdk-cpp" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Библиотека-«обёртка» rf62Xsdk может быть скомпилирован при помощи консоли или
+среды разработки (Visual Studio, Qt Creator)</p>
+<p>Во-первых, вы должны загрузить проект (если не сделали этого ранее)</p>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>для получения дополнительной информации о шагах загрузки проекта см. <a class="reference internal" href="install_and_setup.html#clone-rf62x-sdk"><span class="std std-ref">Загрузка проекта</span></a></p>
+</div>
+<div class="section" id="how-to-compile-rf62x-sdk-cpp-cmake">
+<span id="id4"></span><h5>CMake<a class="headerlink" href="#how-to-compile-rf62x-sdk-cpp-cmake" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Находясь в папке с проектом, для построения библиотеки-«обёртки» (rf62Xsdk библиотеки)
+введите следующую команду в консоль (терминал):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> rf62Xwrappers/Сpp/rf62Xsdk
+mkdir build
+<span class="nb">cd</span> build
+cmake ..
+cmake --build .
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-compile-rf62x-sdk-cpp-qt-creator">
+<span id="id5"></span><h5>Qt Creator<a class="headerlink" href="#how-to-compile-rf62x-sdk-cpp-qt-creator" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Для построения библиотеки-«обёртки» (rf62Xsdk библиотеки) с использованием IDE Qt Creator:</p>
+<ul class="simple">
+<li><p>Загрузите файл CMakeLists.txt из папки <strong>rf62Xwrappers/Сpp/rf62Xsdk</strong> через
+<strong>File &gt; Open File or Project</strong> (выберите файл CMakeLists.txt)</p></li>
+<li><p>Выберите компилятор (MinGW, MSVC2017, Clang)
+и нажмите <strong>Configure Project</strong></p></li>
+<li><p>Откройте <strong>Build Settings</strong> и отметьте пункт <strong>install</strong> для <strong>Build Steps</strong></p></li>
+<li><p>Скомпилируйте проект</p></li>
+</ul>
+</div>
+<div class="section" id="how-to-compile-rf62x-sdk-cpp-vs">
+<span id="id6"></span><h5>Visual Studio<a class="headerlink" href="#how-to-compile-rf62x-sdk-cpp-vs" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Находясь в папке с проектом, для построения RF62X CORE (rf62Xcore библиотеки)
+введите следующую команду в консоль (терминал):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> rf62Xwrappers/Сpp/rf62Xsdk
+mkdir build
+<span class="nb">cd</span> build
+cmake ..
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Откройте полученное решение rf62Xsdk.sln в Visual Studio</p></li>
+<li><p>Скомпилируйте проект</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="how-to-use-rf62x-sdk-cpp">
+<span id="id7"></span><h4>Как использовать<a class="headerlink" href="#how-to-use-rf62x-sdk-cpp" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Помимо приведенных ниже примеров, где каждый может быть скомпилирован и выполнен,
+вы также можете прочитать документацию на библиотеку-«обёртку» на C++, где каждая
+функция содержит отдельный пример кода.</p>
+<div class="section" id="rf62x">
+<span id="how-to-use-rf62x-sdk-cpp-for-search"></span><h5>Поиск устройств RF62X<a class="headerlink" href="#rf62x" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Ниже приведен пример поиска сканеров серии RF627-old в сети</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;UDPChannel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;PureUDPChannel.h&quot;</span><span class="cp"></span>
 
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="o">::</span><span class="n">SCANNERS</span><span class="o">::</span><span class="n">RF62X</span><span class="p">;</span>
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE UDP DATA SENDER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">dstIP</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-   <span class="kt">uint32_t</span> <span class="n">dataSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="kt">float</span> <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="c1">// Initialize sdk library</span>
+   <span class="n">sdk_init</span><span class="p">();</span>
 
+   <span class="c1">// Print return rf627 sdk version</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SDK version: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sdk_version</span><span class="p">()</span>                <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;=========================================&quot;</span>     <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-   <span class="c1">// Dialogue to enter destination IP</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter reciever IP: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">dstIP</span><span class="p">;</span>
-   <span class="c1">// Dialogue to enter communication channel bandwidth</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter communication channel bandwidth in Mbps: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">bandwidthMbps</span><span class="p">;</span>
+   <span class="c1">// Create value for scanners vector&#39;s type</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">list</span><span class="p">;</span>
+   <span class="c1">// Search for RF627old devices over network</span>
+   <span class="n">list</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE</span><span class="p">);</span>
 
-   <span class="c1">// Calculate dataSize</span>
-   <span class="n">dataSize</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">bandwidthMbps</span> <span class="o">*</span> <span class="mf">131072.0f</span><span class="p">);</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes to send&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="c1">// Print count of discovered rf627-old in network by Service Protocol</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Discovered: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; rf627-old&quot;</span>   <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
-   <span class="c1">// Create channel object</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">UDPChannel</span><span class="p">();</span>
-   <span class="k">else</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureUDPChannel</span><span class="p">();</span>
-
-   <span class="c1">// Create initialization string</span>
-   <span class="n">initString</span> <span class="o">=</span> <span class="n">dstIP</span> <span class="o">+</span> <span class="s">&quot;;50020;50021;1024;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">dataSize</span><span class="p">);</span>
-
-
-   <span class="c1">// Init channel</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
    <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="n">rf627old</span><span class="o">::</span><span class="n">hello_info</span> <span class="n">info</span> <span class="o">=</span> <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_info</span><span class="p">();</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n\n\n</span><span class="s">ID scanner&#39;s list: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span>            <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Device information: &quot;</span>                      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Name</span><span class="se">\t</span><span class="s">: &quot;</span>     <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">device_name</span><span class="p">()</span>      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Serial</span><span class="se">\t</span><span class="s">: &quot;</span>   <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">()</span>    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* IP Addr</span><span class="se">\t</span><span class="s">: &quot;</span>  <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">ip_address</span><span class="p">()</span>       <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* MAC Addr</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">mac_address</span><span class="p">()</span>      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Working ranges: &quot;</span>                        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Zsmr, mm</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">z_smr</span><span class="p">()</span>            <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Zmr , mm</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">z_mr</span><span class="p">()</span>             <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Xsmr, mm</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">x_smr</span><span class="p">()</span>            <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Xemr, mm</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">x_emr</span><span class="p">()</span>            <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Versions: &quot;</span>                              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Firmware</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">firmware_version</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Hardware</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">hardware_version</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
    <span class="p">}</span>
 
-
-   <span class="c1">// Allocate memory for output data.</span>
-   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">dataSize</span><span class="p">];</span>
-   <span class="c1">// Value of data.</span>
-   <span class="kt">uint8_t</span> <span class="n">dataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="c1">// Fill data buffer.</span>
-   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
-
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start sending data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-   <span class="c1">// Sending loop</span>
-   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="c1">// Fill data by new value.</span>
-      <span class="o">++</span><span class="n">dataValue</span><span class="p">;</span>
-      <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
-
-      <span class="c1">// Send data to 0 logic port</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-         <span class="c1">// Send data until confirmation during 2s.</span>
-         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
-      <span class="k">else</span>
-         <span class="c1">// Send data once.</span>
-         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
-
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes was sent. Data value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">dataValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-   <span class="p">}</span>
-
-   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+   <span class="n">system</span><span class="p">(</span><span class="s">&quot;pause&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Receiver.cpp - example data-receiver application</span>
-<span class="c1">// destination port: 50021, source port: 50020</span>
+<p>Ниже приведён результат вывода приложения при успешном обнаружении сканера в сети:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>SDK version: 1.3.0
+=========================================
+Discovered: 1 rf627-old
 
+ID scanner&#39;s list: 0
+-----------------------------------------
+Device information:
+* Name      : RF627
+* Serial    : 190068
+* IP Addr   : 192.168.1.32
+* MAC Addr  : 00:0a:35:6e:07:f5
+
+Working ranges:
+* Zsmr, mm  : 70
+* Zmr , mm  : 50
+* Xsmr, mm  : 30
+* Xemr, mm  : 42
+
+Versions:
+* Firmware  : 19.11.12
+* Hardware  : 18.6.20
+-----------------------------------------
+Press any key to continue . . .
+</pre></div>
+</div>
+<p>Вы можете открыть и скомпилировать этот пример с помощью <strong>Qt Creator</strong>:</p>
+<ul class="simple">
+<li><p>Загрузите файл CMakeLists.txt из папки <strong>examplesCppRF627_old</strong>
+через <strong>File &gt; Open File or Project</strong> (выберите файл CMakeLists.txt)</p></li>
+<li><p>Выберите компилятор (MinGW, MSVC2017, Clang)
+и нажмите <strong>Configure Project</strong></p></li>
+<li><p>Выберите в качестве запускаемого проета <strong>RF627_search</strong></p></li>
+<li><p>Запустите проект</p></li>
+</ul>
+</div>
+<div class="section" id="how-to-use-rf62x-sdk-cpp-for-get-profile">
+<span id="id8"></span><h5>Получение профиля сканера<a class="headerlink" href="#how-to-use-rf62x-sdk-cpp-for-get-profile" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Ниже приведен пример получения профилей от сканеров серии RF627-old</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;UDPChannel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;PureUDPChannel.h&quot;</span><span class="cp"></span>
 
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="o">::</span><span class="n">SCANNERS</span><span class="o">::</span><span class="n">RF62X</span><span class="p">;</span>
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE UDP DATA RECEIVER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">dstIP</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">maxDataSize</span> <span class="o">=</span> <span class="mi">186624000</span><span class="p">;</span>
+    <span class="c1">// Initialize sdk library</span>
+   <span class="n">sdk_init</span><span class="p">();</span>
 
-   <span class="c1">// Dialogue to enter destination IP</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter sender IP: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">dstIP</span><span class="p">;</span>
-
-   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
-   <span class="c1">// Create channel object</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">UDPChannel</span><span class="p">();</span>
-   <span class="k">else</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureUDPChannel</span><span class="p">();</span>
-
-   <span class="c1">// Create initialization string</span>
-   <span class="n">initString</span> <span class="o">=</span> <span class="n">dstIP</span> <span class="o">+</span> <span class="s">&quot;;50021;50020;1024;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">maxDataSize</span><span class="p">);</span>
+   <span class="c1">// Print return rf627 sdk version</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SDK version: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sdk_version</span><span class="p">()</span>                <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;=========================================&quot;</span>     <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
 
-   <span class="c1">// Init channel</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+    <span class="c1">// Create value for scanners vector&#39;s type</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">list</span><span class="p">;</span>
+   <span class="c1">// Search for RF627old devices over network</span>
+   <span class="n">list</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE</span><span class="p">);</span>
+
+
+   <span class="c1">// Print count of discovered rf627-old in network by Service Protocol</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Discovered: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; rf627-old&quot;</span>   <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+   <span class="c1">// Iterate over all discovered rf627-old in network, connect to each of</span>
+   <span class="c1">// them and get a profile.</span>
+   <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">scanners</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
    <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
+      <span class="n">rf627old</span><span class="o">::</span><span class="n">hello_info</span> <span class="n">info</span> <span class="o">=</span> <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_info</span><span class="p">();</span>
 
+      <span class="c1">// Print information about the scanner to which the profile belongs.</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n\n\n</span><span class="s">ID scanner&#39;s list: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span>            <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Device information: &quot;</span>                      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Name</span><span class="se">\t</span><span class="s">: &quot;</span>     <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">device_name</span><span class="p">()</span>      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Serial</span><span class="se">\t</span><span class="s">: &quot;</span>   <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">()</span>    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* IP Addr</span><span class="se">\t</span><span class="s">: &quot;</span>  <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="p">.</span><span class="n">ip_address</span><span class="p">()</span>       <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
-   <span class="c1">// Allocate memory for output data.</span>
-   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">maxDataSize</span><span class="p">];</span>
-   <span class="c1">// Fill data buffer.</span>
-   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">);</span>
+      <span class="c1">// Establish connection to the RF627 device by Service Protocol.</span>
+      <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">();</span>
 
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start reading data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-   <span class="c1">// Reading loop</span>
-   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="c1">// Wait data from 0 logic port without time limit.</span>
-      <span class="kt">uint32_t</span> <span class="n">inputSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">GetData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">,</span> <span class="n">inputSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+      <span class="c1">// Get profile from scanner&#39;s data stream by Service Protocol.</span>
+      <span class="n">profile2D_t</span><span class="o">*</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_profile2D</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">profile</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span>
       <span class="p">{</span>
-         <span class="c1">// Print calculated bandwidth value.</span>
-         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Recieved &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inputSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Profile information: &quot;</span>                    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="k">switch</span> <span class="p">(</span><span class="n">profile</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_type</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">case</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PROFILE_DATA_TYPE</span><span class="o">::</span><span class="nl">PIXELS</span><span class="p">:</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* DataType</span><span class="se">\t</span><span class="s">: &quot;</span><span class="o">&lt;&lt;</span> <span class="s">&quot;PIXELS&quot;</span>            <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Count</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">profile</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="k">break</span><span class="p">;</span>
+         <span class="k">case</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PROFILE_DATA_TYPE</span><span class="o">::</span><span class="nl">PROFILE</span><span class="p">:</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* DataType</span><span class="se">\t</span><span class="s">: &quot;</span><span class="o">&lt;&lt;</span> <span class="s">&quot;PROFILE&quot;</span>           <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Size</span><span class="se">\t</span><span class="s">: &quot;</span>  <span class="o">&lt;&lt;</span> <span class="n">profile</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="k">break</span><span class="p">;</span>
+         <span class="k">case</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PROFILE_DATA_TYPE</span><span class="o">::</span><span class="nl">PIXELS_INTRP</span><span class="p">:</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* DataType</span><span class="se">\t</span><span class="s">: &quot;</span><span class="o">&lt;&lt;</span> <span class="s">&quot;PIXELS_INTRP&quot;</span>      <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Count</span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">profile</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="k">break</span><span class="p">;</span>
+         <span class="k">case</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PROFILE_DATA_TYPE</span><span class="o">::</span><span class="nl">PROFILE_INTRP</span><span class="p">:</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* DataType</span><span class="se">\t</span><span class="s">: &quot;</span><span class="o">&lt;&lt;</span> <span class="s">&quot;PROFILE_INTRP&quot;</span>     <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;* Size</span><span class="se">\t</span><span class="s">: &quot;</span>  <span class="o">&lt;&lt;</span> <span class="n">profile</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+             <span class="k">break</span><span class="p">;</span>
+         <span class="p">}</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Profile was successfully received!&quot;</span>       <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="p">}</span><span class="k">else</span>
+      <span class="p">{</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Profile was not received!&quot;</span>                <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
       <span class="p">}</span>
+
    <span class="p">}</span>
-   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+
+   <span class="n">system</span><span class="p">(</span><span class="s">&quot;pause&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Результат вывода приложений Receiver и Sender при обмене данными через UDP порт с использование протокола TransportProtocol:</p>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/UDPChannel_example.jpg"><img alt="Рисунок 2 – Результат запуска приложений Receiver и Sender" src="getting_started\../_static/UDPChannel_example.jpg" style="width: 100%;" /></a>
+<p>Ниже приведён результат вывода приложения при успешном получении профиля со сканера:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>SDK version: 1.3.0
+=========================================
+Discovered: 1 rf627-old
+
+
+ID scanner&#39;s list: 0
+-----------------------------------------
+Device information:
+* Name      : RF627
+* Serial    : 190068
+* IP Addr   : 192.168.1.32
+Profile information:
+* DataType  : PROFILE
+* Size      : 648
+Profile was successfully received!
+-----------------------------------------
+Press any key to continue . . .
+</pre></div>
+</div>
+<p id="how-to-use-rf62x-sdk-cpp-for-get-set-params">Вы можете открыть и скомпилировать этот пример с помощью <strong>Qt Creator</strong>:</p>
+<ul class="simple">
+<li><p>Загрузите файл CMakeLists.txt из папки <strong>examplesCppRF627_old</strong>
+через <strong>File &gt; Open File or Project</strong> (выберите файл CMakeLists.txt)</p></li>
+<li><p>Выберите компилятор (MinGW, MSVC2017, Clang)
+и нажмите <strong>Configure Project</strong></p></li>
+<li><p>Выберите в качестве запускаемого проета <strong>RF627_profile</strong></p></li>
+<li><p>Запустите проект</p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h5>Получение и установка параметров<a class="headerlink" href="#id9" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены
+состояния лазера (включение или отключение):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">SDK</span><span class="o">::</span><span class="n">SCANNERS</span><span class="o">::</span><span class="n">RF62X</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+
+   <span class="c1">// Initialize sdk library</span>
+   <span class="n">sdk_init</span><span class="p">();</span>
+
+   <span class="c1">// Print return rf62X SDK version</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SDK version: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sdk_version</span><span class="p">()</span>                   <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;=========================================&quot;</span>        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+   <span class="c1">// Create value for scanners vector&#39;s type</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">rf627old</span><span class="o">*&gt;</span> <span class="n">scanners</span><span class="p">;</span>
+   <span class="c1">// Search for RF627old devices over network</span>
+   <span class="n">scanners</span> <span class="o">=</span> <span class="n">rf627old</span><span class="o">::</span><span class="n">search</span><span class="p">(</span><span class="n">PROTOCOLS</span><span class="o">::</span><span class="n">SERVICE</span><span class="p">);</span>
+
+
+   <span class="c1">// Print count of discovered rf627-old in network by Service Protocol</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Discovered: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">scanners</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; rf627-old&quot;</span>  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+   <span class="c1">// Iterate over all discovered rf627-old in network, connect to each of</span>
+   <span class="c1">// them and read/set parameters.</span>
+   <span class="k">for</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">scanners</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+
+      <span class="n">rf627old</span><span class="o">::</span><span class="n">hello_info</span> <span class="n">info</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_info</span><span class="p">();</span>
+
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n\n\n</span><span class="s">ID scanner&#39;s list: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">i</span>               <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span>    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+      <span class="c1">// Establish connection to the RF627 device by Service Protocol.</span>
+      <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">connect</span><span class="p">();</span>
+
+      <span class="c1">// read params from RF627 device by Service Protocol.</span>
+      <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">read_params</span><span class="p">();</span>
+
+      <span class="c1">// Get parameter of Device Name</span>
+      <span class="n">param_t</span><span class="o">*</span> <span class="n">name</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_param</span><span class="p">(</span><span class="n">PARAM_NAME_KEY</span><span class="o">::</span><span class="n">USER_GENERAL_DEVICENAME</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">param_value_types</span><span class="p">[(</span><span class="kt">int</span><span class="p">)</span><span class="n">PARAM_VALUE_TYPE</span><span class="o">::</span><span class="n">STRING_PARAM_TYPE</span><span class="p">])</span>
+      <span class="p">{</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">-&gt;</span><span class="n">get_value</span><span class="o">&lt;</span><span class="n">value_str</span><span class="o">&gt;</span><span class="p">();</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Current Device Name </span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">str_name</span>     <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="c1">// Add &quot;_TEST&quot; to the ending of the current name</span>
+         <span class="n">str_name</span> <span class="o">+=</span> <span class="s">&quot;_TEST&quot;</span><span class="p">;</span>
+         <span class="n">name</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="o">&lt;</span><span class="n">value_str</span><span class="o">&gt;</span><span class="p">(</span><span class="n">str_name</span><span class="p">);</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;New Device Name </span><span class="se">\t</span><span class="s">: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">str_name</span>         <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">set_param</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="c1">// Get parameter of Device IP Addr</span>
+      <span class="n">param_t</span><span class="o">*</span> <span class="n">ip_addr</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_param</span><span class="p">(</span><span class="n">PARAM_NAME_KEY</span><span class="o">::</span><span class="n">USER_NETWORK_IP</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">ip_addr</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">param_value_types</span><span class="p">[(</span><span class="kt">int</span><span class="p">)</span><span class="n">PARAM_VALUE_TYPE</span><span class="o">::</span><span class="n">UINT32_ARRAY_PARAM_TYPE</span><span class="p">])</span>
+      <span class="p">{</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">vector</span> <span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">ip</span> <span class="o">=</span> <span class="n">ip_addr</span><span class="o">-&gt;</span><span class="n">get_value</span><span class="o">&lt;</span><span class="n">array_uint32</span><span class="o">&gt;</span><span class="p">();</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Current Device IP</span><span class="se">\t</span><span class="s">: &quot;</span><span class="p">;</span>
+         <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">i</span><span class="p">:</span> <span class="n">ip</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="s">&quot;.&quot;</span><span class="p">;</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="c1">// Change last digit of IP address (e.g. 192.168.1.30 -&gt; 192.168.1.31)</span>
+         <span class="n">ip</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+         <span class="n">ip_addr</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="o">&lt;</span><span class="n">array_uint32</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;New Device IP</span><span class="se">\t</span><span class="s">: &quot;</span><span class="p">;</span>
+         <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">i</span><span class="p">:</span> <span class="n">ip</span><span class="p">)</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="s">&quot;.&quot;</span><span class="p">;</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">set_param</span><span class="p">(</span><span class="n">ip_addr</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="c1">// Get parameter of Laser Enabled</span>
+      <span class="n">param_t</span><span class="o">*</span> <span class="n">laser_enabled</span> <span class="o">=</span> <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">get_param</span><span class="p">(</span><span class="n">PARAM_NAME_KEY</span><span class="o">::</span><span class="n">USER_LASER_ENABLED</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">laser_enabled</span><span class="o">-&gt;</span><span class="n">type</span> <span class="o">==</span> <span class="n">param_value_types</span><span class="p">[(</span><span class="kt">int</span><span class="p">)</span><span class="n">PARAM_VALUE_TYPE</span><span class="o">::</span><span class="n">UINT_PARAM_TYPE</span><span class="p">])</span>
+      <span class="p">{</span>
+         <span class="kt">bool</span> <span class="n">isEnabled</span> <span class="o">=</span> <span class="n">laser_enabled</span><span class="o">-&gt;</span><span class="n">get_value</span><span class="o">&lt;</span><span class="n">value_uint32</span><span class="o">&gt;</span><span class="p">();</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;Current Laser State</span><span class="se">\t</span><span class="s">: &quot;</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">isEnabled</span><span class="o">?</span><span class="s">&quot;ON&quot;</span><span class="o">:</span><span class="s">&quot;OFF&quot;</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="n">isEnabled</span> <span class="o">=</span> <span class="o">!</span><span class="n">isEnabled</span><span class="p">;</span>
+         <span class="c1">// Change the current state to the opposite</span>
+         <span class="n">laser_enabled</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="o">&lt;</span><span class="n">value_uint32</span><span class="o">&gt;</span><span class="p">(</span><span class="o">!</span><span class="n">isEnabled</span><span class="p">);</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;New Laser State</span><span class="se">\t</span><span class="s">: &quot;</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">isEnabled</span><span class="o">?</span><span class="s">&quot;ON&quot;</span><span class="o">:</span><span class="s">&quot;OFF&quot;</span><span class="p">)</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;-----------------------------------------&quot;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">set_param</span><span class="p">(</span><span class="n">laser_enabled</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="c1">//  Write changes parameters to the device&#39;s memory</span>
+      <span class="n">scanners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">write_params</span><span class="p">();</span>
+
+   <span class="p">}</span>
+
+   <span class="n">system</span><span class="p">(</span><span class="s">&quot;pause&quot;</span><span class="p">);</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ниже приведён результат вывода приложения при успешной установке новых параметров:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>SDK version: 1.3.0
+=========================================
+Discovered: 1 rf627-old
+
+
+ID scanner&#39;s list: 0
+-----------------------------------------
+Current Device Name  : RF627
+New Device Name      : RF627_TEST
+-----------------------------------------
+Current Device IP    : 192.168.1.32.
+New Device IP        : 192.168.1.33.
+-----------------------------------------
+Current Laser State  : ON
+New Laser State      : OFF
+-----------------------------------------
+
+Press any key to continue . . .
+</pre></div>
+</div>
+<p>Вы можете открыть и скомпилировать этот пример с помощью <strong>Qt Creator</strong>:</p>
+<ul class="simple">
+<li><p>Загрузите файл CMakeLists.txt из папки <strong>examplesCppRF627_old</strong>
+через <strong>File &gt; Open File or Project</strong> (выберите файл CMakeLists.txt)</p></li>
+<li><p>Выберите компилятор (MinGW, MSVC2017, Clang)
+и нажмите <strong>Configure Project</strong></p></li>
+<li><p>Выберите в качестве запускаемого проета <strong>RF627_params</strong></p></li>
+<li><p>Запустите проект</p></li>
+</ul>
 </div>
 </div>
-<div class="section" id="com">
-<h4>Пример использования библиотеки для организации обмена данными через COM порт<a class="headerlink" href="#com" title="Permalink to this headline">¶</a></h4>
-<p>Для организации обмена информацией через последовательный порт разработчик
-должен включить в свой проект следующие файлы:</p>
-<table class="docutils align-default">
+</div>
+<div class="section" id="compilation-rf62x-sdk-csharp">
+<span id="id10"></span><h3>Библиотека-«обёртка» на C#<a class="headerlink" href="#compilation-rf62x-sdk-csharp" title="Ссылка на этот заголовок">¶</a></h3>
+<p>Эта «обёртка» представляет собой библиотеку .NET, написанную на языке C#? которая
+позволяет может быть использована в приложениях на C#, Visual Basic .NET, C++/CLI
+и JScript .NET</p>
+<p>Для её использования в проектах .NET разработчик должен собрать или скачать динамическую
+программную библиотеку <strong>rf62Xsdk.dll</strong>, после чего добавить библиотеку к ссылкам
+(references) проекта, а также собрать или скачать <strong>rf62Xcore.dll</strong> добавив её
+в папку к исполняемому файлу проекта.</p>
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-text">Последние выпуски:</span><a class="headerlink" href="#id19" title="Постоянная ссылка на таблицу">¶</a></caption>
 <colgroup>
-<col style="width: 35%" />
-<col style="width: 65%" />
+<col style="width: 17%" />
+<col style="width: 41%" />
+<col style="width: 42%" />
 </colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Platform</p></th>
+<th class="head"><p>64bit</p></th>
+<th class="head"><p>Dependencies (x64)</p></th>
+</tr>
+</thead>
 <tbody>
-<tr class="row-odd"><td><p>Channel (<a href="#id23"><span class="problematic" id="id24">*</span></a>.h)</p></td>
-<td><p>Абстрактный класс-интерфейс</p></td>
-</tr>
-<tr class="row-even"><td><p>SerialPort (<a href="#id25"><span class="problematic" id="id26">*</span></a>.cpp, <a href="#id27"><span class="problematic" id="id28">*</span></a>.h)</p></td>
-<td><p>Враппер обмена данными по COM порту</p></td>
-</tr>
-<tr class="row-odd"><td><p>PureSerialChannel (<a href="#id29"><span class="problematic" id="id30">*</span></a>.cpp, <a href="#id31"><span class="problematic" id="id32">*</span></a>.h)</p></td>
-<td><p>Чистый обмена данными по COM порту (без инкапсуляции)</p></td>
-</tr>
-<tr class="row-even"><td><p>ProtocolParser (<a href="#id33"><span class="problematic" id="id34">*</span></a>.cpp, <a href="#id35"><span class="problematic" id="id36">*</span></a>.h)</p></td>
-<td><p>Парсер пакетов протокола TransportProtocol</p></td>
-</tr>
-<tr class="row-odd"><td><p>SerialChannel (<a href="#id37"><span class="problematic" id="id38">*</span></a>.cpp, <a href="#id39"><span class="problematic" id="id40">*</span></a>.h)</p></td>
-<td><p>Обмен данными по протоколу TransportProtocol через COM порт</p></td>
+<tr class="row-even"><td><p>.NET Framework 4.5 (or above)</p></td>
+<td><p><a class="reference external" href="/uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll">rf62Xsdk.dll</a></p></td>
+<td><p><a class="reference external" href="/uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll">rf62Xcore.dll</a></p></td>
 </tr>
 </tbody>
 </table>
-<p>Пример кода для организации обмена данными через COM порт с использованием исходных файлов библиотеки clib:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Sender.cpp - example data-sender application</span>
+<div class="section" id="how-to-compile-rf62x-sdk-csharp">
+<span id="id11"></span><h4>Как скомпилировать<a class="headerlink" href="#how-to-compile-rf62x-sdk-csharp" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Библиотека-«обёртка» rf62Xsdk может быть скомпилирован при помощи среды
+разработки Visual Studio</p>
+<p>Во-первых, вы должны загрузить проект (если вы уже сделали это, пропустите следующие шаги)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+<span class="nb">cd</span> RF62X-SDK
+git submodule update --init --recursive
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>для получения дополнительной информации о шагах загрузки проекта см. <a class="reference external" href="#overview">Скачивание проекта</a></p>
+</div>
+<div class="section" id="how-to-compile-rf62x-sdk-csharp-vs">
+<span id="id12"></span><h5>Visual Studio<a class="headerlink" href="#how-to-compile-rf62x-sdk-csharp-vs" title="Ссылка на этот заголовок">¶</a></h5>
+<ul class="simple">
+<li><p>Откройте решение rf62Xsdk.sln по пути <strong>rf62Xwrappers/CSharp/rf62Xsdk</strong> в Visual Studio</p></li>
+<li><p>Скомпилируйте проект</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="how-to-use-rf62x-sdk-csharp">
+<span id="id13"></span><h4>Как использовать<a class="headerlink" href="#how-to-use-rf62x-sdk-csharp" title="Ссылка на этот заголовок">¶</a></h4>
+<p>Помимо приведенных ниже примеров, где каждый может быть скомпилирован и выполнен,
+вы также можете прочитать документацию на библиотеку-«обёртку» на C#, где каждая
+функция содержит отдельный пример кода.</p>
+<p>Вы можете открыть и построить этот пример с помощью <strong>Visual Studio</strong>:</p>
+<ul class="simple">
+<li><p>Откройте решение <strong>RF627_TESTS.sln</strong> из папки
+<strong>rf62Xwrappers/CSharp/RF627_old</strong></p></li>
+<li><p>Выберите <strong>x64 Debug</strong> или <strong>x64 Release</strong> в качестве целевой платформы</p></li>
+<li><p>Добвавьте <strong>rf62Xsdk.dll</strong> библиотеку к ссылкам (<strong>references</strong>) проекта</p></li>
+<li><p>Скопируйте <strong>rf62Xcore.dll</strong> в путь к исполняемому файлу проекта
+(<strong>../bin/x64/Debug/</strong> или <strong>../bin/x64/Release/</strong>)</p></li>
+<li><p>Скомпилируйте проект</p></li>
+</ul>
+<div class="section" id="how-to-use-rf62x-sdk-csharp-for-search">
+<span id="id14"></span><h5>Поиск устройств RF62X<a class="headerlink" href="#how-to-use-rf62x-sdk-csharp-for-search" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Ниже приведен пример поиска сканеров серии RF627-old в сети</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
 
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;SerialChannel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;PureSerialChannel.h&quot;</span><span class="cp"></span>
-
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="k">namespace</span> <span class="nn">RF627_search</span>
 <span class="p">{</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE SERIAL DATA SENDER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">class</span> <span class="nc">Program</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+        <span class="p">{</span>
 
-   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-   <span class="kt">uint32_t</span> <span class="n">dataSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="kt">float</span> <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+           <span class="c1">// Start initialization of the library core</span>
+           <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkInit</span><span class="p">();</span>
 
+           <span class="c1">// Print return rf62X sdk version</span>
+           <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;SDK version: {0}&quot;</span><span class="p">,</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkVersion</span><span class="p">());</span>
+           <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;=========================================&quot;</span><span class="p">);</span>
 
-   <span class="kt">int</span> <span class="n">serialPortNumToSend</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">serialPortBaudrate</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+           <span class="c1">// Search for RF627old devices over network</span>
+           <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;- Start searching device&quot;</span><span class="p">);</span>
+           <span class="n">List</span><span class="p">&lt;</span><span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">&gt;</span> <span class="n">Scanners</span> <span class="p">=</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">.</span><span class="n">Search</span><span class="p">();</span>
+           <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;+ {0} scanners detected&quot;</span><span class="p">,</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
 
-   <span class="c1">// Dialogue to enter serial port num to send data.</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port num to send data: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortNumToSend</span><span class="p">;</span>
-   <span class="c1">// Dialogue to enter baudrate value.</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port baudrate in bits per second: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortBaudrate</span><span class="p">;</span>
+           <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+           <span class="p">{</span>
+              <span class="n">RF62X</span><span class="p">.</span><span class="n">HelloInfo</span> <span class="n">info</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetInfo</span><span class="p">();</span>
 
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\n\n\nID scanner&#39;s list: {0}&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Device information: &quot;</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Name\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">device_name</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Serial\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* IP Addr\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">ip_address</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* MAC Addr\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">mac_address</span><span class="p">);</span>
 
-   <span class="c1">// Calculate data size</span>
-   <span class="n">bandwidthMbps</span> <span class="o">=</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">serialPortBaudrate</span> <span class="o">/</span> <span class="mf">1048576.0f</span><span class="p">;</span>
-   <span class="n">dataSize</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)(</span><span class="n">bandwidthMbps</span> <span class="o">*</span> <span class="mf">131072.0f</span><span class="p">);</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes to send&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Working ranges: &quot;</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Zsmr, mm\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">z_smr</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Zmr , mm\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">z_mr</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Xsmr, mm\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">x_smr</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Xemr, mm\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">x_emr</span><span class="p">);</span>
 
-   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\nVersions: &quot;</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Firmware\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">firmware_version</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Hardware\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">hardware_version</span><span class="p">);</span>
+              <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+           <span class="p">}</span>
 
-   <span class="c1">// Create channel object</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">SerialChannel</span><span class="p">();</span>
-   <span class="k">else</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureSerialChannel</span><span class="p">();</span>
+           <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;{0}Press any key to end \&quot;Search-test\&quot;&quot;</span><span class="p">,</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">);</span>
+           <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
 
-   <span class="c1">// Create initialization string</span>
-   <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">serialPortNamePrefix</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">COM&quot;</span><span class="p">;</span>
-   <span class="n">initString</span> <span class="o">=</span> <span class="n">serialPortNamePrefix</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortNumToSend</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;&quot;</span> <span class="o">+</span>
-                <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortBaudrate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;128;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">dataSize</span><span class="p">);</span>
-
-
-   <span class="c1">// Init channel</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
-   <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
-
-
-   <span class="c1">// Allocate memory for output data.</span>
-   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">dataSize</span><span class="p">];</span>
-   <span class="c1">// Value of data.</span>
-   <span class="kt">uint8_t</span> <span class="n">dataValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="c1">// Fill data buffer.</span>
-   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
-
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start sending data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-   <span class="c1">// Sending loop</span>
-   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="c1">// Fill data by new value.</span>
-      <span class="o">++</span><span class="n">dataValue</span><span class="p">;</span>
-      <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataValue</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">);</span>
-
-      <span class="c1">// Send data to 0 logic port</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-         <span class="c1">// Send data until confirmation during 2s.</span>
-         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
-      <span class="k">else</span>
-         <span class="c1">// Send data once.</span>
-         <span class="n">channel</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dataSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bandwidthMbps</span><span class="p">);</span>
-
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dataSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes was sent. Data value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">dataValue</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-   <span class="p">}</span>
-
-   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Receiver.cpp - example data-receiver application</span>
+</div>
+<div class="section" id="how-to-use-rf62x-sdk-csharp-get-profile">
+<span id="id15"></span><h5>Получение профиля сканера<a class="headerlink" href="#how-to-use-rf62x-sdk-csharp-get-profile" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Ниже приведен пример получения профилей от сканеров серии RF627-old</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
 
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;Channel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;SerialChannel.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&quot;PureSerialChannel.h&quot;</span><span class="cp"></span>
-
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="k">namespace</span> <span class="nn">RF627_profile</span>
 <span class="p">{</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;### EXAMPLE SERIAL DATA RECEIVER ###&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-   <span class="n">clib</span><span class="o">::</span><span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initString</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">maxDataSize</span> <span class="o">=</span> <span class="mi">186624000</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">serialPortNumToRead</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-   <span class="kt">int</span> <span class="n">serialPortBaudrate</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-
-   <span class="c1">// Dialogue to enter serial port num to send data.</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port num to read data: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortNumToRead</span><span class="p">;</span>
-   <span class="c1">// Dialogue to enter baudrate value.</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter serial port baudrate in bits per second: &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">serialPortBaudrate</span><span class="p">;</span>
-
-   <span class="c1">// Dialogue to enter protocol type (transport Protocol or Pure)</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Enter protocol type (1 - Transport Protocol or 2 - Pure): &quot;</span><span class="p">;</span>
-   <span class="n">std</span><span class="o">::</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">protocolType</span><span class="p">;</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">protocolType</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">protocolType</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
-   <span class="c1">// Create channel object</span>
-   <span class="k">if</span> <span class="p">(</span><span class="n">protocolType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">SerialChannel</span><span class="p">();</span>
-   <span class="k">else</span>
-      <span class="n">channel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">clib</span><span class="o">::</span><span class="n">PureSerialChannel</span><span class="p">();</span>
-
-   <span class="c1">// Create initialization string</span>
-   <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">serialPortNamePrefix</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\\\\</span><span class="s">.</span><span class="se">\\</span><span class="s">COM&quot;</span><span class="p">;</span>
-   <span class="n">initString</span> <span class="o">=</span> <span class="n">serialPortNamePrefix</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortNumToRead</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;&quot;</span> <span class="o">+</span>
-                <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">serialPortBaudrate</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;;128;&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">maxDataSize</span><span class="p">);</span>
-
-
-   <span class="c1">// Init channel</span>
-   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">(</span><span class="n">initString</span><span class="p">))</span>
+   <span class="k">class</span> <span class="nc">Program</span>
    <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Channel not init&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-   <span class="p">}</span>
-
-
-   <span class="c1">// Allocate memory for output data.</span>
-   <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">uint8_t</span><span class="p">[</span><span class="n">maxDataSize</span><span class="p">];</span>
-   <span class="c1">// Fill data buffer.</span>
-   <span class="n">memset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">);</span>
-
-   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Start reading data...&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-   <span class="c1">// Reading loop</span>
-   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-   <span class="p">{</span>
-      <span class="c1">// Wait data from 0 logic port without time limit.</span>
-      <span class="kt">uint32_t</span> <span class="n">inputSize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">channel</span><span class="o">-&gt;</span><span class="n">GetData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">maxDataSize</span><span class="p">,</span> <span class="n">inputSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">))</span>
+      <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
       <span class="p">{</span>
-         <span class="c1">// Print calculated bandwidth value.</span>
-         <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Recieved &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inputSize</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bytes&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+         <span class="c1">// Start initialization of the library core</span>
+         <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkInit</span><span class="p">();</span>
+
+
+         <span class="c1">// Search for RF627old devices over network</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;- Start searching device&quot;</span><span class="p">);</span>
+         <span class="n">List</span><span class="p">&lt;</span><span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">&gt;</span> <span class="n">Scanners</span> <span class="p">=</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">.</span><span class="n">Search</span><span class="p">();</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;+ {0} scanners detected&quot;</span><span class="p">,</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+
+
+         <span class="c1">// foreach over an scanners list</span>
+         <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+         <span class="p">{</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">HelloInfo</span> <span class="n">info</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetInfo</span><span class="p">();</span>
+
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\n\n\nID scanner&#39;s list: {0}&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Device information: &quot;</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Name\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">device_name</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Serial\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* IP Addr\t: {0}&quot;</span><span class="p">,</span> <span class="n">info</span><span class="p">.</span><span class="n">ip_address</span><span class="p">);</span>
+
+            <span class="c1">// Establish connection to the RF627 device by Service Protocol.</span>
+            <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Connect</span><span class="p">();</span>
+
+            <span class="c1">// Get profile from scanner&#39;s data stream by Service Protocol.</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">Profile</span> <span class="n">profile</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetProfile</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="n">header</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Profile information: &quot;</span><span class="p">);</span>
+               <span class="k">switch</span> <span class="p">(</span><span class="n">profile</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">data_type</span><span class="p">)</span>
+               <span class="p">{</span>
+                  <span class="k">case</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">PROFILE_TYPE</span><span class="p">.</span><span class="n">PIXELS_NORMAL</span><span class="p">:</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* DataType\t: PIXELS&quot;</span><span class="p">);</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Count\t: {0}&quot;</span><span class="p">,</span> <span class="n">profile</span><span class="p">.</span><span class="n">pixels</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+                     <span class="k">break</span><span class="p">;</span>
+                  <span class="k">case</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">PROFILE_TYPE</span><span class="p">.</span><span class="n">PROFILE_NORMAL</span><span class="p">:</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* DataType\t: PROFILE&quot;</span><span class="p">);</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Size\t: {0}&quot;</span><span class="p">,</span> <span class="n">profile</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+                     <span class="k">break</span><span class="p">;</span>
+                  <span class="k">case</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">PROFILE_TYPE</span><span class="p">.</span><span class="n">PIXELS_INTERPOLATED</span><span class="p">:</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* DataType\t: PIXELS&quot;</span><span class="p">);</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Count\t: {0}&quot;</span><span class="p">,</span> <span class="n">profile</span><span class="p">.</span><span class="n">pixels</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+                     <span class="k">break</span><span class="p">;</span>
+                  <span class="k">case</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">PROFILE_TYPE</span><span class="p">.</span><span class="n">PROFILE_INTERPOLATED</span><span class="p">:</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* DataType\t: PROFILE&quot;</span><span class="p">);</span>
+                     <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;* Size\t: {0}&quot;</span><span class="p">,</span> <span class="n">profile</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+                     <span class="k">break</span><span class="p">;</span>
+                  <span class="k">default</span><span class="p">:</span>
+                     <span class="k">break</span><span class="p">;</span>
+               <span class="p">}</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Profile was successfully received!&quot;</span><span class="p">);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+            <span class="p">}</span><span class="k">else</span>
+            <span class="p">{</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Profile was not received!&quot;</span><span class="p">);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+         <span class="p">}</span>
+
+         <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;{0}Press any key to end \&quot;Search-test\&quot;&quot;</span><span class="p">,</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">);</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
       <span class="p">}</span>
    <span class="p">}</span>
-   <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Результат вывода приложений Receiver и Sender при обмене данными через COM порт с использование протокола TransportProtocol:</p>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="getting_started\../_static/SerialChannel_example.jpg"><img alt="Рисунок 3 – Результат запуска приложений Receiver и Sender" src="getting_started\../_static/SerialChannel_example.jpg" style="width: 100%;" /></a>
+</div>
+<div class="section" id="how-to-use-rf62x-sdk-csharp-get-set-params">
+<span id="id16"></span><h5>Получение и установка параметров<a class="headerlink" href="#how-to-use-rf62x-sdk-csharp-get-set-params" title="Ссылка на этот заголовок">¶</a></h5>
+<p>Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены
+состояния лазера (включение или отключение):</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nn">RF627_params</span>
+<span class="p">{</span>
+   <span class="k">class</span> <span class="nc">Program</span>
+   <span class="p">{</span>
+      <span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+      <span class="p">{</span>
+
+         <span class="c1">// Start initialization of the library core</span>
+         <span class="n">RF62X</span><span class="p">.</span><span class="n">SdkInit</span><span class="p">();</span>
+
+         <span class="c1">// Search for RF627old devices over network</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;- Start searching device&quot;</span><span class="p">);</span>
+         <span class="n">List</span><span class="p">&lt;</span><span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">&gt;</span> <span class="n">Scanners</span> <span class="p">=</span> <span class="n">RF62X</span><span class="p">.</span><span class="n">RF627old</span><span class="p">.</span><span class="n">Search</span><span class="p">();</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;+ {0} scanners detected&quot;</span><span class="p">,</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+
+         <span class="c1">// foreach over an scanners list</span>
+         <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">Scanners</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+         <span class="p">{</span>
+            <span class="c1">// Establish connection to the RF627 device by Service Protocol.</span>
+            <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Connect</span><span class="p">();</span>
+
+            <span class="c1">// read params from RF627 device by Service Protocol.</span>
+            <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ReadParams</span><span class="p">();</span>
+
+            <span class="c1">// Get parameter of Device Name</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">Param</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span> <span class="n">name</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetParam</span><span class="p">(</span><span class="n">RF62X</span><span class="p">.</span><span class="n">Params</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">General</span><span class="p">.</span><span class="n">deviceName</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+               <span class="kt">string</span> <span class="n">strName</span> <span class="p">=</span> <span class="n">name</span><span class="p">.</span><span class="n">GetValue</span><span class="p">();</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;\n\nCurrent Device Name \t: {0}&quot;</span><span class="p">,</span> <span class="n">strName</span><span class="p">);</span>
+
+               <span class="c1">// Add &quot;_TEST&quot; to the ending of the current name</span>
+               <span class="n">strName</span> <span class="p">+=</span> <span class="s">&quot;_TEST&quot;</span><span class="p">;</span>
+               <span class="n">name</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">strName</span><span class="p">);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;New Device Name \t: {0}&quot;</span><span class="p">,</span> <span class="n">strName</span><span class="p">);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+
+               <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">SetParam</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c1">// Get parameter of Device IP Addr</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">Param</span><span class="p">&lt;</span><span class="n">List</span><span class="p">&lt;</span><span class="kt">uint</span><span class="p">&gt;&gt;</span> <span class="n">ipAddr</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetParam</span><span class="p">(</span><span class="n">RF62X</span><span class="p">.</span><span class="n">Params</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">NetWork</span><span class="p">.</span><span class="n">ip</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ipAddr</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+               <span class="n">List</span><span class="p">&lt;</span><span class="kt">uint</span><span class="p">&gt;</span> <span class="n">ip</span> <span class="p">=</span> <span class="n">ipAddr</span><span class="p">.</span><span class="n">GetValue</span><span class="p">();</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Current Device IP Addr\t: {0}.{1}.{2}.{3}&quot;</span><span class="p">,</span> <span class="n">ip</span><span class="p">[</span><span class="m">0</span><span class="p">],</span> <span class="n">ip</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">ip</span><span class="p">[</span><span class="m">2</span><span class="p">],</span> <span class="n">ip</span><span class="p">[</span><span class="m">3</span><span class="p">]);</span>
+
+               <span class="c1">// Change last digit of IP address (e.g. 192.168.1.30 -&gt; 192.168.1.31)</span>
+               <span class="n">ip</span><span class="p">[</span><span class="m">3</span><span class="p">]++;</span>
+               <span class="n">ipAddr</span><span class="p">.</span><span class="n">SetValue</span><span class="p">(</span><span class="n">ip</span><span class="p">);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;New Device IP Addr\t: {0}.{1}.{2}.{3}&quot;</span><span class="p">,</span> <span class="n">ip</span><span class="p">[</span><span class="m">0</span><span class="p">],</span> <span class="n">ip</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">ip</span><span class="p">[</span><span class="m">2</span><span class="p">],</span> <span class="n">ip</span><span class="p">[</span><span class="m">3</span><span class="p">]);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+
+               <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">SetParam</span><span class="p">(</span><span class="n">ipAddr</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c1">// Get parameter of Laser Enabled</span>
+            <span class="n">RF62X</span><span class="p">.</span><span class="n">Param</span><span class="p">&lt;</span><span class="kt">uint</span><span class="p">&gt;</span> <span class="n">laserEnabled</span> <span class="p">=</span> <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">GetParam</span><span class="p">(</span><span class="n">RF62X</span><span class="p">.</span><span class="n">Params</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">Laser</span><span class="p">.</span><span class="n">enabled</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">laserEnabled</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+               <span class="kt">bool</span> <span class="n">isLaserEnabled</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToBoolean</span><span class="p">(</span><span class="n">laserEnabled</span><span class="p">.</span><span class="n">GetValue</span><span class="p">());</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Current Laser State\t: {0}&quot;</span><span class="p">,</span> <span class="n">isLaserEnabled</span> <span class="p">?</span> <span class="s">&quot;ON&quot;</span> <span class="p">:</span> <span class="s">&quot;OFF&quot;</span><span class="p">);</span>
+
+               <span class="c1">// Change the current state to the opposite</span>
+               <span class="n">isLaserEnabled</span> <span class="p">=</span> <span class="p">!</span><span class="n">isLaserEnabled</span><span class="p">;</span>
+               <span class="n">laserEnabled</span><span class="p">.</span><span class="n">SetValue</span><span class="p">((</span><span class="kt">uint</span><span class="p">)(</span><span class="n">Convert</span><span class="p">.</span><span class="n">ToUInt32</span><span class="p">(</span><span class="n">isLaserEnabled</span><span class="p">)));</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;New Laser State\t\t: {0}&quot;</span><span class="p">,</span> <span class="n">isLaserEnabled</span> <span class="p">?</span> <span class="s">&quot;ON&quot;</span> <span class="p">:</span> <span class="s">&quot;OFF&quot;</span><span class="p">);</span>
+               <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;-----------------------------------------&quot;</span><span class="p">);</span>
+
+               <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">SetParam</span><span class="p">(</span><span class="n">laserEnabled</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">Scanners</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">WriteParams</span><span class="p">();</span>
+         <span class="p">}</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;{0}Press any key to end \&quot;Parameters-test\&quot;&quot;</span><span class="p">,</span> <span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">);</span>
+         <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="ubuntu">
-<h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id41">
-<h3>1. Установка зависимостей (опционально)<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="id42">
-<h3>2. Конфигурирование проекта<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="id43">
-<h3>2. Сборка и установка clib<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="macos">
-<h2>MacOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h2>
-<p>Шаги компиляции MacOS в основном идентичны Ubuntu.</p>
-<div class="section" id="id44">
-<h3>1. Установка зависимостей (опционально)<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="id45">
-<h3>2. Конфигурирование проекта<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="id46">
-<h3>2. Сборка и установка clib<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
@@ -763,6 +1015,15 @@ UDP порт. Класс реализует интерфейс приема и �
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../rf62X_core.html" class="btn btn-neutral float-right" title="RF62X-CORE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install_and_setup.html" class="btn btn-neutral float-left" title="Установка и настройка" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

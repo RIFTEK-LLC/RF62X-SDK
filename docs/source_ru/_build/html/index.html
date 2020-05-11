@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>RF62X-SDK: SDK для работы со сканерами серии RF62X &mdash; RF62X-SDK 1.0.0 documentation</title>
+  <title>Набор программных средств для работы с лазерными сканерами серии RF62X &mdash; документация RF62X-SDK 1.3.3</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,8 +34,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
     <link rel="next" title="Обзор" href="overview.html" /> 
 </head>
 
@@ -83,8 +84,13 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started/_index.html">Подготовка к работе</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X-CORE</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rf62X_wrappers.html">RF62X Wrappers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Примеры использования</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/udp_port.html">Обмен через UDP-порт</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/com_port.html">Обмен по COM-порту</a></li>
 </ul>
 
             
@@ -130,7 +136,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>RF62X-SDK: SDK для работы со сканерами серии RF62X</li>
+      <li>Набор программных средств для работы с лазерными сканерами серии RF62X</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -153,31 +159,32 @@
 <a class="reference internal image-reference" href="_images/RF62X_SDK.png"><img alt="RF62X SDK logo" src="_images/RF62X_SDK.png" style="width: 100%;" /></a>
 </div>
 <hr class="docutils" />
-<div class="section" id="rf62x-sdk-sdk-rf62x">
-<h1>RF62X-SDK: SDK для работы со сканерами серии RF62X<a class="headerlink" href="#rf62x-sdk-sdk-rf62x" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rf62x">
+<h1>Набор программных средств для работы с лазерными сканерами серии RF62X<a class="headerlink" href="#rf62x" title="Ссылка на этот заголовок">¶</a></h1>
 <div class="section" id="id1">
-<h2>Введение<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p><strong>RF627X SDK</strong> - это набор средств разработки, который позволяет специалистам
-по программному обеспечению создавать приложения для работы со сканерами серии RF62X.</p>
+<h2>Введение<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h2>
+<p><strong>RF627X-SDK</strong> - набор средств разработки, который позволяет специалистам создавать
+собственное программное обеспечение для работы с лазерными сканерами серии RF62X
+(RF627-old, RF627-smart) производства компании РИФТЭК.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Руководство программиста</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#id2">Общее описание</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#id3">Особенности архитектуры</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id3">Архитектура библиотеки</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#id4">Способы работы</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#id5">Основные функции</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#id6">Что нового</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#resources">Resources</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started/_index.html">Подготовка к работе</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started/_index.html#installing-software">Installing software</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started/_index.html#running-rf62x-sdk-tutorials">Running RF62X SDK tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/compatibility.html">Целевые платформы и совместимость</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/install_and_setup.html">Установка и настройка</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/compilation.html">Компиляция из исходников</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rf62X_core.html#how-to-compile">How to compile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X-CORE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rf62X_core.html#id1">Обзор платформозависимых функций</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="rf62X_wrappers.html">RF62X Wrappers</a><ul>
@@ -188,6 +195,11 @@
 </ul>
 </div>
 <div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Примеры использования</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/udp_port.html">Обмен через UDP-порт</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/com_port.html">Обмен по COM-порту</a></li>
+</ul>
 </div>
 <hr class="docutils" />
 <table class="docutils align-default">

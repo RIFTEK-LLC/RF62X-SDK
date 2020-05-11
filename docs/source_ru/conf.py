@@ -26,7 +26,7 @@ author = 'Vladislav Kuzmin'
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '1.3.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -63,7 +63,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'ru'
 locale_dirs = ['locale/']   # path is example but recommended.
 gettext_compact = False     # optional.
 
@@ -110,6 +110,29 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'RF62X-SDK-doc'
 
+latex_elements = {
+    # The paper size ('letterpaper' or 'a4paper').
+
+    'papersize': 'a4paper',
+
+    # The font size ('10pt', '11pt' or '12pt').
+    # 'pointsize': '10pt',
+
+    # Additional stuff for the LaTeX preamble.
+    #'preamble': '',
+
+    # Latex figure (float) alignment
+    #
+    # 'figure_align': 'htbp',
+}
+
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title,
+#  author, documentclass [howto, manual, or own class]).
+latex_documents = [
+    (master_doc, 'RF62X-SDK.tex', 'RF62X-SDK Documentation',
+     'Vladislav Kuzmin', 'manual'),
+]
 
 # -- Options for Epub output -------------------------------------------------
 

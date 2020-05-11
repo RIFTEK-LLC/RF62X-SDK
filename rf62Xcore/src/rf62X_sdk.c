@@ -342,7 +342,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
                 count++;
             }
             ret = rf627_old_read_user_params_from_scanner(device->rf627_old);
-            //rf627_old_read_factory_params_from_scanner(device->rf627_old);
+            //ret = rf627_old_read_factory_params_from_scanner(device->rf627_old);
             return ret;
             break;
         }

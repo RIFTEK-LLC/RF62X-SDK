@@ -19,59 +19,65 @@ namespace RF627_params
             // foreach over an scanners list
             for (int i = 0; i < Scanners.Count; i++)
             {
-                Console.WriteLine("{0}- Try to connect to {1} scanner", Environment.NewLine, i + 1);
-                bool isConnect = Scanners[i].Connect();
-                if (isConnect)
+                // Establish connection to the RF627 device by Service Protocol.
+                Scanners[i].Connect();
+
+                // read params from RF627 device by Service Protocol.
+                Scanners[i].ReadParams();
+
+                // Get parameter of Device Name
+                RF62X.Param<string> name = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
+                if (name != null)
                 {
-                    Console.WriteLine("+ Successfully connected"); Console.WriteLine();
+                    string strName = name.GetValue();
+                    Console.WriteLine("\n\nCurrent Device Name \t: {0}", strName);
 
-                    Console.WriteLine("- Try to read params");
-                    bool isReadParam = Scanners[i].ReadParams();
-                    if (isReadParam)
-                    {
-                        Console.WriteLine("+ Parameters read successfully"); Console.WriteLine();
+                    // Add "_TEST" to the ending of the current name
+                    strName += "_TEST";
+                    name.SetValue(strName);
+                    Console.WriteLine("New Device Name \t: {0}", strName);
+                    Console.WriteLine("-----------------------------------------");
 
-                        Console.WriteLine("- Try to get scanner's name");
-                        RF62X.Param<string> deviceName = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
-                        if (deviceName != null)
-                        {
-                            Console.WriteLine("+ Device name is: {0}", deviceName.GetValue()); Console.WriteLine();
+                    Scanners[i].SetParam(name);
 
-                            Console.WriteLine("- Try to set new scanner's name and write changed parameters to scanner");
-                            string newName = "Test Name";
-                            deviceName.SetValue(newName);
-                            Scanners[i].SetParam(deviceName);
-
-                            // Send command to scanner to write changed parameters.
-                            bool isSet = Scanners[i].WriteParams();
-                            if (isSet)
-                                Console.WriteLine("+ Command to change parameters send successfully");
-                            else Console.WriteLine("! Error send changing command");
-                        }
-                        else Console.WriteLine("! Error getting device name");
-                    }
-                    else Console.WriteLine("! Parameters didn't read");
-
-                    // Check that the parameter is set correctly
-                    // Read again all params from RF627 device.
-                    Console.WriteLine("- Try to read again params");
-                    isReadParam = Scanners[i].ReadParams();
-                    if (isReadParam)
-                    {
-                        Console.WriteLine("+ Parameters read successfully"); Console.WriteLine();
-
-                        Console.WriteLine("- Try to get scanner's name");
-                        RF62X.Param<string> deviceName = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
-                        if (deviceName.GetValue() == "Test Name")
-                            Console.WriteLine("+ Changed parameters write successfully");
-                        else Console.WriteLine("! Error changing parameters");
-                        Console.WriteLine();
-                    }
-                    else Console.WriteLine("! Parameters didn't read");
                 }
-                else Console.WriteLine("! Connection error");
-            }
 
+                // Get parameter of Device IP Addr
+                RF62X.Param<List<uint>> ipAddr = Scanners[i].GetParam(RF62X.Params.User.NetWork.ip);
+                if (ipAddr != null)
+                {
+                    List<uint> ip = ipAddr.GetValue();
+                    Console.WriteLine("Current Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
+
+                    // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
+                    ip[3]++;                    
+                    ipAddr.SetValue(ip);
+                    Console.WriteLine("New Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
+                    Console.WriteLine("-----------------------------------------");
+
+                    Scanners[i].SetParam(ipAddr);
+                }
+
+                // Get parameter of Laser Enabled
+                RF62X.Param<uint> laserEnabled = Scanners[i].GetParam(RF62X.Params.User.Laser.enabled);
+                if (laserEnabled != null)
+                {
+                    bool isLaserEnabled = Convert.ToBoolean(laserEnabled.GetValue());
+                    Console.WriteLine("Current Laser State\t: {0}", isLaserEnabled ? "ON" : "OFF");
+
+                    // Change the current state to the opposite
+                    isLaserEnabled = !isLaserEnabled;
+                    laserEnabled.SetValue((uint)(Convert.ToUInt32(isLaserEnabled)));
+                    Console.WriteLine("New Laser State\t\t: {0}", isLaserEnabled ? "ON" : "OFF");
+                    Console.WriteLine("-----------------------------------------");
+
+
+                    Scanners[i].SetParam(laserEnabled);
+                }
+
+                //  Write changes parameters to the device's memory
+                Scanners[i].WriteParams();
+            }
             Console.WriteLine("{0}Press any key to end \"Parameters-test\"", Environment.NewLine);
             Console.ReadKey();
         }

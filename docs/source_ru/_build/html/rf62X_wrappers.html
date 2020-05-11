@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>RF62X Wrappers &mdash; RF62X-SDK 1.0.0 documentation</title>
+  <title>RF62X Wrappers &mdash; документация RF62X-SDK 1.3.3</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script src="_static/translations.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,9 +34,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="RF62X Core" href="rf62X_core.html" /> 
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Обмен через UDP-порт" href="tutorial/udp_port.html" />
+    <link rel="prev" title="RF62X-CORE" href="rf62X_core.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -79,11 +81,11 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents</span></p>
+              <p class="caption"><span class="caption-text">Руководство программиста</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Обзор</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started/_index.html">Подготовка к работе</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rf62X_core.html">RF62X-CORE</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">RF62X Wrappers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#c-library">C++ Library</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-compile">How to compile</a><ul>
@@ -115,6 +117,11 @@
 </li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Примеры использования</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/udp_port.html">Обмен через UDP-порт</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/com_port.html">Обмен по COM-порту</a></li>
 </ul>
 
             
@@ -180,15 +187,15 @@
            <div itemprop="articleBody">
             
   <div class="section" id="rf62x-wrappers">
-<h1>RF62X Wrappers<a class="headerlink" href="#rf62x-wrappers" title="Permalink to this headline">¶</a></h1>
+<h1>RF62X Wrappers<a class="headerlink" href="#rf62x-wrappers" title="Ссылка на этот заголовок">¶</a></h1>
 <p>Wrappers are help to make programs in different languages and for
 different platforms using the rf62Xcore library easier.</p>
 <div class="section" id="c-library">
-<h2>C++ Library<a class="headerlink" href="#c-library" title="Permalink to this headline">¶</a></h2>
+<h2>C++ Library<a class="headerlink" href="#c-library" title="Ссылка на этот заголовок">¶</a></h2>
 <p>This project is a C++ library that simplifies the integration of C++
 applications with following scanner series: * RF627-old * RF627-smart</p>
 <table class="docutils align-default" id="id10">
-<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id10" title="Постоянная ссылка на таблицу">¶</a></caption>
 <colgroup>
 <col style="width: 6%" />
 <col style="width: 63%" />
@@ -216,7 +223,7 @@ applications with following scanner series: * RF627-old * RF627-smart</p>
 </tbody>
 </table>
 <div class="section" id="how-to-compile">
-<h3>How to compile<a class="headerlink" href="#how-to-compile" title="Permalink to this headline">¶</a></h3>
+<h3>How to compile<a class="headerlink" href="#how-to-compile" title="Ссылка на этот заголовок">¶</a></h3>
 <p>RF62X SDK (C++) can be built on the console or in an IDE.
 Firstly, you should download the project (if you have already done it, skip next commands)</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
@@ -225,11 +232,11 @@ git submodule update --init --recursive
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">Примечание</p>
 <p>for more information about project downloading steps, see an <a class="reference external" href="#overview">overview</a></p>
 </div>
 <div class="section" id="cmake">
-<h4>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h4>
+<h4>CMake<a class="headerlink" href="#cmake" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the С++ wrapper:</p>
 <div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> wrappers/cpp/CMake/rf62Xsdk
 cmake .
@@ -238,7 +245,7 @@ cmake --build .
 </div>
 </div>
 <div class="section" id="qt-creator">
-<h4>Qt Creator<a class="headerlink" href="#qt-creator" title="Permalink to this headline">¶</a></h4>
+<h4>Qt Creator<a class="headerlink" href="#qt-creator" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the code:</p>
 <ul class="simple">
 <li><p>Load the CMakeLists.txt file from the <strong>wrappers/cpp/CMake/rf62Xsdk</strong>
@@ -248,7 +255,7 @@ folder via <strong>File &gt; Open File or Project</strong> (Select the CMakeList
 </ul>
 </div>
 <div class="section" id="visual-studio">
-<h4>Visual Studio<a class="headerlink" href="#visual-studio" title="Permalink to this headline">¶</a></h4>
+<h4>Visual Studio<a class="headerlink" href="#visual-studio" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the code:</p>
 <div class="highlight-bat notranslate"><div class="highlight"><pre><span></span><span class="k">cd</span> wrappers/cpp/CMake/rf62Xsdk
 cmake .
@@ -261,15 +268,15 @@ cmake .
 </div>
 </div>
 <div class="section" id="how-to-use">
-<h3>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h3>
+<h3>How to use<a class="headerlink" href="#how-to-use" title="Ссылка на этот заголовок">¶</a></h3>
 <p>Beside the examples below, you may want to check the documentation where
 each function contains a separate code example. All example project can
 be compiled and executed.</p>
 <div class="section" id="search-for-rf62x-devices">
-<h4>Search for RF62X devices<a class="headerlink" href="#search-for-rf62x-devices" title="Permalink to this headline">¶</a></h4>
+<h4>Search for RF62X devices<a class="headerlink" href="#search-for-rf62x-devices" title="Ссылка на этот заголовок">¶</a></h4>
 <p>Here are some examples how to use search methods</p>
 <div class="section" id="search-for-rf627-old-devices-over-network-by-service-protocol">
-<h5>Search for RF627-old devices over network by service protocol<a class="headerlink" href="#search-for-rf627-old-devices-over-network-by-service-protocol" title="Permalink to this headline">¶</a></h5>
+<h5>Search for RF627-old devices over network by service protocol<a class="headerlink" href="#search-for-rf627-old-devices-over-network-by-service-protocol" title="Ссылка на этот заголовок">¶</a></h5>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -310,10 +317,10 @@ be compiled and executed.</p>
 </div>
 </div>
 <div class="section" id="get-profile-from-rf62x-devices">
-<h4>Get Profile from RF62X devices<a class="headerlink" href="#get-profile-from-rf62x-devices" title="Permalink to this headline">¶</a></h4>
+<h4>Get Profile from RF62X devices<a class="headerlink" href="#get-profile-from-rf62x-devices" title="Ссылка на этот заголовок">¶</a></h4>
 <p>Here are some examples how to use get profile methods</p>
 <div class="section" id="get-profile-from-rf627-old-devices-over-network-by-service-protocol">
-<h5>Get Profile from RF627-old devices over network by service protocol<a class="headerlink" href="#get-profile-from-rf627-old-devices-over-network-by-service-protocol" title="Permalink to this headline">¶</a></h5>
+<h5>Get Profile from RF627-old devices over network by service protocol<a class="headerlink" href="#get-profile-from-rf627-old-devices-over-network-by-service-protocol" title="Ссылка на этот заголовок">¶</a></h5>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -366,10 +373,10 @@ be compiled and executed.</p>
 </div>
 </div>
 <div class="section" id="get-set-rf62x-old-parameters">
-<h4>Get/Set RF62X-old parameters<a class="headerlink" href="#get-set-rf62x-old-parameters" title="Permalink to this headline">¶</a></h4>
+<h4>Get/Set RF62X-old parameters<a class="headerlink" href="#get-set-rf62x-old-parameters" title="Ссылка на этот заголовок">¶</a></h4>
 <p>Here are some examples how to work with device’s parameters</p>
 <div class="section" id="get-set-rf627-old-parameters-devices-over-network">
-<h5>Get/Set RF627-old parameters devices over network<a class="headerlink" href="#get-set-rf627-old-parameters-devices-over-network" title="Permalink to this headline">¶</a></h5>
+<h5>Get/Set RF627-old parameters devices over network<a class="headerlink" href="#get-set-rf627-old-parameters-devices-over-network" title="Ссылка на этот заголовок">¶</a></h5>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rf62Xsdk.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;rf62Xtypes.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -447,12 +454,12 @@ be compiled and executed.</p>
 </div>
 </div>
 <div class="section" id="net-library">
-<h2>.NET Library<a class="headerlink" href="#net-library" title="Permalink to this headline">¶</a></h2>
+<h2>.NET Library<a class="headerlink" href="#net-library" title="Ссылка на этот заголовок">¶</a></h2>
 <p>This project is a .NET library, written in C# language, that simplifies
 the integration of C#, Visual Basic .NET, C++/CLI and JScript .NET
 applications with following scanner series: * RF627-old * RF627-smart</p>
 <table class="docutils align-default" id="id11">
-<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Last release libraries:</span><a class="headerlink" href="#id11" title="Постоянная ссылка на таблицу">¶</a></caption>
 <colgroup>
 <col style="width: 17%" />
 <col style="width: 41%" />
@@ -472,7 +479,7 @@ applications with following scanner series: * RF627-old * RF627-smart</p>
 </tbody>
 </table>
 <div class="section" id="id1">
-<h3>How to compile<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3>How to compile<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h3>
 <p>RF62X SDK (C#) can be built in an Visual Studio IDE.
 Firstly, you should download the project (if you have already done it, skip next commands)</p>
 <div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
@@ -481,11 +488,11 @@ git submodule update --init --recursive
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="admonition-title">Примечание</p>
 <p>for more information about project downloading steps, see an <a class="reference external" href="#overview">overview</a></p>
 </div>
 <div class="section" id="id2">
-<h4>Visual Studio<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<h4>Visual Studio<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h4>
 <p>To build the code:</p>
 <ul class="simple">
 <li><p>Open rf62Xsdk.sln from the <strong>wrappers/csharp/VS2019/rf62Xsdk</strong> folder
@@ -495,7 +502,7 @@ with Visual Studio</p></li>
 </div>
 </div>
 <div class="section" id="id3">
-<h3>How to use<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3>How to use<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h3>
 <p>Beside the examples below, you may want to check the documentation where
 each function contains a separate code example. All example project can
 be compiled and executed.</p>
@@ -510,10 +517,10 @@ be compiled and executed.</p>
 <li><p>Compile project</p></li>
 </ul>
 <div class="section" id="id4">
-<h4>Search for RF62X devices<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<h4>Search for RF62X devices<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h4>
 <p>Here are some examples how to use search methods</p>
 <div class="section" id="id5">
-<h5>Search for RF627-old devices over network by service protocol<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h5>
+<h5>Search for RF627-old devices over network by service protocol<a class="headerlink" href="#id5" title="Ссылка на этот заголовок">¶</a></h5>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
@@ -545,10 +552,10 @@ be compiled and executed.</p>
 </div>
 </div>
 <div class="section" id="id6">
-<h4>Get Profile from RF62X devices<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<h4>Get Profile from RF62X devices<a class="headerlink" href="#id6" title="Ссылка на этот заголовок">¶</a></h4>
 <p>Here are some examples how to use get profile methods</p>
 <div class="section" id="id7">
-<h5>Get Profile from RF627-old devices over network by service protocol<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h5>
+<h5>Get Profile from RF627-old devices over network by service protocol<a class="headerlink" href="#id7" title="Ссылка на этот заголовок">¶</a></h5>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
@@ -591,10 +598,10 @@ be compiled and executed.</p>
 </div>
 </div>
 <div class="section" id="id8">
-<h4>Get/Set RF62X-old parameters<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<h4>Get/Set RF62X-old parameters<a class="headerlink" href="#id8" title="Ссылка на этот заголовок">¶</a></h4>
 <p>Here are some examples how to work with device’s parameters</p>
 <div class="section" id="id9">
-<h5>Get/Set RF627-old parameters devices over network<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h5>
+<h5>Get/Set RF627-old parameters devices over network<a class="headerlink" href="#id9" title="Ссылка на этот заголовок">¶</a></h5>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
 <span class="k">using</span> <span class="nn">SDK.SCANNERS</span><span class="p">;</span>
@@ -672,8 +679,10 @@ be compiled and executed.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="tutorial/udp_port.html" class="btn btn-neutral float-right" title="Обмен через UDP-порт" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="rf62X_core.html" class="btn btn-neutral float-left" title="RF62X Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="rf62X_core.html" class="btn btn-neutral float-left" title="RF62X-CORE" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

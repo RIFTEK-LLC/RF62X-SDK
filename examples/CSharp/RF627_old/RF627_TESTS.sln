@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RF627_profile", "RF627_prof
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RF627_params", "RF627_params\RF627_params.csproj", "{C87898EC-85DA-46DA-97E2-4F1596DA52B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rf62Xsdk", "..\..\..\rf62Xsdk\CSharp\rf62Xsdk\rf62Xsdk\rf62Xsdk.csproj", "{5F966733-8E45-4844-8D56-5397A76F3EDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rf62Xsdk", "..\..\..\rf62Xwrappers\CSharp\rf62Xsdk\rf62Xsdk\rf62Xsdk.csproj", "{5F966733-8E45-4844-8D56-5397A76F3EDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

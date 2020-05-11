@@ -3,9 +3,7 @@
 #include <string>
 #include <iostream>
 
-using namespace SDK;
-using namespace SCANNERS;
-using namespace RF62X;
+using namespace SDK::SCANNERS::RF62X;
 
 int main()
 {

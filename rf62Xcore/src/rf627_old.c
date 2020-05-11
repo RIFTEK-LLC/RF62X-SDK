@@ -532,6 +532,7 @@ rf627_old_t* rf627_old_create_from_hello_msg(
     rf627_old->info_by_service_protocol.x_end = rf627_old->factory_params.general.range_x_end;
 
     rf627_old->msg_count = init_msg_count;
+    rf627_old->host_ip = network_platform.network_settings.host_ip_addr;
     return rf627_old;
 }
 
@@ -566,7 +567,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
 
 
     //recv_addr.sin_family = RF_AF_INET;
-    recv_ip_addr = 0;
+    recv_ip_addr = scanner->host_ip;
     recv_port = 0;
     //recv_addr.sin_addr = RF_INADDR_ANY;
 
@@ -593,7 +594,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
         recv_port = scanner->user_params.network.stream_port;
 
         //recv_addr.sin_addr = RF_INADDR_ANY;
-        recv_ip_addr = 0;
+        recv_ip_addr = scanner->host_ip;
 
         nret = network_platform.network_methods.socket_bind(
                     scanner->m_data_sock, recv_ip_addr, recv_port);

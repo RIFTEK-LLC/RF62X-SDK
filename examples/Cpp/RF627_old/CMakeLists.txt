@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BINARY_DIR}/lib")
 
 # set rf627sdk path variable
-set(RF62XSDK_DIR "../../../rf62Xsdk/Cpp/rf62Xsdk")
+set(RF62XSDK_DIR "../../../rf62Xwrappers/Cpp/rf62Xsdk")
 
 # add subdirectory of rf627sdk lib
 add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)
