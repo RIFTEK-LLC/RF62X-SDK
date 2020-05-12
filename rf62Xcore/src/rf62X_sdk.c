@@ -110,8 +110,18 @@ rfUint8 connect_to_scanner(scanner_base_t *device, protocol_types_t protocol)
     case kRF627_OLD:
         switch (protocol) {
         case kSERVICE:
-            return rf627_old_connect(device->rf627_old);
-            break;
+        {
+            rfBool result = FALSE;
+            rfInt32 times = 3;
+            for (rfInt32 i = 0; i < times; i++)
+                if (rf627_old_connect(device->rf627_old))
+                {
+                    result = TRUE;
+                    break;
+                }
+                else rf627_old_disconnect(device->rf627_old);
+            return result;
+        }
         case kETHERNET_IP:
         case kMODBUS_TCP:
             return 1; // RF627-old doesn't support this protocol

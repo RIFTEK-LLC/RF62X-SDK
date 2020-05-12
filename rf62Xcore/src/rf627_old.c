@@ -551,7 +551,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
     if (scanner->options.version > rf627_old_api_version())
     {
         iostream_platform.trace_error("This SDK version is not suitable");
-        return -1;
+        return FALSE;
     }
 
     scanner->m_svc_sock =
@@ -559,7 +559,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
 
     if (scanner->m_svc_sock == (void*)RF_SOCKET_ERROR)
     {
-        return -1;
+        return FALSE;
     }
 
     network_platform.network_methods.set_socket_recv_timeout(
@@ -577,7 +577,7 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
     {
         network_platform.network_methods.close_socket(scanner->m_svc_sock);
         scanner->m_svc_sock = NULL;
-        return -1;
+        return FALSE;
     }
 
 
@@ -602,17 +602,17 @@ rfBool rf627_old_connect(rf627_old_t* scanner)
         {
             network_platform.network_methods.close_socket(scanner->m_data_sock);
             scanner->m_data_sock = NULL;
-            return -1;
+            return FALSE;
         }
     }
     else
     {
         iostream_platform.trace_error("Create data socket error");
-        return -1;
+        return FALSE;
     }
 
 
-    return 1;
+    return TRUE;
 }
 
 void rf627_old_disconnect(rf627_old_t* scanner)
@@ -794,21 +794,6 @@ rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero
     memory_platform.rf_free(RX);
     memory_platform.rf_free(TX);
     return NULL;
-
-
-//    if (nret < msg_size) {
-//        //dprint("get_result!");
-//        //_mx[1].unlock();
-//        return NULL;
-//    }
-
-//    if (profile_header.data_type < DTY_PixelsNormal || msg->data_type > DTY_ProfileInterpolated) {
-//        //_mx[1].unlock();
-//        return NULL;
-//    }
-
-
-
 }
 
 rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat step_size, rfFloat k,

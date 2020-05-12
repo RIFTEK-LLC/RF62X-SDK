@@ -51,7 +51,8 @@ int main()
 
     }
 
-    system("pause");
+    // Cleanup resources allocated with sdk_init()
+    sdk_cleanup();
 }
 
 

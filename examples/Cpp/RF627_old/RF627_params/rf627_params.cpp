@@ -94,9 +94,13 @@ int main()
         //  Write changes parameters to the device's memory
         scanners[i]->write_params();
 
+        // Disconnect from scanner.
+        scanners[i]->disconnect();
+
     }
 
-    system("pause");
+    // Cleanup resources allocated with sdk_init()
+    sdk_cleanup();
 
 }
 

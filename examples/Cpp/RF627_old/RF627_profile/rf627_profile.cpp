@@ -40,6 +40,9 @@ int main()
         std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
         std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
 
+        while (true) {
+
+
         // Establish connection to the RF627 device by Service Protocol.
         list[i]->connect();
 
@@ -76,12 +79,12 @@ int main()
 
         // Disconnect from scanner.
         list[i]->disconnect();
+                }
 
     }
 
     // Cleanup resources allocated with sdk_init()
     sdk_cleanup();
-    system("pause");
 }
 
 
