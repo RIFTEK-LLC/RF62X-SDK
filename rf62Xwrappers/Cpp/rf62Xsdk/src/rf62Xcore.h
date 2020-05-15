@@ -11,9 +11,8 @@
 #define API_EXPORT
 #endif
 
-namespace SDK {
-namespace CORES {
-namespace RF62X {
+namespace SDK::CORES::RF62X
+{
 
 
 /**
@@ -30,10 +29,9 @@ API_EXPORT std::string version();
 API_EXPORT bool init();
 
 /**
- * @brief cleanup - Cleanup resources allocated with core_init() function
+ * @brief cleanup - Cleanup resources allocated with init() function
  */
 API_EXPORT void cleanup();
 
 }
-}
-}
+

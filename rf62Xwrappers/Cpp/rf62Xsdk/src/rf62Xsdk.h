@@ -12,11 +12,8 @@
 #define API_EXPORT
 #endif
 
-namespace SDK {
-namespace SCANNERS {
-namespace RF62X {
-
-
+namespace SDK::SCANNERS::RF62X
+{
 
 /**
  * @brief sdk_version - Return info about SDK version
@@ -36,7 +33,10 @@ API_EXPORT bool sdk_init();
  */
 API_EXPORT void sdk_cleanup();
 
-
+/**
+ * @brief rf627old - This class is the main interface
+ * for working with RF627-old series scanners.
+ */
 class API_EXPORT rf627old
 {
 
@@ -106,6 +106,11 @@ public:
      */
     static std::vector<rf627old*> search(PROTOCOLS protocol);
 
+    /**
+     * @brief get_info - Get information about scanner from hello packet
+     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return hello_info on success
+     */
     hello_info get_info(PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
      * @brief connect - Establish connection to the RF627old device
@@ -169,7 +174,13 @@ public:
      * @return param on success, else - null
      */
     param_t* get_param(std::string param_name);
-    param_t* get_param(PARAM_NAME_KEY param_name);
+
+    /**
+     * @brief get_param - Search parameters by his name's key
+     * @param param_name - name's key of parameter
+     * @return param on success, else - null
+     */
+    param_t* get_param(PARAM_NAME_KEY param_key);
     /**
      * @brief set_param - set parameter
      * @param param - prt to parameter
@@ -190,6 +201,5 @@ private:
 };
 
 }
-}
-}
+
 

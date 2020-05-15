@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @brief Header file with a description of the functions to run the core
+ *
+ * This file contains definitions of the main
+ * functions used to initialize the core.
+ */
+
 #ifndef RF62X_CORE_H
 #define RF62X_CORE_H
 
@@ -14,17 +22,19 @@
     #define dllexport
 #endif
 
-/*! Return rf627 sdk version
+/**
+ * @brief core_version - Return rf627 sdk version.
+ * @return ptr to rfChar
  */
 dllexport rfChar* core_version();
 
 
 /*!
- * \brief init_platform_dependent_methods - init platform dependent methods and settings
- * \param memory_methods
- * \param iostream_methods
- * \param network_methods
- * \param adapter_settings
+ * @brief init_platform_dependent_methods - Init platform dependent methods and settings
+ * @param memory_methods Structure with platform-specific methods for work with memory
+ * @param iostream_methods Structure with platform-specific methods for work with iostream
+ * @param network_methods Structure with platform-specific methods for work with network
+ * @param adapter_settings Structure with platform-specific settings
  */
 dllexport void init_platform_dependent_methods(
         memory_platform_dependent_methods_t* memory_methods,

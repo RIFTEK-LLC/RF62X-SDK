@@ -27,33 +27,44 @@
    :caption: Руководство программиста
 
    overview
-
    getting_started/_index
-   rf62X_core
-   rf62X_wrappers
+   sdk_compilation/_index
+   additional_info
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Описания API
+   
+   api_description/rf62Xcore
+   api_description/rf62Xsdk_cpp/_index
+   api_description/rf62Xsdk_csharp
+   api_description/rf62Xsdk_python
+   api_description/rf62Xsdk_labview
+   api_description/rf62Xsdk_matlab
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Примеры использования
 
-   tutorial/udp_port
-   tutorial/com_port
+   tutorial/doxygen
+   tutorial/rf62Xsdk_cpp
+   tutorial/rf62Xsdk_csharp
+   tutorial/rf62Xsdk_python
+   tutorial/rf62Xsdk_labview
+   tutorial/rf62Xsdk_matlab
 
-
-Docs
-====
-
-.. doxygenstruct:: cat
-   :members:
 
 -------------------------------------------------------------------------------
+
+.. |date| date:: %d/%m/%Y
 
 +-------------------+-------------------------------------------------------------+
 | Документация      | `www.riftek.com <https://riftek.com>`__                     |
 +-------------------+-------------------------------------------------------------+
 | Website           | `www.riftek.com <https://riftek.com>`__                     |
 +-------------------+-------------------------------------------------------------+
-| Версия документа  | 1.4.0 от 07.05.2020                                         |
+| Версия документа  | 1.4.0 от |date|                                             |
 +-------------------+-------------------------------------------------------------+
-| Версии библиотеки | 1.4.0 от 07.05.2020                                         |
+| Версии библиотеки | 1.4.0 от |date|                                             |
 +-------------------+-------------------------------------------------------------+

@@ -1,12 +1,24 @@
 find_package(Doxygen REQUIRED)
 
+##
+## PROJECT
+## name and version
+##
+project(Docs LANGUAGES CXX)
+
+
 # set rf627sdk path variable
 set(RF62XCORE_DIR "../rf62Xcore")
+set(RF62XSDK_DIR "../rf62Xwrappers/Cpp")
 
 # Find all the public headers
-file(GLOB RF62X_CORE_HEADERS ${RF62XCORE_DIR}/src/rf62X_core.h)
+file(GLOB_RECURSE RF62X_CORE_HEADERS
+    ${RF62XCORE_DIR}/*.h
+    ${RF62XSDK_DIR}/*.h
+    )
 
-set(DOXYGEN_INPUT_FILES ${RF62X_CORE_HEADERS})
+set(DOXYGEN_INPUT_CORE_DIR ${RF62XCORE_DIR})
+set(DOXYGEN_INPUT_SDK_DIR ${RF62XSDK_DIR})
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build/doxygen)
 set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
 set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/source_ru/Doxyfile.in)

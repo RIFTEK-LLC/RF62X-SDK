@@ -1,3 +1,12 @@
+/**
+ * @file
+ * @brief Header file with a description of the basic functions
+ *
+ * This file contains definitions of the main
+ * functions used for development.
+ */
+
+
 #ifndef RF62X_SDK_H
 #define RF62X_SDK_H
 
@@ -14,13 +23,15 @@
 
 /**
  * @brief change_platform_adapter_settings - change adapter's settings
- * @param adapter_settings
+ * @param[in] subnet_mask Subnet mask on your local machine. A subnet mask is a
+ * number that defines a range of IP addresses that can be used in a network.
+ * @param[in] host_ip_addr IP address of your network adapter(card)
  */
 dllexport void set_platform_adapter_settings(
-        rfUint32 host_mask, rfUint32 host_ip_addr);
+        rfUint32 subnet_mask, rfUint32 host_ip_addr);
 
 /**
- * @brief search - Search for RF627 devices over network
+ * @brief search - Search for RF62X devices over network
  * @param list - ptr to list of rf627 objects. If not null list will be filled with found devices
  * @param model - scanner's type (RF627-old, RF627-smart)
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -39,7 +50,7 @@ dllexport hello_information get_info_about_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
- * @brief connect - Establish connection to the RF627 device
+ * @brief connect - Establish connection to the RF62X device
  * @param device - prt to scanner
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return 0 on success

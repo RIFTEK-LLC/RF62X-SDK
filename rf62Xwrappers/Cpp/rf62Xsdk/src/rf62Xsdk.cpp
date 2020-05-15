@@ -41,9 +41,8 @@ bool SDK::SCANNERS::RF62X::sdk_init()
     return SDK::CORES::RF62X::init();
 }
 
-namespace SDK {
-namespace SCANNERS {
-namespace RF62X {
+namespace SDK::SCANNERS::RF62X
+{
 
 class convert{
     public:
@@ -569,55 +568,55 @@ bool rf627old::write_params(PROTOCOLS protocol)
 param_t* create_param_from_type(std::string type)
 {
     param_t* p = nullptr;
-    if(type == pvtKey[PVT_UINT])
+    if(type == parameter_value_types[PVT_UINT])
     {
         p = new value_uint32();
         p->type = type;
-    }else if(type == pvtKey[PVT_UINT64])
+    }else if(type == parameter_value_types[PVT_UINT64])
     {
         p = new value_uint64();
         p->type = type;
-    }else if(type == pvtKey[PVT_INT])
+    }else if(type == parameter_value_types[PVT_INT])
     {
         p = new value_int32();
         p->type = type;
-    }else if(type == pvtKey[PVT_INT64])
+    }else if(type == parameter_value_types[PVT_INT64])
     {
         p = new value_int64();
         p->type = type;
-    }else if(type == pvtKey[PVT_FLOAT])
+    }else if(type == parameter_value_types[PVT_FLOAT])
     {
         p = new value_flt();
         p->type = type;
-    }else if(type == pvtKey[PVT_DOUBLE])
+    }else if(type == parameter_value_types[PVT_DOUBLE])
     {
         p = new value_dbl();
         p->type = type;
-    }else if(type == pvtKey[PVT_ARRAY_UINT32])
+    }else if(type == parameter_value_types[PVT_ARRAY_UINT32])
     {
         p = new array_uint32();
         p->type = type;
-    }else if(type == pvtKey[PVT_ARRAY_UINT64])
+    }else if(type == parameter_value_types[PVT_ARRAY_UINT64])
     {
         p = new array_uint64();
         p->type = type;
-    }else if(type == pvtKey[PVT_ARRAY_INT32])
+    }else if(type == parameter_value_types[PVT_ARRAY_INT32])
     {
         p = new array_int32();
         p->type = type;
-    }else if(type == pvtKey[PVT_ARRAY_INT64])
+    }else if(type == parameter_value_types[PVT_ARRAY_INT64])
     {
         p = new array_int64();
         p->type = type;
-    }else if(type == pvtKey[PVT_ARRAY_FLT])
+    }else if(type == parameter_value_types[PVT_ARRAY_FLT])
     {
         p = new array_flt();
         p->type = type;
-    }else if(type == pvtKey[PVT_ARRAY_DBL])
+    }else if(type == parameter_value_types[PVT_ARRAY_DBL])
     {
         p = new array_dbl();
         p->type = type;
-    }else if(type == pvtKey[PVT_STRING])
+    }else if(type == parameter_value_types[PVT_STRING])
     {
         p = new value_str();
         p->type = type;
@@ -639,7 +638,7 @@ param_t *rf627old::get_param(std::string param_name)
         param_t* result = create_param_from_type(std::string(p->base.type));
 
 
-        if (result->type == pvtKey[PVT_UINT])
+        if (result->type == parameter_value_types[PVT_UINT])
         {
             result->set_value<value_uint32_t>(p->val_uint32->value);
             result->name = p->base.name;
@@ -660,7 +659,7 @@ param_t *rf627old::get_param(std::string param_name)
                             p->val_uint32->enumValues->rec[i].value,
                             p->val_uint32->enumValues->rec[i].key));
         }
-        else if (result->type == pvtKey[PVT_UINT64])
+        else if (result->type == parameter_value_types[PVT_UINT64])
         {
             result->set_value<value_uint64_t>(p->val_uint64->value);
             result->name = p->base.name;
@@ -681,7 +680,7 @@ param_t *rf627old::get_param(std::string param_name)
                             p->val_uint64->enumValues->rec[i].value,
                             p->val_uint64->enumValues->rec[i].key));
         }
-        else if (result->type == pvtKey[PVT_INT])
+        else if (result->type == parameter_value_types[PVT_INT])
         {
             result->set_value<value_int32_t>(p->val_int32->value);
             result->name = p->base.name;
@@ -703,7 +702,7 @@ param_t *rf627old::get_param(std::string param_name)
                             p->val_int32->enumValues->rec[i].key));
 
         }
-        else if (result->type == pvtKey[PVT_INT64])
+        else if (result->type == parameter_value_types[PVT_INT64])
         {
             result->set_value<value_int64_t>(p->val_int64->value);
             result->name = p->base.name;
@@ -725,7 +724,7 @@ param_t *rf627old::get_param(std::string param_name)
                             p->val_int64->enumValues->rec[i].key));
 
         }
-        else if (result->type == pvtKey[PVT_FLOAT])
+        else if (result->type == parameter_value_types[PVT_FLOAT])
         {
             result->set_value<value_flt_t>(p->val_flt->value);
             result->name = p->base.name;
@@ -740,7 +739,7 @@ param_t *rf627old::get_param(std::string param_name)
             ((value_flt*)result)->min = p->val_flt->min;
             ((value_flt*)result)->max = p->val_flt->max;
         }
-        else if (result->type == pvtKey[PVT_DOUBLE])
+        else if (result->type == parameter_value_types[PVT_DOUBLE])
         {
             result->set_value<value_dbl_t>(p->val_dbl->value);
             result->name = p->base.name;
@@ -755,7 +754,7 @@ param_t *rf627old::get_param(std::string param_name)
             ((value_dbl*)result)->min = p->val_dbl->min;
             ((value_dbl*)result)->max = p->val_dbl->max;
         }
-        else if (result->type == pvtKey[PVT_ARRAY_UINT32])
+        else if (result->type == parameter_value_types[PVT_ARRAY_UINT32])
         {
             //result->set_value<array_uint32_t>(p->arr_uint32->value);
             result->name = p->base.name;
@@ -792,7 +791,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_uint32_param(p, array_uint_t, min);
 //            parse_uint32_param(p, array_uint_t, max);
         }
-        else if (result->type == pvtKey[PVT_ARRAY_UINT64])
+        else if (result->type == parameter_value_types[PVT_ARRAY_UINT64])
         {
 //            parse_string_param(p, array_uint64_t, name);
 //            parse_string_param(p, array_uint64_t, type);
@@ -812,7 +811,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_uint64_param(p, array_uint64_t, min);
 //            parse_uint64_param(p, array_uint64_t, max);
         }
-        else if (result->type == pvtKey[PVT_ARRAY_INT32])
+        else if (result->type == parameter_value_types[PVT_ARRAY_INT32])
         {
 //            parse_string_param(p, array_int32_t, name);
 //            parse_string_param(p, array_int32_t, type);
@@ -832,7 +831,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_int32_param(p, array_int32_t, min);
 //            parse_int32_param(p, array_int32_t, max);
         }
-        else if (result->type == pvtKey[PVT_ARRAY_INT64])
+        else if (result->type == parameter_value_types[PVT_ARRAY_INT64])
         {
 //            parse_string_param(p, array_int64_t, name);
 //            parse_string_param(p, array_int64_t, type);
@@ -852,7 +851,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_int64_param(p, array_int64_t, min);
 //            parse_int64_param(p, array_int64_t, max);
         }
-        else if (result->type == pvtKey[PVT_ARRAY_FLT])
+        else if (result->type == parameter_value_types[PVT_ARRAY_FLT])
         {
 //            parse_string_param(p, array_flt_t, name);
 //            parse_string_param(p, array_flt_t, type);
@@ -872,7 +871,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_float_param(p, array_flt_t, min);
 //            parse_float_param(p, array_flt_t, max);
         }
-        else if (result->type == pvtKey[PVT_ARRAY_DBL])
+        else if (result->type == parameter_value_types[PVT_ARRAY_DBL])
         {
 //            parse_string_param(p, array_dbl_t, name);
 //            parse_string_param(p, array_dbl_t, type);
@@ -892,7 +891,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_double_param(p, array_dbl_t, min);
 //            parse_double_param(p, array_dbl_t, max);
         }
-        else if (result->type == pvtKey[PVT_STRING])
+        else if (result->type == parameter_value_types[PVT_STRING])
         {
             result->set_value<value_str_t>(p->val_str->value);
             result->name = p->base.name;
@@ -910,7 +909,7 @@ param_t *rf627old::get_param(std::string param_name)
 //            parse_string_param(p, value_str_t, value);
 //            parse_uint16_param(p, value_str_t, maxLen);
 
-        }else if (result->type == pvtKey[PVT_UNKN])
+        }else if (result->type == parameter_value_types[PVT_UNKN])
         {
 //            parse_string_param(p, value_raw_t, name);
 //            parse_string_param(p, value_raw_t, type);
@@ -932,67 +931,67 @@ param_t *rf627old::get_param(std::string param_name)
 parameter_t* create_parameter_from_type(std::string type)
 {
     parameter_t* p = NULL;
-    if (type == pvtKey[PVT_UINT])
+    if (type == parameter_value_types[PVT_UINT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_uint32 = (value_uint32_t*)calloc(1, sizeof (p->val_uint32));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT_PARAM_TYPE].c_str();
-    }else if (type == pvtKey[PVT_UINT64])
+    }else if (type == parameter_value_types[PVT_UINT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_uint64 = (value_uint64_t*)calloc(1, sizeof (value_uint64_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_INT])
+    }else if (type ==  parameter_value_types[PVT_INT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_int32 = (value_int32_t*)calloc(1, sizeof (value_int32_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_INT64])
+    }else if (type ==  parameter_value_types[PVT_INT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_int64 = (value_int64_t*)calloc(1, sizeof (value_int64_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_FLOAT])
+    }else if (type ==  parameter_value_types[PVT_FLOAT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_flt = (value_flt_t*)calloc(1, sizeof (value_flt_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLOAT_PARAM_TYPE].c_str();
-    }else if(type ==  pvtKey[PVT_DOUBLE])
+    }else if(type ==  parameter_value_types[PVT_DOUBLE])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_dbl = (value_dbl_t*)calloc(1, sizeof (value_dbl_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::DOUBLE_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_ARRAY_UINT32])
+    }else if (type ==  parameter_value_types[PVT_ARRAY_UINT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_uint32 = (array_uint32_t*)calloc(1, sizeof (array_uint32_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_ARRAY_UINT64])
+    }else if (type ==  parameter_value_types[PVT_ARRAY_UINT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_uint64 = (array_uint64_t*)calloc(1, sizeof (array_uint64_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_ARRAY_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_ARRAY_INT32])
+    }else if (type ==  parameter_value_types[PVT_ARRAY_INT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_int32 = (array_int32_t*)calloc(1, sizeof (array_int32_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT32_ARRAY_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_ARRAY_INT64])
+    }else if (type ==  parameter_value_types[PVT_ARRAY_INT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_int64 = (array_int64_t*)calloc(1, sizeof (array_int64_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_ARRAY_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_ARRAY_FLT])
+    }else if (type ==  parameter_value_types[PVT_ARRAY_FLT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_flt = (array_flt_t*)calloc(1, sizeof (array_flt_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLT_ARRAY_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_ARRAY_DBL])
+    }else if (type ==  parameter_value_types[PVT_ARRAY_DBL])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_dbl = (array_dbl_t*)calloc(1, sizeof (array_dbl_t));
         p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::DBL_ARRAY_PARAM_TYPE].c_str();
-    }else if (type ==  pvtKey[PVT_STRING])
+    }else if (type ==  parameter_value_types[PVT_STRING])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_str = (value_str_t*)calloc(1, sizeof (value_str_t));
@@ -1010,36 +1009,36 @@ bool rf627old::set_param(param_t* param)
         p->base.type = param->type.c_str();
         p->base.access = param->access.c_str();
         p->base.units = param->units.c_str();
-        if (param->type == pvtKey[PVT_STRING])
+        if (param->type == parameter_value_types[PVT_STRING])
         {
             p->val_str->value = (char*)param->get_value<value_str>().c_str();
             p->base.size = param->get_value<value_str>().size() + 1;
         }
-        else if (param->type == pvtKey[PVT_INT])
+        else if (param->type == parameter_value_types[PVT_INT])
         {
             p->val_int32->value = param->get_value<value_int32>();
         }
-        else if (param->type == pvtKey[PVT_INT64])
+        else if (param->type == parameter_value_types[PVT_INT64])
         {
             p->val_int64->value = param->get_value<value_int64>();
         }
-        else if (param->type == pvtKey[PVT_UINT])
+        else if (param->type == parameter_value_types[PVT_UINT])
         {
             p->val_uint32->value = param->get_value<value_uint32>();
         }
-        else if (param->type == pvtKey[PVT_UINT64])
+        else if (param->type == parameter_value_types[PVT_UINT64])
         {
             p->val_uint64->value = param->get_value<value_uint64>();
         }
-        else if (param->type == pvtKey[PVT_FLOAT])
+        else if (param->type == parameter_value_types[PVT_FLOAT])
         {
             p->val_flt->value = param->get_value<value_flt>();
         }
-        else if (param->type ==  pvtKey[PVT_DOUBLE])
+        else if (param->type ==  parameter_value_types[PVT_DOUBLE])
         {
             p->val_dbl->value = param->get_value<value_dbl>();
         }
-        else if (param->type ==  pvtKey[PVT_ARRAY_UINT32])
+        else if (param->type ==  parameter_value_types[PVT_ARRAY_UINT32])
         {
             std::vector<uint32_t> v = param->get_value<array_uint32>();
             p->arr_uint32->value = (rfUint32*)calloc(v.size(), sizeof (rfUint32));
@@ -1301,5 +1300,4 @@ void sdk_cleanup()
 
 
 }
-}
-}
+
