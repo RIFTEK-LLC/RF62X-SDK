@@ -291,57 +291,57 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
             while (vector_count(device->rf627_old->params_list) > 0) {
                 parameter_t* p = vector_get(device->rf627_old->params_list, vector_count(device->rf627_old->params_list)-1);
 
-                if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
+                if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
                 {
                     memory_platform.rf_free(p->val_uint32);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
                 {
                     memory_platform.rf_free(p->val_uint64);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
                 {
                     memory_platform.rf_free(p->val_int32);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
                 {
                     memory_platform.rf_free(p->val_int64);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_FLOAT]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
                 {
                     memory_platform.rf_free(p->val_flt);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_DOUBLE]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
                 {
                     memory_platform.rf_free(p->val_dbl);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
                 {
                     //memory_platform.rf_free(p->arr_uint32->value);
                     //memory_platform.rf_free(p->arr_uint32->defValue);
                     memory_platform.rf_free(p->arr_uint32);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT64]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT64]) == 0)
                 {
                     memory_platform.rf_free(p->arr_uint64);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_INT32]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_INT32]) == 0)
                 {
                     memory_platform.rf_free(p->arr_int32);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_INT64]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_INT64]) == 0)
                 {
                     memory_platform.rf_free(p->arr_int64);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_FLT]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_FLT]) == 0)
                 {
                     memory_platform.rf_free(p->arr_flt);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_DBL]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_DBL]) == 0)
                 {
                     memory_platform.rf_free(p->arr_dbl);
                     //memory_platform.rf_free(p);
-                }else if (rf_strcmp(p->base.type, pvtKey[PVT_STRING]) == 0)
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
                 {
                     //memory_platform.rf_free(p->val_str->value);
                     memory_platform.rf_free(p->val_str);
