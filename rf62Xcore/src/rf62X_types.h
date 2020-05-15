@@ -738,7 +738,7 @@ typedef enum {
 
 }parameter_name_keys_t;
 
-const static rfChar* parameter_names_array[]	=
+const static rfChar* parameter_names[]	=
 {
     "fact_general_protocolRev",
     "fact_general_deviceType",
@@ -907,7 +907,7 @@ const static rfChar* parameter_names_array[]	=
 
 };
 
-const static rfChar* pvtKey[]	=
+const static rfChar* parameter_value_types[]	=
 {
     "unkn_t",
     "uint32_t",
@@ -1125,7 +1125,7 @@ typedef struct
 
 typedef struct
 {
-    const char* name;
+    const rfChar* name;
     va_list arg_list;
 }command_t;
 
