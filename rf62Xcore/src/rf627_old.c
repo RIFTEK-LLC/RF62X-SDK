@@ -991,74 +991,74 @@ rf627_old_profile3D_t* rf627_old_get_profile3D(rf627_old_t* scanner, rfFloat ste
 parameter_t* create_parameter_from_type(const rfChar* type)
 {
     parameter_t* p = NULL;
-    if(rf_strcmp(pvtKey[PVT_UINT], type) == 0)
+    if(rf_strcmp(parameter_value_types[PVT_UINT], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_uint32 = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
-        p->base.type = pvtKey[PVT_UINT];
+        p->base.type = parameter_value_types[PVT_UINT];
 //        rfUint16 len = rf_strlen(type) + 1;
 //        p->base.type = memory_platform.rf_calloc(1, sizeof(rfChar) * len);
 //        memory_platform.rf_memcpy((void*)p->base.type, type, len);
-    }else if(rf_strcmp(pvtKey[PVT_UINT64], type) == 0)
+    }else if(rf_strcmp(parameter_value_types[PVT_UINT64], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_uint64 = memory_platform.rf_calloc(1, sizeof (value_uint64_t));
-        p->base.type = pvtKey[PVT_UINT64];
-    }else if(rf_strcmp(pvtKey[PVT_INT], type) == 0)
+        p->base.type = parameter_value_types[PVT_UINT64];
+    }else if(rf_strcmp(parameter_value_types[PVT_INT], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_int32 = memory_platform.rf_calloc(1, sizeof (value_uint32_t));
-        p->base.type = pvtKey[PVT_INT];
-    }else if(rf_strcmp(pvtKey[PVT_INT64], type) == 0)
+        p->base.type = parameter_value_types[PVT_INT];
+    }else if(rf_strcmp(parameter_value_types[PVT_INT64], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_int64 = memory_platform.rf_calloc(1, sizeof (value_int64_t));
-        p->base.type = pvtKey[PVT_INT64];
-    }else if(rf_strcmp(pvtKey[PVT_FLOAT], type) == 0)
+        p->base.type = parameter_value_types[PVT_INT64];
+    }else if(rf_strcmp(parameter_value_types[PVT_FLOAT], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_flt = memory_platform.rf_calloc(1, sizeof (value_flt_t));
-        p->base.type = pvtKey[PVT_FLOAT];
-    }else if(rf_strcmp(pvtKey[PVT_DOUBLE], type) == 0)
+        p->base.type = parameter_value_types[PVT_FLOAT];
+    }else if(rf_strcmp(parameter_value_types[PVT_DOUBLE], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_dbl = memory_platform.rf_calloc(1, sizeof (value_dbl_t));
-        p->base.type = pvtKey[PVT_DOUBLE];
-    }else if(rf_strcmp(pvtKey[PVT_ARRAY_UINT32], type) == 0)
+        p->base.type = parameter_value_types[PVT_DOUBLE];
+    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT32], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->arr_uint32 = memory_platform.rf_calloc(1, sizeof (array_uint32_t));
-        p->base.type = pvtKey[PVT_ARRAY_UINT32];
-    }else if(rf_strcmp(pvtKey[PVT_ARRAY_UINT64], type) == 0)
+        p->base.type = parameter_value_types[PVT_ARRAY_UINT32];
+    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT64], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->arr_uint64 = memory_platform.rf_calloc(1, sizeof (array_uint64_t));
-        p->base.type = pvtKey[PVT_ARRAY_UINT64];
-    }else if(rf_strcmp(pvtKey[PVT_ARRAY_INT32], type) == 0)
+        p->base.type = parameter_value_types[PVT_ARRAY_UINT64];
+    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT32], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->arr_int32 = memory_platform.rf_calloc(1, sizeof (array_int32_t));
-        p->base.type = pvtKey[PVT_ARRAY_INT32];
-    }else if(rf_strcmp(pvtKey[PVT_ARRAY_INT64], type) == 0)
+        p->base.type = parameter_value_types[PVT_ARRAY_INT32];
+    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT64], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->arr_int64 = memory_platform.rf_calloc(1, sizeof (array_int64_t));
-        p->base.type = pvtKey[PVT_ARRAY_INT64];
-    }else if(rf_strcmp(pvtKey[PVT_ARRAY_FLT], type) == 0)
+        p->base.type = parameter_value_types[PVT_ARRAY_INT64];
+    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_FLT], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->arr_flt = memory_platform.rf_calloc(1, sizeof (array_flt_t));
-        p->base.type = pvtKey[PVT_ARRAY_FLT];
-    }else if(rf_strcmp(pvtKey[PVT_ARRAY_DBL], type) == 0)
+        p->base.type = parameter_value_types[PVT_ARRAY_FLT];
+    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_DBL], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->arr_dbl = memory_platform.rf_calloc(1, sizeof (array_dbl_t));
-        p->base.type = pvtKey[PVT_ARRAY_DBL];
-    }else if(rf_strcmp(pvtKey[PVT_STRING], type) == 0)
+        p->base.type = parameter_value_types[PVT_ARRAY_DBL];
+    }else if(rf_strcmp(parameter_value_types[PVT_STRING], type) == 0)
     {
         p = memory_platform.rf_calloc(1, sizeof (parameter_t));
         p->val_str = memory_platform.rf_calloc(1, sizeof (value_str_t));
-        p->base.type = pvtKey[PVT_STRING];
+        p->base.type = parameter_value_types[PVT_STRING];
     }
     return p;
 }
@@ -1078,7 +1078,7 @@ rfInt* get_value_by_key_from_enum(valuesEnum_t* values_enum, char* key)
 
 rfBool set_value_by_key(parameter_t* p, char* key)
 {
-    if (rf_strcmp(pvtKey[PVT_INT], p->base.type))
+    if (rf_strcmp(parameter_value_types[PVT_INT], p->base.type))
     {
         for (rfInt32 idx = 0; idx < p->val_int32->enumValues->recCount; idx++)
         {
@@ -1089,7 +1089,7 @@ rfBool set_value_by_key(parameter_t* p, char* key)
             }
         }
     }else
-    if (rf_strcmp(pvtKey[PVT_UINT], p->base.type))
+    if (rf_strcmp(parameter_value_types[PVT_UINT], p->base.type))
     {
         for (rfInt32 idx = 0; idx < p->val_uint32->enumValues->recCount; idx++)
         {
@@ -1100,7 +1100,7 @@ rfBool set_value_by_key(parameter_t* p, char* key)
             }
         }
     }else
-    if (rf_strcmp(pvtKey[PVT_INT64], p->base.type))
+    if (rf_strcmp(parameter_value_types[PVT_INT64], p->base.type))
     {
         for (rfInt32 idx = 0; idx < p->val_int64->enumValues->recCount; idx++)
         {
@@ -1111,7 +1111,7 @@ rfBool set_value_by_key(parameter_t* p, char* key)
             }
         }
     }else
-    if (rf_strcmp(pvtKey[PVT_UINT64], p->base.type))
+    if (rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type))
     {
         for (rfInt32 idx = 0; idx < p->val_uint64->enumValues->recCount; idx++)
         {
@@ -1196,8 +1196,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 rfUint16 index = 0;
-                parameter_t* p = create_parameter_from_type(pvtKey[PVT_STRING]);
-                p->base.name = parameter_names_array[USER_GENERAL_DEVICENAME];
+                parameter_t* p = create_parameter_from_type(parameter_value_types[PVT_STRING]);
+                p->base.name = parameter_names[USER_GENERAL_DEVICENAME];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 0;
@@ -1215,8 +1215,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_GENERAL_SAVELOG];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_GENERAL_SAVELOG];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 64;
@@ -1236,8 +1236,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_FPGATEMP];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_FPGATEMP];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 192;
@@ -1253,8 +1253,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SYSMON_PARAMSCHANGED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SYSMON_PARAMSCHANGED];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 194;
@@ -1270,8 +1270,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS00];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS00];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 195;
@@ -1287,8 +1287,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS00MAX];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS00MAX];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 197;
@@ -1304,8 +1304,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS00MIN];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS00MIN];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 199;
@@ -1321,8 +1321,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS01];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS01];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 201;
@@ -1338,8 +1338,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS01MAX];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS01MAX];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 203;
@@ -1355,8 +1355,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS01MIN];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS01MIN];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 205;
@@ -1372,8 +1372,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS10];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS10];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 207;
@@ -1389,8 +1389,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS10MAX];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS10MAX];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 209;
@@ -1406,8 +1406,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS10MIN];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS10MIN];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 211;
@@ -1423,8 +1423,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS11];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS11];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 213;
@@ -1440,8 +1440,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS11MAX];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS11MAX];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 215;
@@ -1457,8 +1457,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_FLOAT]);
-                p->base.name = parameter_names_array[USER_SYSMON_TEMPSENS11MIN];
+                p = create_parameter_from_type(parameter_value_types[PVT_FLOAT]);
+                p->base.name = parameter_names[USER_SYSMON_TEMPSENS11MIN];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 217;
@@ -1474,8 +1474,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_COMPATIBILITY_RF625ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_COMPATIBILITY_RF625ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 274;
@@ -1495,8 +1495,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 vector_add(scanner->params_list, p);
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_COMPATIBILITY_RF625TCPPORT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_COMPATIBILITY_RF625TCPPORT];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 275;
@@ -1512,8 +1512,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_DOUBLESPEEDENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_DOUBLESPEEDENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 309;
@@ -1533,8 +1533,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 vector_add(scanner->params_list, p);
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_ANALOGGAIN];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_ANALOGGAIN];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 310;
@@ -1550,8 +1550,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_DIGITALGAIN];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_DIGITALGAIN];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 311;
@@ -1567,8 +1567,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_EXPOSURE1];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_EXPOSURE1];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 312;
@@ -1584,8 +1584,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_MAXEXPOSURE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_MAXEXPOSURE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 316;
@@ -1601,8 +1601,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_FRAMERATE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_FRAMERATE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 320;
@@ -1618,8 +1618,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_MAXFRAMERATE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_MAXFRAMERATE];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 324;
@@ -1637,8 +1637,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 // exposure_hdr_mode
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_EXPOSURECONTROL];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_EXPOSURECONTROL];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 329;
@@ -1659,8 +1659,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_EDRTYPE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_EDRTYPE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 330;
@@ -1681,8 +1681,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_SENSOR_EDRCOLUMNDIVIDER];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_SENSOR_EDRCOLUMNDIVIDER];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 331;
@@ -1702,8 +1702,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //roi
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_ROI_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_ROI_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 392;
@@ -1724,8 +1724,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_ROI_ACTIVE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_ROI_ACTIVE];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 393;
@@ -1746,8 +1746,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_ROI_SIZE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_ROI_SIZE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 394;
@@ -1763,8 +1763,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_ROI_POSMODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_ROI_POSMODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 396;
@@ -1785,8 +1785,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_ROI_POS];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_ROI_POS];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 397;
@@ -1802,8 +1802,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
                 //auto_position
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_ROI_REQPROFSIZE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_ROI_REQPROFSIZE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 401;
@@ -1819,8 +1819,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //network
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_NETWORK_SPEED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_NETWORK_SPEED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 483;
@@ -1841,8 +1841,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_NETWORK_AUTONEG];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_NETWORK_AUTONEG];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 485;
@@ -1864,8 +1864,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
-                p->base.name = parameter_names_array[USER_NETWORK_IP];
+                p = create_parameter_from_type(parameter_value_types[PVT_ARRAY_UINT32]);
+                p->base.name = parameter_names[USER_NETWORK_IP];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 486;
@@ -1889,8 +1889,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
-                p->base.name = parameter_names_array[USER_NETWORK_MASK];
+                p = create_parameter_from_type(parameter_value_types[PVT_ARRAY_UINT32]);
+                p->base.name = parameter_names[USER_NETWORK_MASK];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 490;
@@ -1914,8 +1914,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
-                p->base.name = parameter_names_array[USER_NETWORK_GATEWAY];
+                p = create_parameter_from_type(parameter_value_types[PVT_ARRAY_UINT32]);
+                p->base.name = parameter_names[USER_NETWORK_GATEWAY];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 494;
@@ -1939,8 +1939,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
-                p->base.name = parameter_names_array[USER_NETWORK_HOSTIP];
+                p = create_parameter_from_type(parameter_value_types[PVT_ARRAY_UINT32]);
+                p->base.name = parameter_names[USER_NETWORK_HOSTIP];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 498;
@@ -1964,8 +1964,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_NETWORK_HOSTPORT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_NETWORK_HOSTPORT];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 502;
@@ -1981,8 +1981,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_NETWORK_WEBPORT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_NETWORK_WEBPORT];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 504;
@@ -1998,8 +1998,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_NETWORK_SERVICEPORT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_NETWORK_SERVICEPORT];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 506;
@@ -2015,8 +2015,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //stream
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_STREAMS_UDPENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_STREAMS_UDPENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 576;
@@ -2037,8 +2037,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_STREAMS_FORMAT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_STREAMS_FORMAT];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 577;
@@ -2059,8 +2059,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_STREAMS_INCLUDEINTENSITY];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_STREAMS_INCLUDEINTENSITY];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 579;
@@ -2081,8 +2081,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //image_processing
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_PROCESSING_THRESHOLD];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_PROCESSING_THRESHOLD];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 611;
@@ -2098,8 +2098,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
                 //filter_width
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_PROCESSING_MODE];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_PROCESSING_MODE];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 616;
@@ -2119,8 +2119,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
                 //reduce_noise
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_PROCESSING_PROFPERSEC];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_PROCESSING_PROFPERSEC];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 618;
@@ -2136,8 +2136,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_PROCESSING_MEDIANMODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_PROCESSING_MEDIANMODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 622;
@@ -2157,8 +2157,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_PROCESSING_BILATERALMODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_PROCESSING_BILATERALMODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 623;
@@ -2178,8 +2178,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_PROCESSING_PEAKMODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_PROCESSING_PEAKMODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 624;
@@ -2199,8 +2199,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_PROCESSING_FLIP];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_PROCESSING_FLIP];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 625;
@@ -2221,8 +2221,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //laser
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_LASER_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_LASER_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 682;
@@ -2242,8 +2242,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_LASER_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_LASER_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 683;
@@ -2263,8 +2263,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_LASER_VALUE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_LASER_VALUE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 684;
@@ -2280,8 +2280,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //inputs
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_INPUTS_PRESET];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_INPUTS_PRESET];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 718;
@@ -2297,8 +2297,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_INPUTS_PARAMS_MASK];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_INPUTS_PARAMS_MASK];
 //                p->base.access = patKey[PAT_READ_ONLY];
 //                p->base.index = index++;
 //                p->base.offset = 719 + 26*scanner->user_params.inputs.preset_index;
@@ -2315,8 +2315,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                vector_add(scanner->params_list, p);
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT1_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT1_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 721 + 26*scanner->user_params.inputs.preset_index;
@@ -2338,8 +2338,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT1_MODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT1_MODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 722 + 26*scanner->user_params.inputs.preset_index;
@@ -2361,8 +2361,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_INPUTS_1_DELAY];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_INPUTS_1_DELAY];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 723 + 26*scanner->user_params.inputs.preset_index;
@@ -2380,8 +2380,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT1_SAMPLES];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT1_SAMPLES];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 727 + 26*scanner->user_params.inputs.preset_index;
@@ -2399,8 +2399,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT2_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT2_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 728 + 26*scanner->user_params.inputs.preset_index;
@@ -2422,8 +2422,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT2_MODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT2_MODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 729 + 26*scanner->user_params.inputs.preset_index;
@@ -2445,8 +2445,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_INPUTS_2_INVERSE];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_INPUTS_2_INVERSE];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 730 + 26*scanner->user_params.inputs.preset_index;
@@ -2467,8 +2467,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                vector_add(scanner->params_list, p);
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT3_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT3_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 731 + 26*scanner->user_params.inputs.preset_index;
@@ -2490,8 +2490,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_INPUT3_MODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_INPUT3_MODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 732 + 26*scanner->user_params.inputs.preset_index;
@@ -2513,8 +2513,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //outputs
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_OUTPUT1_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_OUTPUT1_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 1063;
@@ -2534,8 +2534,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_OUTPUT1_MODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_OUTPUT1_MODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 1064;
@@ -2555,8 +2555,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_OUTPUTS_1_DELAY];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_OUTPUTS_1_DELAY];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 1065;
@@ -2572,8 +2572,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_OUTPUT1_PULSEWIDTH];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_OUTPUT1_PULSEWIDTH];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 1069;
@@ -2589,8 +2589,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_OUTPUTS_1_INVERSE];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_OUTPUTS_1_INVERSE];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 1073;
@@ -2610,8 +2610,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_OUTPUT2_ENABLED];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_OUTPUT2_ENABLED];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 1074;
@@ -2631,8 +2631,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_OUTPUT2_MODE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_OUTPUT2_MODE];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 1075;
@@ -2652,8 +2652,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_OUTPUTS_2_DELAY];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_OUTPUTS_2_DELAY];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 1076;
@@ -2669,8 +2669,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[USER_OUTPUT2_PULSEWIDTH];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_OUTPUT2_PULSEWIDTH];
                 p->base.access = patKey[PAT_WRITE];
                 p->base.index = index++;
                 p->base.offset = 1080;
@@ -2686,8 +2686,8 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-//                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-//                p->base.name = parameter_names_array[USER_OUTPUTS_2_INVERSE];
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_OUTPUTS_2_INVERSE];
 //                p->base.access = patKey[PAT_WRITE];
 //                p->base.index = index++;
 //                p->base.offset = 1084;
@@ -2786,8 +2786,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
                 rfUint16 index = 0;
-                parameter_t* p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_DEVICETYPE];
+                parameter_t* p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_DEVICETYPE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 0;
@@ -2803,8 +2803,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_SERIAL];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_SERIAL];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 2;
@@ -2820,8 +2820,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_PCBSERIAL];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_PCBSERIAL];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 6;
@@ -2837,8 +2837,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_LIFETIME];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_LIFETIME];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 10;
@@ -2857,8 +2857,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_WORKTIME];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_WORKTIME];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 16;
@@ -2877,8 +2877,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_STARTSCOUNT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_STARTSCOUNT];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 22;
@@ -2894,8 +2894,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_FIRMWAREREV];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_FIRMWAREREV];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 26;
@@ -2911,8 +2911,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_HARDWAREREV];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_HARDWAREREV];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 30;
@@ -2928,8 +2928,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_CUSTOMERID];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_CUSTOMERID];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 34;
@@ -2945,8 +2945,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_FPGAFREQ];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_FPGAFREQ];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 38;
@@ -2962,8 +2962,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_SMR];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_SMR];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 42;
@@ -2979,8 +2979,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_MR];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_MR];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 46;
@@ -2996,8 +2996,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_XSMR];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_XSMR];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 50;
@@ -3013,8 +3013,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_XEMR];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_XEMR];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 54;
@@ -3030,8 +3030,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_PIXDIVIDER];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_PIXDIVIDER];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 58;
@@ -3047,8 +3047,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_PROFDIVIDER];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_PROFDIVIDER];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 60;
@@ -3064,8 +3064,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_GENERAL_FSBLREV];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_GENERAL_FSBLREV];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 62;
@@ -3081,8 +3081,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_STRING]);
-                p->base.name = parameter_names_array[FACT_GENERAL_OEMDEVNAME];
+                p = create_parameter_from_type(parameter_value_types[PVT_STRING]);
+                p->base.name = parameter_names[FACT_GENERAL_OEMDEVNAME];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 66;
@@ -3100,8 +3100,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_STRING]);
-                p->base.name = parameter_names_array[FACT_SENSOR_NAME];
+                p = create_parameter_from_type(parameter_value_types[PVT_STRING]);
+                p->base.name = parameter_names[FACT_SENSOR_NAME];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 158;
@@ -3119,8 +3119,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_WIDTH];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_WIDTH];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 190;
@@ -3136,8 +3136,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_HEIGHT];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_HEIGHT];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 192;
@@ -3153,8 +3153,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_PIXFREQ];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_PIXFREQ];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 194;
@@ -3170,8 +3170,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_BLACKODD];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_BLACKODD];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 198;
@@ -3187,8 +3187,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_BLACKEVEN];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_BLACKEVEN];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 200;
@@ -3204,8 +3204,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_FRMCONSTPART];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_FRMCONSTPART];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 202;
@@ -3221,8 +3221,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_FRMPERLINEPART];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_FRMPERLINEPART];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 206;
@@ -3238,8 +3238,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_FPSOREXP];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_FPSOREXP];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 210;
@@ -3259,8 +3259,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_MINEXPOSURE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_MINEXPOSURE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 211;
@@ -3276,8 +3276,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_IMGFLIP];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_IMGFLIP];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 215;
@@ -3297,8 +3297,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_SENSOR_MAXEXPOSURE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_SENSOR_MAXEXPOSURE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 216;
@@ -3319,8 +3319,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 //init_regs
 
 
-                p = create_parameter_from_type(pvtKey[PVT_ARRAY_UINT32]);
-                p->base.name = parameter_names_array[FACT_NETWORK_MACADDR];
+                p = create_parameter_from_type(parameter_value_types[PVT_ARRAY_UINT32]);
+                p->base.name = parameter_names[FACT_NETWORK_MACADDR];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 595;
@@ -3344,8 +3344,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_EIP_IDENTITY_VENDORID];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_EIP_IDENTITY_VENDORID];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 601;
@@ -3362,8 +3362,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_EIP_IDENTITY_DEVICETYPE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_EIP_IDENTITY_DEVICETYPE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 603;
@@ -3380,8 +3380,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_NETWORK_FORCEAUTONEGTIME];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_NETWORK_FORCEAUTONEGTIME];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 605;
@@ -3398,8 +3398,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_LASER_WAVELENGTH];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_LASER_WAVELENGTH];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 637;
@@ -3416,8 +3416,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_LASER_KOEFF1];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_LASER_KOEFF1];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 639;
@@ -3434,8 +3434,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_LASER_KOEFF2];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_LASER_KOEFF2];
                 p->base.access = patKey[PAT_READ_ONLY];
                 p->base.index = index++;
                 p->base.offset = 640;
@@ -3452,8 +3452,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_LASER_MINVALUE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_LASER_MINVALUE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 641;
@@ -3470,8 +3470,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_LASER_MAXVALUE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_LASER_MAXVALUE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 645;
@@ -3503,8 +3503,8 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 //out2_max_pulse_width
 
 
-                p = create_parameter_from_type(pvtKey[PVT_UINT]);
-                p->base.name = parameter_names_array[FACT_PROFILES_MAXDUMPSIZE];
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[FACT_PROFILES_MAXDUMPSIZE];
                 p->base.access = patKey[PAT_LOCKED];
                 p->base.index = index++;
                 p->base.offset = 809;
@@ -3761,7 +3761,7 @@ rfUint8 rf627_old_set_parameter(
         parameter_t* p = vector_get(scanner->params_list, i);
         if (rf_strcmp(p->base.name, param->base.name) == 0)
         {
-            if (rf_strcmp(p->base.type, pvtKey[PVT_STRING]) == 0)
+            if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
             {
                 memory_platform.rf_memcpy(
                             (void*)p->val_str->value,
@@ -3770,36 +3770,36 @@ rfUint8 rf627_old_set_parameter(
                 p->base.size = param->base.size;
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
             {
                 p->val_int32->value = param->val_int32->value;
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
             {
                 p->val_int64->value = param->val_int64->value;
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
             {
                 p->val_uint32->value = param->val_uint32->value;
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
             {
                 p->val_uint64->value = param->val_uint64->value;
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_FLOAT]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
             {
                 p->val_flt->value = param->val_flt->value;
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_DOUBLE]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
             {
                 p->val_dbl->value = param->val_dbl->value;
                 return 0;
-            }else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
+            }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
             {
                 memory_platform.rf_memcpy(
                             (void*)p->arr_uint32->value,
@@ -3822,7 +3822,7 @@ rfUint8 rf627_old_set_parameter_by_name(
         parameter_t* p = vector_get(scanner->params_list, i);
         if (rf_strcmp(p->base.name, param_name) == 0)
         {
-            if (rf_strcmp(p->base.type, pvtKey[PVT_STRING]) == 0)
+            if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
             {
                 const rfChar* str_value = va_arg(value, const rfChar*);
                 memory_platform.rf_memcpy(
@@ -3832,37 +3832,37 @@ rfUint8 rf627_old_set_parameter_by_name(
                 p->base.size = rf_strlen(str_value);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_INT]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
             {
                 p->val_int32->value = va_arg(value, rfInt32);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_INT64]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
             {
                 p->val_int64->value = va_arg(value, rfInt64);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
             {
                 p->val_uint32->value = va_arg(value, rfUint32);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_UINT64]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
             {
                 p->val_uint64->value = va_arg(value, rfUint64);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_FLOAT]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
             {
                 p->val_flt->value = va_arg(value, rfDouble);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_DOUBLE]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
             {
                 p->val_dbl->value = va_arg(value, rfDouble);
                 return 0;
             }
-            else if (rf_strcmp(p->base.type, pvtKey[PVT_ARRAY_UINT32]) == 0)
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
             {
                 rfUint32 size = 4;
                 if (p->arr_uint32->count != 0)
