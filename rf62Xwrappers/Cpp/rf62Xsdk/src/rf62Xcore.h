@@ -11,8 +11,9 @@
 #define API_EXPORT
 #endif
 
-namespace SDK::CORES::RF62X
-{
+namespace SDK {
+namespace CORES {
+namespace RF62X {
 
 
 /**
@@ -33,5 +34,7 @@ API_EXPORT bool init();
  */
 API_EXPORT void cleanup();
 
+}
+}
 }
 

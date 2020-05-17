@@ -6,285 +6,274 @@
 Класс rf627old
 *******************************************************************************
 
-Данный класс определён в файле ``rf62Xsdk.h`` и пердоставляет интерфейс 
+Данный класс определён в файле ``rf62Xsdk.cs`` и пердоставляет интерфейс 
 для работы со сканерами серии RF627-old
 
-.. doxygenclass:: SDK::SCANNERS::RF62X::rf627old
+.. doxygenclass:: SDK::SCANNERS::RF62X::RF627old
 
-search()
+Search()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция для поиска устройств RF627 доступных в сети
 
-.. doxygenfunction:: search
+.. doxygenfunction:: Search
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 11
+.. code-block:: c#
+   :emphasize-lines: 9
 
-   // Initialize sdk library
-   sdk_init();
+   // Start initialization of the library core
+   RF62X.SdkInit();
 
-   // Print return rf627 sdk version
-   std::cout << "SDK version: " << sdk_version()                << std::endl;
-   std::cout << "========================================="     << std::endl;
+   // Print return rf62X sdk version
+   Console.WriteLine("SDK version: {0}", RF62X.SdkVersion());
+   Console.WriteLine("=========================================");
 
-   // Create value for scanners vector's type
-   std::vector<rf627old*> list;
    // Search for RF627old devices over network
-   list = rf627old::search(PROTOCOLS::SERVICE);
-
+   List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
+   
    // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
 
-get_info()
+GetInfo()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция для получения информации о сканере из пакета приветствия (Hello-пакет)
 
-.. doxygenfunction:: get_info
+.. doxygenfunction:: GetInfo
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 18-37
+.. code-block:: c#
+   :emphasize-lines: 12-31
 
-   // Initialize sdk library
-   sdk_init();
+   // Start initialization of the library core
+   RF62X.SdkInit();
 
-   // Print return rf627 sdk version
-   std::cout << "SDK version: " << sdk_version()                << std::endl;
-   std::cout << "========================================="     << std::endl;
-
-   // Create value for scanners vector's type
-   std::vector<rf627old*> list;
    // Search for RF627old devices over network
-   list = rf627old::search(PROTOCOLS::SERVICE);
-
+   List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
+   
    // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
-   for (size_t i = 0; i < list.size(); i++)
+   for (int i = 0; i < Scanners.Count; i++)
    {
-      rf627old::hello_info info = list[i]->get_info();
+      RF62X.HelloInfo info = Scanners[i].GetInfo();
 
-      std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
-      std::cout << "-----------------------------------------" << std::endl;
-      std::cout << "Device information: "                      << std::endl;
-      std::cout << "* Name\t: "     << info.device_name()      << std::endl;
-      std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
-      std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
-      std::cout << "* MAC Addr\t: " << info.mac_address()      << std::endl;
+      Console.WriteLine("\n\n\nID scanner's list: {0}", i);
+      Console.WriteLine("-----------------------------------------");
+      Console.WriteLine("Device information: ");
+      Console.WriteLine("* Name\t: {0}", info.device_name);
+      Console.WriteLine("* Serial\t: {0}", info.serial_number);
+      Console.WriteLine("* IP Addr\t: {0}", info.ip_address);
+      Console.WriteLine("* MAC Addr\t: {0}", info.mac_address);
 
-      std::cout << "\nWorking ranges: "                        << std::endl;
-      std::cout << "* Zsmr, mm\t: " << info.z_smr()            << std::endl;
-      std::cout << "* Zmr , mm\t: " << info.z_mr()             << std::endl;
-      std::cout << "* Xsmr, mm\t: " << info.x_smr()            << std::endl;
-      std::cout << "* Xemr, mm\t: " << info.x_emr()            << std::endl;
+      Console.WriteLine("Working ranges: ");
+      Console.WriteLine("* Zsmr, mm\t: {0}", info.z_smr);
+      Console.WriteLine("* Zmr , mm\t: {0}", info.z_mr);
+      Console.WriteLine("* Xsmr, mm\t: {0}", info.x_smr);
+      Console.WriteLine("* Xemr, mm\t: {0}", info.x_emr);
 
-      std::cout << "\nVersions: "                              << std::endl;
-      std::cout << "* Firmware\t: " << info.firmware_version() << std::endl;
-      std::cout << "* Hardware\t: " << info.hardware_version() << std::endl;
-      std::cout << "-----------------------------------------" << std::endl;
+      Console.WriteLine("\nVersions: ");
+      Console.WriteLine("* Firmware\t: {0}", info.firmware_version);
+      Console.WriteLine("* Hardware\t: {0}", info.hardware_version);
+      Console.WriteLine("-----------------------------------------");
    }
 
    // Cleanup resources allocated with sdk_init()
-   sdk_cleanup();
+   RF62X.SdkCleanup();
    
 
-connect()
+Connect()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция для установки соединения со сканером серии RF627
 
-.. doxygenfunction:: connect
+.. doxygenfunction:: Connect
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 14-15
+.. code-block:: c#
+   :emphasize-lines: 13-14
 
-   // Initialize sdk library
-   sdk_init();
+   // Start initialization of the library core
+   RF62X.SdkInit();
 
-   // Create value for scanners vector's type
-   std::vector<rf627old*> list;
    // Search for RF627old devices over network
-   list = rf627old::search(PROTOCOLS::SERVICE);
-
+   List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
+   
    // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
-   for (size_t i = 0; i < list.size(); i++)
+   for (int i = 0; i < Scanners.Count; i++)
    {
-      if (list[i]->connect())
-         std::cout << "Connected to scanner №" << i << " successfully" << std::endl;
+      // Establish connection to the RF627 device by Service Protocol.
+      if (Scanners[i].Connect())
+         Console.WriteLine("Connected to scanner №{0} successfully", i);
    }
 
+   // Cleanup resources allocated with sdk_init()
+   RF62X.SdkCleanup();
 
-disconnect()
+
+Disconnect()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция для закрытия ранее установленного соединения со сканером серии RF627
 
-.. doxygenfunction:: disconnect
+.. doxygenfunction:: Disconnect
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 19-20
+.. code-block:: c#
+   :emphasize-lines: 19
 
-   // Initialize sdk library
-   sdk_init();
+   // Start initialization of the library core
+   RF62X.SdkInit();
 
-   // Create value for scanners vector's type
-   std::vector<rf627old*> list;
    // Search for RF627old devices over network
-   list = rf627old::search(PROTOCOLS::SERVICE);
-
+   List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
+   
    // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
-   for (size_t i = 0; i < list.size(); i++)
-      list[i]->connect();
+   // Establish connection to the RF627 device by Service Protocol.
+   for (int i = 0; i < Scanners.Count; i++)
+      Scanners[i].Connect();
 
    {
    ...some actions with scanners
    }
 
-   for (size_t i = 0; i < list.size(); i++)
-      list[i]->disconnect();
+   for (int i = 0; i < Scanners.Count; i++)
+      Scanners[i].Disconnect();
 
    
-get_profile2D()
+GetProfile()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция для получения профиля со сканеров серии RF627
 
-.. doxygenfunction:: get_profile2D
+.. doxygenfunction:: GetProfile
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 20, 42
+.. code-block:: c#
+   :emphasize-lines: 17
 
-   // Initialize sdk library
-   sdk_init();
+   // Start initialization of the library core
+   RF62X.SdkInit();
 
-   // Create value for scanners vector's type
-   std::vector<rf627old*> list;
    // Search for RF627old devices over network
-   list = rf627old::search(PROTOCOLS::SERVICE);
-
+   List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
+   
    // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
-   // Iterate over all discovered rf627-old in network, connect to each of
-   // them and get a profile.
-   for(size_t i = 0; i < list.size(); i++)
+   // foreach over an scanners list
+   for (int i = 0; i < Scanners.Count; i++)
    {
       // Establish connection to the RF627 device by Service Protocol.
-      list[i]->connect();
+      Scanners[i].Connect();
 
       // Get profile from scanner's data stream by Service Protocol.
-      profile2D_t* profile = list[i]->get_profile2D();
-      if (profile != nullptr)
+      RF62X.Profile profile = Scanners[i].GetProfile();
+      if (profile.header != null)
       {
-         std::cout << "Profile information: "                    << std::endl;
-         switch (profile->header.data_type) {
-         case (uint8_t)PROFILE_DATA_TYPE::PIXELS:
-            std::cout << "* DataType\t: "<< "PIXELS"            << std::endl;
-            std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
+         Console.WriteLine("Profile information: ");
+         switch (profile.header.data_type)
+         {
+         case RF62X.PROFILE_TYPE.PIXELS_NORMAL:
+            Console.WriteLine("* DataType\t: PIXELS");
+            Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
             break;
-         case (uint8_t)PROFILE_DATA_TYPE::PIXELS_INTRP:
-            std::cout << "* DataType\t: "<< "PIXELS_INTRP"      << std::endl;
-            std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
+         case RF62X.PROFILE_TYPE.PROFILE_NORMAL:
+            Console.WriteLine("* DataType\t: PROFILE");
+            Console.WriteLine("* Size\t: {0}", profile.points.Count);
             break;
-         case (uint8_t)PROFILE_DATA_TYPE::PROFILE:
-            std::cout << "* DataType\t: "<< "PROFILE"           << std::endl;
-            std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
+         case RF62X.PROFILE_TYPE.PIXELS_INTERPOLATED:
+            Console.WriteLine("* DataType\t: PIXELS");
+            Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
             break;
-         case (uint8_t)PROFILE_DATA_TYPE::PROFILE_INTRP:
-            std::cout << "* DataType\t: "<< "PROFILE_INTRP"     << std::endl;
-            std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
+         case RF62X.PROFILE_TYPE.PROFILE_INTERPOLATED:
+            Console.WriteLine("* DataType\t: PROFILE");
+            Console.WriteLine("* Size\t: {0}", profile.points.Count);
+            break;
+         default:
             break;
          }
-         delete profile;            
-         std::cout << "Profile was successfully received!"       << std::endl;
-         std::cout << "-----------------------------------------"<< std::endl;
+         Console.WriteLine("Profile was successfully received!");
+         Console.WriteLine("-----------------------------------------");
       }else
       {
-         std::cout << "Profile was not received!"                << std::endl;
-         std::cout << "-----------------------------------------"<< std::endl;
+         Console.WriteLine("Profile was not received!");
+         Console.WriteLine("-----------------------------------------");
       }
-
+      
       // Disconnect from scanner.
-      list[i]->disconnect();
+      Scanners[i].Disconnect();
    }
 
    // Cleanup resources allocated with sdk_init()
-   sdk_cleanup();
+   RF62X.SdkCleanup();
 
 .. _rf62x_wrappers_cpp_description_rf627old_read_params:
 
-read_params()
+ReadParams()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция получения текущих параметров сканера. При вызове данной функции SDK вычитывает 
 со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей 
 работы.
 
-.. doxygenfunction:: read_params
+.. doxygenfunction:: ReadParams
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 20
+.. code-block:: c#
+   :emphasize-lines: 17
 
-   // Initialize sdk library
-   sdk_init();
+   // Start initialization of the library core
+   RF62X.SdkInit();
 
-   // Create value for scanners vector's type
-   std::vector<rf627old*> scanners;
    // Search for RF627old devices over network
-   scanners = rf627old::search(PROTOCOLS::SERVICE);
-
+   List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
+   
    // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << scanners.size() << " rf627-old"  << std::endl;
+   Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
-   // Iterate over all discovered rf627-old in network, connect to each of
-   // them and read/set parameters.
-   for(size_t i = 0; i < scanners.size(); i++)
+   // foreach over an scanners list
+   for (int i = 0; i < Scanners.Count; i++)
    {
       // Establish connection to the RF627 device by Service Protocol.
-      scanners[i]->connect();
+      Scanners[i].Connect();
 
       // read params from RF627 device by Service Protocol.
-      scanners[i]->read_params();
+      Scanners[i].ReadParams();
 
       {
       ...some actions with params
       }
 
       // Disconnect from scanner.
-      scanners[i]->disconnect();
+      Scanners[i].Disconnect();
    }
 
-get_param()
+GetParam()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция получения конкретного параметра по его имени (ключу). При вызове 
 данной функции SDK осуществляет поиск нужного параметра из последних прочитанных 
-при вызове функции :ref:`read_params`. В случае, если запрашиваемый 
+при вызове функции :ref:`ReadParams`. В случае, если запрашиваемый 
 параметр отсутствует в конкретном сканере, функция вернёт null.
 
-.. doxygenfunction:: get_param(std::string)
+.. doxygenfunction:: GetParam(string)
 
 Пример использования:
 
-.. code-block:: cpp
+.. code-block:: c#
    :emphasize-lines: 13, 21, 29
 
    {
@@ -293,51 +282,53 @@ get_param()
    }
 
    // Establish connection to the RF627 device by Service Protocol.
-   scanners[i]->connect();
+   Scanners[i].Connect();
 
    // read params from RF627 device by Service Protocol.
-   scanners[i]->read_params();
+   Scanners[i].ReadParams();
 
    // Get parameter of Device Name
-   param_t* name = scanners[i]->get_param("user_general_deviceName");
-   if (name->type == "string_t")
+   RF62X.Param<string> name = Scanners[i].GetParam("user_general_deviceName");
+   if (name != null)
    {
-      std::string str_name = name->get_value<value_str>();
-      std::cout << "Current Device Name \t: " << str_name     << std::endl;
+      string strName = name.GetValue();
+      Console.WriteLine("\n\nCurrent Device Name \t: {0}", strName);
    }
 
    // Get parameter of Device IP Addr
-   param_t* ip_addr = scanners[i]->get_param("user_network_ip");
-   if (ip_addr->type == "u32_arr_t")
+   RF62X.Param<List<uint>> ipAddr = Scanners[i].GetParam("user_network_ip");
+   if (ipAddr != null)
    {
-      std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
-      std::cout << "Current Device IP\t: ";
+      List<uint> ip = ipAddr.GetValue();
+      Console.WriteLine("Current Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
    }
 
    // Get parameter of Laser Enabled
-   param_t* laser_enabled = scanners[i]->get_param("user_laser_enabled");
-   if (laser_enabled->type == "uint32_t")
+   RF62X.Param<uint> laserEnabled = Scanners[i].GetParam("user_laser_enabled");
+   if (laserEnabled != null)
    {
-      bool isEnabled = laser_enabled->get_value<value_uint32>();
-      std::cout<<"Current Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
+      bool isLaserEnabled = Convert.ToBoolean(laserEnabled.GetValue());
+      Console.WriteLine("Current Laser State\t: {0}", isLaserEnabled ? "ON" : "OFF");
    }
 
 Для более удобной работы с параметрами можно использовать соответствующие «ключи» 
 (ключ имени параметра, тип параметра и доступ к параметру).
 
-.. doxygenfunction:: get_param(PARAM_NAME_KEY)
+.. doxygenfunction:: GetParam(Params.Description)
 
-Для этого в файле ``rt62Xtypes.h`` находятся следующие ``enum``:
+Для этого в файле ``rt62Xtypes.cs`` находятся ``class``:
 
-.. doxygenenum:: PARAM_VALUE_TYPE
-
-.. doxygenenum:: PARAM_ACCESS_TYPE
-
-.. doxygenenum:: PARAM_NAME_KEY
+.. doxygenclass:: SDK::SCANNERS::RF62X::Params
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
+   :outline:
+   :no-link:
 
 Пример использования с ключами:
 
-.. code-block:: cpp
+.. code-block:: c#
    :emphasize-lines: 13, 21, 29
 
    {
@@ -346,50 +337,50 @@ get_param()
    }
 
    // Establish connection to the RF627 device by Service Protocol.
-   scanners[i]->connect();
+   Scanners[i].Connect();
 
    // read params from RF627 device by Service Protocol.
-   scanners[i]->read_params();
+   Scanners[i].ReadParams();
 
    // Get parameter of Device Name
-   param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
-   if (name->type == param_value_types[(int)PARAM_VALUE_TYPE::STRING_PARAM_TYPE])
+   RF62X.Param<string> name = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
+   if (name != null)
    {
-      std::string str_name = name->get_value<value_str>();
-      std::cout << "Current Device Name \t: " << str_name     << std::endl;
+      string strName = name.GetValue();
+      Console.WriteLine("\n\nCurrent Device Name \t: {0}", strName);
    }
 
    // Get parameter of Device IP Addr
-   param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
-   if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE])
+   RF62X.Param<List<uint>> ipAddr = Scanners[i].GetParam(RF62X.Params.User.NetWork.ip);
+   if (ipAddr != null)
    {
-      std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
-      std::cout << "Current Device IP\t: ";
+      List<uint> ip = ipAddr.GetValue();
+      Console.WriteLine("Current Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
    }
 
    // Get parameter of Laser Enabled
-   param_t* laser_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
-   if (laser_enabled->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+   RF62X.Param<uint> laserEnabled = Scanners[i].GetParam(RF62X.Params.User.Laser.enabled);
+   if (laserEnabled != null)
    {
-      bool isEnabled = laser_enabled->get_value<value_uint32>();
-      std::cout<<"Current Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
+      bool isLaserEnabled = Convert.ToBoolean(laserEnabled.GetValue());
+      Console.WriteLine("Current Laser State\t: {0}", isLaserEnabled ? "ON" : "OFF");
    }
 
 Для более детального описания каждого параметра и его свойств см. :ref:`rf62x_more_description_params`
 
-set_param()
+SetParam()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция установки конкретного параметра. При вызове данной функции происходит установка 
 передаваемого параметра в локальном списке параметров в SDK. Для отправки изменений 
 в сканер необходимо вызвать функцию ``write_params``.
 
-.. doxygenfunction:: set_param(param_t *)
+.. doxygenfunction:: SetParam(param_t *)
 
 Пример использования:
 
-.. code-block:: cpp
-   :emphasize-lines: 20-21, 25, 37-38, 43, 54-55, 59, 63
+.. code-block:: c#
+   :emphasize-lines: 20-21, 25, 36-37, 41, 52-53, 57, 61
 
    {
    ...Initialize sdk library
@@ -397,75 +388,71 @@ set_param()
    }
 
    // Establish connection to the RF627 device by Service Protocol.
-   scanners[i]->connect();
+   Scanners[i].Connect();
 
    // read params from RF627 device by Service Protocol.
-   scanners[i]->read_params();
+   Scanners[i].ReadParams();
 
    // Get parameter of Device Name
-   param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
-   if (name->type == param_value_types[(int)PARAM_VALUE_TYPE::STRING_PARAM_TYPE])
+   RF62X.Param<string> name = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
+   if (name != null)
    {
-      std::string str_name = name->get_value<value_str>();
-      std::cout << "Current Device Name \t: " << str_name     << std::endl;
+      string strName = name.GetValue();
+      Console.WriteLine("\n\nCurrent Device Name \t: {0}", strName);
 
       // Add "_TEST" to the ending of the current name
-      str_name += "_TEST";
-      name->set_value<value_str>(str_name);
-      std::cout << "New Device Name \t: " << str_name         << std::endl;
-      std::cout << "-----------------------------------------"<< std::endl;
+      strName += "_TEST";
+      name.SetValue(strName);
+      Console.WriteLine("New Device Name \t: {0}", strName);
+      Console.WriteLine("-----------------------------------------");
 
-      scanners[i]->set_param(name);
+      Scanners[i].SetParam(name);
    }
 
    // Get parameter of Device IP Addr
-   param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
-   if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE])
+   RF62X.Param<List<uint>> ipAddr = Scanners[i].GetParam(RF62X.Params.User.NetWork.ip);
+   if (ipAddr != null)
    {
-      std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
-      std::cout << "Current Device IP\t: ";
-      for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
+      List<uint> ip = ipAddr.GetValue();
+      Console.WriteLine("Current Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
 
       // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
-      ip[3]++;
-      ip_addr->set_value<array_uint32>(ip);
-      std::cout << "New Device IP\t: ";
-      for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
-      std::cout << "-----------------------------------------"<< std::endl;
+      ip[3]++;                    
+      ipAddr.SetValue(ip);
+      Console.WriteLine("New Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
+      Console.WriteLine("-----------------------------------------");
 
-      scanners[i]->set_param(ip_addr);
+      Scanners[i].SetParam(ipAddr);
    }
 
    // Get parameter of Laser Enabled
-   param_t* laser_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
-   if (laser_enabled->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+   RF62X.Param<uint> laserEnabled = Scanners[i].GetParam(RF62X.Params.User.Laser.enabled);
+   if (laserEnabled != null)
    {
-      bool isEnabled = laser_enabled->get_value<value_uint32>();
-      std::cout<<"Current Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
+      bool isLaserEnabled = Convert.ToBoolean(laserEnabled.GetValue());
+      Console.WriteLine("Current Laser State\t: {0}", isLaserEnabled ? "ON" : "OFF");
 
       // Change the current state to the opposite
-      isEnabled = !isEnabled;
-      laser_enabled->set_value<value_uint32>(!isEnabled);
-      std::cout<<"New Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
-      std::cout << "-----------------------------------------"<< std::endl;
+      isLaserEnabled = !isLaserEnabled;
+      laserEnabled.SetValue((uint)(Convert.ToUInt32(isLaserEnabled)));
+      Console.WriteLine("New Laser State\t\t: {0}", isLaserEnabled ? "ON" : "OFF");
+      Console.WriteLine("-----------------------------------------");
 
-      scanners[i]->set_param(laser_enabled);
+      Scanners[i].SetParam(laserEnabled);
    }
 
    //  Write changes parameters to the device's memory
-   scanners[i]->write_params();
-
-   // Disconnect from scanner.
-   scanners[i]->disconnect();
+   Scanners[i].WriteParams();
 
 
-write_params()
+
+WriteParams()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Функция записи локальных параметров из SDK в сканер. При вызове данной функции 
 происходит отправка списка локальных параметров из SDK в сканер.
 
-.. doxygenfunction:: write_params
+.. doxygenfunction:: WriteParams
 
 Пример использования:
 
@@ -478,27 +465,18 @@ write_params()
    }
 
    // Establish connection to the RF627 device by Service Protocol.
-   scanners[i]->connect();
+   Scanners[i].Connect();
 
-   // Read params from RF627 device by Service Protocol.
-   scanners[i]->read_params();
+   // read params from RF627 device by Service Protocol.
+   Scanners[i].ReadParams();
 
    {
    ...Some steps to change scanner's parameters
    }
 
    //  Write changes parameters to the device's memory
-   scanners[i]->write_params();
+   Scanners[i].WriteParams();
 
    // Disconnect from scanner.
-   scanners[i]->disconnect();
+   Scanners[i].Disconnect();
    
-
-send_cmd()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Функция отправки команд в сканер
-
-.. doxygenfunction:: send_cmd
-
-Для более детального описания команд и их свойств см. :ref:`rf62x_more_description_commands`

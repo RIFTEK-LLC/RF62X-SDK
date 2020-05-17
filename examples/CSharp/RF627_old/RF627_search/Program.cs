@@ -46,6 +46,9 @@ namespace RF627_search
 
             Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
             Console.ReadKey();
+
+            // Cleanup resources allocated with SdkInit()
+            RF62X.SdkCleanup();
         }
     }
 }

@@ -41,8 +41,9 @@ bool SDK::SCANNERS::RF62X::sdk_init()
     return SDK::CORES::RF62X::init();
 }
 
-namespace SDK::SCANNERS::RF62X
-{
+namespace SDK {
+namespace SCANNERS {
+namespace RF62X {
 
 class convert{
     public:
@@ -53,7 +54,7 @@ class convert{
         std::stringstream ss;
         ss << std::hex <<to_convert;
         ss >> value;
-        for (int i = 0; i < (int)(precision_specifier - value.size()); i++)
+        for (size_t i = 0; i < (precision_specifier - value.size()); i++)
             hex_result+="0";
 
         if (uppercase)
@@ -1295,9 +1296,7 @@ void sdk_cleanup()
 //    return 0;
 //}
 
-
-
-
-
+}
+}
 }
 

@@ -11,6 +11,7 @@ namespace SDK
     {
         public unsafe class RF62X
         {
+            /// @cond
             #region dll
 
             #region dll-types
@@ -871,7 +872,7 @@ namespace SDK
 
             #endregion
 
-
+            /// @endcond
             public static class Params
             {
 
@@ -2068,6 +2069,9 @@ namespace SDK
 
             }
 
+            /// <summary>
+            /// RF627old - This class is the main interface for working with RF627-old series scanners.
+            /// </summary>
             public unsafe class RF627old
             {
                 private void* _base { get; set; }
@@ -2076,6 +2080,11 @@ namespace SDK
                     _base = Base;
                 }
 
+                /// <summary>
+                /// Search for RF627old devices over network
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>List of RF627old devices</returns>
                 public static List<RF627old> Search(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     List<RF627old> result = new List<RF627old>();
@@ -2130,6 +2139,11 @@ namespace SDK
 
                 }
 
+                /// <summary>
+                /// Get information about scanner from hello packet
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>Hello_info on success</returns>
                 public HelloInfo GetInfo(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)
@@ -2159,6 +2173,11 @@ namespace SDK
                     }
                 }
 
+                /// <summary>
+                /// Establish connection to the RF627old device
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>true on success</returns>
                 public bool Connect(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)
@@ -2175,6 +2194,12 @@ namespace SDK
                     }
                     return false;
                 }
+
+                /// <summary>
+                /// Close connection to the device
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>true on success</returns>
                 public bool Disconnect(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)
@@ -2192,6 +2217,11 @@ namespace SDK
                     return false;
                 }
 
+                /// <summary>
+                /// Get 2D measurement from scanner’s data stream
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>Profile</returns>
                 public Profile GetProfile(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)
@@ -2224,6 +2254,11 @@ namespace SDK
 
                 }
 
+                /// <summary>
+                /// Read parameters from device to internal structure. This structure is accessible via GetParam() functions
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>true on success</returns>
                 public bool ReadParams(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)
@@ -2241,10 +2276,22 @@ namespace SDK
                     }
                     return false;
                 }
+
+                /// <summary>
+                /// Search parameters by his info
+                /// </summary>
+                /// <param name="paramInfo">info of parameter</param>
+                /// <returns>param on success, else - null</returns>
                 public dynamic GetParam(Params.Description paramInfo)
                 {
                     return GetParam(paramInfo.Key);
                 }
+
+                /// <summary>
+                /// Search parameters by his name
+                /// </summary>
+                /// <param name="nameKey">name of parameter</param>
+                /// <returns>param on success, else - null</returns>
                 public dynamic GetParam(string nameKey)
                 {
                     byte[] bytes = Encoding.ASCII.GetBytes(nameKey);
@@ -2453,6 +2500,11 @@ namespace SDK
 
                 }
 
+                /// <summary>
+                /// Update parameter in internal structure
+                /// </summary>
+                /// <param name="param">Updated parameter</param>
+                /// <returns>true on success, else - false</returns>
                 public bool SetParam(dynamic param)
                 {
                     byte[] name = Encoding.ASCII.GetBytes(param.name);
@@ -2530,6 +2582,11 @@ namespace SDK
                     return false;
                 }
 
+                /// <summary>
+                /// Write current parameters to device’s memory
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>true on success</returns>
                 public bool WriteParams(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)

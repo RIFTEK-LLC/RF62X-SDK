@@ -12,8 +12,9 @@
 #define API_EXPORT
 #endif
 
-namespace SDK::SCANNERS::RF62X
-{
+namespace SDK {
+namespace SCANNERS {
+namespace RF62X {
 
 /**
  * @brief sdk_version - Return info about SDK version
@@ -200,6 +201,8 @@ private:
     PROTOCOLS current_protocol;
 };
 
+}
+}
 }
 
 

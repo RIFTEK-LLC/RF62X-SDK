@@ -4,8 +4,9 @@
 #include <memory>
 #include <iostream>
 
-namespace SDK::SCANNERS::RF62X
-{
+namespace SDK {
+namespace SCANNERS {
+namespace RF62X {
 
 enum class PROTOCOLS {
     CURRENT = 0,
@@ -699,5 +700,7 @@ typedef struct value_raw : param_t
 }value_raw;
 
 
+}
+}
 }
 

@@ -77,9 +77,15 @@ namespace RF627_params
 
                 //  Write changes parameters to the device's memory
                 Scanners[i].WriteParams();
+
+                // Disconnect from scanner.
+                Scanners[i].Disconnect();
             }
             Console.WriteLine("{0}Press any key to end \"Parameters-test\"", Environment.NewLine);
             Console.ReadKey();
+
+            // Cleanup resources allocated with SdkInit()
+            RF62X.SdkCleanup();
         }
     }
 }

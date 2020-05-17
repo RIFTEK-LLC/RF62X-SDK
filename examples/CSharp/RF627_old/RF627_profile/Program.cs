@@ -64,10 +64,17 @@ namespace RF627_profile
                     Console.WriteLine("Profile was not received!");
                     Console.WriteLine("-----------------------------------------");
                 }
+
+                // Disconnect from scanner.
+                Scanners[i].Disconnect();
+
             }
 
             Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
             Console.ReadKey();
+
+            // Cleanup resources allocated with sdk_init()
+            RF62X.SdkCleanup();
         }
     }
 }

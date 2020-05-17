@@ -11,17 +11,31 @@
 реализация платформозависимых функций (работа с памятью, работа с сетью, функции 
 ввода/вывода). 
 
+.. _rf62Xcore_dll_mingw_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/178471d04d864e6110deba9ac9074df1/rf62Xcore.dll
+.. _rf62Xcore_a_mingw_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/4391dcfc692165676df647cbc65fb570/rf62Xcore.a
+.. _rf62Xcore_mingw_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip
+
+.. _rf62Xcore_dll_msvc17_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/b97b1cec97a78ab3c9b09de946fd7e70/rf62Xcore.dll
+.. _rf62Xcore_lib_msvc17_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/4eb42c2565bc2f61ed6714fc1bcf9d90/rf62Xcore.lib
+.. _rf62Xcore_msvc17_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/912861a038055097ae482022a9003702/include.zip
+
+.. _rf62Xcore_dll_clang_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/49e8e99d59fba95fa9f952c5befe8e92/rf62Xcore.dll
+.. _rf62Xcore_lib_clang_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/5f96d0e7bb69d9a6ad60f41644a7e72d/rf62Xcore.lib
+.. _rf62Xcore_clang_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip
+
+.. _rf62x_core_last_release:
+
 .. table:: Последние выпуски:
 
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | Compiler      | 64bit                                                                         | Includes                                                                  |
-   +===============+===============================================================================+===========================================================================+
-   | MinGW 7.3.0   | `rf62Xcore.dll </uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll>`__   | `include.zip </uploads/94210ce658946e97df0facd217d9d230/include.zip>`__   |
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | MSVC2017      | `rf62Xcore.dll </uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll>`__   | `include.zip </uploads/94210ce658946e97df0facd217d9d230/include.zip>`__   |
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | Clang 9.1.0   | `rf62Xcore.dll </uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll>`__   | `include.zip </uploads/94210ce658946e97df0facd217d9d230/include.zip>`__   |
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
+   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
+   | Compiler      | 64bit                                                                                   | Includes                                      |
+   +===============+=========================================================================================+===============================================+
+   | MinGW 7.3.0   | `rf62Xcore.dll <rf62Xcore_dll_mingw_64_>`_ `rf62Xcore.a <rf62Xcore_a_mingw_64_>`_       | `include.zip <rf62Xcore_mingw_64_include>`_   |
+   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
+   | MSVC2017      | `rf62Xcore.dll <rf62Xcore_dll_msvc17_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_msvc17_64_>`_ | `include.zip <rf62Xcore_msvc17_64_include_>`_ |
+   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
+   | Clang 9.1.0   | `rf62Xcore.dll <rf62Xcore_dll_clang_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_clang_64_>`_   | `include.zip <rf62Xcore_clang_64_include_>`_  |
+   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
 
 .. _how_to_compile_rf62x_core:
 
@@ -210,4 +224,4 @@ iostream_platform.h
 платформозависимые функции, а адреса проинициализированных экземпляров структур передаются в метод 
 init_platform_dependent_methods для инициализации кросс-платформенной части «ядра».
 
-.. doxygenfunction:: init_platform_dependent_methods
+.. doxygenfunction:: init_platform_dependent_methods(memory_platform_dependent_methods_t *, iostream_platform_dependent_methods_t *, network_platform_dependent_methods_t *, network_platform_dependent_settings_t *)

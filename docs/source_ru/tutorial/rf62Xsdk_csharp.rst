@@ -9,7 +9,7 @@
 
 Ниже приведен пример поиска сканеров серии RF627-old в сети 
 
-.. code-block:: csharp
+.. code-block:: c#
 
     using System;
     using System.Collections.Generic;
@@ -61,6 +61,8 @@
                Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
                Console.ReadKey();
 
+               // Cleanup resources allocated with SdkInit()
+               RF62X.SdkCleanup();
             }
         }
     }
@@ -73,7 +75,7 @@
 Ниже приведен пример получения профилей от сканеров серии RF627-old
 
 
-.. code-block:: csharp
+.. code-block:: c#
 
    using System;
    using System.Collections.Generic;
@@ -144,10 +146,16 @@
                   Console.WriteLine("Profile was not received!");
                   Console.WriteLine("-----------------------------------------");
                }
+
+               // Disconnect from scanner.
+               Scanners[i].Disconnect();
             }
 
             Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
             Console.ReadKey();
+
+            // Cleanup resources allocated with SdkInit()
+            RF62X.SdkCleanup();
          }
       }
    }
@@ -160,7 +168,7 @@
 Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены 
 состояния лазера (включение или отключение):
 
-.. code-block:: csharp
+.. code-block:: c#
 
    using System;
    using System.Collections.Generic;
@@ -238,10 +246,17 @@
                   Scanners[i].SetParam(laserEnabled);
                }
 
+               //  Write changes parameters to the device's memory
                Scanners[i].WriteParams();
+
+               // Disconnect from scanner.
+               Scanners[i].Disconnect();
             }
             Console.WriteLine("{0}Press any key to end \"Parameters-test\"", Environment.NewLine);
             Console.ReadKey();
+
+            // Cleanup resources allocated with SdkInit()
+            RF62X.SdkCleanup();
          }
       }
    }

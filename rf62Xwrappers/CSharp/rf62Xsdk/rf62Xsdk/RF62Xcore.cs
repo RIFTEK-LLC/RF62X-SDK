@@ -577,6 +577,7 @@ namespace SDK
                 return 0;
             }
 
+            /// @cond TEST
             [DllImport("rf62Xcore.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte* core_version();
 
@@ -592,6 +593,7 @@ namespace SDK
             private static network_platform_dependent_methods_t network_methods;
             private static network_platform_dependent_settings_t adapter_settings;
 
+            /// @endcond
             public static string CoreVersion()
             {
                 return Marshal.PtrToStringAnsi((IntPtr)(core_version()));

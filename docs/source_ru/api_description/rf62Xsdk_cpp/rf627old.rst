@@ -16,7 +16,7 @@ search()
 
 Функция для поиска устройств RF627 доступных в сети
 
-.. doxygenfunction:: search
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::search(PROTOCOLS)
 
 Пример использования:
 
@@ -44,7 +44,7 @@ get_info()
 
 Функция для получения информации о сканере из пакета приветствия (Hello-пакет)
 
-.. doxygenfunction:: get_info
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::get_info(PROTOCOLS)
 
 Пример использования:
 
@@ -99,7 +99,7 @@ connect()
 
 Функция для установки соединения со сканером серии RF627
 
-.. doxygenfunction:: connect
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::connect(PROTOCOLS)
 
 Пример использования:
 
@@ -129,7 +129,7 @@ disconnect()
 
 Функция для закрытия ранее установленного соединения со сканером серии RF627
 
-.. doxygenfunction:: disconnect
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::disconnect(PROTOCOLS)
 
 Пример использования:
 
@@ -163,7 +163,7 @@ get_profile2D()
 
 Функция для получения профиля со сканеров серии RF627
 
-.. doxygenfunction:: get_profile2D
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::get_profile2D(bool, PROTOCOLS)
 
 Пример использования:
 
@@ -236,7 +236,7 @@ read_params()
 со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей 
 работы.
 
-.. doxygenfunction:: read_params
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::read_params(PROTOCOLS)
 
 Пример использования:
 
@@ -312,6 +312,7 @@ get_param()
    {
       std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
       std::cout << "Current Device IP\t: ";
+      for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
    }
 
    // Get parameter of Laser Enabled
@@ -465,7 +466,7 @@ write_params()
 Функция записи локальных параметров из SDK в сканер. При вызове данной функции 
 происходит отправка списка локальных параметров из SDK в сканер.
 
-.. doxygenfunction:: write_params
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::write_params(PROTOCOLS)
 
 Пример использования:
 
@@ -499,6 +500,6 @@ send_cmd()
 
 Функция отправки команд в сканер
 
-.. doxygenfunction:: send_cmd
+.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::send_cmd(const char *, int, ...)
 
 Для более детального описания команд и их свойств см. :ref:`rf62x_more_description_commands`

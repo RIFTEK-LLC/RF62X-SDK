@@ -37,7 +37,7 @@
    
    api_description/rf62Xcore
    api_description/rf62Xsdk_cpp/_index
-   api_description/rf62Xsdk_csharp
+   api_description/rf62Xsdk_csharp/_index
    api_description/rf62Xsdk_python
    api_description/rf62Xsdk_labview
    api_description/rf62Xsdk_matlab

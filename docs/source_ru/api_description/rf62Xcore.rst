@@ -12,17 +12,8 @@ API «ядра» на C
 реализация платформозависимых функций (работа с памятью, работа с сетью, функции 
 ввода/вывода). 
 
-.. table:: Последние выпуски:
-
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | Compiler      | 64bit                                                                         | Includes                                                                  |
-   +===============+===============================================================================+===========================================================================+
-   | MinGW 7.3.0   | `rf62Xcore.dll </uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll>`__   | `include.zip </uploads/94210ce658946e97df0facd217d9d230/include.zip>`__   |
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | MSVC2017      | `rf62Xcore.dll </uploads/5ff2632b9bb0a4a4f1344f58e71966c4/rf62Xcore.dll>`__   | `include.zip </uploads/94210ce658946e97df0facd217d9d230/include.zip>`__   |
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | Clang 9.1.0   | `rf62Xcore.dll </uploads/79520e5615eed8632f807bd667df3880/rf62Xcore.dll>`__   | `include.zip </uploads/94210ce658946e97df0facd217d9d230/include.zip>`__   |
-   +---------------+-------------------------------------------------------------------------------+---------------------------------------------------------------------------+
+| Для скачивания библиотеки см. :ref:`последние выпуски «ядра» на C <rf62x_core_last_release>`. 
+| Для компиляции библиотеки см. :ref:`компиляция и запуск «ядра» на C <compilation_rf62x_core>`.
 
 Инициализация «ядра»
 ===============================================================================
@@ -38,7 +29,7 @@ init_platform_dependent_methods()
 
 Функция инициализация платформозависимой части «ядра»
 
-.. doxygenfunction:: init_platform_dependent_methods
+.. doxygenfunction:: init_platform_dependent_methods(memory_platform_dependent_methods_t *, iostream_platform_dependent_methods_t *, network_platform_dependent_methods_t *, network_platform_dependent_settings_t *)
 
 core_version()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -60,7 +51,7 @@ set_platform_adapter_settings()
 Функция для передачи текущих настроек адаптера в ядро. Данная функция используется 
 в том случае, если произошли какие-либо изменения настроек в используемом ядром сетевом адаптаре.
 
-.. doxygenfunction:: set_platform_adapter_settings
+.. doxygenfunction:: set_platform_adapter_settings(rfUint32, rfUint32)
 
 Пример использования:
 
@@ -93,7 +84,7 @@ search_scanners()
 
 Функция для поиска устройств RF62X по сети
 
-.. doxygenfunction:: search_scanners
+.. doxygenfunction:: search_scanners(vector_t *, scanner_types_t, protocol_types_t)
 
 Пример использования:
 
@@ -120,7 +111,7 @@ get_info_about_scanner()
 
 Функция для получения информации о сканере из пакета приветствия (Hello-пакет)
 
-.. doxygenfunction:: get_info_about_scanner
+.. doxygenfunction:: get_info_about_scanner(scanner_base_t *, protocol_types_t)
 
 Пример использования:
 
@@ -151,7 +142,7 @@ connect_to_scanner()
 
 Функция для установки соединения со сканером серии RF62X
 
-.. doxygenfunction:: connect_to_scanner
+.. doxygenfunction:: connect_to_scanner(scanner_base_t *, protocol_types_t)
 
 Пример использования:
 
@@ -182,7 +173,7 @@ disconnect_from_scanner()
 
 Функция для закрытия ранее установленного соединения со сканером серии RF62X
 
-.. doxygenfunction:: disconnect_from_scanner
+.. doxygenfunction:: disconnect_from_scanner(scanner_base_t *, protocol_types_t)
 
 Пример использования:
 
@@ -217,7 +208,7 @@ get_profile2D_from_scanner()
 
 Функция для получения профиля со сканеров серии RF62X
 
-.. doxygenfunction:: get_profile2D_from_scanner
+.. doxygenfunction:: get_profile2D_from_scanner(scanner_base_t *, rfBool, protocol_types_t)
 
 Пример использования:
 
@@ -271,7 +262,7 @@ read_params_from_scanner()
 со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей 
 работы.
 
-.. doxygenfunction:: read_params_from_scanner
+.. doxygenfunction:: read_params_from_scanner(scanner_base_t *, protocol_types_t)
 
 Пример использования:
 
@@ -316,7 +307,7 @@ get_parameter()
 при вызове функции :ref:`read_params_from_scanner`. В случае, если запрашиваемый 
 параметр отсутствует в конкретном сканере, функция вернёт null.
 
-.. doxygenfunction:: get_parameter
+.. doxygenfunction:: get_parameter(scanner_base_t *, const rfChar *)
 
 Пример использования:
 
@@ -395,7 +386,7 @@ set_parameter()
 передаваемого параметра в локальном списке параметров в «ядре». Для отправки изменений 
 в сканер необходимо вызвать функцию ``write_params_to_scanner``.
 
-.. doxygenfunction:: set_parameter
+.. doxygenfunction:: set_parameter(scanner_base_t *, parameter_t *)
 
 Пример использования:
 
@@ -450,7 +441,7 @@ write_params_to_scanner()
 Функция записи локальных параметров из «ядра» в сканер. При вызове данной функции 
 происходит отправка списка локальных параметров из «ядра» в сканер.
 
-.. doxygenfunction:: write_params_to_scanner
+.. doxygenfunction:: write_params_to_scanner(scanner_base_t *, protocol_types_t)
 
 Пример использования:
 
@@ -490,6 +481,6 @@ send_command()
 
 Функция отправки команд в сканер
 
-.. doxygenfunction:: send_command
+.. doxygenfunction:: send_command(scanner_base_t *, command_t *)
 
 Для более детального описания команд и их свойств см. :ref:`rf62x_more_description_commands`

@@ -9,18 +9,31 @@
 h-файлы библиотеки в свой проект и собрать статическую или динамическую 
 программную библиотеку. 
 
+.. _rf62Xsdk_cpp_dll_mingw_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/2148ca77659e21b2f7aec9e5cbb072ab/rf62Xsdk.dll
+.. _rf62Xsdk_cpp_a_mingw_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/5a2fdb2b2fc3317fdeec78bbe0c00cc3/rf62Xsdk.a
+.. _rf62Xsdk_cpp_mingw_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e69dc9279a6dcba800a98142a8b32c8d/include.zip
+
+.. _rf62Xsdk_cpp_dll_msvc17_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/912890213476c43b26bf8f178b1d2c5a/rf62Xsdk.dll
+.. _rf62Xsdk_cpp_lib_msvc17_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e42dadfe318fc3201d6b6f1e280040a9/rf62Xsdk.lib
+.. _rf62Xsdk_cpp_msvc17_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/5e490e8b89b3c2870ec8102540a32b1a/include.zip
+
+.. _rf62Xsdk_cpp_dll_clang_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/fc19b0fac252c78ed93d4fa86ebfc7eb/rf62Xsdk.dll
+.. _rf62Xsdk_cpp_lib_clang_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/70b57c76ace11faa6c0e6d3ac8493a86/rf62Xsdk.lib
+.. _rf62Xsdk_cpp_clang_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e69dc9279a6dcba800a98142a8b32c8d/include.zip
+
+.. _rf62x_sdk_cpp_last_release:
 
 .. table:: Последние выпуски:
 
-   +---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | Compiler      | 64bit                                                                                                                                                  | Includes                                                                  |
-   +===============+========================================================================================================================================================+===========================================================================+
-   | MinGW 7.3.0   | `rf62Xsdk.dll </uploads/ecbe8feab6232f0885b5b1e6db607aa8/rf62Xsdk.dll>`__                                                                              | `include.zip </uploads/c4e61f8dd8068d9360c42865408c7242/include.zip>`__   |
-   +---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | MSVC2017      | `rf62Xsdk.dll </uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll>`__, `rf62Xsdk.lib </uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib>`__   | `include.zip </uploads/c4e61f8dd8068d9360c42865408c7242/include.zip>`__   |
-   +---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------+
-   | Clang 9.1.0   | `rf62Xsdk.dll </uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll>`__                                                                              | `include.zip </uploads/c4e61f8dd8068d9360c42865408c7242/include.zip>`__   |
-   +---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------+
+   +---------------+---------------------------------------------------------------------------------------------+--------------------------------------------------+
+   | Compiler      | 64bit                                                                                       | Includes                                         |
+   +===============+=============================================================================================+==================================================+
+   | MinGW 7.3.0   | `rf62Xsdk.dll <rf62Xsdk_cpp_dll_mingw_64_>`_ `rf62Xsdk.a <rf62Xsdk_cpp_a_mingw_64_>`_       | `include.zip <rf62Xsdk_cpp_mingw_64_include>`_   |
+   +---------------+---------------------------------------------------------------------------------------------+--------------------------------------------------+
+   | MSVC2017      | `rf62Xsdk.dll <rf62Xsdk_cpp_dll_msvc17_64_>`_ `rf62Xsdk.lib <rf62Xsdk_cpp_lib_msvc17_64_>`_ | `include.zip <rf62Xsdk_cpp_msvc17_64_include>`_  |
+   +---------------+---------------------------------------------------------------------------------------------+--------------------------------------------------+
+   | Clang 9.1.0   | `rf62Xsdk.dll <rf62Xsdk_cpp_dll_clang_64_>`_ `rf62Xsdk.lib <rf62Xsdk_cpp_lib_clang_64_>`_   | `include.zip <rf62Xsdk_cpp_clang_64_include>`_   |
+   +---------------+---------------------------------------------------------------------------------------------+--------------------------------------------------+
 
 .. _how_to_compile_rf62x_sdk_cpp:
 
