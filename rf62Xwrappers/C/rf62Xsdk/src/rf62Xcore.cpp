@@ -1,5 +1,6 @@
 #include "rf62Xcore.h"
 #include <stdio.h>
+#include <string>
 
 extern "C"
 {
