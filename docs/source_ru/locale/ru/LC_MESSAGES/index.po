@@ -1,4 +1,4 @@
-# Copyright (C) 2020, Vladislav Kuzmin
+﻿# Copyright (C) 2020, Vladislav Kuzmin
 # This file is distributed under the same license as the RF62X-SDK package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
@@ -18,7 +18,7 @@ msgstr ""
 
 #: ../../source_ru/index.rst:25
 msgid "Руководство программиста"
-msgstr "Руководство программиста тест"
+msgstr ""
 
 #: ../../source_ru/index.rst:34
 msgid "Описания API"

@@ -114,14 +114,27 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'RF62X-SDK-doc'
 
+latex_engine = 'xelatex'
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
 
     'papersize': 'a4paper',
 
     # The font size ('10pt', '11pt' or '12pt').
-    # 'pointsize': '10pt',
+    'pointsize': '11pt',
 
+    'preamble': r''' 
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\usepackage{fontspec}\setmainfont{Arial}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+''',
     # Additional stuff for the LaTeX preamble.
     #'preamble': '',
 
@@ -129,7 +142,6 @@ latex_elements = {
     #
     # 'figure_align': 'htbp',
 }
-
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
