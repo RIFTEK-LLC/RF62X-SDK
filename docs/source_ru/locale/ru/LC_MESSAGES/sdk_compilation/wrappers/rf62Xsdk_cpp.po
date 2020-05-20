@@ -195,7 +195,7 @@ msgid "Поиск устройств RF62X"
 msgstr ""
 
 #: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:118
-msgid "Ниже приведен пример поиска сканеров серии RF627-old в сети"
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
 msgstr ""
 
 #: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:175
@@ -228,7 +228,7 @@ msgid "Получение профиля сканера"
 msgstr ""
 
 #: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:218
-msgid "Ниже приведен пример получения профилей от сканеров серии RF627-old"
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
 msgstr ""
 
 #: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:305

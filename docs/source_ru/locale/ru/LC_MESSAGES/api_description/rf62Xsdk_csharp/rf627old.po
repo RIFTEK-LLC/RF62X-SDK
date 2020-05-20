@@ -24,7 +24,7 @@ msgstr ""
 #: ../../source_ru/api_description/rf62Xsdk_csharp/rf627old.rst:9
 msgid ""
 "Данный класс определён в файле ``rf62Xsdk.cs`` и пердоставляет интерфейс "
-"для работы со сканерами серии RF627-old"
+"для работы со сканерами серии RF627Old"
 msgstr ""
 
 #: ../../source_ru/api_description/rf62Xsdk_csharp/rf627old.rst:15

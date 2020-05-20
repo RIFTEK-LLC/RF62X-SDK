@@ -7,7 +7,7 @@
 *******************************************************************************
 
 Данный класс определён в файле ``rf62Xsdk.h`` и пердоставляет интерфейс 
-для работы со сканерами серии RF627-old
+для работы со сканерами серии RF627Old
 
 .. doxygenclass:: SDK::SCANNERS::RF62X::rf627old
 
@@ -35,8 +35,8 @@ search()
    // Search for RF627old devices over network
    list = rf627old::search(PROTOCOLS::SERVICE);
 
-   // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   // Print count of discovered RF627Old in network by Service Protocol
+   std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
 
 get_info()
@@ -63,8 +63,8 @@ get_info()
    // Search for RF627old devices over network
    list = rf627old::search(PROTOCOLS::SERVICE);
 
-   // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   // Print count of discovered RF627Old in network by Service Protocol
+   std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
    for (size_t i = 0; i < list.size(); i++)
    {
@@ -114,8 +114,8 @@ connect()
    // Search for RF627old devices over network
    list = rf627old::search(PROTOCOLS::SERVICE);
 
-   // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   // Print count of discovered RF627Old in network by Service Protocol
+   std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
    for (size_t i = 0; i < list.size(); i++)
    {
@@ -144,8 +144,8 @@ disconnect()
    // Search for RF627old devices over network
    list = rf627old::search(PROTOCOLS::SERVICE);
 
-   // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   // Print count of discovered RF627Old in network by Service Protocol
+   std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
    for (size_t i = 0; i < list.size(); i++)
       list[i]->connect();
@@ -178,10 +178,10 @@ get_profile2D()
    // Search for RF627old devices over network
    list = rf627old::search(PROTOCOLS::SERVICE);
 
-   // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+   // Print count of discovered RF627Old in network by Service Protocol
+   std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
-   // Iterate over all discovered rf627-old in network, connect to each of
+   // Iterate over all discovered RF627Old in network, connect to each of
    // them and get a profile.
    for(size_t i = 0; i < list.size(); i++)
    {
@@ -251,10 +251,10 @@ read_params()
    // Search for RF627old devices over network
    scanners = rf627old::search(PROTOCOLS::SERVICE);
 
-   // Print count of discovered rf627-old in network by Service Protocol
-   std::cout << "Discovered: " << scanners.size() << " rf627-old"  << std::endl;
+   // Print count of discovered RF627Old in network by Service Protocol
+   std::cout << "Discovered: " << scanners.size() << " RF627Old"  << std::endl;
 
-   // Iterate over all discovered rf627-old in network, connect to each of
+   // Iterate over all discovered RF627Old in network, connect to each of
    // them and read/set parameters.
    for(size_t i = 0; i < scanners.size(); i++)
    {

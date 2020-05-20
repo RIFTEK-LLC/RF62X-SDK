@@ -18,7 +18,7 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 
 #: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:18
-msgid "Работа с RF627-old"
+msgid "Работа с RF627Old"
 msgstr ""
 
 #: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:18

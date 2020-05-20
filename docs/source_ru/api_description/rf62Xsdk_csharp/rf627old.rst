@@ -7,7 +7,7 @@
 *******************************************************************************
 
 Данный класс определён в файле ``rf62Xsdk.cs`` и пердоставляет интерфейс 
-для работы со сканерами серии RF627-old
+для работы со сканерами серии RF627Old
 
 .. doxygenclass:: SDK::SCANNERS::RF62X::RF627old
 
@@ -33,7 +33,7 @@ Search()
    // Search for RF627old devices over network
    List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
    
-   // Print count of discovered rf627-old in network by Service Protocol
+   // Print count of discovered RF627Old in network by Service Protocol
    Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
 
@@ -55,7 +55,7 @@ GetInfo()
    // Search for RF627old devices over network
    List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
    
-   // Print count of discovered rf627-old in network by Service Protocol
+   // Print count of discovered RF627Old in network by Service Protocol
    Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
    for (int i = 0; i < Scanners.Count; i++)
@@ -104,7 +104,7 @@ Connect()
    // Search for RF627old devices over network
    List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
    
-   // Print count of discovered rf627-old in network by Service Protocol
+   // Print count of discovered RF627Old in network by Service Protocol
    Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
    for (int i = 0; i < Scanners.Count; i++)
@@ -136,7 +136,7 @@ Disconnect()
    // Search for RF627old devices over network
    List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
    
-   // Print count of discovered rf627-old in network by Service Protocol
+   // Print count of discovered RF627Old in network by Service Protocol
    Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
    // Establish connection to the RF627 device by Service Protocol.
@@ -169,7 +169,7 @@ GetProfile()
    // Search for RF627old devices over network
    List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
    
-   // Print count of discovered rf627-old in network by Service Protocol
+   // Print count of discovered RF627Old in network by Service Protocol
    Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
    // foreach over an scanners list
@@ -241,7 +241,7 @@ ReadParams()
    // Search for RF627old devices over network
    List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
    
-   // Print count of discovered rf627-old in network by Service Protocol
+   // Print count of discovered RF627Old in network by Service Protocol
    Console.WriteLine("Discovered {0} scanners", Scanners.Count);
 
    // foreach over an scanners list

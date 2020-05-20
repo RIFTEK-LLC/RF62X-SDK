@@ -115,7 +115,7 @@ Visual Studio
 Поиск устройств RF62X
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Ниже приведен пример поиска сканеров серии RF627-old в сети 
+Ниже приведен пример поиска сканеров серии RF627Old в сети 
 
 .. code-block:: cpp
 
@@ -141,8 +141,8 @@ Visual Studio
       // Search for RF627old devices over network
       list = rf627old::search(PROTOCOLS::SERVICE);
 
-      // Print count of discovered rf627-old in network by Service Protocol
-      std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+      // Print count of discovered RF627Old in network by Service Protocol
+      std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
       for (size_t i = 0; i < list.size(); i++)
       {
@@ -178,7 +178,7 @@ Visual Studio
 
    SDK version: 1.3.0
    =========================================
-   Discovered: 1 rf627-old
+   Discovered: 1 RF627Old
 
    ID scanner's list: 0
    -----------------------------------------
@@ -215,7 +215,7 @@ Visual Studio
 Получение профиля сканера
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Ниже приведен пример получения профилей от сканеров серии RF627-old
+Ниже приведен пример получения профилей от сканеров серии RF627Old
 
 
 .. code-block:: cpp
@@ -244,11 +244,11 @@ Visual Studio
       list = rf627old::search(PROTOCOLS::SERVICE);
 
 
-      // Print count of discovered rf627-old in network by Service Protocol
-      std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+      // Print count of discovered RF627Old in network by Service Protocol
+      std::cout << "Discovered: " << list.size() << " RF627Old"   << std::endl;
 
     
-      // Iterate over all discovered rf627-old in network, connect to each of
+      // Iterate over all discovered RF627Old in network, connect to each of
       // them and get a profile.
       for(size_t i = 0; i < scanners.size(); i++)
       {
@@ -308,7 +308,7 @@ Visual Studio
 
    SDK version: 1.3.0
    =========================================
-   Discovered: 1 rf627-old
+   Discovered: 1 RF627Old
 
 
    ID scanner's list: 0
@@ -368,11 +368,11 @@ Visual Studio
       scanners = rf627old::search(PROTOCOLS::SERVICE);
 
 
-      // Print count of discovered rf627-old in network by Service Protocol
-      std::cout << "Discovered: " << scanners.size() << " rf627-old"  << std::endl;
+      // Print count of discovered RF627Old in network by Service Protocol
+      std::cout << "Discovered: " << scanners.size() << " RF627Old"  << std::endl;
 
 
-      // Iterate over all discovered rf627-old in network, connect to each of
+      // Iterate over all discovered RF627Old in network, connect to each of
       // them and read/set parameters.
       for(size_t i = 0; i < scanners.size(); i++)
       {
@@ -454,7 +454,7 @@ Visual Studio
 
    SDK version: 1.3.0
    =========================================
-   Discovered: 1 rf627-old
+   Discovered: 1 RF627Old
 
 
    ID scanner's list: 0

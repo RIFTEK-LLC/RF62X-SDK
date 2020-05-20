@@ -75,7 +75,7 @@ set_platform_adapter_settings()
       // call the function to change adapter settings inside the library.
       set_platform_adapter_settings(host_mask, host_ip_addr);
 
-      // Search for RF627-old devices over network by Service Protocol.
+      // Search for RF627Old devices over network by Service Protocol.
       search_scanners(scanners, kRF627_OLD, kSERVICE);
    }
 
@@ -102,7 +102,7 @@ search_scanners()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
    
 
@@ -129,10 +129,10 @@ get_info_about_scanner()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and get info.
+   // Iterate over all discovered RF627Old in network and get info.
    for(size_t i = 0; i < vector_count(scanners); i++)
       hello_information info = get_info_about_scanner(
                                     (scanner_base_t*)vector_get(scanners,i), kSERVICE);
@@ -160,10 +160,10 @@ connect_to_scanner()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and Establish connection.
+   // Iterate over all discovered RF627Old in network and Establish connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
       connect_to_scanner((scanner_base_t*)vector_get(scanners,i), kSERVICE);
 
@@ -191,14 +191,14 @@ disconnect_from_scanner()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and Establish connection.
+   // Iterate over all discovered RF627Old in network and Establish connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
       connect_to_scanner((scanner_base_t*)vector_get(scanners,i), kSERVICE);
 
-   // Iterate over all discovered rf627-old in network for Disabling connection.
+   // Iterate over all discovered RF627Old in network for Disabling connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
       disconnect_from_scanner((scanner_base_t*)vector_get(scanners,i), kSERVICE);
 
@@ -226,10 +226,10 @@ get_profile2D_from_scanner()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and Establish connection.
+   // Iterate over all discovered RF627Old in network and Establish connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
    {
       scanner_base_t* scanner = vector_get(scanners,i);
@@ -280,10 +280,10 @@ read_params_from_scanner()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and Establish connection.
+   // Iterate over all discovered RF627Old in network and Establish connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
    {
       scanner_base_t* scanner = vector_get(scanners,i);
@@ -325,10 +325,10 @@ get_parameter()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and Establish connection.
+   // Iterate over all discovered RF627Old in network and Establish connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
    {
       scanner_base_t* scanner = vector_get(scanners,i);
@@ -404,10 +404,10 @@ set_parameter()
    // call the function to change adapter settings inside the library.
    set_platform_adapter_settings(host_mask, host_ip_addr);
 
-   // Search for RF627-old devices over network by Service Protocol.
+   // Search for RF627Old devices over network by Service Protocol.
    search_scanners(scanners, kRF627_OLD, kSERVICE);
 
-   // Iterate over all discovered rf627-old in network and Establish connection.
+   // Iterate over all discovered RF627Old in network and Establish connection.
    for(size_t i = 0; i < vector_count(scanners); i++)
    {
       scanner_base_t* scanner = vector_get(scanners,i);

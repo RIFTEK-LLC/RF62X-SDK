@@ -26,7 +26,7 @@ msgid "Поиск устройств RF62X"
 msgstr ""
 
 #: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:10
-msgid "Ниже приведен пример поиска сканеров серии RF627-old в сети"
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
 msgstr ""
 
 #: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:73
@@ -34,7 +34,7 @@ msgid "Получение профиля сканера"
 msgstr ""
 
 #: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:75
-msgid "Ниже приведен пример получения профилей от сканеров серии RF627-old"
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
 msgstr ""
 
 #: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:166
