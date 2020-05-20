@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-18 16:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:18
+msgid "Работа с RF627-old"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:18
+msgid "Обзор программного интерфейса"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:7
+msgid "API «обёртки» на C++"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:9
+msgid "Эта библиотека позволяет упростить разработку приложений на языке C++"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:11
+msgid ""
+"Для её использования в проектах C++ разработчику необходимо включить "
+"h-файлы библиотеки в свой проект, а также добавить к проекту «обёртку» в "
+"качестве статической или динамической программной библиотеки."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:15
+msgid ""
+"Для скачивания библиотеки см. :ref:`последние выпуски «обёртки» на C++ "
+"<rf62x_sdk_cpp_last_release>`."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_cpp/_index.rst:16
+msgid ""
+"Для компиляции библиотеки см. :ref:`компиляция и запуск «обёртки» на C++ "
+"<compilation_rf62x_sdk_cpp>`."
+msgstr ""
+

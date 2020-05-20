@@ -82,7 +82,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\rf62Xsdk\CSharp\rf62Xsdk\rf62Xsdk\rf62Xsdk.csproj">
+    <ProjectReference Include="..\..\..\..\rf62Xwrappers\CSharp\rf62Xsdk\rf62Xsdk\rf62Xsdk.csproj">
       <Project>{5f966733-8e45-4844-8d56-5397a76f3edd}</Project>
       <Name>rf62Xsdk</Name>
     </ProjectReference>

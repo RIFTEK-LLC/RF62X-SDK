@@ -1,0 +1,165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-18 16:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:7
+msgid "Класс rf627old"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:9
+msgid ""
+"Данный класс определён в файле ``rf62Xsdk.h`` и пердоставляет интерфейс "
+"для работы со сканерами серии RF627-old"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:15
+msgid "search()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:17
+msgid "Функция для поиска устройств RF627 доступных в сети"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:21
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:49
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:104
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:134
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:168
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:241
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:285
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:389
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:470
+msgid "Пример использования:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:43
+msgid "get_info()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:45
+msgid ""
+"Функция для получения информации о сканере из пакета приветствия "
+"(Hello-пакет)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:98
+msgid "connect()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:100
+msgid "Функция для установки соединения со сканером серии RF627"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:128
+msgid "disconnect()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:130
+msgid ""
+"Функция для закрытия ранее установленного соединения со сканером серии "
+"RF627"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:162
+msgid "get_profile2D()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:164
+msgid "Функция для получения профиля со сканеров серии RF627"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:233
+msgid "read_params()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:235
+msgid ""
+"Функция получения текущих параметров сканера. При вызове данной функции "
+"SDK вычитывает со сканера все актуальные параметры, сохраняя их ввиде "
+"«списка параметров» для дальнейшей работы."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:276
+msgid "get_param()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:278
+msgid ""
+"Функция получения конкретного параметра по его имени (ключу). При вызове "
+"данной функции SDK осуществляет поиск нужного параметра из последних "
+"прочитанных при вызове функции :ref:`read_params`. В случае, если "
+"запрашиваемый параметр отсутствует в конкретном сканере, функция вернёт "
+"null."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:325
+msgid ""
+"Для более удобной работы с параметрами можно использовать соответствующие"
+" «ключи» (ключ имени параметра, тип параметра и доступ к параметру)."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:330
+msgid "Для этого в файле ``rt62Xtypes.h`` находятся следующие ``enum``:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:338
+msgid "Пример использования с ключами:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:378
+msgid ""
+"Для более детального описания каждого параметра и его свойств см. "
+":ref:`rf62x_more_description_params`"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:381
+msgid "set_param()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:383
+msgid ""
+"Функция установки конкретного параметра. При вызове данной функции "
+"происходит установка передаваемого параметра в локальном списке "
+"параметров в SDK. Для отправки изменений в сканер необходимо вызвать "
+"функцию ``write_params``."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:463
+msgid "write_params()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:465
+msgid ""
+"Функция записи локальных параметров из SDK в сканер. При вызове данной "
+"функции происходит отправка списка локальных параметров из SDK в сканер."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:498
+msgid "send_cmd()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:500
+msgid "Функция отправки команд в сканер"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:504
+msgid ""
+"Для более детального описания команд и их свойств см. "
+":ref:`rf62x_more_description_commands`"
+msgstr ""
+

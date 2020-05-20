@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-18 16:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:29
+msgid "Работа с RF627-old"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:29
+msgid "Обзор программного интерфейса"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:7
+msgid "API «обёртки» на C++"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:9
+msgid "Эта библиотека позволяет упростить разработку приложений на языке C++"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:11
+msgid ""
+"Для её использования в проектах C++ разработчик должен включить "
+"необходимые h-файлы библиотеки в свой проект и собрать статическую или "
+"динамическую программную библиотеку."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:15
+msgid "Последние выпуски:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:18
+msgid "Compiler"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:18
+msgid "64bit"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:18
+msgid "Includes"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:20
+msgid "MinGW 7.3.0"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:20
+msgid "`rf62Xsdk.dll </uploads/ecbe8feab6232f0885b5b1e6db607aa8/rf62Xsdk.dll>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:20
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:22
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:24
+msgid "`include.zip </uploads/c4e61f8dd8068d9360c42865408c7242/include.zip>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:22
+msgid "MSVC2017"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:22
+msgid ""
+"`rf62Xsdk.dll "
+"</uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll>`__, "
+"`rf62Xsdk.lib </uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:24
+msgid "Clang 9.1.0"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:24
+msgid "`rf62Xsdk.dll </uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_matlab/_index.rst:27
+msgid ""
+"Для компиляции библиотеки см. :ref:`компиляция и запуск «обёртки» на C++ "
+"<compilation_rf62x_sdk_cpp>`."
+msgstr ""
+

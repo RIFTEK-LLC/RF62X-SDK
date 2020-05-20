@@ -17,16 +17,16 @@
 
 
 #if (defined _WIN32 && defined RF627_LIBRARY)
-    #define dllexport __declspec(dllexport)
+    #define API_EXPORT __declspec(dllexport)
 #else
-    #define dllexport
+    #define API_EXPORT
 #endif
 
 /**
  * @brief core_version - Return rf627 sdk version.
  * @return ptr to rfChar
  */
-dllexport rfChar* core_version();
+API_EXPORT rfChar* core_version();
 
 
 /*!
@@ -36,7 +36,7 @@ dllexport rfChar* core_version();
  * @param network_methods Structure with platform-specific methods for work with network
  * @param adapter_settings Structure with platform-specific settings
  */
-dllexport void init_platform_dependent_methods(
+API_EXPORT void init_platform_dependent_methods(
         memory_platform_dependent_methods_t* memory_methods,
         iostream_platform_dependent_methods_t* iostream_methods,
         network_platform_dependent_methods_t* network_methods,

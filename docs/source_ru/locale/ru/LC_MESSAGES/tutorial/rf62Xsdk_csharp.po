@@ -1,0 +1,49 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-18 16:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:3
+msgid "Примеры для С#"
+msgstr ""
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:8
+msgid "Поиск устройств RF62X"
+msgstr ""
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:10
+msgid "Ниже приведен пример поиска сканеров серии RF627-old в сети"
+msgstr ""
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:73
+msgid "Получение профиля сканера"
+msgstr ""
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:75
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627-old"
+msgstr ""
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:166
+msgid "Получение и установка параметров"
+msgstr ""
+
+#: ../../source_ru/tutorial/rf62Xsdk_csharp.rst:168
+msgid ""
+"Ниже приведен пример получения и изменения имени сканера, установки IP "
+"адреса, смены состояния лазера (включение или отключение):"
+msgstr ""
+

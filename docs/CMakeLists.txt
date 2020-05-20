@@ -47,6 +47,14 @@ find_package(Sphinx REQUIRED)
 set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source_ru)
 set(SPHINX_BUILD ${CMAKE_CURRENT_SOURCE_DIR}/build/sphinx)
 
+add_custom_target(Sphinx_gettext ALL
+                  COMMAND ${SPHINX_EXECUTABLE} -b gettext
+                  # Tell Breathe where to find the Doxygen output
+                  -Dbreathe_projects.rf62Xcore=${DOXYGEN_OUTPUT_DIR}/xml/
+                  ${SPHINX_SOURCE} ${SPHINX_BUILD}_gettext
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                  COMMENT "Generating documentation with Sphinx")
+
 add_custom_target(Sphinx_html ALL
                   COMMAND ${SPHINX_EXECUTABLE} -b html
                   # Tell Breathe where to find the Doxygen output

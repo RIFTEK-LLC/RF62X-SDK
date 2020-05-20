@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-18 16:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:4
+msgid "Компиляция «обёртки» на C++"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:6
+msgid "Эта библиотека позволяет упростить разработку приложений на языке C++"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:8
+msgid ""
+"Для её использования в проектах C++ разработчик должен включить "
+"необходимые h-файлы библиотеки в свой проект и собрать статическую или "
+"динамическую программную библиотеку."
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:26
+msgid "Последние выпуски:"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:29
+msgid "Compiler"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:29
+msgid "64bit"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:29
+msgid "Includes"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:31
+msgid "MinGW 7.3.0"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:31
+msgid ""
+"`rf62Xsdk.dll <rf62Xsdk_cpp_dll_mingw_64_>`_ `rf62Xsdk.a "
+"<rf62Xsdk_cpp_a_mingw_64_>`_"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:31
+msgid "`include.zip <rf62Xsdk_cpp_mingw_64_include>`_"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:33
+msgid "MSVC2017"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:33
+msgid ""
+"`rf62Xsdk.dll <rf62Xsdk_cpp_dll_msvc17_64_>`_ `rf62Xsdk.lib "
+"<rf62Xsdk_cpp_lib_msvc17_64_>`_"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:33
+msgid "`include.zip <rf62Xsdk_cpp_msvc17_64_include>`_"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:35
+msgid "Clang 9.1.0"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:35
+msgid ""
+"`rf62Xsdk.dll <rf62Xsdk_cpp_dll_clang_64_>`_ `rf62Xsdk.lib "
+"<rf62Xsdk_cpp_lib_clang_64_>`_"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:35
+msgid "`include.zip <rf62Xsdk_cpp_clang_64_include>`_"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:41
+msgid "Как скомпилировать"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:43
+msgid ""
+"Библиотека-«обёртка» rf62Xsdk может быть скомпилирован при помощи консоли"
+" или среды разработки (Visual Studio, Qt Creator)"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:46
+msgid "Во-первых, вы должны загрузить проект (если не сделали этого ранее)"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:49
+msgid ""
+"для получения дополнительной информации о шагах загрузки проекта см. "
+":ref:`clone_rf62x_sdk`"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:54
+msgid "CMake"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:56
+msgid ""
+"Находясь в папке с проектом, для построения библиотеки-«обёртки» "
+"(rf62Xsdk библиотеки) введите следующую команду в консоль (терминал):"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:70
+msgid "Qt Creator"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:72
+msgid ""
+"Для построения библиотеки-«обёртки» (rf62Xsdk библиотеки) с "
+"использованием IDE Qt Creator:"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:74
+msgid ""
+"Загрузите файл CMakeLists.txt из папки **rf62Xwrappers/Сpp/rf62Xsdk** "
+"через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:76
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:208
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:334
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:479
+msgid ""
+"Выберите компилятор (MinGW, MSVC2017, Clang) и нажмите **Configure "
+"Project**"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:78
+msgid ""
+"Откройте **Build Settings** и отметьте пункт **install** для **Build "
+"Steps**"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:79
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:97
+msgid "Скомпилируйте проект"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:84
+msgid "Visual Studio"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:86
+msgid ""
+"Находясь в папке с проектом, для построения RF62X CORE (rf62Xcore "
+"библиотеки) введите следующую команду в консоль (терминал):"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:96
+msgid "Откройте полученное решение rf62Xsdk.sln в Visual Studio"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:102
+msgid "Как использовать"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:104
+msgid ""
+"Вы можете **создать свой проект**, включив в него статическую или "
+"динамическую библиотеку и необходимые заголовочные файлы, или вы можете "
+"**открыть и скомпилировать** один из приведенных ниже примеров "
+"использования из папки **examples/Cpp/RF627\\_old/**."
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:109
+msgid ""
+"Помимо приведенных ниже примеров, где каждый может быть скомпилирован и "
+"выполнен, вы также можете прочитать документацию для «обёртки» на C++ "
+"(см. :ref:`rf62x_wrappers_description_cpp`), где каждая функция содержит "
+"отдельный пример кода."
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:116
+msgid "Поиск устройств RF62X"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:118
+msgid "Ниже приведен пример поиска сканеров серии RF627-old в сети"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:175
+msgid ""
+"Ниже приведён результат вывода приложения при успешном обнаружении "
+"сканера в сети:"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:204
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:330
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:475
+msgid "Вы можете открыть и скомпилировать этот пример с помощью **Qt Creator**:"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:206
+msgid ""
+"Загрузите файл CMakeLists.txt из папки "
+"**examples/Cpp/RF627\\_old/RF627\\_search** через **File > Open File or "
+"Project** (выберите файл CMakeLists.txt)"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:210
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:336
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:481
+msgid "Запустите проект"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:216
+msgid "Получение профиля сканера"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:218
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627-old"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:305
+msgid ""
+"Ниже приведён результат вывода приложения при успешном получении профиля "
+"от сканера:"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:332
+msgid ""
+"Загрузите файл CMakeLists.txt из папки "
+"**examples/Cpp/RF627\\_old/RF627\\_profile** через **File > Open File or "
+"Project** (выберите файл CMakeLists.txt)"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:339
+msgid "Получение и установка параметров"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:341
+msgid ""
+"Ниже приведен пример получения и изменения имени сканера, установки IP "
+"адреса, смены состояния лазера (включение или отключение):"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:451
+msgid ""
+"Ниже приведён результат вывода приложения при успешной установке новых "
+"параметров:"
+msgstr ""
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_cpp.rst:477
+msgid ""
+"Загрузите файл CMakeLists.txt из папки "
+"**examples/Cpp/RF627\\_old/RF627\\_params** через **File > Open File or "
+"Project** (выберите файл CMakeLists.txt)"
+msgstr ""
+

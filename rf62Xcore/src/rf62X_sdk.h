@@ -15,10 +15,11 @@
 #include "rf62X_devices.h"
 #include "rf62X_types.h"
 
+
 #if (defined _WIN32 && defined RF627_LIBRARY)
-    #define dllexport __declspec(dllexport)
+    #define API_EXPORT __declspec(dllexport)
 #else
-    #define dllexport
+    #define API_EXPORT
 #endif
 
 /**
@@ -27,7 +28,7 @@
  * number that defines a range of IP addresses that can be used in a network.
  * @param[in] host_ip_addr IP address of your network adapter(card)
  */
-dllexport void set_platform_adapter_settings(
+API_EXPORT void set_platform_adapter_settings(
         rfUint32 subnet_mask, rfUint32 host_ip_addr);
 
 /**
@@ -37,7 +38,7 @@ dllexport void set_platform_adapter_settings(
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return 0 on success
  */
-dllexport rfUint8 search_scanners(
+API_EXPORT rfUint8 search_scanners(
         vector_t *list, scanner_types_t model, protocol_types_t protocol);
 
 /**
@@ -46,7 +47,7 @@ dllexport rfUint8 search_scanners(
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return 0 on success
  */
-dllexport hello_information get_info_about_scanner(
+API_EXPORT hello_information get_info_about_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
@@ -55,7 +56,7 @@ dllexport hello_information get_info_about_scanner(
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return 0 on success
  */
-dllexport rfUint8 connect_to_scanner(
+API_EXPORT rfUint8 connect_to_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
@@ -64,7 +65,7 @@ dllexport rfUint8 connect_to_scanner(
  * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)
  * @return 0 on success
  */
-dllexport rfUint8 disconnect_from_scanner(
+API_EXPORT rfUint8 disconnect_from_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
@@ -74,11 +75,11 @@ dllexport rfUint8 disconnect_from_scanner(
  * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)
  * @return ptr to rf627_profile_t structure
  */
-dllexport rf627_profile2D_t* get_profile2D_from_scanner(
+API_EXPORT rf627_profile2D_t* get_profile2D_from_scanner(
         scanner_base_t *device, rfBool zero_points, protocol_types_t protocol);
 
 
-dllexport rf627_profile3D_t* get_profile3D_from_scanner(
+API_EXPORT rf627_profile3D_t* get_profile3D_from_scanner(
         scanner_base_t *device, rfFloat step_size, rfFloat k,
         count_types_t count_type,
         rfBool zero_points,
@@ -91,7 +92,7 @@ dllexport rf627_profile3D_t* get_profile3D_from_scanner(
  * @param protocol -  protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return 0 on success
  */
-dllexport rfUint8 read_params_from_scanner(
+API_EXPORT rfUint8 read_params_from_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
@@ -100,7 +101,7 @@ dllexport rfUint8 read_params_from_scanner(
  * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return 0 on success
  */
-dllexport rfUint8 write_params_to_scanner(
+API_EXPORT rfUint8 write_params_to_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
@@ -109,7 +110,7 @@ dllexport rfUint8 write_params_to_scanner(
  * @param param_name - name of parameter
  * @return param on success, else - null
  */
-dllexport parameter_t* get_parameter(
+API_EXPORT parameter_t* get_parameter(
         scanner_base_t *device, const rfChar* param_name);
 
 /**
@@ -118,7 +119,7 @@ dllexport parameter_t* get_parameter(
  * @param param - setting parameter
  * @return 0 if success
  */
-dllexport rfUint8 set_parameter(
+API_EXPORT rfUint8 set_parameter(
         scanner_base_t *device, parameter_t* param);
 
 /**
@@ -128,7 +129,7 @@ dllexport rfUint8 set_parameter(
  * @param value - value
  * @return 0 if success
  */
-dllexport rfUint8 set_parameter_by_name(
+API_EXPORT rfUint8 set_parameter_by_name(
         scanner_base_t *device, const char* param_name, rfUint32 count, va_list value);
 
 /**
@@ -137,7 +138,7 @@ dllexport rfUint8 set_parameter_by_name(
  * @param param_name - name of parameter
  * @return param on success, else - null
  */
-dllexport rfUint8 send_command(
+API_EXPORT rfUint8 send_command(
         scanner_base_t *device, command_t* command);
 
 

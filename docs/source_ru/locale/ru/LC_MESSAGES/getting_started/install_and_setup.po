@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-18 16:03+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:5
+msgid "Установка и настройка"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:10
+msgid "Установка программного обеспечения"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:12
+msgid ""
+"Есть несколько вариантов построения библиотеки RF62X-SDK. Все варианты "
+"поддерживаются и должны работать одинаково хорошо для:"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:15
+msgid "IDE Visual Studio 2019"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:16
+msgid "IDE Qt Creator"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:17
+msgid "CMake"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:19
+msgid ""
+"Если вы знакомы с CMake, то вы также можете самостоятельно создавать "
+"проекты для CodeBlocks, Eclipse, KDevelop3 и Xcode."
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:22
+msgid ""
+"Если возникли сложности с установкой или настройкой сред разработки, ниже"
+" приведены более подробные инструкции:"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:25
+msgid ""
+"`IDE Visual Studio 2019 <https://docs.microsoft.com/ru-"
+"ru/visualstudio/install/install-visual-studio?view=vs-2019>`__  "
+"(дополнительная информация доступно на оффициальном сайте "
+"`docs.microsoft.com <https://docs.microsoft.com>`__ )"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:26
+msgid ""
+"`IDE Qt Creator <https://www.qt.io/download>`__ ( дополнительная "
+"информация доступна на оффициальном сайте `qt.io <https://www.qt.io/>`__ "
+")"
+msgstr ""
+
+#: ../../source_ru/getting_started/install_and_setup.rst:27
+msgid ""
+"`CMake  <https://cmake.org/install/>`__ ( дополнительная информация "
+"доступна на оффициальном сайте `cmake.org <https://cmake.org/>`__)"
+msgstr ""
+
