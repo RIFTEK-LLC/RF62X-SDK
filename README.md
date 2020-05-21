@@ -206,9 +206,9 @@ This library was written in C programming language in accordance with C99 Sdanda
 
 | Compiler | 64bit | Includes |
 | ------   | ------| ------|
-| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/371108d8ea80d3865aec88d2e194282e/rf62Xcore.dll) | [include.zip](/uploads/a526db902d8fc61a61db37341354815c/include.zip) |
-| MSVC2017 | [rf62Xcore.dll](/uploads/c95087a6f5d18a0a01eacee2bdc1ce5e/rf62Xcore.dll) | [include.zip](/uploads/406956fd8a722ef55097b555cf8425d9/include.zip) |
-| Clang 9.1.0 | [rf62Xcore.dll](/uploads/c5e6ec52a8955a369669c4edeedd5aa8/rf62Xcore.dll) | [include.zip](/uploads/62aa9d4dd96e056570a84576c947d3cd/include.zip) |
+| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/178471d04d864e6110deba9ac9074df1/rf62Xcore.dll) [rf62Xcore.a](/uploads/4391dcfc692165676df647cbc65fb570/rf62Xcore.a) | [include.zip](/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip) |
+| MSVC2017 | [rf62Xcore.dll](/uploads/b97b1cec97a78ab3c9b09de946fd7e70/rf62Xcore.dll) [rf62Xcore.lib](/uploads/4eb42c2565bc2f61ed6714fc1bcf9d90/rf62Xcore.lib) | [include.zip](/uploads/912861a038055097ae482022a9003702/include.zip) |
+| Clang 9.1.0 | [rf62Xcore.dll](/uploads/49e8e99d59fba95fa9f952c5befe8e92/rf62Xcore.dll) [rf62Xcore.lib](/uploads/5f96d0e7bb69d9a6ad60f41644a7e72d/rf62Xcore.lib) | [include.zip](/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip) |
 
 ***
 
@@ -267,9 +267,9 @@ applications with following scanner series:
 
 | Compiler | 64bit | Includes |
 | ------ | ------ | ------|
-| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/fbb23942872b3bfda058b72361b8210a/rf62Xsdk.dll) | [include.zip](/uploads/8e63d0af13b2f921c724468da426d7b3/include.zip) |
-| MSVC2017 | [rf62Xsdk.dll](/uploads/ffb7e3e02403f448008f8892c60cdedb/rf62Xsdk.dll), [rf62Xsdk.lib](/uploads/8ad08a8bfbc71f5dde329eb60cc3ff1b/rf62Xsdk.lib) | [include.zip](/uploads/1c58da93d1843013eef422b850168c22/include.zip) |
-| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/0bc7dd16f5834330c453f6fafeafc018/rf62Xsdk.dll) | [include.zip](/uploads/b4e28e11321de2962bb38972cd4ea816/include.zip) |
+| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/2148ca77659e21b2f7aec9e5cbb072ab/rf62Xsdk.dll) [rf62Xsdk.a](/uploads/5a2fdb2b2fc3317fdeec78bbe0c00cc3/rf62Xsdk.a) | [include.zip](/uploads/e69dc9279a6dcba800a98142a8b32c8d/include.zip) |
+| MSVC2017 | [rf62Xsdk.dll](/uploads/912890213476c43b26bf8f178b1d2c5a/rf62Xsdk.dll) [rf62Xsdk.lib](/uploads/e42dadfe318fc3201d6b6f1e280040a9/rf62Xsdk.lib) | [include.zip](/uploads/5e490e8b89b3c2870ec8102540a32b1a/include.zip) |
+| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/fc19b0fac252c78ed93d4fa86ebfc7eb/rf62Xsdk.dll) [rf62Xsdk.lib](/uploads/70b57c76ace11faa6c0e6d3ac8493a86/rf62Xsdk.lib) | [include.zip](/uploads/e69dc9279a6dcba800a98142a8b32c8d/include.zip) |
 
 #### HOW TO COMPILE
 RF62X SDK (C++) can be built on the console or in an IDE.\
@@ -486,7 +486,7 @@ Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner 
 
 | Platform | 64bit | Dependencies (x64) |
 | ------ | ------ |------ |
-| .NET Framework 4.5 (or above) | [rf62Xsdk.dll](/uploads/2d04f23757e4cc36dadd1e0e36e6e880/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/18b4411bcea75af28b588d1368215049/rf62Xcore.dll) |
+| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](/uploads/dc42b3db3c48a4d3cc746510a9e66571/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/178471d04d864e6110deba9ac9074df1/rf62Xcore.dll) |
 
 
 #### HOW TO COMPILE
