@@ -6,15 +6,15 @@
 
 
 #if (defined _WIN32 && defined RF627_LIBRARY)
-#define API_EXPORT extern "C" __declspec(dllexport)
+#define API_EXPORT __declspec(dllexport)
 #else
 #define API_EXPORT
 #endif
 
 //#define exportToDll extern "C" __declspec(dllexport)
 
-extern "C" {
-API_EXPORT bool core_init();
+
+API_EXPORT rfBool core_init();
 
 /** @brief Allocates an array in memory with elements initialized to 0.
  *
@@ -305,4 +305,3 @@ API_EXPORT rfInt platform_recv_from(
  */
 API_EXPORT rfInt platform_recv(void* socket, void *buf, rfSize len);
 
-}

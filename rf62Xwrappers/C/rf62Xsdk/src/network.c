@@ -152,15 +152,15 @@ BOOL MatchIP(const char* ip1, const char* ip2, const char* mask)
         return FALSE;
 }
 
-BOOL MatchIP(u_long ip1, u_long ip2, u_long mask)
-{
-    ip1&=mask;
-    ip2&=mask;
-    if (ip1 == ip2)
-        return TRUE;
-    else
-        return FALSE;
-}
+//BOOL MatchIP(u_long ip1, u_long ip2, u_long mask)
+//{
+//    ip1&=mask;
+//    ip2&=mask;
+//    if (ip1 == ip2)
+//        return TRUE;
+//    else
+//        return FALSE;
+//}
 
 char* GetCompatibleInterface(const char* RemoteIP, const char* SubnetMask)
 {
@@ -172,18 +172,18 @@ char* GetCompatibleInterface(const char* RemoteIP, const char* SubnetMask)
     return NULL;
 }
 
-u_long GetCompatibleInterface(u_long RemoteIP, u_long SubnetMask)
-{
-    if (RemoteIP)
-    {
-        for (int i=0; i<_ifs_cnt; i++)
-        {
-            if (MatchIP(inet_addr(_ifs[i]), RemoteIP, SubnetMask))
-                return inet_addr(_ifs[i]);
-        }
-    }
-    return htonl(INADDR_ANY);
-}
+//u_long GetCompatibleInterface(u_long RemoteIP, u_long SubnetMask)
+//{
+//    if (RemoteIP)
+//    {
+//        for (int i=0; i<_ifs_cnt; i++)
+//        {
+//            if (MatchIP(inet_addr(_ifs[i]), RemoteIP, SubnetMask))
+//                return inet_addr(_ifs[i]);
+//        }
+//    }
+//    return htonl(INADDR_ANY);
+//}
 
 BOOL MatchUDP(u_long testIP, u_long hostIP)
 {
@@ -212,17 +212,17 @@ void DumpInterfaces()
     }
 }
 
-BOOL BindToCompatibleInterface(SOCKET s, in_addr* addr, u_long netMask)
-{
-    u_long local_ip = INADDR_ANY;
-    u_long net_mask = netMask;
-    sockaddr_in sin_loc;
-    memset(&sin_loc, 0, sizeof(sockaddr_in));
-    sin_loc.sin_family = PF_INET;
-    local_ip = GetCompatibleInterface(addr->s_addr, net_mask);
-    sin_loc.sin_addr.s_addr = local_ip;
-    return (bind(s, reinterpret_cast<SOCKADDR*>(&sin_loc), sizeof(sin_loc)) != SOCKET_ERROR);
-}
+//BOOL BindToCompatibleInterface(SOCKET s, in_addr* addr, u_long netMask)
+//{
+//    u_long local_ip = INADDR_ANY;
+//    u_long net_mask = netMask;
+//    sockaddr_in sin_loc;
+//    memset(&sin_loc, 0, sizeof(sockaddr_in));
+//    sin_loc.sin_family = PF_INET;
+//    local_ip = GetCompatibleInterface(addr->s_addr, net_mask);
+//    sin_loc.sin_addr.s_addr = local_ip;
+//    return (bind(s, reinterpret_cast<SOCKADDR*>(&sin_loc), sizeof(sin_loc)) != SOCKET_ERROR);
+//}
 
 /**************************************************
  */

@@ -12,8 +12,7 @@ project(rf62Xsdk VERSION 1.0.1 LANGUAGES CXX C)
 ## CONFIGURATION
 ##
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 99)
 # Enabling export of all symbols to create a dynamic library
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
@@ -33,7 +32,7 @@ file (GLOB_RECURSE H_FILES
       )
 
 file (GLOB_RECURSE CPP_FILES
-     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c
      ${RF62XCORE_DIR}/*.c
      )
 # concatenate the results (glob files) to variable
