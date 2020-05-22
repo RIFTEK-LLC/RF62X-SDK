@@ -17,11 +17,11 @@ extern "C"{
 #include <netinet/in.h>
 #include <unistd.h>
 #include <stdint.h>
-#define INVALID_SOCKET -1
 typedef unsigned char BYTE;
 typedef int BOOL;
 typedef int SOCKET;
 typedef struct sockaddr SOCKADDR;
+#define INVALID_SOCKET -1
 #define SOCKET_ERROR (-1)
 #define TRUE 1
 #define FALSE 0
@@ -205,8 +205,7 @@ rfUint16 platform_ntohs(rfUint16 netshort)
  */
 void* platform_create_udp_socket()
 {
-    SOCKET s;
-    s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    SOCKET s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     // Close socket in case fail initialization
     if (s == INVALID_SOCKET) {
         std::cout << "open socket error" << std::endl;

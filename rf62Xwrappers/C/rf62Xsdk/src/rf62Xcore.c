@@ -9,8 +9,19 @@
 #include <winsock.h>
 #else
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <stdlib.h>
+
+typedef int BOOL;
+typedef int SOCKET;
+
+#define INVALID_SOCKET          (-1)
+#define SOCKET_ERROR            (-1)
+#define TRUE 1
+#define FALSE 0
+
 #endif
 
 /** @brief Allocates an array in memory with elements initialized to 0.
@@ -266,7 +277,7 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
 #ifdef _WIN32
     DWORD t = msec;
 #else
-    timeval t;
+    struct timeval t = {0};
     t.tv_sec = msec / 1000;
     t.tv_usec = (msec % 1000) * 1000;
 #endif
