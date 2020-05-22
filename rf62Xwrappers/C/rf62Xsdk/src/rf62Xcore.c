@@ -515,9 +515,7 @@ network_platform_dependent_methods_t network_methods = {
     platform_recv
 };
 
-network_platform_dependent_settings_t adapter_settings =
-{
-};
+network_platform_dependent_settings_t adapter_settings = {0};
 
 
 extern BOOL EnumAdapterAddresses();
