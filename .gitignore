@@ -67,6 +67,7 @@ bld/
 [Ll]ogs/
 *build-*
 *build*
+.vscode/
 docs/source_ru/_build/
 
 # Visual Studio 2015/2017 cache/options directory
