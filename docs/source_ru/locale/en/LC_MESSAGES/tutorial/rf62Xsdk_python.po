@@ -1,0 +1,45 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:3
+msgid "Примеры для PYTHON"
+msgstr "Examples for PYTHON"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:8
+msgid "Поиск устройств RF62X"
+msgstr "Search for RF62X devices"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:10
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
+msgstr "Below is an example of searching the RF627Old series of scanners on the network"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:15
+msgid "Получение профиля сканера"
+msgstr "Getting a scanner profile"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:17
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
+msgstr "The following is an example of retrieving profiles from RF627Old Series Scanners"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:22
+msgid "Получение и установка параметров"
+msgstr "Getting and setting parameters"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:24
+msgid "Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены состояния лазера (включение или отключение):"
+msgstr "The following is an example of getting and changing the name of the scanner, setting the IP address, changing the state of the laser (turning it on or off):"

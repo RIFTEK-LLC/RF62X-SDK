@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/getting_started/compatibility.rst:3
+msgid "Целевые платформы и совместимость"
+msgstr "Target Platforms and Compatibility"
+
+#: ../../source_ru/getting_started/compatibility.rst:6
+msgid "Языки программирования"
+msgstr "Programming languages"
+
+#: ../../source_ru/getting_started/compatibility.rst:7
+msgid "Основная программная библиотека RF62X-CORE («Ядро») написана на языке СИ стандарта C99 (ISO / IEC 9899: 1999) без использования сторонних программных модулей и зависимых от операционной системы или процессора функций."
+msgstr "The main software library RF62X-CORE («Core») is written in C language of the C99 standard (ISO / IEC 9899: 1999) without the use of third-party software modules and functions dependent on the operating system or processor."
+
+#: ../../source_ru/getting_started/compatibility.rst:12
+msgid "Целевые платформы"
+msgstr "Target platforms"
+
+#: ../../source_ru/getting_started/compatibility.rst:13
+msgid "Достигнута совместимость с любыми операционными системами семейства Windows, Linux и FreeBSD, поддерживающими компиляторы языка СИ стандарта C99 (ISO / IEC 9899: 1999). Библиотека компилируется из исходных кодов и может быть использована с любыми типами процессоров (x86, ARM, RISC-V и др.)."
+msgstr "Compatibility is achieved with any operating systems of the Windows, Linux and FreeBSD family that support C language compilers of the C99 standard (ISO / IEC 9899: 1999). The library is compiled from source codes and can be used with any type of processor (x86, ARM, RISC-V, etc.)."
+
+#: ../../source_ru/getting_started/compatibility.rst:19
+msgid "Поддерживаемые компиляторы"
+msgstr "Supported Compilers"
+
+#: ../../source_ru/getting_started/compatibility.rst:20
+msgid "GCC 5.x или новее в Linux"
+msgstr "GCC 5.x or newer on Linux"
+
+#: ../../source_ru/getting_started/compatibility.rst:21
+msgid "XCode 8.0 или новее в OS X"
+msgstr "XCode 8.0 or newer on OS X"
+
+#: ../../source_ru/getting_started/compatibility.rst:22
+msgid "Visual Studio 2017 или новее в Windows"
+msgstr "Visual Studio 2017 or newer on Windows"
+
+#: ../../source_ru/getting_started/compatibility.rst:25
+msgid "Ссылки"
+msgstr "Resources"
+
+#: ../../source_ru/getting_started/compatibility.rst:27
+msgid "Этот проект использует git_ для управления исходным кодом и GitLab_ для размещения исходного кода."
+msgstr "This project uses git_ for source code management and GitLab_ for source code hosting."
+
+#: ../../source_ru/getting_started/compatibility.rst:34
+msgid "Исходники кода: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK"
+msgstr "Source code: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK"
+
+#: ../../source_ru/getting_started/compatibility.rst:35
+msgid "Документация: RF62X-SDK.ru.pdf_, RF62X-SDK.en.pdf_"
+msgstr "Documentation: RF62X-SDK.ru.pdf_, RF62X-SDK.en.pdf_"
+
+#: ../../source_ru/getting_started/compatibility.rst:36
+msgid "Веб-сайт: www.riftek.com"
+msgstr "Website: www.riftek.com"

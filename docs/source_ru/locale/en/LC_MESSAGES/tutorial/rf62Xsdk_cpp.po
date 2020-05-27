@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:3
+msgid "Примеры для C++"
+msgstr "Examples for C++"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:6
+msgid "Поиск устройств RF62X"
+msgstr "Search for RF62X devices"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:8
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
+msgstr "Below is an example of searching the RF627Old series of scanners on the network"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:65
+msgid "Ниже приведён результат вывода приложения при успешном обнаружении сканера в сети:"
+msgstr "The following is the output of the application upon successful detection of the scanner on the network:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:94
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:220
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:365
+msgid "Вы можете открыть и скомпилировать этот пример с помощью **Qt Creator**:"
+msgstr "You can open and compile this example with **Qt Creator**:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:96
+msgid "Загрузите файл CMakeLists.txt из папки **examples/Cpp/RF627\\_old/RF627\\_search** через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr "Download the CMakeLists.txt file from the **examples/Cpp/RF627\\_old/RF627\\_search** folder through **File > Open File or Project** (select the CMakeLists.txt file)"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:98
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:224
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:369
+msgid "Выберите компилятор (MinGW, MSVC2017, Clang) и нажмите **Configure Project**"
+msgstr "Select the compiler (MinGW, MSVC2017, Clang) and click **Configure Project** "
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:100
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:226
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:371
+msgid "Запустите проект"
+msgstr "Run the project"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:106
+msgid "Получение профиля сканера"
+msgstr "Getting a scanner profile"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:108
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
+msgstr "The following is an example of retrieving profiles from RF627Old Series Scanners"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:195
+msgid "Ниже приведён результат вывода приложения при успешном получении профиля со сканера:"
+msgstr "The following is the result of the output of the application upon successful receipt of the profile from the scanner:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:222
+msgid "Загрузите файл CMakeLists.txt из папки **examples/Cpp/RF627\\_old/RF627\\_profile** через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr "Download the CMakeLists.txt file from the **examples/Cpp/RF627\\_old/RF627\\_profile** folder through **File > Open File or Project** (select the CMakeLists.txt file)"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:229
+msgid "Получение и установка параметров"
+msgstr "Getting and setting parameters"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:231
+msgid "Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены состояния лазера (включение или отключение):"
+msgstr "The following is an example of getting and changing the name of the scanner, setting the IP address, changing the state of the laser (turning it on or off):"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:341
+msgid "Ниже приведён результат вывода приложения при успешной установке новых параметров:"
+msgstr "The following is the output from the application upon successful installation of the new parameters:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_cpp.rst:367
+msgid "Загрузите файл CMakeLists.txt из папки **examples/Cpp/RF627\\_old/RF627\\_params** через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr "Download the CMakeLists.txt file from the **examples/Cpp/RF627\\_old/RF627\\_params** folder through **File > Open File or Project** (select the CMakeLists.txt file)"

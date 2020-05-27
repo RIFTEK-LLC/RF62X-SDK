@@ -1,0 +1,271 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:7
+msgid "API «обёртки» на LabView"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:9
+msgid "Библиотеки-«обёртки» помогают создавать программы для работы со сканерами серии RF62X на разных языках для различных платформ, тем самым упрощая использование RF62X CORE (rf62Xcore библиотеки)."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:16
+msgid "Библиотека-«обёртка» на C++"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:18
+msgid "Эта библиотека позволяет упростить разработку приложений на языке C++"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:20
+msgid "Для её использования в проектах C++ разработчик должен включить необходимые h-файлы библиотеки в свой проект и собрать статическую или динамическую программную библиотеку."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:25
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:131
+msgid "Последние выпуски:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:28
+msgid "Compiler"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:28
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:134
+msgid "64bit"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:28
+msgid "Includes"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:30
+msgid "MinGW 7.3.0"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:30
+msgid "`rf62Xsdk.dll </uploads/ecbe8feab6232f0885b5b1e6db607aa8/rf62Xsdk.dll>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:30
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:32
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:34
+msgid "`include.zip </uploads/c4e61f8dd8068d9360c42865408c7242/include.zip>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:32
+msgid "MSVC2017"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:32
+msgid "`rf62Xsdk.dll </uploads/09ea279c561d242dec0a93447d4efb9a/rf62Xsdk.dll>`__, `rf62Xsdk.lib </uploads/f254cb872337f25c21a9fb7b7f065518/rf62Xsdk.lib>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:34
+msgid "Clang 9.1.0"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:34
+msgid "`rf62Xsdk.dll </uploads/32d124be918aa349a213a1b75124026f/rf62Xsdk.dll>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:40
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:142
+msgid "Обзор программного интерфейса"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:43
+msgid "rf62Xsdk.h"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:44
+msgid "Файл ``rf62Xsdk.h`` является основным файлом программного интерфейса (API) для разработки программ на языке C++ и определяет функциональность библиотеки-«обёртки» для rf62Xcore. ``rf62Xsdk.h`` содержит следующий набор классов и функций для разработки:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Defines"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Functions"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Public Functions"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Public Static Functions"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Private Members"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Public Members"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:0
+msgid "Friends"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:52
+msgid "rf62Xtypes.h"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:53
+msgid "Файл ``rf62Xtypes.h`` содержит необходимый набор типов, структур и констант для работы с библиотекой-«обёрткой» на языке C++."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:59
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:145
+msgid "Как скомпилировать"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:61
+msgid "Библиотека-«обёртка» rf62Xsdk может быть скомпилирован при помощи консоли или среды разработки (Visual Studio, Qt Creator)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:64
+msgid "Во-первых, вы должны загрузить проект (если не сделали этого ранее)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:67
+msgid "для получения дополнительной информации о шагах загрузки проекта см. :ref:`clone_rf62x_sdk`"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:72
+msgid "CMake"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:74
+msgid "Находясь в папке с проектом, для построения библиотеки-«обёртки» (rf62Xsdk библиотеки) введите следующую команду в консоль (терминал):"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:88
+msgid "Qt Creator"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:90
+msgid "Для построения библиотеки-«обёртки» (rf62Xsdk библиотеки) с использованием IDE Qt Creator:"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:92
+msgid "Загрузите файл CMakeLists.txt из папки **rf62Xwrappers/Сpp/rf62Xsdk** через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:94
+msgid "Выберите компилятор (MinGW, MSVC2017, Clang) и нажмите **Configure Project**"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:96
+msgid "Откройте **Build Settings** и отметьте пункт **install** для **Build Steps**"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:97
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:115
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:167
+msgid "Скомпилируйте проект"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:102
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:164
+msgid "Visual Studio"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:104
+msgid "Находясь в папке с проектом, для построения RF62X CORE (rf62Xcore библиотеки) введите следующую команду в консоль (терминал):"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:114
+msgid "Откройте полученное решение rf62Xsdk.sln в Visual Studio"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:119
+msgid "Библиотека-«обёртка» на C#"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:121
+msgid "Эта «обёртка» представляет собой библиотеку .NET, написанную на языке C#? которая позволяет может быть использована в приложениях на C#, Visual Basic .NET, C++/CLI и JScript .NET"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:125
+msgid "Для её использования в проектах .NET разработчик должен собрать или скачать динамическую программную библиотеку **rf62Xsdk.dll**, после чего добавить библиотеку к ссылкам (references) проекта, а также собрать или скачать **rf62Xcore.dll** добавив её в папку к исполняемому файлу проекта."
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:134
+msgid "Platform"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:134
+msgid "Dependencies (x64)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:136
+msgid ".NET Framework 4.5 (or above)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:136
+msgid "`rf62Xsdk.dll </uploads/8d0e1e7d20de6c00bc6ccc0a9bd0696b/rf62Xsdk.dll>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:136
+msgid "`rf62Xcore.dll </uploads/8d5bdec0c244ec9afb6c977014dc870e/rf62Xcore.dll>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:147
+msgid "Библиотека-«обёртка» rf62Xsdk может быть скомпилирован при помощи среды разработки Visual Studio"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:150
+msgid "Во-первых, вы должны загрузить проект (если вы уже сделали это, пропустите следующие шаги)"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:159
+msgid "для получения дополнительной информации о шагах загрузки проекта см. `Скачивание проекта <#overview>`__"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_labview/rf62Xsdk_labview.rst:166
+msgid "Откройте решение rf62Xsdk.sln по пути **rf62Xwrappers/CSharp/rf62Xsdk** в Visual Studio"
+msgstr ""

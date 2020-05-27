@@ -1,0 +1,70 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/index.rst:25
+#: ../../source_ru/index.rst:25
+msgid "Руководство программиста"
+msgstr "Programmer’s Manual"
+
+#: ../../source_ru/index.rst:34
+#: ../../source_ru/index.rst:34
+msgid "Описания API"
+msgstr "API Descriptions"
+
+#: ../../source_ru/index.rst:46
+#: ../../source_ru/index.rst:46
+msgid "Примеры использования"
+msgstr "Examples of using"
+
+#: ../../source_ru/index.rst:15
+msgid "Набор программных средств для работы с лазерными сканерами серии RF62X"
+msgstr "Software Development Kit for working with laser scanners RF62X series"
+
+#: ../../source_ru/index.rst:19
+msgid "Введение"
+msgstr "Introduction"
+
+#: ../../source_ru/index.rst:21
+msgid "**RF627X-SDK** - набор средств разработки, который позволяет специалистам создавать собственное программное обеспечение для работы с лазерными сканерами серии RF62X (RF627Old, RF627Smart) производства компании РИФТЭК."
+msgstr "**RF627X-SDK** - a Software Development Kit that allows specialists to create their own software for working with laser scanners RF62X (RF627Old, RF627Smart) series manufactured by RIFTEK LLC."
+
+#: ../../source_ru/index.rst:63
+msgid "Документация"
+msgstr "Documentation"
+
+#: ../../source_ru/index.rst:63
+#: ../../source_ru/index.rst:65
+msgid "`www.riftek.com <https://riftek.com>`__"
+msgstr "`www.riftek.com <https://riftek.com>`__"
+
+#: ../../source_ru/index.rst:65
+msgid "Website"
+msgstr "Website"
+
+#: ../../source_ru/index.rst:67
+msgid "Версия документа"
+msgstr "Document version"
+
+#: ../../source_ru/index.rst:67
+#: ../../source_ru/index.rst:69
+msgid "1.4.0 от |date|"
+msgstr "1.4.0 от |date|"
+
+#: ../../source_ru/index.rst:69
+msgid "Версии библиотеки"
+msgstr "Library versions"

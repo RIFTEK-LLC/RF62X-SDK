@@ -1,0 +1,46 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:21
+msgid "Работа с RF627Old"
+msgstr "Work with RF627Old"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:21
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:21
+msgid "Обзор программного интерфейса"
+msgstr "Software Interface Overview"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:7
+msgid "API «обёртки» на C#"
+msgstr "Wrapper API in C#"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:9
+msgid "Эта «обёртка» представляет собой библиотеку .NET, написанную на языке C#, которая позволяет упростить разработку приложений на языках C#, Visual Basic .NET, C++/CLI и JScript .NET"
+msgstr "This wrapper is a .NET library written in C#, which makes it easy to develop applications in C#, Visual Basic .NET, C++/CLI, and JScript .NET"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:13
+msgid "Для её использования в проектах .NET разработчику необходимо собрать или скачать динамическую программную библиотеку **rf62Xsdk.dll**, после чего добавить библиотеку к ссылкам (references) проекта, а также собрать или скачать библиотеку **rf62Xcore.dll**, добавив её в папку к исполняемому файлу проекта."
+msgstr "To use it in .NET projects, the developer needs to collect or download the dynamic program library **rf62Xsdk.dll**, then add the library to the project references and collect or download the library **rf62Xcore.dll** by adding it in the folder to the project executable file."
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:18
+msgid "Для скачивания библиотеки см. :ref:`последние выпуски «обёртки» на C# <rf62x_sdk_csharp_last_release>`."
+msgstr "To download the library, see :ref:`the latest releases of the wrapper in C# <rf62x_sdk_csharp_last_release>`"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/_index.rst:19
+msgid "Для компиляции библиотеки см. :ref:`компиляция и запуск «обёртки» на C# <compilation_rf62x_sdk_csharp>`."
+msgstr "To compile the library, see :ref:`compile and run the wrapper in C# <compilation_rf62x_sdk_csharp>`."

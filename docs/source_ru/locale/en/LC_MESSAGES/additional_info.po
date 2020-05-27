@@ -1,0 +1,4596 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/additional_info.rst:6
+msgid "Дополнительная информация"
+msgstr "Additional Information"
+
+#: ../../source_ru/additional_info.rst:11
+msgid "PARAMETERS"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:13
+msgid "Description of device parameters. All device parameters are readable. Those parameters that cannot be written without authorization as manufacturer have \"awrite\" access type. If no minimum value is specified for a parameter, the minimum value corresponds to the minimum value of the parameter type. If no maximum value is specified, it corresponds to the maximum value of the parameter type."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:20
+msgid "The main elements of the parameter description:"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:22
+msgid "-  **Access** - describes the availability of the parameter for reading and writing."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:23
+msgid "-  read - parameter is readable,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:24
+msgid "-  write - parameter is writable by user,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:25
+msgid "-  awrite - parameter is writable after authorization as a manufacturer"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:27
+msgid "-  **Type** - the data type of the parameter. - uint32\\_t - unsigned integer, 32 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:28
+msgid "- uint64\\_t - unsigned integer, 64 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:29
+msgid "- int32\\_t - signed integer, 32 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:30
+msgid "- int64\\_t - signed integer, 64 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:31
+msgid "- float\\_t - floating point, 32 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:32
+msgid "- double\\_t - floating point, 64 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:33
+msgid "- u32\\_arr\\_t - array of unsigned integer, 32 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:34
+msgid "- u64\\_arr\\_t - array of unsigned integer, 64 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:35
+msgid "- i32\\_arr\\_t - array of signed integer, 32 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:36
+msgid "- i64\\_arr\\_t - array of signed integer, 64 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:37
+msgid "- flt\\_array\\_t - array of floating point, 32 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:38
+msgid "- dbl\\_array\\_t - array of floating point, 64 bits,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:39
+msgid "- string\\_t - string, ending with \"0\", the maximum length of the string is specified in the parameter description"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:41
+msgid "-  **Min value** - minimum parameter value, writing a value less than this is not allowed. If no minimum"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:42
+msgid "value is specified, it is defined by the type of parameter."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:44
+msgid "-  **Max value** - maximum parameter value, writing a value greater than this is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:45
+msgid "not allowed. If no maximum value is specified, it is defined by the type"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:46
+msgid "of parameter."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:48
+msgid "-  **Step** - step with which it is allowed to change the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:49
+msgid "parameter value. Values ​​that do not match the step will not be set. If"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:50
+msgid "no step is specified, any parameter change is allowed."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:52
+msgid "-  **Enum** - enumeration of valid parameter values. Values ​​that do not match the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:53
+msgid "enumeration will not be set."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:55
+msgid "-  **Default value** - default value of the parameter, set by the manufacturer"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:56
+msgid "or after switching on the device (depending on the parameter)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:59
+msgid "User"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:61
+msgid "-  **user\\_general\\_deviceState** - Current device state - combination"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:62
+msgid "of enum values. The device changes the value of this parameter when"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:63
+msgid "initializing the equipment, transferring important data over the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:64
+msgid "network (e.g. firmware), updating the firmware and in other cases. In"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:65
+msgid "all modes except DEV\\_STATE\\_NORMAL, the device can pause the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:66
+msgid "transfer of profiles and other data not related to the current"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:67
+msgid "operating mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:68
+#: ../../source_ru/additional_info.rst:112
+#: ../../source_ru/additional_info.rst:118
+#: ../../source_ru/additional_info.rst:127
+#: ../../source_ru/additional_info.rst:135
+#: ../../source_ru/additional_info.rst:144
+#: ../../source_ru/additional_info.rst:153
+#: ../../source_ru/additional_info.rst:162
+#: ../../source_ru/additional_info.rst:171
+#: ../../source_ru/additional_info.rst:180
+#: ../../source_ru/additional_info.rst:189
+#: ../../source_ru/additional_info.rst:198
+#: ../../source_ru/additional_info.rst:207
+#: ../../source_ru/additional_info.rst:216
+#: ../../source_ru/additional_info.rst:225
+#: ../../source_ru/additional_info.rst:234
+#: ../../source_ru/additional_info.rst:265
+#: ../../source_ru/additional_info.rst:381
+#: ../../source_ru/additional_info.rst:408
+#: ../../source_ru/additional_info.rst:434
+#: ../../source_ru/additional_info.rst:441
+#: ../../source_ru/additional_info.rst:465
+#: ../../source_ru/additional_info.rst:596
+#: ../../source_ru/additional_info.rst:803
+#: ../../source_ru/additional_info.rst:943
+#: ../../source_ru/additional_info.rst:981
+#: ../../source_ru/additional_info.rst:1016
+#: ../../source_ru/additional_info.rst:1024
+#: ../../source_ru/additional_info.rst:1128
+#: ../../source_ru/additional_info.rst:1134
+#: ../../source_ru/additional_info.rst:1225
+#: ../../source_ru/additional_info.rst:1234
+#: ../../source_ru/additional_info.rst:1248
+#: ../../source_ru/additional_info.rst:1433
+#: ../../source_ru/additional_info.rst:1440
+#: ../../source_ru/additional_info.rst:1447
+#: ../../source_ru/additional_info.rst:1454
+#: ../../source_ru/additional_info.rst:1463
+#: ../../source_ru/additional_info.rst:1486
+#: ../../source_ru/additional_info.rst:1506
+#: ../../source_ru/additional_info.rst:1529
+#: ../../source_ru/additional_info.rst:1545
+msgid "-  *Access*: read"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:69
+#: ../../source_ru/additional_info.rst:105
+#: ../../source_ru/additional_info.rst:113
+#: ../../source_ru/additional_info.rst:128
+#: ../../source_ru/additional_info.rst:243
+#: ../../source_ru/additional_info.rst:257
+#: ../../source_ru/additional_info.rst:266
+#: ../../source_ru/additional_info.rst:275
+#: ../../source_ru/additional_info.rst:291
+#: ../../source_ru/additional_info.rst:301
+#: ../../source_ru/additional_info.rst:311
+#: ../../source_ru/additional_info.rst:321
+#: ../../source_ru/additional_info.rst:342
+#: ../../source_ru/additional_info.rst:351
+#: ../../source_ru/additional_info.rst:363
+#: ../../source_ru/additional_info.rst:371
+#: ../../source_ru/additional_info.rst:382
+#: ../../source_ru/additional_info.rst:389
+#: ../../source_ru/additional_info.rst:401
+#: ../../source_ru/additional_info.rst:409
+#: ../../source_ru/additional_info.rst:417
+#: ../../source_ru/additional_info.rst:427
+#: ../../source_ru/additional_info.rst:451
+#: ../../source_ru/additional_info.rst:466
+#: ../../source_ru/additional_info.rst:475
+#: ../../source_ru/additional_info.rst:513
+#: ../../source_ru/additional_info.rst:519
+#: ../../source_ru/additional_info.rst:525
+#: ../../source_ru/additional_info.rst:534
+#: ../../source_ru/additional_info.rst:541
+#: ../../source_ru/additional_info.rst:558
+#: ../../source_ru/additional_info.rst:570
+#: ../../source_ru/additional_info.rst:579
+#: ../../source_ru/additional_info.rst:589
+#: ../../source_ru/additional_info.rst:597
+#: ../../source_ru/additional_info.rst:607
+#: ../../source_ru/additional_info.rst:624
+#: ../../source_ru/additional_info.rst:640
+#: ../../source_ru/additional_info.rst:664
+#: ../../source_ru/additional_info.rst:676
+#: ../../source_ru/additional_info.rst:683
+#: ../../source_ru/additional_info.rst:692
+#: ../../source_ru/additional_info.rst:720
+#: ../../source_ru/additional_info.rst:728
+#: ../../source_ru/additional_info.rst:737
+#: ../../source_ru/additional_info.rst:747
+#: ../../source_ru/additional_info.rst:753
+#: ../../source_ru/additional_info.rst:767
+#: ../../source_ru/additional_info.rst:779
+#: ../../source_ru/additional_info.rst:787
+#: ../../source_ru/additional_info.rst:797
+#: ../../source_ru/additional_info.rst:804
+#: ../../source_ru/additional_info.rst:810
+#: ../../source_ru/additional_info.rst:818
+#: ../../source_ru/additional_info.rst:838
+#: ../../source_ru/additional_info.rst:845
+#: ../../source_ru/additional_info.rst:865
+#: ../../source_ru/additional_info.rst:873
+#: ../../source_ru/additional_info.rst:917
+#: ../../source_ru/additional_info.rst:925
+#: ../../source_ru/additional_info.rst:944
+#: ../../source_ru/additional_info.rst:955
+#: ../../source_ru/additional_info.rst:963
+#: ../../source_ru/additional_info.rst:982
+#: ../../source_ru/additional_info.rst:997
+#: ../../source_ru/additional_info.rst:1007
+#: ../../source_ru/additional_info.rst:1017
+#: ../../source_ru/additional_info.rst:1033
+#: ../../source_ru/additional_info.rst:1045
+#: ../../source_ru/additional_info.rst:1066
+#: ../../source_ru/additional_info.rst:1079
+#: ../../source_ru/additional_info.rst:1096
+#: ../../source_ru/additional_info.rst:1103
+#: ../../source_ru/additional_info.rst:1111
+#: ../../source_ru/additional_info.rst:1119
+#: ../../source_ru/additional_info.rst:1135
+#: ../../source_ru/additional_info.rst:1140
+#: ../../source_ru/additional_info.rst:1146
+#: ../../source_ru/additional_info.rst:1151
+#: ../../source_ru/additional_info.rst:1156
+#: ../../source_ru/additional_info.rst:1163
+#: ../../source_ru/additional_info.rst:1170
+#: ../../source_ru/additional_info.rst:1178
+#: ../../source_ru/additional_info.rst:1185
+#: ../../source_ru/additional_info.rst:1193
+#: ../../source_ru/additional_info.rst:1200
+#: ../../source_ru/additional_info.rst:1208
+#: ../../source_ru/additional_info.rst:1216
+#: ../../source_ru/additional_info.rst:1226
+#: ../../source_ru/additional_info.rst:1235
+#: ../../source_ru/additional_info.rst:1249
+#: ../../source_ru/additional_info.rst:1267
+#: ../../source_ru/additional_info.rst:1275
+#: ../../source_ru/additional_info.rst:1284
+#: ../../source_ru/additional_info.rst:1292
+#: ../../source_ru/additional_info.rst:1300
+#: ../../source_ru/additional_info.rst:1308
+#: ../../source_ru/additional_info.rst:1316
+#: ../../source_ru/additional_info.rst:1325
+#: ../../source_ru/additional_info.rst:1337
+#: ../../source_ru/additional_info.rst:1343
+#: ../../source_ru/additional_info.rst:1349
+#: ../../source_ru/additional_info.rst:1355
+#: ../../source_ru/additional_info.rst:1380
+#: ../../source_ru/additional_info.rst:1388
+#: ../../source_ru/additional_info.rst:1396
+#: ../../source_ru/additional_info.rst:1404
+#: ../../source_ru/additional_info.rst:1412
+#: ../../source_ru/additional_info.rst:1420
+#: ../../source_ru/additional_info.rst:1427
+#: ../../source_ru/additional_info.rst:1434
+#: ../../source_ru/additional_info.rst:1441
+#: ../../source_ru/additional_info.rst:1448
+#: ../../source_ru/additional_info.rst:1464
+#: ../../source_ru/additional_info.rst:1487
+#: ../../source_ru/additional_info.rst:1507
+#: ../../source_ru/additional_info.rst:1530
+#: ../../source_ru/additional_info.rst:1555
+#: ../../source_ru/additional_info.rst:1562
+msgid "-  *Type*: uint32\\_t"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:70
+msgid "-  *Min value*: DEV\\_STATE\\_NORMAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:71
+msgid "-  *Max value*: DEV\\_STATE\\_HARDWARE\\_INIT"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:72
+#: ../../source_ru/additional_info.rst:246
+#: ../../source_ru/additional_info.rst:278
+#: ../../source_ru/additional_info.rst:354
+#: ../../source_ru/additional_info.rst:392
+#: ../../source_ru/additional_info.rst:454
+#: ../../source_ru/additional_info.rst:544
+#: ../../source_ru/additional_info.rst:609
+#: ../../source_ru/additional_info.rst:626
+#: ../../source_ru/additional_info.rst:643
+#: ../../source_ru/additional_info.rst:667
+#: ../../source_ru/additional_info.rst:695
+#: ../../source_ru/additional_info.rst:756
+#: ../../source_ru/additional_info.rst:821
+#: ../../source_ru/additional_info.rst:848
+#: ../../source_ru/additional_info.rst:876
+#: ../../source_ru/additional_info.rst:928
+#: ../../source_ru/additional_info.rst:966
+#: ../../source_ru/additional_info.rst:1036
+#: ../../source_ru/additional_info.rst:1048
+#: ../../source_ru/additional_info.rst:1069
+#: ../../source_ru/additional_info.rst:1082
+#: ../../source_ru/additional_info.rst:1252
+#: ../../source_ru/additional_info.rst:1328
+#: ../../source_ru/additional_info.rst:1465
+#: ../../source_ru/additional_info.rst:1488
+#: ../../source_ru/additional_info.rst:1508
+#: ../../source_ru/additional_info.rst:1531
+msgid "-  *Enum*:"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:73
+msgid "-  DEV\\_STATE\\_NORMAL - the device operates in normal mode,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:74
+msgid "-  DEV\\_STATE\\_CALIB\\_FILE\\_RCV - the device receives a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:75
+#: ../../source_ru/additional_info.rst:77
+msgid "calibration file,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:76
+msgid "-  DEV\\_STATE\\_CALIB\\_FILE\\_SND - the device is transfer"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:78
+msgid "-  DEV\\_STATE\\_CALIB\\_FILE\\_SAVE - the device saves the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:79
+msgid "calibration file to the internal flash drive,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:80
+msgid "-  DEV\\_STATE\\_FIRMWARE\\_RCV - device receives firmware,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:81
+msgid "-  DEV\\_STATE\\_FIRMWARE\\_SND - the device is transfer firmware,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:82
+msgid "-  DEV\\_STATE\\_FIRMWARE\\_SAVE - the device saves the firmware file"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:83
+msgid "to the internal flash drive,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:84
+msgid "-  DEV\\_STATE\\_ETH\\_INIT - the device initializes hardware and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:85
+msgid "software for ethernet connection,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:86
+msgid "-  DEV\\_STATE\\_DUMP\\_DOWNLOAD - the device transfers dump data,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:87
+msgid "-  DEV\\_STATE\\_ETH\\_EXCESS - required connection speed exceeds"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:88
+msgid "current value for ethernet connection,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:89
+msgid "-  DEV\\_STATE\\_HARDWARE\\_INIT - device initializes hardware"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:90
+msgid "-  *Default value*: DEV\\_STATE\\_NORMAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:92
+msgid "-  **user\\_general\\_deviceName** - User-defined scanner name. It is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:93
+msgid "displayed on the web page of the scanner and can be used to quickly"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:94
+msgid "identify scanners."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:95
+#: ../../source_ru/additional_info.rst:104
+#: ../../source_ru/additional_info.rst:242
+#: ../../source_ru/additional_info.rst:256
+#: ../../source_ru/additional_info.rst:274
+#: ../../source_ru/additional_info.rst:290
+#: ../../source_ru/additional_info.rst:300
+#: ../../source_ru/additional_info.rst:310
+#: ../../source_ru/additional_info.rst:320
+#: ../../source_ru/additional_info.rst:330
+#: ../../source_ru/additional_info.rst:341
+#: ../../source_ru/additional_info.rst:350
+#: ../../source_ru/additional_info.rst:362
+#: ../../source_ru/additional_info.rst:370
+#: ../../source_ru/additional_info.rst:388
+#: ../../source_ru/additional_info.rst:400
+#: ../../source_ru/additional_info.rst:416
+#: ../../source_ru/additional_info.rst:426
+#: ../../source_ru/additional_info.rst:450
+#: ../../source_ru/additional_info.rst:474
+#: ../../source_ru/additional_info.rst:481
+#: ../../source_ru/additional_info.rst:488
+#: ../../source_ru/additional_info.rst:495
+#: ../../source_ru/additional_info.rst:504
+#: ../../source_ru/additional_info.rst:512
+#: ../../source_ru/additional_info.rst:518
+#: ../../source_ru/additional_info.rst:524
+#: ../../source_ru/additional_info.rst:533
+#: ../../source_ru/additional_info.rst:540
+#: ../../source_ru/additional_info.rst:557
+#: ../../source_ru/additional_info.rst:569
+#: ../../source_ru/additional_info.rst:578
+#: ../../source_ru/additional_info.rst:588
+#: ../../source_ru/additional_info.rst:606
+#: ../../source_ru/additional_info.rst:623
+#: ../../source_ru/additional_info.rst:639
+#: ../../source_ru/additional_info.rst:663
+#: ../../source_ru/additional_info.rst:675
+#: ../../source_ru/additional_info.rst:682
+#: ../../source_ru/additional_info.rst:691
+#: ../../source_ru/additional_info.rst:719
+#: ../../source_ru/additional_info.rst:727
+#: ../../source_ru/additional_info.rst:736
+#: ../../source_ru/additional_info.rst:746
+#: ../../source_ru/additional_info.rst:752
+#: ../../source_ru/additional_info.rst:766
+#: ../../source_ru/additional_info.rst:778
+#: ../../source_ru/additional_info.rst:786
+#: ../../source_ru/additional_info.rst:796
+#: ../../source_ru/additional_info.rst:809
+#: ../../source_ru/additional_info.rst:817
+#: ../../source_ru/additional_info.rst:837
+#: ../../source_ru/additional_info.rst:844
+#: ../../source_ru/additional_info.rst:864
+#: ../../source_ru/additional_info.rst:872
+#: ../../source_ru/additional_info.rst:888
+#: ../../source_ru/additional_info.rst:898
+#: ../../source_ru/additional_info.rst:908
+#: ../../source_ru/additional_info.rst:916
+#: ../../source_ru/additional_info.rst:924
+#: ../../source_ru/additional_info.rst:954
+#: ../../source_ru/additional_info.rst:962
+#: ../../source_ru/additional_info.rst:996
+#: ../../source_ru/additional_info.rst:1006
+#: ../../source_ru/additional_info.rst:1032
+#: ../../source_ru/additional_info.rst:1044
+#: ../../source_ru/additional_info.rst:1057
+#: ../../source_ru/additional_info.rst:1065
+#: ../../source_ru/additional_info.rst:1078
+#: ../../source_ru/additional_info.rst:1095
+#: ../../source_ru/additional_info.rst:1102
+#: ../../source_ru/additional_info.rst:1110
+#: ../../source_ru/additional_info.rst:1118
+msgid "-  *Access*: read/write"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:96
+#: ../../source_ru/additional_info.rst:1242
+#: ../../source_ru/additional_info.rst:1261
+msgid "-  *Type*: string\\_t"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:97
+#: ../../source_ru/additional_info.rst:1243
+msgid "-  *Max len*: 128"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:98
+msgid "-  *Default value*: \"2D laser scanner\""
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:100
+msgid "-  **user\\_general\\_logSaveEnabled** - Allow automatic log saving after"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:101
+msgid "device boot and after critical events. When this option is enabled,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:102
+msgid "it slightly (~ 100ms) increases the time until the device is ready"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:103
+msgid "for operation."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:106
+#: ../../source_ru/additional_info.rst:129
+#: ../../source_ru/additional_info.rst:343
+#: ../../source_ru/additional_info.rst:372
+#: ../../source_ru/additional_info.rst:383
+#: ../../source_ru/additional_info.rst:476
+#: ../../source_ru/additional_info.rst:535
+#: ../../source_ru/additional_info.rst:571
+#: ../../source_ru/additional_info.rst:677
+#: ../../source_ru/additional_info.rst:721
+#: ../../source_ru/additional_info.rst:780
+#: ../../source_ru/additional_info.rst:811
+#: ../../source_ru/additional_info.rst:839
+#: ../../source_ru/additional_info.rst:866
+#: ../../source_ru/additional_info.rst:918
+#: ../../source_ru/additional_info.rst:956
+#: ../../source_ru/additional_info.rst:998
+#: ../../source_ru/additional_info.rst:1112
+#: ../../source_ru/additional_info.rst:1563
+msgid "-  *Min value*: FALSE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:107
+#: ../../source_ru/additional_info.rst:130
+#: ../../source_ru/additional_info.rst:344
+#: ../../source_ru/additional_info.rst:373
+#: ../../source_ru/additional_info.rst:384
+#: ../../source_ru/additional_info.rst:477
+#: ../../source_ru/additional_info.rst:536
+#: ../../source_ru/additional_info.rst:572
+#: ../../source_ru/additional_info.rst:678
+#: ../../source_ru/additional_info.rst:722
+#: ../../source_ru/additional_info.rst:781
+#: ../../source_ru/additional_info.rst:812
+#: ../../source_ru/additional_info.rst:867
+#: ../../source_ru/additional_info.rst:919
+#: ../../source_ru/additional_info.rst:957
+#: ../../source_ru/additional_info.rst:999
+#: ../../source_ru/additional_info.rst:1113
+#: ../../source_ru/additional_info.rst:1564
+msgid "-  *Max value*: TRUE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:108
+#: ../../source_ru/additional_info.rst:131
+#: ../../source_ru/additional_info.rst:345
+#: ../../source_ru/additional_info.rst:374
+#: ../../source_ru/additional_info.rst:385
+#: ../../source_ru/additional_info.rst:537
+#: ../../source_ru/additional_info.rst:573
+#: ../../source_ru/additional_info.rst:679
+#: ../../source_ru/additional_info.rst:723
+#: ../../source_ru/additional_info.rst:782
+#: ../../source_ru/additional_info.rst:813
+#: ../../source_ru/additional_info.rst:840
+#: ../../source_ru/additional_info.rst:868
+#: ../../source_ru/additional_info.rst:920
+#: ../../source_ru/additional_info.rst:958
+#: ../../source_ru/additional_info.rst:1000
+#: ../../source_ru/additional_info.rst:1114
+#: ../../source_ru/additional_info.rst:1565
+msgid "-  *Default value*: FALSE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:110
+msgid "-  **user\\_general\\_logSize** - The current size (number of records) of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:111
+msgid "the device’s internal log file."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:114
+#: ../../source_ru/additional_info.rst:122
+#: ../../source_ru/additional_info.rst:139
+#: ../../source_ru/additional_info.rst:148
+#: ../../source_ru/additional_info.rst:157
+#: ../../source_ru/additional_info.rst:166
+#: ../../source_ru/additional_info.rst:175
+#: ../../source_ru/additional_info.rst:184
+#: ../../source_ru/additional_info.rst:193
+#: ../../source_ru/additional_info.rst:202
+#: ../../source_ru/additional_info.rst:211
+#: ../../source_ru/additional_info.rst:220
+#: ../../source_ru/additional_info.rst:229
+#: ../../source_ru/additional_info.rst:238
+#: ../../source_ru/additional_info.rst:437
+#: ../../source_ru/additional_info.rst:444
+#: ../../source_ru/additional_info.rst:580
+#: ../../source_ru/additional_info.rst:618
+#: ../../source_ru/additional_info.rst:635
+#: ../../source_ru/additional_info.rst:686
+#: ../../source_ru/additional_info.rst:748
+#: ../../source_ru/additional_info.rst:798
+#: ../../source_ru/additional_info.rst:805
+#: ../../source_ru/additional_info.rst:1019
+#: ../../source_ru/additional_info.rst:1026
+#: ../../source_ru/additional_info.rst:1147
+#: ../../source_ru/additional_info.rst:1152
+#: ../../source_ru/additional_info.rst:1158
+#: ../../source_ru/additional_info.rst:1165
+#: ../../source_ru/additional_info.rst:1172
+#: ../../source_ru/additional_info.rst:1179
+#: ../../source_ru/additional_info.rst:1422
+#: ../../source_ru/additional_info.rst:1482
+#: ../../source_ru/additional_info.rst:1502
+#: ../../source_ru/additional_info.rst:1540
+msgid "-  *Default value*: 0"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:116
+msgid "-  **user\\_sysMon\\_fpgaTemp** - The current temperature of the FPGA"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:117
+msgid "(internal computing module) of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:119
+#: ../../source_ru/additional_info.rst:136
+#: ../../source_ru/additional_info.rst:145
+#: ../../source_ru/additional_info.rst:154
+#: ../../source_ru/additional_info.rst:163
+#: ../../source_ru/additional_info.rst:172
+#: ../../source_ru/additional_info.rst:181
+#: ../../source_ru/additional_info.rst:190
+#: ../../source_ru/additional_info.rst:199
+#: ../../source_ru/additional_info.rst:208
+#: ../../source_ru/additional_info.rst:217
+#: ../../source_ru/additional_info.rst:226
+#: ../../source_ru/additional_info.rst:235
+#: ../../source_ru/additional_info.rst:435
+#: ../../source_ru/additional_info.rst:442
+msgid "-  *Type*: float\\_t"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:120
+#: ../../source_ru/additional_info.rst:137
+#: ../../source_ru/additional_info.rst:146
+#: ../../source_ru/additional_info.rst:155
+#: ../../source_ru/additional_info.rst:164
+#: ../../source_ru/additional_info.rst:173
+#: ../../source_ru/additional_info.rst:182
+#: ../../source_ru/additional_info.rst:191
+#: ../../source_ru/additional_info.rst:200
+#: ../../source_ru/additional_info.rst:209
+#: ../../source_ru/additional_info.rst:218
+#: ../../source_ru/additional_info.rst:227
+#: ../../source_ru/additional_info.rst:236
+msgid "-  *Min value*: -100"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:121
+#: ../../source_ru/additional_info.rst:138
+#: ../../source_ru/additional_info.rst:147
+#: ../../source_ru/additional_info.rst:156
+#: ../../source_ru/additional_info.rst:165
+#: ../../source_ru/additional_info.rst:174
+#: ../../source_ru/additional_info.rst:183
+#: ../../source_ru/additional_info.rst:192
+#: ../../source_ru/additional_info.rst:201
+#: ../../source_ru/additional_info.rst:210
+#: ../../source_ru/additional_info.rst:219
+#: ../../source_ru/additional_info.rst:228
+#: ../../source_ru/additional_info.rst:237
+msgid "-  *Max value*: +100"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:123
+#: ../../source_ru/additional_info.rst:140
+#: ../../source_ru/additional_info.rst:149
+#: ../../source_ru/additional_info.rst:158
+#: ../../source_ru/additional_info.rst:167
+#: ../../source_ru/additional_info.rst:176
+#: ../../source_ru/additional_info.rst:185
+#: ../../source_ru/additional_info.rst:194
+#: ../../source_ru/additional_info.rst:203
+#: ../../source_ru/additional_info.rst:212
+#: ../../source_ru/additional_info.rst:221
+#: ../../source_ru/additional_info.rst:230
+#: ../../source_ru/additional_info.rst:239
+msgid "-  *Units*: °C"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:125
+msgid "-  **user\\_sysMon\\_paramsChanged** - Device settings have been changed"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:126
+msgid "but not saved."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:133
+msgid "-  **user\\_sysMon\\_tempSens00** - Current temperature inside the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:134
+msgid "case, measured by the sensor with address 00."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:142
+msgid "-  **user\\_sysMon\\_tempSens00Max** - Maximum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:143
+#: ../../source_ru/additional_info.rst:152
+msgid "with address 00."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:151
+msgid "-  **user\\_sysMon\\_tempSens00Min** - Minimum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:160
+msgid "-  **user\\_sysMon\\_tempSens01** - Current temperature inside the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:161
+msgid "case, measured by the sensor with address 01."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:169
+msgid "-  **user\\_sysMon\\_tempSens01Max** - Maximum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:170
+#: ../../source_ru/additional_info.rst:179
+msgid "with address 01."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:178
+msgid "-  **user\\_sysMon\\_tempSens01Min** - Minimum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:187
+msgid "-  **user\\_sysMon\\_tempSens10** - Current temperature inside the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:188
+msgid "case, measured by the sensor with address 10."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:196
+msgid "-  **user\\_sysMon\\_tempSens10Max** - Maximum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:197
+#: ../../source_ru/additional_info.rst:206
+msgid "with address 10."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:205
+msgid "-  **user\\_sysMon\\_tempSens10Min** - Minimum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:214
+msgid "-  **user\\_sysMon\\_tempSens11** - Current temperature inside the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:215
+msgid "case, measured by the sensor with address 11."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:223
+msgid "-  **user\\_sysMon\\_tempSens11Max** - Maximum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:224
+#: ../../source_ru/additional_info.rst:233
+msgid "with address 11."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:232
+msgid "-  **user\\_sysMon\\_tempSens11Min** - Minimum temperature fixed by sensor"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:241
+msgid "-  **user\\_sensor\\_syncSource** - Measurement synchronization source."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:244
+msgid "-  *Min value*: SYNC\\_INTERNAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:245
+msgid "-  *Max value*: SYNC\\_SOFTWARE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:247
+msgid "-  SYNC\\_INTERNAL - start of measurements from the device's"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:248
+msgid "internal generator,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:249
+msgid "-  SYNC\\_EXTERNAL - start of measurements from an external source,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:250
+msgid "-  SYNC\\_SOFTWARE - start of measurements by software request"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:251
+msgid "-  *Default value*: SYNC\\_INTERNAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:253
+msgid "-  **user\\_sensor\\_framerate** - Frame rate of the CMOS-sensor, sets the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:254
+msgid "measurement frequency. The value to be written should not exceed the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:255
+msgid "value of the parameter **user\\_sensor\\_maxFramerate**."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:258
+#: ../../source_ru/additional_info.rst:267
+#: ../../source_ru/additional_info.rst:467
+#: ../../source_ru/additional_info.rst:729
+#: ../../source_ru/additional_info.rst:768
+#: ../../source_ru/additional_info.rst:1008
+msgid "-  *Min value*: 1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:259
+#: ../../source_ru/additional_info.rst:268
+#: ../../source_ru/additional_info.rst:598
+msgid "-  *Max value*: 20000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:260
+#: ../../source_ru/additional_info.rst:269
+#: ../../source_ru/additional_info.rst:599
+msgid "-  *Default value*: 490"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:261
+#: ../../source_ru/additional_info.rst:270
+#: ../../source_ru/additional_info.rst:1189
+#: ../../source_ru/additional_info.rst:1288
+msgid "-  *Units*: Hz"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:263
+msgid "-  **user\\_sensor\\_maxFramerate** - Maximum frame rate (measurement"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:264
+msgid "frequency) for the current operation mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:272
+msgid "-  **user\\_sensor\\_exposureControl** - CMOS-sensor exposure control"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:273
+msgid "method."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:276
+msgid "-  *Min value*: EXPOSE\\_AUTO"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:277
+msgid "-  *Max value*: EXPOSE\\_MULTI\\_3"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:279
+msgid "-  EXPOSE\\_AUTO - automatic exposure control based on profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:280
+msgid "analysis,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:281
+msgid "-  EXPOSE\\_FIXED - exposure time is user-defined,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:282
+msgid "-  EXPOSE\\_MULTI\\_2 - mode with 2 exposures, used to obtain a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:283
+msgid "profile on surfaces with different levels of reflection,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:284
+msgid "-  EXPOSE\\_MULTI\\_3 - mode with 3 exposures, used to obtain a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:285
+msgid "profile on surfaces with different levels of reflection"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:286
+msgid "-  *Default value*: EXPOSE\\_FIXED"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:288
+msgid "-  **user\\_sensor\\_exposure1** - Frame exposure time in EXPOSE\\_AUTO and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:289
+msgid "EXPOSE\\_FIXED modes."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:292
+#: ../../source_ru/additional_info.rst:302
+#: ../../source_ru/additional_info.rst:312
+#: ../../source_ru/additional_info.rst:322
+msgid "-  *Min value*: 3000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:293
+#: ../../source_ru/additional_info.rst:303
+#: ../../source_ru/additional_info.rst:313
+#: ../../source_ru/additional_info.rst:323
+#: ../../source_ru/additional_info.rst:1317
+msgid "-  *Max value*: 300000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:294
+#: ../../source_ru/additional_info.rst:304
+#: ../../source_ru/additional_info.rst:314
+#: ../../source_ru/additional_info.rst:324
+#: ../../source_ru/additional_info.rst:740
+msgid "-  *Step*: 100"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:295
+#: ../../source_ru/additional_info.rst:305
+#: ../../source_ru/additional_info.rst:315
+#: ../../source_ru/additional_info.rst:325
+msgid "-  *Default value*: 300000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:296
+#: ../../source_ru/additional_info.rst:306
+#: ../../source_ru/additional_info.rst:316
+#: ../../source_ru/additional_info.rst:326
+#: ../../source_ru/additional_info.rst:742
+#: ../../source_ru/additional_info.rst:792
+#: ../../source_ru/additional_info.rst:949
+#: ../../source_ru/additional_info.rst:987
+#: ../../source_ru/additional_info.rst:1312
+#: ../../source_ru/additional_info.rst:1320
+msgid "-  *Units*: ns"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:298
+msgid "-  **user\\_sensor\\_exposure2** - Frame #2 exposure time in"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:299
+#: ../../source_ru/additional_info.rst:309
+msgid "EXPOSE\\_MULTI\\_2 mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:308
+msgid "-  **user\\_sensor\\_exposure3** - Frame #3 exposure time in"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:318
+msgid "-  **user\\_sensor\\_maxExposure** - Maximum frame exposure time in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:319
+msgid "current device mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:328
+msgid "-  **user\\_sensor\\_defectivePixels** - Array of coordinates [X1, Y1, X2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:329
+msgid "Y2, ... X15, Y15] of the sensor's defective pixels."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:331
+#: ../../source_ru/additional_info.rst:482
+#: ../../source_ru/additional_info.rst:489
+#: ../../source_ru/additional_info.rst:496
+#: ../../source_ru/additional_info.rst:505
+#: ../../source_ru/additional_info.rst:889
+#: ../../source_ru/additional_info.rst:899
+#: ../../source_ru/additional_info.rst:909
+#: ../../source_ru/additional_info.rst:1129
+#: ../../source_ru/additional_info.rst:1362
+#: ../../source_ru/additional_info.rst:1371
+#: ../../source_ru/additional_info.rst:1455
+#: ../../source_ru/additional_info.rst:1546
+msgid "-  *Type*: u32\\_arr\\_t"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:332
+msgid "-  *Max value*: 4096"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:333
+msgid "-  *Max elements*: 32,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:334
+msgid "-  *Default value*: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:335
+msgid "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:337
+msgid "-  **user\\_sensor\\_doubleSpeedEnabled** - Turns on and off the sensor's"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:338
+msgid "double frame rate mode. Enabling this mode allows almost double the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:339
+msgid "frequency of measurements (profiles per second) by reducing accuracy"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:340
+msgid "in the Z-axis."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:347
+msgid "-  **user\\_sensor\\_edrType** - Enable CMOS-sensor operation in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:348
+msgid "extended dynamic range. Allows get a quality profile on light and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:349
+msgid "dark surfaces."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:352
+msgid "-  *Min value*: EDR\\_DISABLE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:353
+msgid "-  *Max value*: EDR\\_COLUMN"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:355
+msgid "-  EDR\\_DISABLE - extended dynamic range mode disabled,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:356
+msgid "-  EDR\\_COLUMN - different exposure mode for even and odd columns"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:357
+msgid "-  *Default value*: EDR\\_DISABLE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:359
+msgid "-  **user\\_sensor\\_edrColumnDivider** - Exposure time divider for odd"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:360
+msgid "columns. This parameter controls the sensitivity to very bright areas"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:361
+msgid "of the profile."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:364
+msgid "-  *Min value*: 2"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:365
+msgid "-  *Max value*: 32"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:366
+#: ../../source_ru/additional_info.rst:591
+msgid "-  *Default value*: 2"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:368
+msgid "-  **user\\_roi\\_enabled** - Turns on and off the mode of obtaining"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:369
+msgid "measurements in the region of interest."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:376
+msgid "-  **user\\_roi\\_active** - Indicates the status of the ROI in automatic"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:377
+msgid "positioning mode. In the automatic position control mode, if the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:378
+msgid "profile is not detected, the activity switches to the FALSE state,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:379
+msgid "when the profile is detected, the parameter switches to the TRUE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:380
+msgid "state. In manual positioning mode, the parameter is always TRUE."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:387
+msgid "-  **user\\_roi\\_posMode** - ROI position control mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:390
+msgid "-  *Min value*: ROI\\_POSITION\\_MANUAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:391
+msgid "-  *Max value*: ROI\\_POSITION\\_AUTO"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:393
+msgid "-  ROI\\_POSITION\\_MANUAL - ROI position is set by the user,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:394
+msgid "-  ROI\\_POSITION\\_AUTO - ROI automatic position control with"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:395
+msgid "profile holding in the center"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:396
+msgid "-  *Default value*: ROI\\_POSITION\\_MANUAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:398
+msgid "-  **user\\_roi\\_pos** - Current position of the upper edge of the ROI in"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:399
+msgid "the sensor lines."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:402
+#: ../../source_ru/additional_info.rst:410
+#: ../../source_ru/additional_info.rst:428
+msgid "-  *Max value*: 1280"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:403
+msgid "-  *Default value*: 100"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:404
+#: ../../source_ru/additional_info.rst:412
+#: ../../source_ru/additional_info.rst:422
+#: ../../source_ru/additional_info.rst:1279
+msgid "-  *Units*: lines"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:406
+msgid "-  **user\\_roi\\_maxPos** - Maximum position of the upper limit of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:407
+msgid "ROI in the current operating mode of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:411
+msgid "-  *Default value*: 1180"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:414
+msgid "-  **user\\_roi\\_size** - Sets the size of the area in the lines where"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:415
+msgid "the profile is searched and processed."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:418
+msgid "-  *Min value*: 8"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:419
+#: ../../source_ru/additional_info.rst:1277
+msgid "-  *Max value*: 488"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:420
+msgid "-  *Step*: 8"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:421
+msgid "-  *Default value*: 64"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:424
+msgid "-  **user\\_roi\\_reqProfSize** - Minimum required number of profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:425
+msgid "points for activating an ROI in ROI\\_POSITION\\_AUTO mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:429
+msgid "-  *Step*: 64"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:430
+msgid "-  *Default value*: 320"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:431
+#: ../../source_ru/additional_info.rst:563
+msgid "-  *Units*: points"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:433
+msgid "-  **user\\_roi\\_zsmr** - ROI start position in mm."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:436
+#: ../../source_ru/additional_info.rst:443
+#: ../../source_ru/additional_info.rst:468
+#: ../../source_ru/additional_info.rst:1059
+#: ../../source_ru/additional_info.rst:1194
+#: ../../source_ru/additional_info.rst:1201
+#: ../../source_ru/additional_info.rst:1209
+#: ../../source_ru/additional_info.rst:1217
+#: ../../source_ru/additional_info.rst:1413
+msgid "-  *Max value*: 10000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:438
+#: ../../source_ru/additional_info.rst:445
+#: ../../source_ru/additional_info.rst:1061
+#: ../../source_ru/additional_info.rst:1196
+#: ../../source_ru/additional_info.rst:1203
+#: ../../source_ru/additional_info.rst:1211
+#: ../../source_ru/additional_info.rst:1219
+msgid "-  *Units*: mm"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:440
+msgid "-  **user\\_roi\\_zemr** - ROI end position in mm."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:447
+msgid "-  **user\\_network\\_speed** - Current Ethernet connection speed. The"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:448
+msgid "connection speed is changed by writing to this parameter. In case of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:449
+msgid "auto-negotiation, writing is ignored."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:452
+msgid "-  *Min value*: LINK\\_SPEED\\_10MBIT"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:453
+msgid "-  *Max value*: LINK\\_SPEED\\_1GBIT"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:455
+msgid "-  LINK\\_SPEED\\_10MBIT - the connection speed is 10 Mbs, currently"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:456
+msgid "almost unused,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:457
+msgid "-  LINK\\_SPEED\\_100MBIT - the connection speed is 100 Mbs,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:458
+msgid "-  LINK\\_SPEED\\_1GBIT - the connection speed is 1000 Mbs"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:459
+msgid "-  *Default value*: LINK\\_SPEED\\_1GBIT"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:460
+#: ../../source_ru/additional_info.rst:470
+msgid "-  *Units*: Mbps"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:462
+msgid "-  **user\\_network\\_requiredSpeed** - The required Ethernet connection"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:463
+msgid "speed in the current device operation mode. Depends on the number of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:464
+msgid "profiles per second, the number of points in the profile, etc."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:469
+#: ../../source_ru/additional_info.rst:731
+msgid "-  *Default value*: 1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:472
+msgid "-  **user\\_network\\_autoNeg** - Turns on and off the automatic"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:473
+msgid "negotiation of the Ethernet connection speed."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:478
+msgid "-  *Default value*: TRUE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:480
+msgid "-  **user\\_network\\_ip** - The network address of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:483
+#: ../../source_ru/additional_info.rst:490
+#: ../../source_ru/additional_info.rst:497
+#: ../../source_ru/additional_info.rst:506
+#: ../../source_ru/additional_info.rst:1363
+#: ../../source_ru/additional_info.rst:1372
+#: ../../source_ru/additional_info.rst:1381
+#: ../../source_ru/additional_info.rst:1456
+#: ../../source_ru/additional_info.rst:1547
+#: ../../source_ru/additional_info.rst:1556
+msgid "-  *Max value*: 255"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:484
+#: ../../source_ru/additional_info.rst:491
+#: ../../source_ru/additional_info.rst:498
+#: ../../source_ru/additional_info.rst:507
+msgid "-  *Max elements*: 4,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:485
+msgid "-  *Default value*: [192, 168, 1, 30]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:487
+msgid "-  **user\\_network\\_mask** - Subnet mask for the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:492
+msgid "-  *Default value*: [255, 255, 255, 0]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:494
+msgid "-  **user\\_network\\_gateway** - Gateway address."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:499
+msgid "-  *Default value*: [192, 168, 1, 1]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:501
+msgid "-  **user\\_network\\_hostIP** - The network address of the device to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:502
+msgid "which profiles and calculation results are sent using the UDP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:503
+msgid "protocol."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:508
+msgid "-  *Default value*: [192, 168, 1, 2]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:510
+msgid "-  **user\\_network\\_hostPort** - The port number on the device to which"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:511
+msgid "profiles and calculation results are sent over the UDP protocol."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:514
+#: ../../source_ru/additional_info.rst:520
+#: ../../source_ru/additional_info.rst:526
+#: ../../source_ru/additional_info.rst:1097
+#: ../../source_ru/additional_info.rst:1104
+#: ../../source_ru/additional_info.rst:1120
+#: ../../source_ru/additional_info.rst:1141
+#: ../../source_ru/additional_info.rst:1227
+#: ../../source_ru/additional_info.rst:1236
+#: ../../source_ru/additional_info.rst:1350
+#: ../../source_ru/additional_info.rst:1356
+#: ../../source_ru/additional_info.rst:1390
+#: ../../source_ru/additional_info.rst:1398
+#: ../../source_ru/additional_info.rst:1406
+#: ../../source_ru/additional_info.rst:1442
+msgid "-  *Max value*: 65535"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:515
+msgid "-  *Default value*: 50001"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:517
+msgid "-  **user\\_network\\_webPort** - Port number to access the Web page."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:521
+#: ../../source_ru/additional_info.rst:1195
+msgid "-  *Default value*: 80"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:523
+msgid "-  **user\\_network\\_servicePort** - Port number for service protocol."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:527
+msgid "-  *Default value*: 50011"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:529
+msgid "-  **user\\_streams\\_udpEnabled** - Enabling and disabling the profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:530
+msgid "stream, transmitted via the UDP protocol (sending to the network"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:531
+msgid "address, set by the user\\_network\\_hostIP parameter and the port, set"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:532
+msgid "by the user\\_network\\_hostPort parameter)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:539
+msgid "-  **user\\_streams\\_format** - The format of the transmitted profiles."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:542
+msgid "-  *Min value*: DATA\\_FORMAT\\_RAW\\_PROFILE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:543
+msgid "-  *Max value*: DATA\\_FORMAT\\_PROFILE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:545
+msgid "-  DATA\\_FORMAT\\_RAW\\_PROFILE - the position of the points in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:546
+msgid "profile is transferred without applying calibration data, in"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:547
+msgid "subpixel values. Used for debugging and setting up the device,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:548
+msgid "allows to compare the image, generated by the CMOS-sensor and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:549
+msgid "the calculated profile position,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:550
+msgid "-  DATA\\_FORMAT\\_PROFILE - the position of the points in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:551
+msgid "profile is transmitted in discretes, the main format for the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:552
+msgid "operation of the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:553
+msgid "-  *Default value*: DATA\\_FORMAT\\_PROFILE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:555
+msgid "-  **user\\_streams\\_pointsCount** - The number of points in the profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:556
+msgid "that the device calculates and transmits."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:559
+#: ../../source_ru/additional_info.rst:1268
+msgid "-  *Min value*: 648"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:560
+msgid "-  *Max value*: 1296"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:561
+msgid "-  *Step*: 648"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:562
+#: ../../source_ru/additional_info.rst:1270
+msgid "-  *Default value*: 648"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:565
+msgid "-  **user\\_streams\\_includeIntensity** - Enable or disable the transfer"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:566
+msgid "of brightness points in the profile. The brightness values ​​are"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:567
+msgid "transferred after the profile data in the format of 1 byte per point,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:568
+msgid "0 - black ... 255 - white."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:575
+msgid "-  **user\\_streams\\_udpPacketsCounter** - Internal counter of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:576
+msgid "transmitted UDP packets with profiles. It can be used to control the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:577
+msgid "loss of packets with profiles."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:582
+msgid "-  **user\\_processing\\_threshold** - Threshold of profile points"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:583
+msgid "detection. Smaller values of the parameter allow detect the profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:584
+msgid "at a lower brightness of the signal, which may cause false detections"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:585
+msgid "on flare and reflections. Higher parameter values require higher"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:586
+msgid "signal brightness, but provide confident detection of the profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:587
+msgid "position."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:590
+#: ../../source_ru/additional_info.rst:684
+msgid "-  *Max value*: 100"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:592
+#: ../../source_ru/additional_info.rst:687
+msgid "-  *Units*: %"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:594
+msgid "-  **user\\_processing\\_profPerSec** - The number of processed profiles"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:595
+msgid "per second."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:600
+msgid "-  *Units*: pps"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:602
+msgid "-  **user\\_processing\\_medianMode** - Enable and width of median profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:603
+msgid "filtering. The median filter allows remove random outliers and fill"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:604
+msgid "the gaps in the profile with a width of up to half the size of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:605
+msgid "filter."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:608
+#: ../../source_ru/additional_info.rst:625
+msgid "-  *Max value*: 15"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:610
+#: ../../source_ru/additional_info.rst:627
+msgid "-  0 - the filter is disabled,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:611
+#: ../../source_ru/additional_info.rst:628
+msgid "-  3 - the filter is enabled, filter size is 3 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:612
+#: ../../source_ru/additional_info.rst:629
+msgid "-  5 - the filter is enabled, filter size is 5 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:613
+#: ../../source_ru/additional_info.rst:630
+msgid "-  7 - the filter is enabled, filter size is 7 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:614
+#: ../../source_ru/additional_info.rst:631
+msgid "-  9 - the filter is enabled, filter size is 9 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:615
+#: ../../source_ru/additional_info.rst:632
+msgid "-  11 - the filter is enabled, filter size is 11 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:616
+#: ../../source_ru/additional_info.rst:633
+msgid "-  13 - the filter is enabled, filter size is 13 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:617
+#: ../../source_ru/additional_info.rst:634
+msgid "-  14 - the filter is enabled, filter size is 15 points,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:620
+msgid "-  **user\\_processing\\_bilateralMode** - Bilateral filter allows smooth"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:621
+msgid "the values ​​of the points of the profile, while maintaining its"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:622
+msgid "sharp changes."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:637
+msgid "-  **user\\_processing\\_peakMode** - Profile peak detection mode for"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:638
+msgid "position calculation. Used to ignore reflections and highlights."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:641
+msgid "-  *Min value*: PEAK\\_MODE\\_INTENSITY"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:642
+msgid "-  *Max value*: PEAK\\_MODE\\_NUMBER\\_4"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:644
+msgid "-  PEAK\\_MODE\\_INTENSITY - the position of the profile points is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:645
+msgid "calculated at maximum intensity,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:646
+msgid "-  PEAK\\_MODE\\_FIRST - the position of the profile points is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:647
+msgid "calculated from the first overstepping of the detection"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:648
+#: ../../source_ru/additional_info.rst:651
+msgid "threshold,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:649
+msgid "-  PEAK\\_MODE\\_LAST - the position of the profile points is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:650
+msgid "calculated from the last overstepping of the detection"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:652
+msgid "-  PEAK\\_MODE\\_NUMBER\\_2 - when calculating the position of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:653
+msgid "profile points, the advantage is given to peak #2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:654
+msgid "-  PEAK\\_MODE\\_NUMBER\\_3 - when calculating the position of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:655
+msgid "profile points, the advantage is given to peak #3,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:656
+msgid "-  PEAK\\_MODE\\_NUMBER\\_4 - when calculating the position of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:657
+msgid "profile points, the advantage is given to peak #4"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:658
+msgid "-  *Default value*: PEAK\\_MODE\\_INTENSITY"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:660
+msgid "-  **user\\_processing\\_flip** - Profile reflection mode. Reflection"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:661
+msgid "applies only if **user\\_streams\\_format** is set to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:662
+msgid "DATA\\_FORMAT\\_PROFILE."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:665
+#: ../../source_ru/additional_info.rst:1326
+msgid "-  *Min value*: FLIP\\_MODE\\_OFF"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:666
+#: ../../source_ru/additional_info.rst:1327
+msgid "-  *Max value*: FLIP\\_MODE\\_XZ"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:668
+#: ../../source_ru/additional_info.rst:1329
+msgid "-  FLIP\\_MODE\\_OFF - no reflections,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:669
+#: ../../source_ru/additional_info.rst:1330
+msgid "-  FLIP\\_MODE\\_X - reflection along the X axis,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:670
+#: ../../source_ru/additional_info.rst:1331
+msgid "-  FLIP\\_MODE\\_Z - reflection along the Z axis,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:671
+#: ../../source_ru/additional_info.rst:1332
+msgid "-  FLIP\\_MODE\\_XZ - reflection along the X and Z axis"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:672
+#: ../../source_ru/additional_info.rst:1333
+msgid "-  *Default value*: FLIP\\_MODE\\_OFF"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:674
+msgid "-  **user\\_laser\\_enabled** - Switching the laser radiation on and off."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:681
+msgid "-  **user\\_laser\\_value** - Sets the brightness of the laser radiation."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:685
+msgid "-  *Step*: 5"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:689
+msgid "-  **user\\_trigger\\_sync\\_source** - Selection of inputs and their"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:690
+msgid "combinations for synchronization of measurements."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:693
+msgid "-  *Min value*: TRIG\\_SOURCE\\_IN1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:694
+msgid "-  *Max value*: TRIG\\_SOURCE\\_IN1\\_AND\\_IN2"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:696
+msgid "-  TRIG\\_SOURCE\\_IN1 - trigger measurements on an event at input"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:697
+msgid "1,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:698
+msgid "-  TRIG\\_SOURCE\\_IN2 - trigger measurements on an event at input"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:699
+msgid "2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:700
+msgid "-  TRIG\\_SOURCE\\_IN1\\_OR\\_IN2 - trigger measurements on an event"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:701
+msgid "at input 1 **or** input 2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:702
+msgid "-  TRIG\\_SOURCE\\_IN1\\_AND\\_IN2 - trigger measurements on an event"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:703
+msgid "at input 1 **and** input 2"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:704
+msgid "-  *Default value*: TRIG\\_SOURCE\\_IN1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:706
+msgid "-  **user\\_trigger\\_sync\\_strictEnabled** - Enable or disable strict"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:707
+msgid "synchronization mode. When this mode is enabled, synchronization"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:708
+msgid "events that occurred during a frame exposure will be ignored and the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:709
+msgid "next measurement will only be triggered by the synchronization event,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:710
+msgid "when the sensor has finished exposing the previous frame. In this"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:711
+msgid "case, if the synchronization event rate is slightly higher than the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:712
+msgid "maximum frame rate of the sensor, the number of profiles per second"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:713
+msgid "will be lower than the maximum frame rate due to the stroboscopic"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:714
+msgid "effect. If the mode is off and there were synchronization events"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:715
+msgid "during the exposure, the next measurement will start as soon as the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:716
+msgid "sensor finishes exposing the previous frame. In any situation, the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:717
+msgid "encoder value in the profile will be recorded at the middle of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:718
+msgid "frame exposure."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:725
+msgid "-  **user\\_trigger\\_sync\\_divider** - The synchronization event divider."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:726
+msgid "Does not affect the encoder counter."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:730
+msgid "-  *Max value*: 8192"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:733
+msgid "-  **user\\_trigger\\_sync\\_delay** - The value of the delay in the start"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:734
+msgid "of measurement (start of frame exposure) relative to the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:735
+msgid "synchronization event."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:738
+msgid "-  *Min value*: 700"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:739
+#: ../../source_ru/additional_info.rst:1309
+msgid "-  *Max value*: 100000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:741
+msgid "-  *Default value*: 700"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:744
+msgid "-  **user\\_trigger\\_sync\\_value** - The value of the internal"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:745
+msgid "measurement start counter. Shows the number of measurements taken."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:750
+msgid "-  **user\\_trigger\\_counter\\_type** - Type of encoder counter (internal"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:751
+msgid "pulse counter) at synchronization inputs."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:754
+msgid "-  *Min value*: TRIG\\_COUNTER\\_UNIDIR"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:755
+msgid "-  *Max value*: TRIG\\_COUNTER\\_BIDIR"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:757
+msgid "-  TRIG\\_COUNTER\\_UNIDIR - unidirectional counter, that does not"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:758
+msgid "take into account the phase of the signals at inputs 1 and 2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:759
+msgid "-  TRIG\\_COUNTER\\_BIDIR - bidirectional counter, that takes into"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:760
+msgid "account the phase of the signals at inputs 1 and 2, and can"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:761
+msgid "both increase and decrease"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:762
+msgid "-  *Default value*: TRIG\\_COUNTER\\_UNIDIR"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:764
+msgid "-  **user\\_trigger\\_counter\\_maxValue** - The maximum value of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:765
+msgid "encoder counter, upon reaching which it is reset to the 0."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:769
+#: ../../source_ru/additional_info.rst:789
+msgid "-  *Max value*: 4294967295‬"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:770
+#: ../../source_ru/additional_info.rst:791
+msgid "-  *Default value*: 4294967295‬"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:772
+msgid "-  **user\\_trigger\\_counteraser\\_resetTimerEnabled** - Enabling and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:773
+msgid "disabling the timer for automatically resetting the encoder counter"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:774
+msgid "to 0. If the timer is enabled, then if no synchronization events"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:775
+msgid "during the time, specified by the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:776
+msgid "**user\\_trigger\\_counter\\_resetTimerValue** parameter, the encoder"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:777
+msgid "counter will be reset to 0."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:784
+msgid "-  **user\\_trigger\\_counter\\_resetTimerValue** - Timeout value until the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:785
+msgid "encoder counter value is automatically reset to 0."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:788
+msgid "-  *Min value*: 100"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:790
+msgid "-  *Step*: 1000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:794
+msgid "-  **user\\_trigger\\_counter\\_value** - Encoder counter value. This is an"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:795
+msgid "internal event counter at inputs 1 and 2."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:800
+msgid "-  **user\\_trigger\\_counter\\_dir** - The ratio of the phases of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:801
+msgid "signals at inputs 1 and 2. Determines the direction of movement if"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:802
+msgid "using a movement system."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:807
+msgid "-  **user\\_input1\\_enabled** - Turning the input 1 on and off. If the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:808
+#: ../../source_ru/additional_info.rst:836
+#: ../../source_ru/additional_info.rst:863
+msgid "input is turned off, then all signals will be ignored."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:815
+msgid "-  **user\\_input1\\_mode** - Input 1 operation mode. Defines which signal"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:816
+#: ../../source_ru/additional_info.rst:843
+msgid "change is a synchronization event for a given input."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:819
+msgid "-  *Min value*: IN1\\_MODE\\_RISE\\_OR\\_FALL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:820
+msgid "-  *Max value*: IN1\\_MODE\\_LVL0"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:822
+msgid "-  IN1\\_MODE\\_RISE\\_OR\\_FALL - the synchronization event is both"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:823
+#: ../../source_ru/additional_info.rst:850
+msgid "the transition from low to high state (edge of the pulse) and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:824
+#: ../../source_ru/additional_info.rst:851
+msgid "from high to low state (fall of the pulse),"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:825
+msgid "-  IN1\\_MODE\\_RISE - the synchronization event is only the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:826
+#: ../../source_ru/additional_info.rst:853
+msgid "transition from low to high state (edge of the pulse),"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:827
+msgid "-  IN1\\_MODE\\_FALL - the synchronization event is only the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:828
+#: ../../source_ru/additional_info.rst:855
+msgid "transition from high to low (fall of the pulse),"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:829
+msgid "-  IN1\\_MODE\\_LVL1 - the synchronization event is a high level at"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:830
+#: ../../source_ru/additional_info.rst:857
+msgid "the input, measures starts from the internal generator,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:831
+msgid "-  IN1\\_MODE\\_LVL0 - the synchronization event is a low level at"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:832
+#: ../../source_ru/additional_info.rst:859
+msgid "the input, measures starts from the internal generator"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:833
+msgid "-  *Default value*: IN1\\_MODE\\_RISE\\_OR\\_FALL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:835
+msgid "-  **user\\_input2\\_enabled** - Turning the input 2 on and off. If the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:842
+msgid "-  **user\\_input2\\_mode** - Input 2 operation mode. Defines which signal"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:846
+msgid "-  *Min value*: IN2\\_MODE\\_RISE\\_OR\\_FALL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:847
+msgid "-  *Max value*: IN2\\_MODE\\_LVL0"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:849
+msgid "-  IN2\\_MODE\\_RISE\\_OR\\_FALL - the synchronization event is both"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:852
+msgid "-  IN2\\_MODE\\_RISE - the synchronization event is only the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:854
+msgid "-  IN2\\_MODE\\_FALL - the synchronization event is only the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:856
+msgid "-  IN2\\_MODE\\_LVL1 - the synchronization event is a high level at"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:858
+msgid "-  IN2\\_MODE\\_LVL0 - the synchronization event is a low level at"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:860
+msgid "-  *Default value*: IN2\\_MODE\\_RISE\\_OR\\_FALL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:862
+msgid "-  **user\\_input3\\_enabled** - Turning the input 3 on and off. If the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:870
+msgid "-  **user\\_input3\\_mode** - Input 3 operation mode. This input is mainly"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:871
+msgid "used to reset the encoder counter value."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:874
+msgid "-  *Min value*: IN3\\_MODE\\_RISE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:875
+msgid "-  *Max value*: IN3\\_MODE\\_FALL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:877
+msgid "-  IN3\\_MODE\\_RISE - reset the encoder counter value at the rising"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:878
+msgid "edge of the pulse at the input,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:879
+msgid "-  IN3\\_MODE\\_FALL - reset the encoder counter value at the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:880
+msgid "falling edge of the pulse at the input"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:881
+msgid "-  *Default value*: IN3\\_MODE\\_RISE"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:883
+msgid "-  **user\\_input1\\_samples** - An array of signal values ​​at input 1."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:884
+msgid "The parameter is a time scan of the signals at input 1. Every 2 bits"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:885
+#: ../../source_ru/additional_info.rst:895
+#: ../../source_ru/additional_info.rst:905
+msgid "indicate the state of the signal at a certain point in time. Value"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:886
+#: ../../source_ru/additional_info.rst:896
+#: ../../source_ru/additional_info.rst:906
+msgid "0b00 - low signal level, 0b01 - state changed (pulses), 0b10 -"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:887
+#: ../../source_ru/additional_info.rst:897
+#: ../../source_ru/additional_info.rst:907
+msgid "reserved, 0b11 - high level."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:890
+#: ../../source_ru/additional_info.rst:900
+#: ../../source_ru/additional_info.rst:910
+#: ../../source_ru/additional_info.rst:1373
+msgid "-  *Max elements*: 6,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:891
+#: ../../source_ru/additional_info.rst:901
+#: ../../source_ru/additional_info.rst:911
+msgid "-  *Default value*: [0, 0, 0, 0, 0, 0]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:893
+msgid "-  **user\\_input2\\_samples** - An array of signal values ​​at input 2."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:894
+msgid "The parameter is a time scan of the signals at input 2. Every 2 bits"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:903
+msgid "-  **user\\_input3\\_samples** - An array of signal values ​​at input 3."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:904
+msgid "The parameter is a time scan of the signals at input 3. Every 2 bits"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:913
+msgid "-  **user\\_output1\\_enabled** - Turning output 1 on and off. When turned"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:914
+#: ../../source_ru/additional_info.rst:952
+msgid "off, the output is low. In the on state, the signal is set by the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:915
+msgid "parameters **user\\_output1\\_mode** and **user\\_output1\\_pulseWidth**."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:922
+msgid "-  **user\\_output1\\_mode** - Output 1 mode. Sets which signal will be"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:923
+#: ../../source_ru/additional_info.rst:961
+msgid "output."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:926
+#: ../../source_ru/additional_info.rst:964
+msgid "-  *Min value*: OUT\\_MODE\\_EXPOSE\\_START"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:927
+#: ../../source_ru/additional_info.rst:965
+msgid "-  *Max value*: OUT\\_MODE\\_IN3\\_REPEATER"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:929
+#: ../../source_ru/additional_info.rst:967
+msgid "-  OUT\\_MODE\\_EXPOSE\\_START - impulse at the moment the frame"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:930
+#: ../../source_ru/additional_info.rst:968
+msgid "starts to be exposed for the next measurement,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:931
+#: ../../source_ru/additional_info.rst:969
+msgid "-  OUT\\_MODE\\_EXPOSE\\_TIME - pulse during the exposure of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:932
+#: ../../source_ru/additional_info.rst:970
+msgid "frame for the next measurement,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:933
+#: ../../source_ru/additional_info.rst:971
+msgid "-  OUT\\_MODE\\_IN1\\_REPEATER - input 1 repeater, regardless of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:934
+#: ../../source_ru/additional_info.rst:936
+#: ../../source_ru/additional_info.rst:972
+#: ../../source_ru/additional_info.rst:974
+msgid "whether the input is on or off,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:935
+#: ../../source_ru/additional_info.rst:973
+msgid "-  OUT\\_MODE\\_IN2\\_REPEATER - input 2 repeater, regardless of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:937
+#: ../../source_ru/additional_info.rst:975
+msgid "-  OUT\\_MODE\\_IN3\\_REPEATER - input 3 repeater, regardless of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:938
+#: ../../source_ru/additional_info.rst:976
+msgid "whether the input is on or off"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:939
+#: ../../source_ru/additional_info.rst:977
+msgid "-  *Default value*: OUT\\_MODE\\_EXPOSE\\_START"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:941
+msgid "-  **user\\_output1\\_pulseWidth** - Pulse width when"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:942
+msgid "**user\\_output1\\_mode** parameter has value OUT\\_MODE\\_EXPOSE\\_START."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:945
+#: ../../source_ru/additional_info.rst:983
+#: ../../source_ru/additional_info.rst:1301
+msgid "-  *Min value*: 10"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:946
+#: ../../source_ru/additional_info.rst:984
+msgid "-  *Max value*: 1000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:947
+#: ../../source_ru/additional_info.rst:985
+#: ../../source_ru/additional_info.rst:1310
+#: ../../source_ru/additional_info.rst:1318
+msgid "-  *Step*: 10"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:948
+#: ../../source_ru/additional_info.rst:986
+msgid "-  *Default value*: 1000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:951
+msgid "-  **user\\_output2\\_enabled** - Turning output 2 on and off. When turned"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:953
+msgid "parameters **user\\_output2\\_mode** and **user\\_output2\\_pulseWidth**."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:960
+msgid "-  **user\\_output2\\_mode** - Output 2 mode. Sets which signal will be"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:979
+msgid "-  **user\\_output2\\_pulseWidth** - Pulse width when"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:980
+msgid "**user\\_output2\\_mode** parameter has value OUT\\_MODE\\_EXPOSE\\_START."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:989
+msgid "-  **user\\_dump\\_enabled** - Enabling profile recording in the internal"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:990
+msgid "memory of the device - forming a dump. The recording will be stopped"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:991
+msgid "when the maximum dump capacity is reached, either when"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:992
+msgid "**user\\_dump\\_capacity** is reached or when FALSE is written to this"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:993
+msgid "parameter. Before starting the dump recording,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:994
+msgid "user\\_trigger\\_sync\\_value and user\\_trigger\\_counter\\_value counters"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:995
+msgid "will be reset to 0."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1002
+msgid "-  **user\\_dump\\_capacity** - User-defined number of profiles to be"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1003
+msgid "dumped. Upon reaching this value, the recording will automatically"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1004
+msgid "stop and the value of the **user\\_dump\\_enabled** parameter will"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1005
+msgid "become FALSE."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1009
+#: ../../source_ru/additional_info.rst:1018
+msgid "-  *Max value*: 80000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1010
+msgid "-  *Default value*: 80000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1011
+#: ../../source_ru/additional_info.rst:1020
+msgid "-  *Units*: profiles"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1013
+msgid "-  **user\\_dump\\_size** - The current number of profiles in the dump."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1014
+msgid "Before starting dump recording, this value is reset to 0. During dump"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1015
+msgid "recording, this value increases."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1022
+msgid "-  **user\\_dump\\_timeStamp** - The time stamp of the dump. Setted by the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1023
+msgid "device when the dump recording starts."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1025
+msgid "-  *Type*: uint64\\_t"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1027
+#: ../../source_ru/additional_info.rst:1296
+#: ../../source_ru/additional_info.rst:1304
+msgid "-  *Units*: ticks"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1029
+msgid "-  **user\\_dump\\_view3d\\_motionType** - Type of movement system on which"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1030
+msgid "the device is installed. The value of the parameter is used to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1031
+msgid "correctly draw the dump as a 3D model."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1034
+msgid "-  *Min value*: MOTION\\_TYPE\\_LINEAR"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1035
+msgid "-  *Max value*: MOTION\\_TYPE\\_RADIAL"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1037
+msgid "-  MOTION\\_TYPE\\_LINEAR - linear motion system,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1038
+msgid "-  MOTION\\_TYPE\\_RADIAL - radial motion system"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1039
+msgid "-  *Default value*: MOTION\\_TYPE\\_LINEAR"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1041
+msgid "-  **user\\_dump\\_view3d\\_ySource** - Source of the Y-axis coordinates."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1042
+msgid "The value of the parameter is used to correctly draw the dump as a 3D"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1043
+msgid "model."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1046
+msgid "-  *Min value*: Y\\_AXIS\\_SYSTEM\\_TIME"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1047
+msgid "-  *Max value*: Y\\_AXIS\\_MEASURES\\_COUNTER"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1049
+msgid "-  Y\\_AXIS\\_SYSTEM\\_TIME - internal device timer,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1050
+msgid "-  Y\\_AXIS\\_STEP\\_COUNTER - parameter"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1051
+msgid "**user\\_trigger\\_counter\\_value**,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1052
+msgid "-  Y\\_AXIS\\_MEASURES\\_COUNTER - measurements counter"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1053
+msgid "-  *Default value*: Y\\_AXIS\\_SYSTEM\\_TIME"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1055
+msgid "-  **user\\_dump\\_view3d\\_yStep** - The value of a single step in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1056
+msgid "Y-axis."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1058
+msgid "-  *Type*: double\\_t"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1060
+msgid "-  *Default value*: 0.0005"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1063
+msgid "-  **user\\_dump\\_view3d\\_paintMode** - 3D model coloring mode. This"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1064
+msgid "parameter is used when drawing a 3D model in the WEB-interface."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1067
+msgid "-  *Min value*: PAINT\\_MODE\\_HEIGHTMAP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1068
+msgid "-  *Max value*: PAINT\\_MODE\\_INTENSITY"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1070
+msgid "-  PAINT\\_MODE\\_HEIGHTMAP - coloring according to the height map,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1071
+msgid "-  PAINT\\_MODE\\_INTENSITY - intensity mapping, parameter"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1072
+msgid "**user\\_streams\\_includeIntensity** must be set to TRUE,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1073
+msgid "-  *Default value*: PAINT\\_MODE\\_HEIGHTMAP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1075
+msgid "-  **user\\_dump\\_view3d\\_decimation** - Profiles decimation when drawing"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1076
+msgid "a 3D model. This parameter is used when drawing a 3D model in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1077
+msgid "WEB-interface."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1080
+msgid "-  *Min value*: DUMP\\_VIEW3D\\_DECIM\\_1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1081
+msgid "-  *Max value*: DUMP\\_VIEW3D\\_DECIM\\_200"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1083
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_1 - all dump profiles are displayed,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1084
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_2 - step to display dump profiles 2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1085
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_5 - step to display dump profiles 5,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1086
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_10 - step to display dump profiles 10,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1087
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_20 - step to display dump profiles 20,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1088
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_50 - step to display dump profiles 50,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1089
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_100 - step to display dump profiles 100,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1090
+msgid "-  DUMP\\_VIEW3D\\_DECIM\\_200 - step to display dump profiles 200,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1091
+msgid "-  *Default value*: DUMP\\_VIEW3D\\_DECIM\\_1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1093
+msgid "-  **user\\_eip\\_tcpPort** - The port number that the device listens for"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1094
+msgid "incoming TCP connections via EthernetIP."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1098
+msgid "-  *Default value*: 44818"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1100
+msgid "-  **user\\_eip\\_udpPort** - The port number that the device listens for"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1101
+msgid "UDP packets with EthernetIP data."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1105
+msgid "-  *Default value*: 2222"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1107
+msgid "-  **user\\_compatibility\\_rf625Enabled** - Enable or disable"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1108
+msgid "compatibility mode with the obsolete RF625 scanner. When enabling"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1109
+msgid "compatibility mode, UDP profile stream will be suspended."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1116
+msgid "-  **user\\_compatibility\\_rf625TCPPort** - Port number for incoming TCP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1117
+msgid "connections via RF625 protocol."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1121
+msgid "-  *Default value*: 620"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1124
+msgid "Factory"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1126
+msgid "-  **fact\\_general\\_firmwareVer** - Device firmware version [Major,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1127
+msgid "Minor, Patch]."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1130
+msgid "-  *Max elements*: 3,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1131
+msgid "-  *Default value*: [1, 0, 0]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1133
+msgid "-  **fact\\_general\\_hardwareVer** - Device hardware version."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1136
+msgid "-  *Default value*: 403051520"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1138
+msgid "-  **fact\\_general\\_deviceType** - Device type identifier."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1139
+#: ../../source_ru/additional_info.rst:1145
+#: ../../source_ru/additional_info.rst:1150
+#: ../../source_ru/additional_info.rst:1155
+#: ../../source_ru/additional_info.rst:1162
+#: ../../source_ru/additional_info.rst:1169
+#: ../../source_ru/additional_info.rst:1177
+#: ../../source_ru/additional_info.rst:1184
+#: ../../source_ru/additional_info.rst:1192
+#: ../../source_ru/additional_info.rst:1199
+#: ../../source_ru/additional_info.rst:1207
+#: ../../source_ru/additional_info.rst:1215
+#: ../../source_ru/additional_info.rst:1241
+#: ../../source_ru/additional_info.rst:1260
+#: ../../source_ru/additional_info.rst:1266
+#: ../../source_ru/additional_info.rst:1274
+#: ../../source_ru/additional_info.rst:1283
+#: ../../source_ru/additional_info.rst:1291
+#: ../../source_ru/additional_info.rst:1299
+#: ../../source_ru/additional_info.rst:1307
+#: ../../source_ru/additional_info.rst:1315
+#: ../../source_ru/additional_info.rst:1324
+#: ../../source_ru/additional_info.rst:1336
+#: ../../source_ru/additional_info.rst:1342
+#: ../../source_ru/additional_info.rst:1348
+#: ../../source_ru/additional_info.rst:1354
+#: ../../source_ru/additional_info.rst:1361
+#: ../../source_ru/additional_info.rst:1370
+#: ../../source_ru/additional_info.rst:1379
+#: ../../source_ru/additional_info.rst:1387
+#: ../../source_ru/additional_info.rst:1395
+#: ../../source_ru/additional_info.rst:1403
+#: ../../source_ru/additional_info.rst:1411
+#: ../../source_ru/additional_info.rst:1419
+#: ../../source_ru/additional_info.rst:1426
+#: ../../source_ru/additional_info.rst:1554
+#: ../../source_ru/additional_info.rst:1561
+msgid "-  *Access*: read/awrite"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1142
+#: ../../source_ru/additional_info.rst:1449
+msgid "-  *Default value*: 627"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1144
+msgid "-  **fact\\_general\\_serial** - Device serial number."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1149
+msgid "-  **fact\\_general\\_pcbSerial** - Device PCB serial number."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1154
+msgid "-  **fact\\_general\\_lifeTime** - Total device runtime in UNIX format."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1157
+#: ../../source_ru/additional_info.rst:1164
+msgid "-  *Max value*: 1577846300"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1159
+#: ../../source_ru/additional_info.rst:1166
+#: ../../source_ru/additional_info.rst:1383
+msgid "-  *Units*: s"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1161
+msgid "-  **fact\\_general\\_workTime** - Device uptime in UNIX format."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1168
+msgid "-  **fact\\_general\\_startsCount** - Total number of device starts."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1171
+msgid "-  *Max value*: 8760"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1173
+msgid "-  *Units*: times"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1175
+msgid "-  **fact\\_general\\_customerID** - Device customer identifier. The"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1176
+msgid "identifier of the company that purchased / ordered the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1180
+msgid "-  *Units*: id"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1182
+msgid "-  **fact\\_general\\_fpgaFreq** - FPGA project clock frequency for this"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1183
+msgid "device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1186
+msgid "-  *Min value*: 10000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1187
+#: ../../source_ru/additional_info.rst:1286
+msgid "-  *Max value*: 500000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1188
+msgid "-  *Default value*: 10000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1191
+msgid "-  **fact\\_general\\_smr** - Start of measuring range in Z axis in mm."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1198
+msgid "-  **fact\\_general\\_mr** - Size of the measuring range in Z axis in mm."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1202
+msgid "-  *Default value*: 130"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1205
+msgid "-  **fact\\_general\\_xsmr** - The size along the X axis of the measuring"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1206
+msgid "range at the beginning of the range."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1210
+#: ../../source_ru/additional_info.rst:1218
+msgid "-  *Default value*: 40"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1213
+msgid "-  **fact\\_general\\_xemr** - The size along the X axis of the measuring"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1214
+msgid "range at the end of the range."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1221
+msgid "-  **fact\\_general\\_pixDivider** - Divider to obtain the subpixel"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1222
+msgid "position of profile points in the uncalibrated data transfer mode"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1223
+#: ../../source_ru/additional_info.rst:1232
+msgid "(parameter **user\\_streams\\_format** is set to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1224
+msgid "DATA\\_FORMAT\\_RAW\\_PROFILE)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1228
+msgid "-  *Default value*: 32"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1230
+msgid "-  **fact\\_general\\_profDivider** - Divider to obtain the subpixel"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1231
+msgid "position of profile points in the calibrated data transfer mode"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1233
+msgid "DATA\\_FORMAT\\_PROFILE)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1237
+msgid "-  *Default value*: 16384"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1239
+msgid "-  **fact\\_general\\_oemDevName** - Device name assigned by the OEM"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1240
+msgid "customer."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1244
+msgid "-  *Default value*: \"Laser scanner\""
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1246
+msgid "-  **fact\\_general\\_authStatus** - Authorization status for changing the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1247
+msgid "factory settings of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1250
+msgid "-  *Min value*: AUTH\\_STATUS\\_USER"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1251
+msgid "-  *Max value*: AUTH\\_STATUS\\_FACTORY"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1253
+msgid "-  AUTH\\_STATUS\\_USER - authorized as a user, factory settings"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1254
+msgid "cannot be changed,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1255
+msgid "-  AUTH\\_STATUS\\_FACTORY - authorized as a manufacturer, factory"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1256
+msgid "settings can be changed"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1257
+msgid "-  *Default value*: AUTH\\_STATUS\\_USER"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1259
+msgid "-  **fact\\_sensor\\_name** - Name of the sensor used in the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1262
+msgid "-  *Max len*: 64"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1263
+msgid "-  *Default value*: \"TYPE 1\""
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1265
+msgid "-  **fact\\_sensor\\_width** - Number of pixels in the CMOS sensor."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1269
+msgid "-  *Max value*: 648"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1271
+msgid "-  *Units*: pixels"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1273
+msgid "-  **fact\\_sensor\\_height** - Number of lines in the CMOS sensor."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1276
+msgid "-  *Min value*: 488"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1278
+msgid "-  *Default value*: 488"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1281
+msgid "-  **fact\\_sensor\\_pixFreq** - Pixel frequency for installed CMOS"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1282
+msgid "sensor."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1285
+msgid "-  *Min value*: 1000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1287
+msgid "-  *Default value*: 40000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1290
+msgid "-  **fact\\_sensor\\_frmConstPart** - Constant part of the frame cycle."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1293
+msgid "-  *Min value*: 200"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1294
+msgid "-  *Max value*: 200000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1295
+msgid "-  *Default value*: 3500"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1298
+msgid "-  **fact\\_sensor\\_frmPerLinePart** - Frame cycle part for each line."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1302
+msgid "-  *Max value*: 100000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1303
+msgid "-  *Default value*: 160"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1306
+msgid "-  **fact\\_sensor\\_minExposure** - Minimum allowable exposure value."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1311
+msgid "-  *Default value*: 3000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1314
+msgid "-  **fact\\_sensor\\_maxExposure** - Maximum allowable exposure value."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1319
+msgid "-  *Default value*: 300000000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1322
+msgid "-  **fact\\_sensor\\_imgFlip** - Image reflection mode. Applies directly"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1323
+msgid "to the image transmitted, by the CMOS sensor."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1335
+msgid "-  **fact\\_sensor\\_analogGain** - CMOS sensor analog gain value."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1338
+msgid "-  *Max value*: 7"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1339
+#: ../../source_ru/additional_info.rst:1382
+msgid "-  *Default value*: 5"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1341
+msgid "-  **fact\\_sensor\\_digitalGain** - CMOS sensor digital gain value."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1344
+msgid "-  *Max value*: 55"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1345
+msgid "-  *Default value*: 48"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1347
+msgid "-  **fact\\_sensor\\_blackOdd** - Black level for odd lines."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1351
+msgid "-  *Default value*: 2300"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1353
+msgid "-  **fact\\_sensor\\_blackEven** - Black level for even lines."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1357
+msgid "-  *Default value*: 2400"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1359
+msgid "-  **fact\\_network\\_initRegs** - CMOS sensor registers values [regAddr,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1360
+msgid "regValue ...]."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1364
+msgid "-  *Max elements*: 64,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1365
+msgid "-  *Default value*: [41, 1, 83, 155, 58, 20, 59, 0, 60, 11, 69, 9,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1366
+msgid "80, 4, 97, 0, 98, 12, 101, 98, 102, 34, 103, 64, 106, 90, 107,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1367
+msgid "110, 108, 91, 109, 82, 110, 80, 117, 91]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1369
+msgid "-  **fact\\_network\\_macAddr** - Physical address of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1374
+msgid "-  *Default value*: [0x00, 0x0A, 0x35, 0x01, 0x02, 0x03]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1376
+msgid "-  **fact\\_network\\_forceAutoNegTime** - The time after which the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1377
+msgid "auto-negotiation of the Ethernet connection will be forced if the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1378
+msgid "connection is not established."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1385
+msgid "-  **fact\\_network\\_webSockServicePort** - Port number for the service"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1386
+msgid "data transmission WEB-socket. Used by the Web-page."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1389
+#: ../../source_ru/additional_info.rst:1397
+#: ../../source_ru/additional_info.rst:1405
+msgid "-  *Min value*: 16384"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1391
+msgid "-  *Default value*: 50002"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1393
+msgid "-  **fact\\_network\\_webSockDataPort** - Port number for the large data"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1394
+#: ../../source_ru/additional_info.rst:1402
+msgid "transmission WEB-socket. Used by the Web-page."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1399
+msgid "-  *Default value*: 50003"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1401
+msgid "-  **fact\\_network\\_webSockMathPort** - Port number for the math data"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1407
+msgid "-  *Default value*: 50004"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1409
+msgid "-  **fact\\_laser\\_waveLength** - The wavelength of the laser, installed"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1410
+msgid "in the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1414
+msgid "-  *Default value*: 650"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1415
+msgid "-  *Units*: nm"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1417
+msgid "-  **fact\\_laser\\_minValue** - Minimum DAC value. At this value, the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1418
+msgid "laser stops emitting light."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1421
+#: ../../source_ru/additional_info.rst:1428
+msgid "-  *Max value*: 4095"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1424
+msgid "-  **fact\\_laser\\_maxValue** - Maximum DAC value. At this value, the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1425
+msgid "laser starts to emit light with maximum power."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1429
+msgid "-  *Default value*: 4095"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1431
+msgid "-  **fact\\_eip\\_identity\\_vendorID** - Identification number for the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1432
+msgid "manufacturer of an EtherNet/IP device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1435
+msgid "-  *Default value*: 1588"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1437
+msgid "-  **fact\\_eip\\_identity\\_deviceType** - The list of device types is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1438
+msgid "managed by ODVA and CI. It is used to identify the device profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1439
+msgid "that a particular product is using."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1443
+msgid "-  *Default value*: 0x2B"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1445
+msgid "-  **fact\\_eip\\_identity\\_productCode** - Product identifier according"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1446
+msgid "to developer documentation."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1451
+msgid "-  **fact\\_eip\\_identity\\_rev** - The Revision attribute, which consists"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1452
+msgid "of major and minor revisions, identifies the revision of the item the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1453
+msgid "Identity Object is representing."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1457
+msgid "-  *Max elements*: 2,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1458
+msgid "-  *Default value*: [1, 0]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1460
+msgid "-  **fact\\_eip\\_identity\\_status** - Represents the current status of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1461
+msgid "the entire device. Its value changes as the state of the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1462
+msgid "changes."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1466
+msgid "-  Owned - the device (or an object within the device) has an"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1467
+msgid "owner,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1468
+msgid "-  Configured - the application of the device has been configured"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1469
+msgid "to do something different than the “out–of–box” default,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1470
+msgid "-  Minor Recoverable Fault - the device detected a problem with"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1471
+msgid "itself, which is thought to be recoverable. The problem does"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1472
+#: ../../source_ru/additional_info.rst:1475
+msgid "not cause the device to go into one of the faulted states,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1473
+msgid "-  Minor Unrecoverable Fault- the device detected a problem with"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1474
+msgid "itself, which is thought to be unrecoverable. The problem does"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1476
+msgid "-  Major Recoverable Fault - the device detected a problem with"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1477
+#: ../../source_ru/additional_info.rst:1480
+msgid "itself, which caused the device to go into the “Major"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1478
+msgid "Recoverable Fault” state,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1479
+msgid "-  Major Unrecoverable Fault - the device detected a problem with"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1481
+msgid "Unrecoverable Fault” state"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1484
+msgid "-  **fact\\_eip\\_tcpIntrf\\_status** - is a bitmap that shall indicate the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1485
+msgid "status of the TCP/IP network interface."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1489
+msgid "-  No configured - The Interface Configuration attribute has not"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1490
+msgid "been configured,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1491
+msgid "-  Configured - The Interface Configuration attribute contains"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1492
+msgid "configuration obtained from BOOTP, DHCP or nonvolatile storage,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1493
+msgid "-  Hardware Configured - The IP address member of the Interface"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1494
+msgid "Configuration attribute contains configuration, obtained from"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1495
+msgid "hardware settings,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1496
+msgid "-  Mcast Pending - Indicates a pending configuration change in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1497
+msgid "TTL Value and/or Mcast Config attributes,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1498
+msgid "-  Interface Configuration Pending - Indicates a pending"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1499
+msgid "configuration change in the Interface Configuration attribute,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1500
+msgid "-  Address Conflict Detection Status - Indicates when an IP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1501
+msgid "address conflict has been detected by ACD"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1504
+msgid "-  **fact\\_eip\\_tcpIntrf\\_capability** - is a bitmap that indicates the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1505
+msgid "device’s support for optional network configuration capability."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1509
+msgid "-  BOOTP Client - the device is capable of obtaining its network"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1510
+msgid "configuration via BOOTP,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1511
+msgid "-  DNS Client - the device is capable of resolving host names by"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1512
+msgid "querying a DNS server,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1513
+msgid "-  DHCP Client - the device is capable of obtaining its network"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1514
+msgid "configuration via DHCP,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1515
+msgid "-  Configuration Settable - the Interface Configuration attribute"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1516
+msgid "is settable,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1517
+msgid "-  Hardware Configurable - the IP Address member of the Interface"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1518
+msgid "Configuration attribute can be obtained from hardware settings"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1519
+msgid "(e.g., pushwheel, thumbwheel, etc.),"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1520
+msgid "-  Interface Configuration Change Requires Reset - the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1521
+msgid "requires a restart in order for a change to the Interface"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1522
+msgid "Configuration attribute to take effect,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1523
+msgid "-  Address Conflict Detection Capable - the device is capable of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1524
+msgid "ACD"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1525
+msgid "-  *Default value*: 0x14"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1527
+msgid "-  **fact\\_eip\\_tcpIntrf\\_control** - is a bitmap used to control"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1528
+msgid "network configuration options."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1532
+msgid "-  Static ip mode - The device shall use statically-assigned IP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1533
+msgid "configuration values,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1534
+msgid "-  BOOTP mode - The device shall obtain its interface"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1535
+msgid "configuration values via BOOTP,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1536
+msgid "-  DHCP mode - The device shall obtain its interface configuration"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1537
+msgid "values via DHCP"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1538
+msgid "-  DNS Enable - the device shall resolve host names by querying a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1539
+msgid "DNS server"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1542
+msgid "-  **fact\\_eip\\_tcpIntrf\\_phyLink** - identifies the object associated"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1543
+msgid "with the underlying physical communications interface (e.g., an 802.3"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1544
+msgid "interface)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1548
+msgid "-  *Max elements*: 6"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1549
+msgid "-  *Default value*: [0x20, 0xF6, 0x24, 0x01]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1551
+msgid "-  **fact\\_eip\\_tcpIntrf\\_inactTimeout** - is used to enable TCP socket"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1552
+msgid "cleanup (closing) when the defined number of seconds have elapsed"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1553
+msgid "with no Encapsulation activity."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1557
+msgid "-  *Default value*: 120"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1559
+msgid "-  **fact\\_smart\\_enabled** - Turn on and off the capabilities of a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1560
+msgid "smart device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1568
+msgid "WEB API v1"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1570
+msgid "Using the easy-to-use WEB API, the user can get information about the device, read or write the value of the parameter. Also, through the WEB API, the device can execute some commands. A complete list of commands supported through this access is given in the description of the commands. The WEB API examples use the factory IP address of the device and presented as they should be typed in the address bar of the browser. If it has been changed by the user, the IP address of the device should be used."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1580
+msgid "Quick device info"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1582
+msgid "-  **/hello** - Getting general information about the device in JSON"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1583
+msgid "format."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1584
+#: ../../source_ru/additional_info.rst:1590
+#: ../../source_ru/additional_info.rst:1595
+#: ../../source_ru/additional_info.rst:1607
+#: ../../source_ru/additional_info.rst:1614
+#: ../../source_ru/additional_info.rst:1621
+#: ../../source_ru/additional_info.rst:1634
+#: ../../source_ru/additional_info.rst:1640
+#: ../../source_ru/additional_info.rst:1646
+#: ../../source_ru/additional_info.rst:1651
+#: ../../source_ru/additional_info.rst:1659
+#: ../../source_ru/additional_info.rst:1664
+#: ../../source_ru/additional_info.rst:1674
+msgid "-  *GET*:"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1585
+msgid "-  192.168.1.30/hello"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1587
+msgid "-  **/api/v1/config/commands** - Getting the list of commands, supported"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1588
+msgid "by the device. The formalized description will contain the command"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1589
+msgid "name, WEB API access capability, command identifier and access mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1591
+msgid "-  192.168.1.30/api/v1/config/commands"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1593
+msgid "-  **/api/v1/config/returnCodes** - Getting a text description of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1594
+#: ../../source_ru/additional_info.rst:1752
+msgid "codes of operation results and errors, returned by the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1596
+msgid "-  192.168.1.30/api/v1/config/returnCodes"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1599
+msgid "Device parameters"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1601
+msgid "-  **/api/v1/config/params** - Getting general information about all"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1602
+msgid "device parameters in JSON format. The formalized description of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1603
+msgid "parameter will contain its name, type, access mode, index in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1604
+#: ../../source_ru/additional_info.rst:1708
+msgid "parameter array, offset for binary data, parameter data size, current"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1605
+#: ../../source_ru/additional_info.rst:1709
+msgid "value, default value, minimum and maximum values, parameter value"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1606
+#: ../../source_ru/additional_info.rst:1710
+msgid "step, for arrays - the maximum number of elements."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1608
+msgid "-  192.168.1.30/api/v1/config/params"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1610
+msgid "-  **/api/v1/config/params/values** - Reading and writing values ​​of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1611
+msgid "the device parameters. For reading it is possible to request specific"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1612
+msgid "parameters by name or index. To write a parameter, it is necessary to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1613
+msgid "form a \"PUT\" request with the parameters \"parameter\\_name:value\"."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1615
+msgid "-  192.168.1.30/api/v1/config/params/values"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1616
+msgid "-  192.168.1.30/api/v1/config/params/values?name=fact\\_general\\_hardwareVer&index=120"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1617
+#: ../../source_ru/additional_info.rst:1624
+#: ../../source_ru/additional_info.rst:1676
+msgid "-  *PUT*:"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1618
+msgid "-  192.168.1.30/api/v1/config/params/values?user\\_sensor\\_framerate=100&user\\_sensor\\_exposure1=100000"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1620
+msgid "-  **/api/v1/sensor** - Reading and writing CMOS-sensor registers."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1622
+#: ../../source_ru/additional_info.rst:1625
+msgid "-  192.168.1.30/api/v1/sensor?reg=0x5B&val=0x003F"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1623
+#: ../../source_ru/additional_info.rst:1626
+msgid "-  192.168.1.30/api/v1/sensor?index=0&reg=0x5B&val=0x003F"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1629
+msgid "Save, restore and reboot"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1631
+msgid "-  **/api/v1/config/params/save** - Saving the current values of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1632
+msgid "device parameters in non-volatile memory in user area. Saved values"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1633
+msgid "will be used when the device is switched on again."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1635
+msgid "-  192.168.1.30/api/v1/config/params/save"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1637
+msgid "-  **/api/v1/config/params/restore/save** - Saving the current values of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1638
+msgid "the device parameters in the recovery area. These parameters will be"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1639
+msgid "applied when parameters from the user area are damaged."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1641
+msgid "-  192.168.1.30/api/v1/config/params/restore/save"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1643
+msgid "-  **/api/v1/config/params/restore/load** - Loading device parameter"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1644
+msgid "values from the recovery area. The loaded values will be written to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1645
+msgid "the user area, the device will be automatically rebooted."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1647
+msgid "-  192.168.1.30/api/v1/config/params/restore/load"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1649
+msgid "-  **/api/v1/reboot** - Reboot the device. The parameters will be loaded"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1650
+msgid "from the user area (if they are not damaged)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1652
+msgid "-  192.168.1.30/api/v1/reboot"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1655
+msgid "Log"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1657
+msgid "-  **/api/v1/log** - Getting a log of the device with full description"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1658
+msgid "of records."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1660
+msgid "-  192.168.1.30/api/v1/log"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1662
+msgid "-  **/api/v1/log/content** - Getting the device log in an abbreviated"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1663
+#: ../../source_ru/additional_info.rst:1872
+msgid "form - is easier to read."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1665
+msgid "-  192.168.1.30/api/v1/log/content"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1668
+msgid "Authorization"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1670
+msgid "-  **/api/v1/authorization** - Authorization on the device as a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1671
+msgid "manufacturer - allows editing factory parameters of the device. Using"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1672
+msgid "the \"GET\" request, get a token for which generate a key and send to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1673
+msgid "the device in the \"PUT\" request."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1675
+msgid "-  192.168.1.30/api/v1/authorization"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1677
+msgid "-  192.168.1.30/api/v1/authorization?key=230d84e16c0dae529098f1f1bb....."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1680
+msgid "COMMANDS"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1682
+msgid "The commands transmitted to the device are intended for searching devices in the network, reading and setting parameters, downloading service data, firmware upgrade, receiving frames generated by CMOS-sensor and other functions. The commands and their answers are given in the service protocol (in the current revision, RF627 protocol). The service protocol uses UDP packets sent to the device’s network address (parameter **user\\_network\\_ip**) and the service port (parameter **user\\_network\\_servicePort**)."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1694
+msgid "General device commands"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1696
+msgid "-  **HELLO\\_JSON\\_REQUEST** - Search for devices on the network. In"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1697
+msgid "answer to the command, JSON will be sent with a description of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1698
+msgid "main parameters of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1699
+msgid "-  *URI*: /hello"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1700
+msgid "-  *CID*: 0x0010"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1701
+#: ../../source_ru/additional_info.rst:1713
+#: ../../source_ru/additional_info.rst:1723
+#: ../../source_ru/additional_info.rst:1732
+#: ../../source_ru/additional_info.rst:1740
+#: ../../source_ru/additional_info.rst:1747
+#: ../../source_ru/additional_info.rst:1755
+#: ../../source_ru/additional_info.rst:1764
+#: ../../source_ru/additional_info.rst:1773
+#: ../../source_ru/additional_info.rst:1782
+#: ../../source_ru/additional_info.rst:1790
+#: ../../source_ru/additional_info.rst:1800
+#: ../../source_ru/additional_info.rst:1807
+#: ../../source_ru/additional_info.rst:1814
+#: ../../source_ru/additional_info.rst:1828
+#: ../../source_ru/additional_info.rst:1836
+#: ../../source_ru/additional_info.rst:1846
+#: ../../source_ru/additional_info.rst:1856
+#: ../../source_ru/additional_info.rst:1867
+#: ../../source_ru/additional_info.rst:1875
+#: ../../source_ru/additional_info.rst:1894
+#: ../../source_ru/additional_info.rst:1900
+#: ../../source_ru/additional_info.rst:1909
+#: ../../source_ru/additional_info.rst:1917
+#: ../../source_ru/additional_info.rst:1939
+msgid "-  *Access*: unlocked"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1702
+#: ../../source_ru/additional_info.rst:1714
+#: ../../source_ru/additional_info.rst:1724
+#: ../../source_ru/additional_info.rst:1748
+#: ../../source_ru/additional_info.rst:1756
+#: ../../source_ru/additional_info.rst:1765
+#: ../../source_ru/additional_info.rst:1774
+#: ../../source_ru/additional_info.rst:1783
+#: ../../source_ru/additional_info.rst:1808
+#: ../../source_ru/additional_info.rst:1815
+#: ../../source_ru/additional_info.rst:1837
+#: ../../source_ru/additional_info.rst:1876
+#: ../../source_ru/additional_info.rst:1895
+#: ../../source_ru/additional_info.rst:1910
+#: ../../source_ru/additional_info.rst:1918
+msgid "-  *Command payload*: no"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1703
+#: ../../source_ru/additional_info.rst:1715
+#: ../../source_ru/additional_info.rst:1725
+#: ../../source_ru/additional_info.rst:1757
+#: ../../source_ru/additional_info.rst:1792
+#: ../../source_ru/additional_info.rst:1869
+#: ../../source_ru/additional_info.rst:1877
+msgid "-  *Answer payload*: JSON"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1705
+msgid "-  **PARAMS\\_DESCRIPTION\\_REQUEST** - Getting general information about"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1706
+msgid "all device parameters in JSON format. The formalized description of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1707
+msgid "the parameter will contain its name, type, access mode, index in the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1711
+msgid "-  *URI*: /api/v1/config/params"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1712
+msgid "-  *CID*: 0x0110"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1717
+msgid "-  **COMMANDS\\_DESCRIPTION\\_REQUEST** - Getting the list of commands,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1718
+msgid "supported by the device. The formalized description will contain the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1719
+msgid "command name, WEB API access capability, command identifier and"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1720
+msgid "access mode."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1721
+msgid "-  *URI*: /api/v1/config/commands"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1722
+msgid "-  *CID*: 0x0210"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1727
+msgid "-  **PARAMS\\_VALUES\\_JSON\\_REQUEST** - Reading values ​​of the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1728
+msgid "parameters. For reading it is possible to request specific parameters"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1729
+msgid "by name or index."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1730
+msgid "-  *URI*: /api/v1/config/params/values"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1731
+msgid "-  *CID*: 0x0310"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1733
+msgid "-  *Command payload*: JSON [name:XXXX, name:XXXX, index:XXXX...]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1734
+msgid "-  *Answer payload*: JSON [name:value, name:value, name:value...]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1736
+msgid "-  **PARAMS\\_VALUES\\_JSON\\_WRITE** - Writing values ​​of the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1737
+msgid "parameters, it is necessary to send the parameters in form of pair"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1738
+msgid "\"parameter\\_name:value\"."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1739
+msgid "-  *CID*: 0x1010"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1741
+msgid "-  *Command payload*: JSON [name:value, name:value, index:value...]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1742
+msgid "-  *Answer payload*: JSON [name:OK, name:OK, name:OK...]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1744
+msgid "-  **PARAMS\\_VALUES\\_BIN\\_REQUEST** - Reading parameter values in binary"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1745
+msgid "form. Each parameter will be stacked according to its index and size."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1746
+msgid "-  *CID*: 0x0410"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1749
+#: ../../source_ru/additional_info.rst:1838
+#: ../../source_ru/additional_info.rst:1848
+#: ../../source_ru/additional_info.rst:1941
+msgid "-  *Answer payload*: BIN"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1751
+msgid "-  **RETURN\\_CODES\\_JSON\\_REQUEST** - Getting a text description of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1753
+msgid "-  *URI*: /api/v1/config/returnCodes"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1754
+msgid "-  *CID*: 0x2010"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1759
+msgid "-  **PARAMS\\_SAVE** - Saving the current values of the device parameters"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1760
+msgid "in non-volatile memory in user area. Saved values will be used when"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1761
+msgid "the device is switched on again."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1762
+msgid "-  *URI*: /api/v1/config/params/save"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1763
+msgid "-  *CID*: 0x0510"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1766
+#: ../../source_ru/additional_info.rst:1775
+#: ../../source_ru/additional_info.rst:1784
+msgid "-  *Answer payload*: JSON [result:OK]"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1768
+msgid "-  **PARAMS\\_RESTORE\\_SAVE** - Saving the current values of the device"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1769
+msgid "parameters in the recovery area. These parameters will be applied"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1770
+msgid "when parameters from the user area are damaged."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1771
+msgid "-  *URI*: /api/v1/config/params/restore/save"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1772
+msgid "-  *CID*: 0x0610"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1777
+msgid "-  **PARAMS\\_RESTORE\\_LOAD** - Loading device parameter values from the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1778
+msgid "recovery area. The loaded values will be written to the user area,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1779
+msgid "the device will be automatically rebooted."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1780
+msgid "-  *URI*: /api/v1/config/params/restore/load"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1781
+msgid "-  *CID*: 0x0710"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1786
+msgid "-  **AUTHORIZATION\\_REQUEST** - Authorization on the device as a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1787
+msgid "manufacturer - allows editing factory parameters of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1788
+msgid "-  *URI*: /api/v1/authorization"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1789
+msgid "-  *CID*: 0x2110"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1791
+msgid "-  *Command payload*: no/key"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1795
+msgid "Calibration file"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1797
+msgid "-  **CALIB\\_FILE\\_DATA\\_WRITE** - Writing a fragment of a calibration"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1798
+msgid "file into a device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1799
+msgid "-  *CID*: 0x1052"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1801
+#: ../../source_ru/additional_info.rst:1901
+msgid "-  *Command payload*: BIN (uint32\\_t: offset; uint8\\_t: data[])"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1802
+#: ../../source_ru/additional_info.rst:1816
+#: ../../source_ru/additional_info.rst:1830
+#: ../../source_ru/additional_info.rst:1890
+#: ../../source_ru/additional_info.rst:1902
+#: ../../source_ru/additional_info.rst:1919
+#: ../../source_ru/additional_info.rst:1931
+msgid "-  *Answer payload*: no"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1804
+msgid "-  **CALIB\\_FILE\\_CRC16\\_REQUEST** - Getting the checksum of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1805
+msgid "calibration file, uploaded to the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1806
+msgid "-  *CID*: 0x1252"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1809
+#: ../../source_ru/additional_info.rst:1911
+msgid "-  *Answer payload*: BIN (uint16\\_t: CRC)"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1811
+msgid "-  **CALIB\\_FILE\\_SAVE** - Saving the calibration file in a non-volatile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1812
+msgid "memory of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1813
+msgid "-  *CID*: 0x2052"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1819
+msgid "Profiles request"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1821
+msgid "-  **PROFILE\\_CAPTURE** - Command to start measurement. It is used only"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1822
+msgid "in the software measurement start mode (parameter"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1823
+msgid "**user\\_sensor\\_syncSource** = SYNC\\_SOFTWARE). When the command is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1824
+msgid "received, the device starts the cycle of measurement, after that, the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1825
+msgid "profile is calculated and a standard package with the profile is"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1826
+msgid "sent."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1827
+msgid "-  *CID*: 0x0459"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1829
+msgid "-  *Command payload*: BIN (uint32\\_t: count (max: 16777215))"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1832
+msgid "-  **PROFILE\\_REQUEST** - The command to read the last calculated"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1833
+msgid "profile. The profile will be transferred in the payload of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1834
+msgid "service protocol message."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1835
+msgid "-  *CID*: 0x0559"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1841
+msgid "Dump request"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1843
+msgid "-  **DUMP\\_CONTENT\\_REQUEST** - Request the contents of the profile"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1844
+msgid "dump."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1845
+msgid "-  *CID*: 0x2259"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1847
+#: ../../source_ru/additional_info.rst:1857
+msgid "-  *Command payload*: BIN (uint32\\_t: index; uint32\\_t: count)"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1851
+msgid "Frame request"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1853
+msgid "-  **FRAME\\_REQUEST** - Request one frame of the image, exposed by the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1854
+msgid "CMOS sensor."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1855
+msgid "-  *CID*: 0x1083"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1858
+#: ../../source_ru/additional_info.rst:1896
+msgid "-  *Answer payload*: BIN (uint32\\_t: offset; uint8\\_t: data[])"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1861
+msgid "Log request"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1863
+msgid "-  **LOG\\_PART\\_REQUEST** - Request a part of the device log file with a"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1864
+msgid "full description of the entries."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1865
+msgid "-  *URI*: /api/v1/log"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1866
+msgid "-  *CID*: 0x0357"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1868
+msgid "-  *Command payload*: JSON {index: XXX, count: XXX}"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1871
+msgid "-  **LOG\\_CONTENT\\_REQUEST** - Request the device log in an abbreviated"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1873
+msgid "-  *URI*: /api/v1/log/content"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1874
+msgid "-  *CID*: 0x0457"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1880
+msgid "Internal non-volatile memory"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1882
+msgid "-  **FLASH\\_ERASE** - Cleaning of the internal non-volatile memory of"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1883
+msgid "the device (execution of the command may lead to inoperability of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1884
+msgid "device). The command arguments are the start address of the erase"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1885
+msgid "area and the size of the erase area. The address must be aligned to"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1886
+msgid "65536 bytes and the size is a multiple of 65536 bytes."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1887
+msgid "-  *CID*: 0x005A"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1888
+#: ../../source_ru/additional_info.rst:1928
+msgid "-  *Access*: locked"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1889
+msgid "-  *Command payload*: BIN (uint32\\_t: addr; uint32\\_t: size}"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1892
+msgid "-  **FLASH\\_FIRMWARE\\_READ** - Reading the firmware of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1893
+msgid "-  *CID*: 0x1A5A"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1898
+msgid "-  **FLASH\\_FIRMWARE\\_WRITE** - Write device firmware."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1899
+msgid "-  *CID*: 0x205A"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1904
+msgid "-  **FLASH\\_FIRMWARE\\_CRC16\\_REQUEST** - Request the checksum of the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1905
+msgid "firmware that has been uploaded to the device. The request must be"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1906
+msgid "made before writing the firmware to the internal non-volatile memory"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1907
+msgid "of the device."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1908
+msgid "-  *CID*: 0x215A"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1913
+msgid "-  **FLASH\\_FIRMWARE\\_SAVE** - Saving the loaded firmware to the"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1914
+msgid "internal non-volatile memory of the device. A checksum (command"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1915
+msgid "**FLASH\\_FIRMWARE\\_CRC16\\_REQUEST**) must be requested before saving."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1916
+msgid "-  *CID*: 0x225A"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1922
+msgid "Device to Web-page notification"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1924
+msgid "-  **FLASH\\_FIRMWARE\\_SAVE** - With this command, the device notifies"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1925
+msgid "the Web-page of various internal events: status changes, warnings,"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1926
+msgid "errors."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1927
+msgid "-  *CID*: 0x1063"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1929
+msgid "-  *Command payload*: JSON {time: XXX, type:"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1930
+msgid "(NTF\\_INFO/NTF\\_WARN/NTF\\_ERR), message: TEXT}"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1934
+msgid "Periphery commands"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1936
+msgid "-  **PERIPHERY\\_TRANSFER** - Transfer of data to and from connected"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1937
+msgid "peripheral devices."
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1938
+msgid "-  *CID*: 0x1080"
+msgstr ""
+
+#: ../../source_ru/additional_info.rst:1940
+msgid "-  *Command payload*: BIN"
+msgstr ""

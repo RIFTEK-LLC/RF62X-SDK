@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:5
+msgid "Установка и настройка"
+msgstr "Installation and setup"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:10
+msgid "Установка программного обеспечения"
+msgstr "Software installation"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:12
+msgid "Есть несколько вариантов построения библиотеки RF62X-SDK. Все варианты поддерживаются и должны работать одинаково корректно для:"
+msgstr "There are several options for building the RF62X-SDK library. All options are supported and should work equally correctly for:"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:15
+msgid "IDE Visual Studio 2019"
+msgstr "IDE Visual Studio 2019"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:16
+msgid "IDE Qt Creator 4.11.0"
+msgstr "IDE Qt Creator 4.11.0"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:17
+msgid "CMake 3.16.1"
+msgstr "CMake 3.16.1"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:19
+msgid "Если вы знакомы с CMake, то вы также можете самостоятельно создавать проекты для CodeBlocks, Eclipse, KDevelop3 и Xcode."
+msgstr "If you are familiar with CMake, then you can also independently create projects for CodeBlocks, Eclipse, KDevelop3, and Xcode."
+
+#: ../../source_ru/getting_started/install_and_setup.rst:22
+msgid "Если возникли сложности с установкой или настройкой сред разработки, ниже приведены более подробные инструкции:"
+msgstr "If you have difficulty installing or configuring development environments, the following are more detailed instructions:"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:25
+msgid "`IDE Visual Studio 2019 <https://docs.microsoft.com/ru-ru/visualstudio/install/install-visual-studio?view=vs-2019>`__  (дополнительная информация доступна на оффициальном сайте `docs.microsoft.com <https://docs.microsoft.com>`__ )"
+msgstr "`IDE Visual Studio 2019 <https://docs.microsoft.com/ru-ru/visualstudio/install/install-visual-studio?view=vs-2019>`__ (additional information is available on the official website `docs.microsoft.com <https://docs.microsoft.com>`__ )"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:26
+msgid "`IDE Qt Creator <https://www.qt.io/download>`__ ( дополнительная информация доступна на оффициальном сайте `qt.io <https://www.qt.io/>`__ )"
+msgstr "`IDE Qt Creator <https://www.qt.io/download>`__ ( additional information is available on the official website `qt.io <https://www.qt.io/>`__ )"
+
+#: ../../source_ru/getting_started/install_and_setup.rst:27
+msgid "`CMake  <https://cmake.org/install/>`__ ( дополнительная информация доступна на оффициальном сайте `cmake.org <https://cmake.org/>`__)"
+msgstr "`CMake  <https://cmake.org/install/>`__ ( additional information is available on the official website `cmake.org <https://cmake.org/>`__)"

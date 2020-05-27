@@ -1,0 +1,49 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:7
+msgid "Инициализация SDK"
+msgstr "SDK initialization"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:9
+msgid "Файл ``rf62Xsdk.cs`` является основным файлом программного интерфейса (API) для разработки программ на языке C# и определяет функциональность библиотеки-«обёртки» для rf62Xcore. ``rf62Xsdk.cs`` содержит следующий набор классов и функций для инициализации SDK:"
+msgstr "The file ``rf62Xsdk.cs`` is the main file of the program interface (API) for developing C# programs and defines the functionality of the wrapper library for rf62Xcore. ``rf62Xsdk.cs`` contains the following set of classes and functions for initializing the SDK:"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:15
+msgid "SdkInit()"
+msgstr "SdkInit()"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:17
+msgid "Функция инициализации SDK. Должна быть вызванна один раз перед дальнейшими вызовами любых библиотечных функций:"
+msgstr "SDK initialization function. Must be called once before further calls to any library functions:"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:23
+msgid "SdkCleanup()"
+msgstr "SdkCleanup()"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:25
+msgid "Функция для очистки ресурсов выделенных с помощью функции ``SdkInit``:"
+msgstr "Function for cleaning resources allocated using the ``SdkInit`` function:"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:30
+msgid "SdkVersion()"
+msgstr "SdkVersion()"
+
+#: ../../source_ru/api_description/rf62Xsdk_csharp/init_sdk.rst:32
+msgid "Функция для получения текущей версии SDK:"
+msgstr "Function to get the current version of the SDK:"

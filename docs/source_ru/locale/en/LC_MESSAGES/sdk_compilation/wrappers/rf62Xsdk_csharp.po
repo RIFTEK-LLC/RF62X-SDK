@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:4
+msgid "Компиляция «обёртки» на C#"
+msgstr "Compiling a wrapper in C#"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:6
+msgid "Эта «обёртка» представляет собой библиотеку .NET, написанную на языке C#, которая может быть использована в приложениях на C#, Visual Basic .NET, C++/CLI и JScript .NET."
+msgstr "This wrapper is a .NET library written in C# that can be used in applications in C#, Visual Basic .NET, C++/CLI, and JScript .NET."
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:9
+msgid "Для её использования в проектах .NET разработчик должен собрать или скачать динамическую программную библиотеку **rf62Xsdk.dll**, после чего добавить библиотеку к ссылкам (references) проекта, а также собрать или скачать **rf62Xcore.dll**, добавив её в папку к исполняемому файлу проекта."
+msgstr "To use it in .NET projects, the developer must compile or download the dynamic program library **rf62Xsdk.dll**, then add the library to the project references and collect or download **rf62Xcore.dll** by adding it to folder to the project executable file."
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:19
+msgid "Последние выпуски:"
+msgstr "Latest releases:"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:22
+msgid "Platform"
+msgstr "Platform"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:22
+msgid "64bit"
+msgstr "64bit"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:22
+msgid "Dependencies (x64)"
+msgstr "Dependencies (x64)"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:24
+msgid ".NET Framework 4.5 (or above)"
+msgstr ".NET Framework 4.5 (or above)"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:24
+msgid "`rf62Xsdk.dll <rf62Xsdk_csh_dll_msvc17_64_>`_"
+msgstr "`rf62Xsdk.dll <rf62Xsdk_csh_dll_msvc17_64_>`_"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:24
+msgid "`rf62Xcore.dll <rf62Xcore_dll_mingw_64_>`_"
+msgstr "`rf62Xcore.dll <rf62Xcore_dll_mingw_64_>`_"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:30
+msgid "Как скомпилировать"
+msgstr "How to compile"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:32
+msgid "Библиотека-«обёртка» rf62Xsdk может быть скомпилирован при помощи среды разработки Visual Studio."
+msgstr "The wrapper library rf62Xsdk can be compiled using the Visual Studio development environment."
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:35
+msgid "Во-первых, вы должны загрузить проект (если не сделали этого ранее)"
+msgstr "First, you should download the project (if you haven’t done this before)"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:44
+msgid "для получения дополнительной информации о шагах загрузки проекта см. `Скачивание проекта <#overview>`__"
+msgstr "for more information on project loading steps see :ref:`clone_rf62x_sdk`"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:49
+msgid "Visual Studio"
+msgstr "Visual Studio"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:51
+msgid "Откройте решение rf62Xsdk.sln по пути **rf62Xwrappers/CSharp/rf62Xsdk** в Visual Studio"
+msgstr "Open rf62Xsdk.sln solution along the path **rf62Xwrappers/CSharp/rf62Xsdk** in Visual Studio"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:52
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:67
+msgid "Скомпилируйте проект"
+msgstr "Compile the project"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:57
+msgid "Как использовать"
+msgstr "How to use"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:59
+msgid "Вы можете открыть примеры использования с помощью **Visual Studio**, для этого:"
+msgstr "You can open usage examples with **Visual Studio**, for this:"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:61
+msgid "Откройте решение **RF627\\_TESTS.sln** из папки **rf62Xwrappers/CSharp/RF627\\_old**"
+msgstr "Open the solution **RF627\\_TESTS.sln** from the folder **rf62Xwrappers/CSharp/RF627\\_old**"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:63
+msgid "Выберите **x64 Debug** или **x64 Release** в качестве целевой платформы"
+msgstr "Select **x64 Debug** or **x64 Release** as the target platform"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:64
+msgid "Добвавьте **rf62Xsdk.dll** библиотеку к ссылкам (**references**) проекта"
+msgstr "Add **rf62Xsdk.dll** library to the project **references**"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:65
+msgid "Скопируйте **rf62Xcore.dll** в путь к исполняемому файлу проекта (**../bin/x64/Debug/** или **../bin/x64/Release/**)"
+msgstr "Copy **rf62Xcore.dll** to the path to the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:69
+msgid "Помимо приведённых ниже примеров использования библиотеки из решении **RF627\\_TESTS.sln**, где каждый пример может быть скомпилирован и выполнен отдельно, вы также дополнительно можете прочитать документацию на библиотеку-«обёртку» на C#, где каждая функция содержит отдельный пример кода."
+msgstr "In addition to the examples of using the library from the solution **RF627\\_TESTS.sln**, where each example can be compiled and executed separately, you can also read the documentation for the wrapper library in C#, where each function contains a separate example code."
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:77
+msgid "Поиск устройств RF62X"
+msgstr "Search for RF62X devices"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:79
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
+msgstr "Below is an example of searching the RF627Old series of scanners on the network"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:140
+msgid "Получение профиля сканера"
+msgstr "Getting a scanner profile"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:142
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
+msgstr "The following is an example of retrieving profiles from RF627Old Series Scanners"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:227
+msgid "Получение и установка параметров"
+msgstr "Getting and setting parameters"
+
+#: ../../source_ru/sdk_compilation/wrappers/rf62Xsdk_csharp.rst:229
+msgid "Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены состояния лазера (включение или отключение):"
+msgstr "The following is an example of getting and changing the name of the scanner, setting the IP address, changing the state of the laser (turning it on or off):"

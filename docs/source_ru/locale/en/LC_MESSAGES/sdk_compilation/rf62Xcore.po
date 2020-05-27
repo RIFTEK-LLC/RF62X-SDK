@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:5
+msgid "Компиляция «ядра» на C"
+msgstr "Compiling the «Core» in C"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:7
+msgid "**RF62X-CORE** - основная библиотека («Ядро») с базовым набором функций и типов для работы с лазерными сканерами серии RF62X. Библиотека написана на языке программирования CИ в соответствии со стандартом C99 (ISO / IEC 9899: 1999) и является кросс-платформенной. Для использования данной библиотеки необходима реализация платформозависимых функций (работа с памятью, работа с сетью, функции ввода/вывода)."
+msgstr "**RF62X-CORE** - the main library («Core») with a basic set of functions and types for working with laser scanners of the RF62X series. The library is written in the C programming language in accordance with the C99 standard (ISO / IEC 9899: 1999) and is cross-platform. To use this library, it is necessary to implement platform-dependent functions (working with memory, working with the network, input/output functions)."
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:28
+msgid "Последние выпуски:"
+msgstr "Latest releases:"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:31
+msgid "Compiler"
+msgstr "Compiler"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:31
+msgid "64bit"
+msgstr "64bit"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:31
+msgid "Includes"
+msgstr "Includes"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:33
+msgid "MinGW 7.3.0"
+msgstr "MinGW 7.3.0"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:33
+msgid "`rf62Xcore.dll <rf62Xcore_dll_mingw_64_>`_ `rf62Xcore.a <rf62Xcore_a_mingw_64_>`_"
+msgstr "`rf62Xcore.dll <rf62Xcore_dll_mingw_64_>`_ `rf62Xcore.a <rf62Xcore_a_mingw_64_>`_"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:33
+msgid "`include.zip <rf62Xcore_mingw_64_include>`_"
+msgstr "`include.zip <rf62Xcore_mingw_64_include>`_"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:35
+msgid "MSVC2017"
+msgstr "MSVC2017"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:35
+msgid "`rf62Xcore.dll <rf62Xcore_dll_msvc17_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_msvc17_64_>`_"
+msgstr "`rf62Xcore.dll <rf62Xcore_dll_msvc17_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_msvc17_64_>`_"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:35
+msgid "`include.zip <rf62Xcore_msvc17_64_include_>`_"
+msgstr "`include.zip <rf62Xcore_msvc17_64_include_>`_"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:37
+msgid "Clang 9.1.0"
+msgstr "Clang 9.1.0"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:37
+msgid "`rf62Xcore.dll <rf62Xcore_dll_clang_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_clang_64_>`_"
+msgstr "`rf62Xcore.dll <rf62Xcore_dll_clang_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_clang_64_>`_"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:37
+msgid "`include.zip <rf62Xcore_clang_64_include_>`_"
+msgstr "`include.zip <rf62Xcore_clang_64_include_>`_"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:43
+msgid "Как скомпилировать"
+msgstr "How to compile"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:45
+msgid "RF62X-CORE может быть скомпилирован при помощи консоли или среды разработки (Visual Studio, Qt Creator)"
+msgstr "RF62X-CORE can be compiled using the console or development environment (e.g. Visual Studio, Qt Creator)"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:47
+msgid "Во-первых, вы должны загрузить проект (если не сделали этого ранее)"
+msgstr "First, you must download the project (if you haven’t done this before)"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:50
+msgid "для получения дополнительной информации о шагах загрузки проекта см. :ref:`clone_rf62x_sdk`"
+msgstr "for more information on project loading steps see :ref:`clone_rf62x_sdk`"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:55
+msgid "CMake"
+msgstr "CMake"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:57
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:87
+msgid "Находясь в папке с проектом, для построения RF62X-CORE введите следующую команду в консоль (терминал):"
+msgstr "From the project folder, to build RF62X-CORE, enter the following command into the console (terminal):"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:71
+msgid "Qt Creator"
+msgstr "Qt Creator"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:73
+msgid "Для построения RF62X-CORE с использованием IDE Qt Creator:"
+msgstr "To build an RF62X-CORE using the Qt Creator IDE:"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:75
+msgid "Загрузите файл CMakeLists.txt из папки **rf62Xcore** через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr "Download the CMakeLists.txt file from the **rf62Xcore** folder through **File>Open File or Project** (select the CMakeLists.txt file)"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:77
+msgid "Выберите компилятор (MinGW, MSVC2017, Clang) и нажмите **Configure Project**"
+msgstr "Select the compiler (MinGW, MSVC2017, Clang) and click **Configure Project**"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:79
+msgid "Откройте **Build Settings** и отметьте пункт **install** для **Build Steps**"
+msgstr "Open **Build Settings** and check **install** for **Build Steps**"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:80
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:98
+msgid "Скомпилируйте проект"
+msgstr "Compile the project"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:85
+msgid "Visual Studio"
+msgstr "Visual Studio"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:97
+msgid "Откройте полученное решение rf62Xcore.sln в Visual Studio"
+msgstr "Open the resulting rf62Xcore.sln solution in Visual Studio"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:103
+msgid "Как использовать"
+msgstr "How to use"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:105
+msgid "При желании использовать библиотеку RF62X-CORE вместо предоставляемых библиотек-«обёрток» разработчику необходимо самостоятельно реализовать платформозависимую часть «ядра»."
+msgstr "If you want to use the RF62X-CORE library instead of the provided Wrapper Libraries, the developer needs to independently implement the platform-dependent part of the «Core»."
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:111
+msgid "Обзор платформозависимых функций"
+msgstr "Platform Dependent features overview"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:113
+msgid "В «Ядре» RF62X-CORE платформозависимые функции (работа с памятью, работа с сетью, функции ввода/вывода) представлены в виде указателей на функции."
+msgstr "In the «Core» RF62X-CORE platform-dependent functions (working with memory, working with the network, input/output functions) are presented in the form of pointers to functions."
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:116
+msgid "Указатели на платформозависимые функции объявлены в файлах, ``memory_platform.h``, ``network_platform.h`` и ``iostream_platform.h``:"
+msgstr "Pointers to platform-specific functions are declared in the files, ``memory_platform.h``, ``network_platform.h`` and ``iostream_platform.h``"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:120
+msgid "memory_platform.h"
+msgstr "memory_platform.h"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:137
+msgid "network_platform.h"
+msgstr "network_platform.h"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:176
+msgid "iostream_platform.h"
+msgstr "iostream_platform.h"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:185
+msgid "Запуск «ядра»"
+msgstr "The launch of the «Core»"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:187
+msgid "После реализации всех платформозависимых функций разработчику необходимо проинициализировать следующие структуры ``iostream_platform_dependent_methods_t``, ``memory_platform_dependent_methods_t`` и ``network_platform_dependent_methods_t``"
+msgstr "After all platform-specific functions are implemented, the following structures ``iostream_platform_dependent_methods_t``, ``memory_platform_dependent_methods_t`` and ``network_platform_dependent_methods_t`` must be initialized. "
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:0
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:0
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:0
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:0
+msgid "Public Members"
+msgstr "Public Members"
+
+#: ../../source_ru/sdk_compilation/rf62Xcore.rst:223
+msgid "Инициализация данных структур производится путем присваивания указателей на реализованные платформозависимые функции, а адреса проинициализированных экземпляров структур передаются в метод init_platform_dependent_methods для инициализации кросс-платформенной части «ядра»."
+msgstr "Initialization of these structures is done by assigning pointers to implemented platform-dependent functions, and the addresses of the initialized instances of structures are passed to the init_platform_dependent_methods method to initialize the cross-platform part of the «Core»."

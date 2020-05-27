@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:3
+msgid "Примеры для LabVIEW"
+msgstr "Examples for LabVIEW"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:8
+msgid "Настройка среды"
+msgstr "Environment setup"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:10
+msgid "Перед созданием приложений в IDE LabVIEW для работы с лазерными сканерами серии RF62X необходимо:"
+msgstr "Before creating applications in the LabVIEW IDE for working with laser scanners of the RF62X series, you should:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:13
+msgid "В папку с проектом LabVIEW добавить **две библиотеки**: -  основную библиотеку **rf62Xcore.dll** (см. :ref:`compilation_rf62x_core`) -  библиотеку-«обёртку» **rf62Xsdk.dll** для .NET, написанную на языке C# (см. :ref:`compilation_rf62x_sdk_csharp`)"
+msgstr "Add **two libraries** to the LabVIEW project folder: - the main library **rf62Xcore.dll** (see :ref:`compilation_rf62x_core`) - the wrapper library **rf62Xsdk.dll** for .NET, written in C# (see :ref:`compilation_rf62x_sdk_csharp`)"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:17
+msgid "Для вызовов методов из **rf62Xsdk.dll** при проектировании алгоритмом в LabVIEW необходим компонент **Invoke Node (.Net)**, который располагается в разделе **Connectivity->.Net**"
+msgstr "For invoking methods from **rf62Xsdk.dll**, when designing an algorithm in LabVIEW, the **Invoke Node (.Net)** component is required, which is located in the **Connectivity->.Net** section"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:25
+msgid "В контекстном меню добавленного компонента **Invoke Node (.Net)** необходимо указать библиотеку **rf62Xsdk.dll** и выбрать класс **SDK.SCANNERS.RF62X**:"
+msgstr "In the context menu of the added component **Invoke Node (.Net)** you need to specify the library **rf62Xsdk.dll** and select the class **SDK.SCANNERS.RF62X**:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:33
+msgid "Для вызова в IDE LabVIEW конкретного метода из библиотеки **rf62Xsdk.dll** необходимо в контекстном меню добавленного компонента **Invoke Node (.Net)** открыть раздел **Class Method**:"
+msgstr "To call a specific method from the **rf62Xsdk.dll** library in the LabVIEW IDE, you need to open the **Class Method** section in the context menu of the added component **Invoke Node (.Net)**:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:43
+msgid "Поиск устройств RF62X"
+msgstr "Search for RF62X devices"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:45
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
+msgstr "Below is an example of searching the RF627Old series of scanners on the network"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:55
+msgid "Получение профиля сканера"
+msgstr "Getting a scanner profile"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:57
+msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
+msgstr "The following is an example of retrieving profiles from the scanner RF627Old series"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:62
+msgid "Получение и установка параметров"
+msgstr "Getting and setting parameters"
+
+#: ../../source_ru/tutorial/rf62Xsdk_labview.rst:64
+msgid "Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены состояния лазера (включение или отключение):"
+msgstr "The following is an example of getting and changing the name of the scanner, setting the IP address, changing the state of the laser (turning it on or off):"

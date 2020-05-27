@@ -1,0 +1,125 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-27 11:41+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:5
+msgid "Загрузка проекта"
+msgstr "Download project"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:8
+msgid "Git-клиент"
+msgstr "Git-client"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:10
+msgid "Для разработчиков, которые хотят загрузить библиотеку из исходников с помощью Git-клиента, следует выполнить следующие инструкции:"
+msgstr "For developers who want to download the library from source using the Git-client, follow these instructions:"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:13
+msgid "**Установите git-клиент на свой локальный компьютер (если ещё не установлен)**"
+msgstr "**Install the git-client on your local computer (if not already installed)**"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:15
+msgid "В Linux используйте команду терминала: ``sudo apt install git``"
+msgstr "On Linux, use the terminal command: ``sudo apt install git``"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:16
+msgid "На MacOS используйте команду терминала: ``brew install git``"
+msgstr "On MacOS, use the terminal command: ``brew install git``"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:17
+msgid "Для других платформ смотрите `документация по установке git <https://git-scm.com/downloads>`__."
+msgstr "For other platforms see `git installation documentation <https://git-scm.com/downloads>`__."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:19
+msgid "**Откройте командную строку/терминал на вашем компьютере**"
+msgstr "**Open a command prompt/terminal on your computer**"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:21
+msgid "В Linux щелкните панель запуска и найдите «терминал» - `terminal`"
+msgstr "On Linux, click on the launchpad and look for «terminal» - `terminal`"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:22
+msgid "В OS X нажмите command-space и найдите «терминал» - `terminal`"
+msgstr "In OS X, press command-space and find «terminal» - `terminal`"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:23
+msgid "В Windows нажмите меню «Пуск» и найдите «командную строку» - `cmd`."
+msgstr "On Windows, click the Start menu and find the «command line» - `cmd`."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:25
+msgid "**Клонируйте репозиторий с помощью следующих команд:**"
+msgstr "**Clone the repository using the following commands:**"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:34
+msgid "Git в Qt Creator"
+msgstr "Git in Qt Creator"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:36
+msgid "Для разработчиков, которые хотят загрузить и собрать библиотеку из исходников с помощью Git, встроенного в IDE Qt Creator, следует выполнить следующие инструкции:"
+msgstr "For developers who want to download and compile a library from source using the Git in the Qt Creator IDE, follow these instructions:"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:39
+msgid "Нажмите **File->New File or Project**"
+msgstr "Click **File->New File or Project**"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:42
+msgid "Выберите опцию **Import Project->Git Clone**, как показано ниже."
+msgstr "Select **Import Project->Git Clone** option as shown below."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:50
+msgid "Введите url-адрес SDK ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``, выберите опцию **«Recursive»**, а затем нажмите **Next**."
+msgstr "Enter the SDK url ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``, select the **«Recursive»** option, and then click **Next**."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:58
+msgid "После загрузки откройте файл CMakeLists.txt необходимого вам проекта через **File > Open File or Project**, выберите компилятор (MinGW, MSVC2017, Clang) и нажмите **Configure Project**"
+msgstr "After downloading, open the CMakeLists.txt file of the project you need through **File> Open File or Project**, select the compiler (MinGW, MSVC2017, Clang) and click **Configure Project**"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:62
+msgid "Запустите сборку проекта"
+msgstr "Run the build project"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:66
+msgid "Git в Visual Studio"
+msgstr "Git in Visual Studio"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:68
+msgid "Для разработчиков, которые хотят загрузить и собрать библиотеку из исходников с помощью Git, встроенного в IDE Visual Studio, следует выполнить следующие инструкции:"
+msgstr "For developers who want to download and build a library from source using the Git in the Visual Studio IDE, you should follow these instructions:"
+
+#: ../../source_ru/getting_started/loading_sdk.rst:71
+msgid "Откройте Visual Studio 2019."
+msgstr "Open Visual Studio 2019."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:73
+msgid "В стартовом окне выберите **Клонирование или извлечение кода**."
+msgstr "In the start window, select **Clone or Extract Code**."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:80
+msgid "Введите url-адрес SDK ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``, выберите или введите местоположение хранилища, а затем нажмите **Клонировать**."
+msgstr "Enter the SDK url ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``, select or enter the storage location, and then click **Clone**."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:88
+msgid "После чего Visual Studio загрузит проект из удаленного репозитория и откроет его."
+msgstr "After that, Visual Studio will load the project from the remote repository and open it."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:90
+msgid "Выберите один из необходимых вам проектов и запустите его сборку."
+msgstr "Select one of the projects you need and run its assembly."
+
+#: ../../source_ru/getting_started/loading_sdk.rst:97
+msgid "Для сборки библиотек **на языке С++**, а также компиляции приложений с примерами их использования в Visual Studio должен быть установлен `C++ CMake tools для Windows <https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019>`__."
+msgstr "To build libraries **in C++**, as well as compile applications with examples of their use, the `C++ CMake tools для Windows <https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019>`__ must be installed in Visual Studio"

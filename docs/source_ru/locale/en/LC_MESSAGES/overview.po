@@ -1,0 +1,109 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/overview.rst:3
+msgid "Обзор"
+msgstr "Overview"
+
+#: ../../source_ru/overview.rst:5
+msgid "Данное руководство создано в помощь разработчикам и содержит детальное описание библиотеки RF62X-SDK."
+msgstr "This guide was created to help developers and contains a detailed description of the RF62X-SDK library."
+
+#: ../../source_ru/overview.rst:9
+msgid "Общее описание"
+msgstr "General description"
+
+#: ../../source_ru/overview.rst:11
+msgid "**RF62X-SDK** - набор средств разработки, который позволяет быстро создавать собственное программное обеспечение для работы с лазерными сканерами серии RF62X (RF627Old, RF627Smart) производства компании РИФТЭК."
+msgstr "**RF62X-SDK** - a Software Development Kit that allows specialists to create their own software for working with laser scanners RF62X (RF627Old, RF627Smart) series manufactured by RIFTEK LLC."
+
+#: ../../source_ru/overview.rst:16
+msgid "Архитектура библиотеки"
+msgstr "Library architecture"
+
+#: ../../source_ru/overview.rst:18
+msgid "RF62X-SDK состоит из двух частей:"
+msgstr "The RF62X-SDK consists of two parts:"
+
+#: ../../source_ru/overview.rst:20
+msgid "**RF62X-CORE** - основная библиотека («Ядро») с базовым набором функций и типов для работы с лазерными сканерами серии RF62X. Библиотека написана на языке программирования CИ в соответствии со стандартом C99 (ISO / IEC 9899: 1999) и является кросс-платформенной. Для использования данной библиотеки необходима реализация платформозависимых функций (работа с памятью, работа с сетью, функции ввода/вывода)."
+msgstr "**RF62X-CORE** - the main library ("Core") with a basic set of functions and types for working with laser scanners of the RF62X series. The library is written in the C programming language in accordance with the C99 standard (ISO / IEC 9899: 1999) and is cross-platform. To use this library, it is necessary to implement platform-dependent functions (working with memory, working with the network, input/output functions)."
+
+#: ../../source_ru/overview.rst:27
+msgid "**RF62X-WRAPPERS** - библиотеки-«обёртки», в которых уже реализованы платформозависимые функции «Ядра» для конкретной платформы. Использование библиотек-«обёрток» упрощает процесс разработки приложений на следующих языках программирования : С++, С#, PYTHON, LabVew, MatLab."
+msgstr "**RF62X-WRAPPERS** - «wrapper»-libraries, in which platform-dependent «Core» functions for a specific platform are already implemented. The use of wrapper libraries simplifies the process of developing applications in the following programming languages: C++, C#, PYTHON, LabVew, MatLab."
+
+#: ../../source_ru/overview.rst:34
+msgid "Способы работы"
+msgstr "Ways of working"
+
+#: ../../source_ru/overview.rst:36
+msgid "**Разработчики**, которые хотят использовать **готовые библиотеки RF62X-SDK** при создании собственных приложений для работы с лазерными сканерами серии RF62X, могут **скачать** последнии версии библиотек (скачать библиотеки RF62X-SDK для :ref:`C++ <compilation_rf62x_sdk_cpp>`, :ref:`C# <compilation_rf62x_sdk_csharp>`), а также посмотреть **примеры их использования** (см. примеры для :ref:`how_to_use_rf62x_sdk_cpp`, :ref:`how_to_use_rf62x_sdk_csharp`)."
+msgstr "**Developers** who want to use **ready-made RF62X-SDK libraries** when creating their own applications for working with laser scanners of the RF62X series can **download** the latest libraries (download the RF62X-SDK libraries for :ref:`C++ <compilation_rf62x_sdk_cpp>`, :ref:`C# <compilation_rf62x_sdk_csharp>`), as well as see **examples of their use** (see examples for :ref:`how_to_use_rf62x_sdk_cpp`, :ref:`how_to_use_rf62x_sdk_csharp`)."
+
+#: ../../source_ru/overview.rst:43
+msgid "**Разработчики**, которые предпочитают **собирать библиотеки RF62X-SDK** из исходников, в руководстве имеются инструкции по скачиванию исходников (см. :ref:`clone_rf62x_sdk`) и установке необходимого программного обеспечения (см. :ref:`install_and_settings`)."
+msgstr "**Developers** who prefer **to compile RF62X-SDK libraries** from sources, the manual contains instructions for downloading sources (see :ref:`clone_rf62x_sdk`) and installing the necessary software (see :ref:`install_and_settings`)."
+
+#: ../../source_ru/overview.rst:48
+msgid "Основной функционал"
+msgstr "Main functionality"
+
+#: ../../source_ru/overview.rst:50
+msgid "Поиск сканеров серии RF62X-old."
+msgstr "Search for RF62X-old series scanners."
+
+#: ../../source_ru/overview.rst:51
+msgid "Поиск сканеров серии RF62X-smart."
+msgstr "Search for RF62X-smart series scanners."
+
+#: ../../source_ru/overview.rst:52
+msgid "Получение профилей."
+msgstr "Getting profiles."
+
+#: ../../source_ru/overview.rst:53
+msgid "Получение/установка параметров сканера."
+msgstr "Getting/setting scanner parameters."
+
+#: ../../source_ru/overview.rst:0
+msgid "Поддерживаемые протоколы информационного обмена со сканерами:"
+msgstr "Supported protocols for information exchange with scanners:"
+
+#: ../../source_ru/overview.rst:0
+msgid "- RF627-Protocol"
+msgstr "- RF627-Protocol"
+
+#: ../../source_ru/overview.rst:0
+msgid "- RF62X-SmartProtocol"
+msgstr "- RF62X-SmartProtocol"
+
+#: ../../source_ru/overview.rst:0
+msgid "- Ethernet/IP"
+msgstr "- Ethernet/IP"
+
+#: ../../source_ru/overview.rst:0
+msgid "- ModbusTCP"
+msgstr "- ModbusTCP"
+
+#: ../../source_ru/overview.rst:61
+msgid "Что нового"
+msgstr "What's new"
+
+#: ../../source_ru/overview.rst:63
+msgid "Добавлена возможность одновременной работы с несколькими сканерами в сети."
+msgstr "Added the ability to simultaneously work with multiple scanners on the network."

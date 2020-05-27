@@ -1,0 +1,186 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:6
+msgid "API «ядра» на C"
+msgstr "Core API in C"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:8
+msgid "**RF62X-CORE** - основная библиотека («Ядро») с базовым набором функций и типов для работы с лазерными сканерами серии RF62X. Библиотека написана на языке программирования CИ в соответствии со стандартом C99 (ISO / IEC 9899: 1999) и является кросс-платформенной. Для использования данной библиотеки необходима реализация платформозависимых функций (работа с памятью, работа с сетью, функции ввода/вывода)."
+msgstr "**RF62X-CORE** - the main library («Core») with a basic set of functions and types for working with laser scanners of the RF62X series. The library is written in the C programming language in accordance with the C99 standard (ISO / IEC 9899: 1999) and is cross-platform. To use this library, it is necessary to implement platform-dependent functions (working with memory, working with the network, input/output functions)."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:15
+msgid "Для скачивания библиотеки см. :ref:`последние выпуски «ядра» на C <rf62x_core_last_release>`."
+msgstr "To download the library, see :ref: `the latest releases of the «Core» in C <rf62x_core_last_release>`."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:16
+msgid "Для компиляции библиотеки см. :ref:`компиляция и запуск «ядра» на C <compilation_rf62x_core>`."
+msgstr "To compile the library, see :ref: `compile and run the «Core» in C <compilation_rf62x_core>`."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:19
+msgid "Инициализация «ядра»"
+msgstr "«Core» initialization"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:20
+msgid "При желании использовать библиотеку RF62X-CORE вместо предоставляемых библиотек-«обёрток» разработчику необходимо самостоятельно реализовать платформозависимую часть «ядра» (см. :ref:`компиляция и запуск «ядра» <compilation_rf62x_core>`)."
+msgstr "If you want to use the RF62X-CORE library instead of the provided «wrapper»-libraries, the developer needs to independently implement the platform-dependent part of the «Core» (see :ref: `compile and run the «Core» <compilation_rf62x_core>`)."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:24
+msgid "Файл ``rf62X_core.h`` является заголовочным файлом с описанием функций для запуска «ядра». Этот файл содержит определения основных функций, используемых при его инициализации:"
+msgstr "The file ``rf62X_core.h`` is a header file with a description of the functions for launching the «Core». This file contains definitions of the main functions used to initialize it:"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:28
+msgid "init_platform_dependent_methods()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:30
+msgid "Функция инициализация платформозависимой части «ядра»"
+msgstr "Initialization function of the platform-dependent part of the «Core»"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:35
+msgid "core_version()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:37
+msgid "Функция для получения текущей версии «ядра»:"
+msgstr "Function to get the current «Core» version"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:42
+msgid "Обзор программного интерфейса"
+msgstr "Software Interface Overview"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:44
+msgid "Файл ``rf62X_sdk.h`` является основным файлом программного интерфейса (API) «ядра» и определяет его функциональность. ``rf62X_sdk.h`` содержит следующий набор базовых функций для разработки:"
+msgstr "The file ``rf62X_sdk.h`` is the main file of the «Core» Application Programming Interface (API) and defines its functionality. ``rf62X_sdk.h`` contains the following set of basic functions for development:"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:49
+msgid "set_platform_adapter_settings()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:51
+msgid "Функция для передачи текущих настроек адаптера в ядро. Данная функция используется в том случае, если произошли какие-либо изменения настроек в используемом ядром сетевом адаптаре."
+msgstr "Function for transferring the current adapter settings to the «Core». This function is used if there have been any changes to the settings in the network adapter used by the «Core»."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:56
+#: ../../source_ru/api_description/rf62Xcore.rst:89
+#: ../../source_ru/api_description/rf62Xcore.rst:116
+#: ../../source_ru/api_description/rf62Xcore.rst:147
+#: ../../source_ru/api_description/rf62Xcore.rst:178
+#: ../../source_ru/api_description/rf62Xcore.rst:213
+#: ../../source_ru/api_description/rf62Xcore.rst:267
+#: ../../source_ru/api_description/rf62Xcore.rst:312
+#: ../../source_ru/api_description/rf62Xcore.rst:391
+#: ../../source_ru/api_description/rf62Xcore.rst:446
+msgid "Пример использования:"
+msgstr "Usage example"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:83
+msgid "search_scanners()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:85
+msgid "Функция для поиска устройств RF62X по сети"
+msgstr "Function for searching RF62X devices by network"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:110
+msgid "get_info_about_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:112
+msgid "Функция для получения информации о сканере из пакета приветствия (Hello-пакет)"
+msgstr "Function to get scanner information from Hello-packet"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:141
+msgid "connect_to_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:143
+msgid "Функция для установки соединения со сканером серии RF62X"
+msgstr "Function to connect to the RF62X Series Scanner"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:172
+msgid "disconnect_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:174
+msgid "Функция для закрытия ранее установленного соединения со сканером серии RF62X"
+msgstr "Function to close a previously established connection with the RF62X Series Scanner"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:207
+msgid "get_profile2D_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:209
+msgid "Функция для получения профиля со сканеров серии RF62X"
+msgstr "Function for receiving profile from RF62X series scanners"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:259
+msgid "read_params_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:261
+msgid "Функция получения текущих параметров сканера. При вызове данной функции «ядро» вычитывает со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей работы."
+msgstr "Function for receiving current scanner settings. When this function is called, the «Core» reads out all relevant parameters from the scanner, saving them in the form of a «list of parameters» for further work."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:303
+msgid "get_parameter()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:305
+msgid "Функция получения конкретного параметра по его имени (ключу). При вызове данной функции «ядро» осуществляет поиск нужного параметра из последних прочитанных при вызове функции :ref:`read_params_from_scanner`. В случае, если запрашиваемый параметр отсутствует в конкретном сканере, функция вернёт null."
+msgstr "The function of obtaining a specific parameter by its name (key). When this function is called, the «Core» searches for the desired parameter from the last read when the function was called :ref: `read_params_from_scanner`. In case the requested parameter is absent in a specific scanner, the function will return null."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:351
+msgid "Для более удобной работы с параметрами можно использовать соответствующие «ключи» (ключ имени параметра, тип параметра и доступ к параметру). Для этого в файле ``rt62X_types.h`` находятся следующие ``enum``:"
+msgstr "For more convenient work with parameters, you can use the corresponding «keys» (parameter name key, parameter type and access to the parameter). To do this, in the file ``rt62X_types.h`` are the following ``enum``"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:361
+msgid "Пример использования с ключами:"
+msgstr "Key usage example:"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:380
+msgid "Для более детального описания каждого параметра и его свойств см. :ref:`rf62x_more_description_params`"
+msgstr "For a more detailed description of each parameter and its properties, see :ref:`rf62x_more_description_params`"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:383
+msgid "set_parameter()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:385
+msgid "Функция установки конкретного параметра. При вызове данной функции происходит установка передаваемого параметра в локальном списке параметров в «ядре». Для отправки изменений в сканер необходимо вызвать функцию ``write_params_to_scanner``."
+msgstr "The function of setting a specific parameter. When this function is called, the transmitted parameter is set in the local parameter list in the «Core». To send changes to the scanner, you must call the function ``write_params_to_scanner``."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:439
+msgid "write_params_to_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:441
+msgid "Функция записи локальных параметров из «ядра» в сканер. При вызове данной функции происходит отправка списка локальных параметров из «ядра» в сканер."
+msgstr "The function of writing local parameters from the «Core» to the scanner. When this function is called, a list of local parameters is sent from the «Core» to the scanner."
+
+#: ../../source_ru/api_description/rf62Xcore.rst:480
+msgid "send_command()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xcore.rst:482
+msgid "Функция отправки команд в сканер"
+msgstr "Function for sending commands to the scanner"
+
+#: ../../source_ru/api_description/rf62Xcore.rst:486
+msgid "Для более детального описания команд и их свойств см. :ref:`rf62x_more_description_commands`"
+msgstr "For a more detailed description of commands and their properties, see :ref:`rf62x_more_description_commands`"
