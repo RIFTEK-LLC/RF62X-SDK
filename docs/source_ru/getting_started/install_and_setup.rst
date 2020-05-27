@@ -13,8 +13,8 @@
 и должны работать одинаково корректно для:
 
 - IDE Visual Studio 2019
-- IDE Qt Creator
-- CMake
+- IDE Qt Creator 4.11.0
+- CMake 3.16.1
 
 .. note:: Если вы знакомы с CMake, то вы также можете самостоятельно создавать 
    проекты для CodeBlocks, Eclipse, KDevelop3 и Xcode.

@@ -4,7 +4,7 @@
 
 Языки программирования
 ===============================================================================
-Основная программная библиотека RF62X-CORE (ядро) написана на языке СИ стандарта 
+Основная программная библиотека RF62X-CORE («Ядро») написана на языке СИ стандарта 
 C99 (ISO / IEC 9899: 1999) без использования сторонних программных модулей и 
 зависимых от операционной системы или процессора функций.
 
@@ -28,7 +28,9 @@ Linux и FreeBSD, поддерживающими компиляторы язык
 
 .. _git: http://git-scm.com/
 .. _GitLab: https://about.gitlab.com/
+.. _RF62X-SDK.ru.pdf: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/blob/master/docs/RF62X-SDK.ru.pdf
+.. _RF62X-SDK.en.pdf: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/blob/master/docs/RF62X-SDK.en.pdf
 
 -   Исходники кода: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK
--   Документация: www.riftek.com  
+-   Документация: RF62X-SDK.ru.pdf_, RF62X-SDK.en.pdf_
 -   Веб-сайт: www.riftek.com
