@@ -140,7 +140,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
             search_scanners(scanners, kRF627_OLD, kSERVICE);
         }
 
-        static std::vector<rf627old*> result;
+        std::vector<rf627old*> result;
 
         /*
          * Iterate over all discovered rf627-old in network and push into list.
