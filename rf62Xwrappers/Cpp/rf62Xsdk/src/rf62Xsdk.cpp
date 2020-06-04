@@ -1012,8 +1012,11 @@ bool rf627old::set_param(param_t* param)
         p->base.units = param->units.c_str();
         if (param->type == parameter_value_types[PVT_STRING])
         {
-            p->val_str->value = (char*)param->get_value<value_str>().c_str();
-            p->base.size = param->get_value<value_str>().size() + 1;
+            std::string new_value = param->get_value<value_str>();
+            delete[] p->val_str->value;
+            p->val_str->value = new char[new_value.length() + 1];
+            strcpy(p->val_str->value, new_value.c_str());
+            p->base.size = new_value.length() + 1;
         }
         else if (param->type == parameter_value_types[PVT_INT])
         {
