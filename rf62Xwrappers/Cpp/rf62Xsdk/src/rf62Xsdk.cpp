@@ -1099,6 +1099,25 @@ bool rf627old::send_cmd(const char* command_name, int arg_count, ...)
     return result;
 }
 
+bool rf627old::send_cmd(const char* command_name,
+                        std::vector<uint8_t>* input, std::vector<uint8_t>* output)
+{
+
+
+    command2_t cmd = {0};
+    cmd.name = command_name;
+    cmd.input.size = input->size();
+    cmd.input.payload = (rfUint8*)input->data();
+    bool result = send_command2((scanner_base_t*)this->scanner_base, &cmd);
+
+    for (int i = 0; i < cmd.output.size; i++)
+        output->push_back(((uint8_t*)cmd.output.payload)[i]);
+
+    free(cmd.output.payload);
+
+    return result;
+}
+
 const std::string& rf627old::hello_info::device_name()
 {
     return _device_name;

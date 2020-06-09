@@ -8,6 +8,11 @@ namespace SDK {
 namespace SCANNERS {
 namespace RF62X {
 
+enum class SCANNER_TYPES {
+    RF627_OLD = 1,
+    RF627_SMART = 2
+};
+
 enum class PROTOCOLS {
     CURRENT = 0,
     SERVICE = 1,
@@ -698,7 +703,6 @@ typedef struct value_raw : param_t
 {
   void*         raw_data;
 }value_raw;
-
 
 }
 }

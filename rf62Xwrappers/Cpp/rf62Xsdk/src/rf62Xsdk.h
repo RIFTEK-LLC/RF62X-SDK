@@ -193,6 +193,9 @@ public:
 
     bool send_cmd(const char* command_name, int arg_count, ...);
 
+    bool send_cmd(const char* command_name,
+                  std::vector<uint8_t>* input, std::vector<uint8_t>* output);
+
     rf627old(void* scanner_base);
     ~rf627old();
 
