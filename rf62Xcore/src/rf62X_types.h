@@ -1126,10 +1126,22 @@ typedef struct
 typedef struct
 {
     const rfChar* name;
+
     va_list arg_list;
 }command_t;
 
-
+typedef struct
+{
+    const rfChar* name;
+    struct input_t{
+        rfUint16 size;
+        rfUint8* payload;
+    }input;
+    struct output_t{
+        rfUint16 size;
+        rfUint8* payload;
+    }output;
+}command2_t;
 
 
 

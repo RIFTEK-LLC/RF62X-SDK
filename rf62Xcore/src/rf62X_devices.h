@@ -164,6 +164,18 @@ rfUint8 rf627_old_set_parameter_by_name(
 rfUint8 rf627_old_command_set_counters(
         rf627_old_t* scanner, rfUint32 profile_counter, rfUint32 packet_counter);
 
+/**
+ * @brief rf627_old_command_set_counters
+ * @param scanner
+ * @param profile_counter
+ * @param packet_counter
+ * @return 0 on success
+ */
+rfUint8 rf627_old_command_periphery_send(
+        rf627_old_t* scanner,
+        rfUint16 input_size, void* input_data,
+        rfUint16* output_size, void** output_data);
+
 
 typedef struct
 {

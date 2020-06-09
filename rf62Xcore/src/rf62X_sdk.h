@@ -141,6 +141,15 @@ API_EXPORT rfUint8 set_parameter_by_name(
 API_EXPORT rfUint8 send_command(
         scanner_base_t *device, command_t* command);
 
+/**
+ * @brief set_parameter - Search parameters by his name
+ * @param device - ptr to scanner
+ * @param param_name - name of parameter
+ * @return param on success, else - null
+ */
+API_EXPORT rfUint8 send_command2(
+        scanner_base_t *device, command2_t* command);
+
 
 /*! Return structure containing device information about scanner rf627(smart) version
  */

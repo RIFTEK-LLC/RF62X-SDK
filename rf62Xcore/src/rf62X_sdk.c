@@ -493,3 +493,26 @@ rfUint8 send_command(
     return 1;
 }
 
+
+rfUint8 send_command2(
+        scanner_base_t *device, command2_t* command)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+    {
+        if(rf_strcmp("CID_PERIPHERY_SEND", command->name) == 0)
+        {
+            return rf627_old_command_periphery_send(
+                        device->rf627_old,
+                        command->input.size, command->input.payload,
+                        &command->output.size, &command->output.payload);
+        }
+        break;
+    }
+    case kRF627_SMART:
+        break;
+    default:
+        break;
+    }
+    return 1;
+}
