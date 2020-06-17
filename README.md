@@ -1,8 +1,6 @@
 ***
-![RF62X_SDK_v5_](/uploads/32dd3154010ecc0cfa5c366ca7ad7838/RF62X_SDK_v5_.png)
+![[RF62X_SDK](docs/source_ru/_static/RF62X_SDK.png)
 ***
-
-![](docs/source_ru/_static/RF62X_SDK.png)
 
 ## CONTENTS
 - [OVERVIEW](#overview)
