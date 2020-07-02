@@ -84,7 +84,7 @@ int main()
 
             isEnabled = !isEnabled;
             // Change the current state to the opposite
-            laser_enabled->set_value<value_uint32>(!isEnabled);
+            laser_enabled->set_value<value_uint32>(isEnabled);
             std::cout<<"New Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
             std::cout << "-----------------------------------------"<< std::endl;
 
