@@ -158,14 +158,14 @@ rfUint8 disconnect_from_scanner(scanner_base_t *device, protocol_types_t protoco
         switch (protocol) {
         case kSERVICE:
             rf627_old_disconnect(device->rf627_old);
-            return 0;
+            return TRUE;
             break;
         case kETHERNET_IP:
         case kMODBUS_TCP:
-            return 1; // RF627-old doesn't support this protocol
+            return FALSE; // RF627-old doesn't support this protocol
             break;
         default:
-            return 1; // Unknown protocol type
+            return FALSE; // Unknown protocol type
             break;
         }
         break;

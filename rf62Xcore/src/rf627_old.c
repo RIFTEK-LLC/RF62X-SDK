@@ -2242,24 +2242,24 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
 
-                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-                p->base.name = parameter_names[USER_LASER_ENABLED];
-                p->base.access = patKey[PAT_WRITE];
-                p->base.index = index++;
-                p->base.offset = 683;
-                p->base.size = sizeof(scanner->user_params.laser.level_mode);
-                p->base.units = "";
+//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+//                p->base.name = parameter_names[USER_LASER_ENABLED];
+//                p->base.access = patKey[PAT_WRITE];
+//                p->base.index = index++;
+//                p->base.offset = 683;
+//                p->base.size = sizeof(scanner->user_params.laser.level_mode);
+//                p->base.units = "";
 
-                p->val_uint32->value = scanner->user_params.laser.level_mode;
-                p->val_uint32->min = 0;
-                p->val_uint32->max = 1;
-                p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &laserModeEnum;
-                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Expose sync");
-                if (def != NULL)
-                    p->val_uint32->defValue = *def;
-                else p->val_uint32->defValue = p->val_uint32->value;
-                vector_add(scanner->params_list, p);
+//                p->val_uint32->value = scanner->user_params.laser.level_mode;
+//                p->val_uint32->min = 0;
+//                p->val_uint32->max = 1;
+//                p->val_uint32->step = 0;
+//                p->val_uint32->enumValues = &laserModeEnum;
+//                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Expose sync");
+//                if (def != NULL)
+//                    p->val_uint32->defValue = *def;
+//                else p->val_uint32->defValue = p->val_uint32->value;
+//                vector_add(scanner->params_list, p);
 
 
 
@@ -3532,6 +3532,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     return ret;
 }
 
+#include <stdlib.h>
 
 rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
 {
@@ -3539,7 +3540,6 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
     rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
     rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* TX =  memory_platform.rf_calloc(1, TX_SIZE);
-
 
     rfUint32 dst_ip_addr;
     rfUint16 dst_port;
@@ -3597,6 +3597,12 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
             &payload[617],
             &scanner->user_params.image_processing.reduce_noise,
             sizeof (scanner->user_params.image_processing.reduce_noise));
+
+    memory_platform.rf_memcpy(
+            &payload[683],
+            &scanner->user_params.laser.level_mode,
+            sizeof (scanner->user_params.laser.level_mode));
+
 
     memory_platform.rf_memcpy(
             &payload[718],
