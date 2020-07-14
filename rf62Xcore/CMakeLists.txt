@@ -42,7 +42,7 @@ set  (SOURCES ${C_FILES} ${H_FILES})
 ## TARGET
 ## create target and add include path
 ##
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
