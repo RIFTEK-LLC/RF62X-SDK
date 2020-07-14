@@ -87,25 +87,25 @@ namespace SDK
                 private static extern UIntPtr HeapSize(IntPtr hHeap, int flags, void* block);
             }
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* calloc_t(UIntPtr num, UIntPtr size);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* malloc_t(UIntPtr size);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* realloc_t(void* ptr, UIntPtr newsize);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void free_t(void* data);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* memset_t(void* memptr, int val, UIntPtr num);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* memcpy_t(void* destination, void* source, UIntPtr num);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int memcmp_t(void* ptr1, void* ptr2, UIntPtr num);
 
 
@@ -126,15 +126,15 @@ namespace SDK
 
             #region iostream_platform
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int trace_info_t(byte* msg);
 
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int trace_warning_t(byte* msg);
 
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int trace_error_t(byte* msg);
 
             [StructLayout(LayoutKind.Sequential)]
@@ -149,69 +149,69 @@ namespace SDK
 
             #region network_platform
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate uint hton_long_t(uint hostlong);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate uint ntoh_long_t(uint netlong);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate ushort hton_short_t(ushort hostshort);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate ushort ntoh_short_t(ushort netshort);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* create_udp_socket_t();
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte set_broadcast_socket_option_t(void* socket);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte set_reuseaddr_socket_option_t(void* socket);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte set_socket_option_t(
                 void* socket, int level, int optname,
                 byte* optval, int optlen);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte set_socket_recv_timeout_t(void* socket, int msec);
 
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte socket_connect_t(
                 void* socket, uint dst_ip_addr, ushort dst_port);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte socket_bind_t(
                 void* socket, uint ip_addr, ushort port);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte socket_listen_t(
                 void* socket, int backlog);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate void* socket_accept_t(
                 void* socket, uint* srs_ip_addr, ushort* srs_port);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate byte close_socket_t(void* socket);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int send_tcp_data_t(void* socket, void* buf, UIntPtr len);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int send_udp_data_t(
                 void* socket, void* data, UIntPtr len,
                 uint dest_ip_addr, ushort dest_port);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int recv_data_from_t(
                 void* sockfd, void* buf, UIntPtr len,
                 uint* srs_ip_addr, ushort* srs_port);
 
-            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
             delegate int recv_data_t(void* socket, void* buf, UIntPtr len);
 
             [StructLayout(LayoutKind.Sequential)]
