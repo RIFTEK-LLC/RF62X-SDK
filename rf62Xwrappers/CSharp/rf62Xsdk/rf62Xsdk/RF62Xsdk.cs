@@ -14,8 +14,14 @@ namespace SDK
             /// @cond
             #region dll
 
+#if WIN64
+            const int _pack = 8;
+#else
+            const int _pack = 4;
+#endif
+
             #region dll-types
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct vector_t
             {
                 public void** data;
@@ -23,7 +29,7 @@ namespace SDK
                 public UIntPtr count;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct config_options_t
             {
                 public uint version;
@@ -32,25 +38,25 @@ namespace SDK
                 public byte reserved;
             }
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct _InitRegs
             {
                 ushort Addr;
                 ushort Value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct _speedDuplex
             {
                 ushort speed;
                 byte duplex;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct factory_params_t
             {
                 /*-------Общие параметры устройства-----------------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public unsafe struct General
                 {
                     public ushort DeviceID;            //Идентификатор типа сканера
@@ -80,7 +86,7 @@ namespace SDK
                 };
                 public General general;
                 /*-------Параметры установленной матрицы-------------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Sensor
                 {
                     public fixed byte Name[32];                    //Имя матрицы - для отображения
@@ -104,7 +110,7 @@ namespace SDK
                 };
                 public Sensor sensor;
                 /*-------Параметры сетевого подключения-------------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Network
                 {
                     public fixed byte MAC[6];
@@ -115,7 +121,7 @@ namespace SDK
                 };
                 public Network network;
                 /*-------Параметры управления лазером----------------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Laser
                 {
                     public ushort Wavelength;              //Длина волны в нм
@@ -128,7 +134,7 @@ namespace SDK
                 };
                 public Laser laser;
                 /*------------Параметры входных каналов--------------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Inputs
                 {
                     public ushort In1_MinDelay;            //Минимальная задержка в нс
@@ -139,7 +145,7 @@ namespace SDK
                 };
                 public Inputs inputs;
                 /*------------Параметры выходных каналов-------------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Outputs
                 {
                     public ushort Out1_MinDelay;
@@ -154,7 +160,7 @@ namespace SDK
                 };
                 public Outputs outputs;
                 /*------------Параметры обработки профилей-----------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Profiles
                 {
                     public uint maxDumpSize;
@@ -162,16 +168,16 @@ namespace SDK
                 };
                 public Profiles profiles;
                 /*------------Параметры протокола EthernetIP---------------*/
-                [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                 public struct Eip
                 {
-                    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                    [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                     public struct Identity
                     {
                         public ushort vendorID;                // Attribute 1: Vendor ID - идентификационный номер производителя устройства
                         public ushort deviceType;              // Attribute 2: Device Type - тип устройства, который определяет его область использования
                         public ushort productCode;         // Attribute 3: Product Code - идентифицирует номер конкретного продукта
-                        [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                        [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                         public struct Revision
                         {
                             public byte majorRev;          // Attribute 4: Revision	USINT Major
@@ -181,11 +187,11 @@ namespace SDK
                     };
                     public Identity identity;
 
-                    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                    [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                     public struct TcpInterface
                     {
                         public uint configCapability;      // Attribute 2: Данный атрибут описывает поддержку устройством дополнительных возможностей конфигурации сети
-                        [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                        [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                         public struct PhyLinkObject
                         {
                             public ushort pathSize;            // Path size in 16 bit words (path_size * 16 bit)
@@ -198,7 +204,7 @@ namespace SDK
                     public TcpInterface tcpInterface;
 
                     public byte intrfType;             //Type of rfInterface: twisted pair, fiber, rfInternal, etc
-                    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+                    [StructLayout(LayoutKind.Sequential, Pack = _pack)]
                     public struct IntrfCapability
                     {
                         public ushort capabilityBits;
@@ -216,7 +222,7 @@ namespace SDK
                 /*---------------------------------------------------------*/
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct DTF_header
             {
                 fixed byte Tag[4];            //<! File header tag = "DTF+"
@@ -261,7 +267,7 @@ namespace SDK
                 fixed byte Reserved[186];      //<!- Reserved
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct TBL_header
             {
                 byte FormatVersion;     //<! Version of header format (1)
@@ -285,7 +291,7 @@ namespace SDK
                 fixed byte Zero[242];          //<! Must be filled with zeroes
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct general_params_t
             {
                 public fixed byte name[64];
@@ -293,7 +299,7 @@ namespace SDK
                 public fixed byte reserved[127];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct sysmon_params_t
             {
                 public short fpga_temp;
@@ -313,7 +319,7 @@ namespace SDK
                 public fixed byte reserved[55];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct sensor_params_t
             {
                 public byte dhs;
@@ -331,7 +337,7 @@ namespace SDK
                 public fixed byte reserved_1[59];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct rf625compat_params_t
             {
                 public byte enable;
@@ -339,7 +345,7 @@ namespace SDK
                 public fixed byte reserved[32];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct roi_params_t
             {
                 public byte enable;
@@ -352,7 +358,7 @@ namespace SDK
                 public fixed byte reserved[80];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct network_params_t
             {
                 public ushort speed;
@@ -369,7 +375,7 @@ namespace SDK
                 public fixed byte reserved[68];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct stream_params_t
             {
                 public byte enable;
@@ -379,7 +385,7 @@ namespace SDK
                 public fixed byte reserved[31];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct image_processing_params_t
             {
                 public uint brightness_threshold;
@@ -394,7 +400,7 @@ namespace SDK
                 public fixed byte reserved[56];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct laser_params_t
             {
                 public byte enable;
@@ -403,7 +409,7 @@ namespace SDK
                 public fixed byte reserved[32];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct inputs_preset_t
             {
                 public ushort params_mask;
@@ -419,7 +425,7 @@ namespace SDK
                 public fixed byte reserved[12];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct inputs_params_t
             {
                 public byte preset_index;
@@ -438,7 +444,7 @@ namespace SDK
                 public fixed byte reserved[32];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct outputs_params_t
             {
                 public byte out1_enable;
@@ -454,7 +460,7 @@ namespace SDK
                 public fixed byte reserved[32];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct user_params_t
             {
                 public general_params_t general;
@@ -471,7 +477,7 @@ namespace SDK
                 fixed byte reserved[283];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct rf627_old_hello_info_by_service_protocol
             {
                 public byte* device_name;
@@ -488,7 +494,7 @@ namespace SDK
                 public uint x_end;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct rf627_smart_t
             {
                 public void* m_svc_sock;
@@ -498,7 +504,7 @@ namespace SDK
                 private vector_t* params_list;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct rf627_old_t
             {
                 public config_options_t options;
@@ -519,29 +525,29 @@ namespace SDK
             {
                 [FieldOffset(0)]
                 public SCANNERS_TYPES type;
-                [FieldOffset(8)]
+                [FieldOffset(_pack)]
                 public rf627_old_t* rf627_old;
-                [FieldOffset(8)]
+                [FieldOffset(_pack)]
                 public rf627_smart_t* rf627_smart;
             };
 
 
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct enumRec_t
             {
                 public int value;
                 public byte* key;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct valuesEnum_t
             {
                 public int recCount;
                 public enumRec_t rec;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_base_t
             {
                 public byte* name;
@@ -553,7 +559,7 @@ namespace SDK
                 public byte* units;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_uint32_t
             {
                 public uint min;
@@ -565,7 +571,7 @@ namespace SDK
 
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_uint64_t
             {
                 public ulong min;
@@ -576,7 +582,7 @@ namespace SDK
                 public ulong value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_int32_t
             {
                 public int min;
@@ -587,7 +593,7 @@ namespace SDK
                 public int value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_int64_t
             {
                 public long min;
@@ -598,7 +604,7 @@ namespace SDK
                 public long value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_flt_t
             {
                 public float min;
@@ -608,7 +614,7 @@ namespace SDK
                 public float value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_dbl_t
             {
                 public double min;
@@ -618,7 +624,7 @@ namespace SDK
                 public double value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct array_uint32_t
             {
                 public uint min;
@@ -631,7 +637,7 @@ namespace SDK
                 public uint* value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct array_uint64_t
             {
                 public ulong min;
@@ -644,7 +650,7 @@ namespace SDK
                 public ulong* value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct array_int32_t
             {
                 public int min;
@@ -657,7 +663,7 @@ namespace SDK
                 public int* value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct array_int64_t
             {
                 public long min;
@@ -670,7 +676,7 @@ namespace SDK
                 public long* value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct array_flt_t
             {
                 public float min;
@@ -683,7 +689,7 @@ namespace SDK
                 public float* value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct array_dbl_t
             {
                 public double min;
@@ -696,7 +702,7 @@ namespace SDK
                 public double* value;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct value_str_t
             {
                 public ushort maxLen;
@@ -704,44 +710,44 @@ namespace SDK
                 public byte* value;
             };
 
-            [StructLayout(LayoutKind.Explicit, Pack = 8)]
+            [StructLayout(LayoutKind.Explicit, Pack = _pack)]
             private struct parameter_t
             {
                 [FieldOffset(0)]
                 public value_base_t _base;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public void* rawData;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_uint32_t* val_uint;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_uint64_t* val_uint64;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_int32_t* val_int;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_int64_t* val_int64;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_flt_t* val_flt;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_dbl_t* val_dbl;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public array_uint32_t* arr_uint;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public array_uint64_t* arr_uint64;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public array_int32_t* arr_int;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public array_int64_t* arr_int64;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public array_flt_t* arr_flt;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public array_dbl_t* arr_dbl;
-                [FieldOffset(48)]
+                [FieldOffset(_pack * 6)]
                 public value_str_t* val_str;
 
             };
 
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct profile_header
             {
                 public byte data_type;
@@ -769,28 +775,28 @@ namespace SDK
                 public fixed byte reserved_1[3];
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct pixels_format
             {
                 public ushort* pixels;
                 public uint pixels_count;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct rf627_old_point_t
             {
                 public float x;
                 public float z;
             };
 
-            [StructLayout(LayoutKind.Sequential, Pack = 8)]
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct profile_format
             {
                 public rf627_old_point_t* points;
                 public uint points_count;
             };
 
-            [StructLayout(LayoutKind.Explicit, Pack = 8)]
+            [StructLayout(LayoutKind.Explicit, Pack = _pack)]
             private struct rf627_old_profile2D_t
             {
                 [FieldOffset(0)]
@@ -799,21 +805,21 @@ namespace SDK
                 public pixels_format pixelsFormat;
                 [FieldOffset(64)]
                 public profile_format profileFormat;
-                [FieldOffset(80)]
+                [FieldOffset(64 + 2 * _pack)]
                 public byte* intensity;
-                [FieldOffset(88)]
+                [FieldOffset(64 + 3 * _pack)]
                 public uint intensity_count;
             }
-            [StructLayout(LayoutKind.Explicit, Pack = 8)]
+            [StructLayout(LayoutKind.Explicit, Pack = _pack)]
             private struct rf627_profile2D_t
             {
                 [FieldOffset(0)]
                 public SCANNERS_TYPES type;
-                [FieldOffset(8)]
+                [FieldOffset(_pack)]
                 public rf627_old_profile2D_t* rf627_profile2D;
             };
 
-            [StructLayout(LayoutKind.Explicit, Pack = 8)]
+            [StructLayout(LayoutKind.Explicit, Pack = _pack)]
             private struct hello_information
             {
                 [FieldOffset(0)]
