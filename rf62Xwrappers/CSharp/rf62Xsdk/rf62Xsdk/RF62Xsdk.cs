@@ -710,41 +710,80 @@ namespace SDK
                 public byte* value;
             };
 
+#if WIN64
             [StructLayout(LayoutKind.Explicit, Pack = _pack)]
             private struct parameter_t
             {
                 [FieldOffset(0)]
                 public value_base_t _base;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public void* rawData;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_uint32_t* val_uint;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_uint64_t* val_uint64;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_int32_t* val_int;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_int64_t* val_int64;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_flt_t* val_flt;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_dbl_t* val_dbl;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public array_uint32_t* arr_uint;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public array_uint64_t* arr_uint64;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public array_int32_t* arr_int;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public array_int64_t* arr_int64;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public array_flt_t* arr_flt;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public array_dbl_t* arr_dbl;
-                [FieldOffset(_pack * 6)]
+                [FieldOffset(48)]
                 public value_str_t* val_str;
 
             };
+#else
+            [StructLayout(LayoutKind.Explicit, Pack = _pack)]
+            private struct parameter_t
+            {
+                [FieldOffset(0)]
+                public value_base_t _base;
+                [FieldOffset(28)]
+                public void* rawData;
+                [FieldOffset(28)]
+                public value_uint32_t* val_uint;
+                [FieldOffset(28)]
+                public value_uint64_t* val_uint64;
+                [FieldOffset(28)]
+                public value_int32_t* val_int;
+                [FieldOffset(28)]
+                public value_int64_t* val_int64;
+                [FieldOffset(28)]
+                public value_flt_t* val_flt;
+                [FieldOffset(28)]
+                public value_dbl_t* val_dbl;
+                [FieldOffset(28)]
+                public array_uint32_t* arr_uint;
+                [FieldOffset(28)]
+                public array_uint64_t* arr_uint64;
+                [FieldOffset(28)]
+                public array_int32_t* arr_int;
+                [FieldOffset(28)]
+                public array_int64_t* arr_int64;
+                [FieldOffset(28)]
+                public array_flt_t* arr_flt;
+                [FieldOffset(28)]
+                public array_dbl_t* arr_dbl;
+                [FieldOffset(28)]
+                public value_str_t* val_str;
+
+            };
+#endif
+
 
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
@@ -2513,6 +2552,8 @@ namespace SDK
                 /// <returns>true on success, else - false</returns>
                 public bool SetParam(dynamic param)
                 {
+                    int a = sizeof(value_base_t);
+
                     byte[] name = Encoding.ASCII.GetBytes(param.name);
                     IntPtr name_ptr = Marshal.AllocHGlobal(name.Length);
                     Marshal.Copy(name, 0, name_ptr, name.Length);
