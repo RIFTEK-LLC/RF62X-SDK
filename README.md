@@ -235,11 +235,10 @@ This library was written in C programming language in accordance with C99 Sdanda
 
 ##### Last release libraries:
 
-| Compiler | 64bit | Includes |
-| ------   | ------| ------|
-| MinGW 7.3.0 | [rf62Xcore.dll](/uploads/178471d04d864e6110deba9ac9074df1/rf62Xcore.dll) [rf62Xcore.a](/uploads/4391dcfc692165676df647cbc65fb570/rf62Xcore.a) | [include.zip](/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip) |
-| MSVC2017 | [rf62Xcore.dll](/uploads/b97b1cec97a78ab3c9b09de946fd7e70/rf62Xcore.dll) [rf62Xcore.lib](/uploads/4eb42c2565bc2f61ed6714fc1bcf9d90/rf62Xcore.lib) | [include.zip](/uploads/912861a038055097ae482022a9003702/include.zip) |
-| Clang 9.1.0 | [rf62Xcore.dll](/uploads/49e8e99d59fba95fa9f952c5befe8e92/rf62Xcore.dll) [rf62Xcore.lib](/uploads/5f96d0e7bb69d9a6ad60f41644a7e72d/rf62Xcore.lib) | [include.zip](/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip) |
+| Compiler | 32bit(Debug) | 32bit(Release) | 64bit(Debug) | 64bit(Release) | Includes |
+| ------   | ------------ | -------------- | ------------ | -------------- | ---------|
+| MinGW 7.3.0 | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/W44rJD6QMz9Eqj3/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/MLdMg9z6HXx6QHi/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/X7CzbodXkj4jcxg/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/cTmYMHno3qkNZAg/download) | [include.zip](http://cloud.riftek.com/index.php/s/aQYnipwasmqr3mQ/download) |
+| MSVC2017 | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/wFzrbHgqSzTNn93/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/W7ApSaGDADRSzBx/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/AxfTNmw594YgtYf/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/dRo8RbeTkRFnRNn/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/bTCdqLbBRrj3QiC/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/bCLAZRYB3R2cFKJ/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/pqMibXpZSAEtmR2/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/fTaHyHoLQnmniHi/download) | [include.zip](http://cloud.riftek.com/index.php/s/MFk3d2CMwgppeCN/download) |
 
 ***
 
@@ -296,11 +295,10 @@ applications with following scanner series:
 
 ##### Last release libraries:
 
-| Compiler | 64bit | Includes |
-| ------ | ------ | ------|
-| MinGW 7.3.0 | [rf62Xsdk.dll](/uploads/2148ca77659e21b2f7aec9e5cbb072ab/rf62Xsdk.dll) [rf62Xsdk.a](/uploads/5a2fdb2b2fc3317fdeec78bbe0c00cc3/rf62Xsdk.a) | [include.zip](/uploads/e69dc9279a6dcba800a98142a8b32c8d/include.zip) |
-| MSVC2017 | [rf62Xsdk.dll](/uploads/912890213476c43b26bf8f178b1d2c5a/rf62Xsdk.dll) [rf62Xsdk.lib](/uploads/e42dadfe318fc3201d6b6f1e280040a9/rf62Xsdk.lib) | [include.zip](/uploads/5e490e8b89b3c2870ec8102540a32b1a/include.zip) |
-| Clang 9.1.0 | [rf62Xsdk.dll](/uploads/fc19b0fac252c78ed93d4fa86ebfc7eb/rf62Xsdk.dll) [rf62Xsdk.lib](/uploads/70b57c76ace11faa6c0e6d3ac8493a86/rf62Xsdk.lib) | [include.zip](/uploads/e69dc9279a6dcba800a98142a8b32c8d/include.zip) |
+| Compiler | 32bit(Debug) | 32bit(Release) | 64bit(Debug) | 64bit(Release) | Includes |
+| ------   | ------------ | -------------- | ------------ | -------------- | ---------|
+| MinGW 7.3.0 | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/mA92Pd4pH4QAYYX/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/oTzGrE8kbk8TiP7/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/DYaYmS4w6ayBPRS/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/wcf5jmF3mJ7gkT5/download) | [include.zip](http://cloud.riftek.com/index.php/s/SBi3SadfWBjQRYR/download) |
+| MSVC2017 | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/DeQZkxDCjTnwzcW/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/bPxNqzzKybMQpYz/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/dKRYSiHo8Wn57qW/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/At2W465qYXtjw8Q/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/MzLkeWYcjrmJpgj/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/55zesCAX2pnjDpD/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/FtH4KBCtzNQnqrB/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/5iYzXy9se9W3soF/download) | [include.zip](http://cloud.riftek.com/index.php/s/k7BHfcEgKSmJpLB/download) |
 
 #### HOW TO COMPILE
 RF62X SDK (C++) can be built on the console or in an IDE.\
@@ -631,9 +629,9 @@ Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner 
 
 ##### Last release libraries:
 
-| Platform | 64bit | Dependencies (x64) |
-| ------ | ------ |------ |
-| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](/uploads/dc42b3db3c48a4d3cc746510a9e66571/rf62Xsdk.dll) | [rf62Xcore.dll](/uploads/178471d04d864e6110deba9ac9074df1/rf62Xcore.dll) |
+| Platform | 32bit(Debug) | 32bit(Release) | 64bit(Debug) | 64bit(Release) | Dependencies (x32) | Dependencies (x64) | 
+| -------- | ------------ |--------------- | ------------ | -------------- | ------------------ | ------------------ |
+| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/CeAWqwP2acbdNPK/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/rxNwAmGG3qZx5gT/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/PWEwwDBedsWY6Yp/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/HoJXYa4JgG63kST/download) |[rf62Xcore.dll](http://cloud.riftek.com/index.php/s/ReDjx45RSXmaMMa/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/kPzFiNbELp3DHTd/download) |
 
 
 #### HOW TO COMPILE
