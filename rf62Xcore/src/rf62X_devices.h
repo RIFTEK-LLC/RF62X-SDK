@@ -3,6 +3,13 @@
 
 #include "rf62X_types.h"
 #include "custom_vector.h"
+#include "smartchannel.h"
+
+
+//
+// RF627
+// old version (v1.x.x)
+//
 
 typedef struct
 {
@@ -22,11 +29,6 @@ typedef struct
 }rf627_old_t;
 
 
-
-/*! Return rf627-old api version
- */
-rfUint32 rf627_old_api_version();
-
 /**
  * @brief rf627_old_search - Search for RF627-old devices over network
  * @param list - ptr to list of rf627-old objects. If not null list will be filled with found devices
@@ -35,23 +37,6 @@ rfUint32 rf627_old_api_version();
  */
 uint8_t rf627_old_search_by_service_protocol(vector_t* list, rfUint32 ip_addr);
 
-/**
- * @brief rf627_old_mutex_lock
- * @return
- */
-int rf627_old_mutex_lock();
-
-/**
- * @brief rf627_old_mutex_trylock
- * @return
- */
-int rf627_old_mutex_trylock();
-
-/**
- * @brief rf627_old_mutex_unlock
- * @return
- */
-int rf627_old_mutex_unlock();
 
 /**
  * @brief rf627_old_create_from_hello_msg
@@ -177,14 +162,25 @@ rfUint8 rf627_old_command_periphery_send(
         rfUint16* output_size, void** output_data);
 
 
+//
+// RF627
+// smart version (v2.x.x)
+//
+
 typedef struct
 {
-    void* m_svc_sock;
-    void* m_data_sock;
-    rfUint16 msg_count;
+    smart_channel* channel;
 
     vector_t *params_list;
 }rf627_smart_t;
+
+/**
+ * @brief rf627_old_search - Search for RF627-old devices over network
+ * @param list - ptr to list of rf627-old objects. If not null list will be filled with found devices
+ * @param ip_addr - the IP address of the adapter on which the connection should be established.
+ * @return 0 on success
+ */
+uint8_t rf627_smart_search_by_service_protocol(vector_t* list, rfUint32 ip_addr);
 
 
 

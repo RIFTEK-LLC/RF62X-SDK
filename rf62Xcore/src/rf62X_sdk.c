@@ -31,6 +31,9 @@ rfUint8 search_scanners(vector_t *list, scanner_types_t model, protocol_types_t 
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
+            rf627_smart_search_by_service_protocol(
+                        list, network_platform.network_settings.host_ip_addr);
+            break;
             break;
         case kETHERNET_IP:
             break;

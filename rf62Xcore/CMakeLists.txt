@@ -45,6 +45,9 @@ set  (SOURCES ${C_FILES} ${H_FILES})
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/protocols/smart-protocol/)
+target_link_libraries(${PROJECT_NAME} SMARTProtocol)
+
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
