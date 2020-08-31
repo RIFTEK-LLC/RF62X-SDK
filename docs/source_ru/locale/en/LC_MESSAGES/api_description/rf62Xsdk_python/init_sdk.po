@@ -1,0 +1,69 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-31 17:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:10
+msgid "Инициализация SDK"
+msgstr "SDK initialization"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:12
+msgid "Файл |PYSDK| является основным файлом программного интерфейса (API) для разработки программ на языке Python и определяет функциональность библиотеки-«обёртки» для |pydll|.  |PYSDK| содержит следующий набор классов и функций для разработки для инициализации SDK:"
+msgstr "File |PYSDK| is the main program interface (API) file for developing programs in Python and defines the functionality of the "wrapper" library for |pydll|. |PYSDK| contains the following set of development classes and functions for initializing the SDK:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:17
+msgid "sdk_init()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:19
+msgid "Функция инициализации SDK. Должна быть вызванна один раз перед дальнейшими вызовами любых библиотечных функций:"
+msgstr "SDK initialization function. Must be called once before any further calls to any library functions:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:23
+msgid "TODO sdk_cleanup()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:25
+msgid "Функция для очистки ресурсов выделенных с помощью функции ``sdk_init``:"
+msgstr "Function for clearing resources allocated using the ``sdk_init`` function:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:28
+msgid "sdk_version()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:30
+msgid "Функция для получения текущей версии SDK"
+msgstr "Function for getting the current SDK version"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:34
+msgid "search_scanners()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:36
+msgid "Функция для поиска устройств RF62X по сети. Происходит перебор всех доступных сетевых адаптеров в текущей системе и отправка «Hello»-запросов. Результатом является список обнаруженных устройств."
+msgstr "Function for searching RF62X devices over the network. It enumerates all available network adapters on the current system and sends "Hello" requests. The result is a list of discovered devices."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:40
+msgid "select_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:41
+msgid "Функция выбора кокретного сканера из списка сканеров, обнаруженных после сканирования сети в  ``search_scanners``. В качестве переметра задается одно поле информации о сканере (см. ``get_info_about_scanner``): device_name, serial_number,ip_address, mac_address, profile_port, service_port, firmware_version, hardware_version, z_begin, z_range, x_begin, x_end"
+msgstr "The function of selecting a specific scanner from the list of scanners found after scanning the network in ``search_scanners``. One field of information about the scanner is set as a parameter (see ``get_info_about_scanner``): device_name, serial_number, ip_address, mac_address, profile_port, service_port, firmware_version, hardware_version, z_begin, z_range, x_begin, x_end"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/init_sdk.rst:46
+msgid "Пример использования:"
+msgstr "Usage example:"

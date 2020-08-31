@@ -36,9 +36,10 @@
    :caption: Описания API
    
    api_description/rf62Xcore
+   api_description/rf62Xsdk_c/_index
    api_description/rf62Xsdk_cpp/_index
    api_description/rf62Xsdk_csharp/_index
-   api_description/rf62Xsdk_python
+   api_description/rf62Xsdk_python/_index
    api_description/rf62Xsdk_labview
    api_description/rf62Xsdk_matlab
 
@@ -48,6 +49,7 @@
    :caption: Примеры использования
 
    tutorial/doxygen
+   tutorial/rf62Xsdk_c
    tutorial/rf62Xsdk_cpp
    tutorial/rf62Xsdk_csharp
    tutorial/rf62Xsdk_python

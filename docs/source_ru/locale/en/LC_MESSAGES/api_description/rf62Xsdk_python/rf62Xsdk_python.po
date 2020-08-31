@@ -1,0 +1,122 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-31 17:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:10
+msgid "API «обёртки» на Python"
+msgstr "Python wrapper API"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:12
+msgid "Библиотеки-«обёртки» помогают создавать программы для работы со сканерами серии RF62X на разных языках для различных платформ, тем самым упрощая использование RF62X CORE (rf62Xcore библиотеки)."
+msgstr "Wrapper libraries help to create programs for working with RF62X series scanners in different languages for different platforms, thereby simplifying the use of RF62X CORE (rf62Xcore libraries)."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:19
+msgid "Библиотека-«обёртка» на Python"
+msgstr "Library wrapper in Python"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:21
+msgid "Эта библиотека позволяет упростить разработку приложений на языке Python"
+msgstr "This library allows you to simplify the development of Python applications."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:23
+msgid "Для её использования в проектах Python разработчик должен включить необходимые py-файлы библиотеки в свой проект, а также динамическую программную библиотеку |pydll|. Взаимодействие с динамической библиотекой происходит за счет встроенного в Python модуля ctypes. Модуль позволяет вызывать функции динамической программной библиотеки |pydll|, пользуясь при этом структурами данных языка C (см. ``rf62X_types.h``) непосредственно в Python."
+msgstr "To use it in Python projects, the developer must include the necessary library py-files in his project, as well as the dynamic program library |pydll|. Interaction with the dynamic library occurs through the built-in Python module ctypes. The module allows you to call the functions of the dynamic program library |pydll| using the data structures of the C language (see ``rf62X_types.h``) directly in Python."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:30
+msgid "Для скачивания библиотеки |pydll| см. :ref:`последние выпуски «обёртки» на C <rf62x_sdk_c_last_release>`."
+msgstr "To download the library |pydll| see :ref:`latest C wrapper releases <rf62x_sdk_c_last_release>`."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:35
+msgid "Обзор программного интерфейса"
+msgstr "Program interface overview"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:39
+msgid "|PYSDK|"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:40
+msgid "Файл |PYSDK| является основным файлом программного интерфейса (API) для разработки программ на языке Python и определяет функциональность библиотеки-«обёртки» для rf62Xcore. |PYSDK| содержит следующий набор классов и функций для разработки:"
+msgstr "File |PYSDK| is the main program interface (API) file for developing programs in the Python language and defines the functionality of the "wrapper" library for rf62Xcore. |PYSDK| contains the following set of classes and functions for development:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:48
+msgid "|PYSDK_functions|"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:49
+msgid "Файл |PYSDK_functions| содержит необходимый набор типов, структур и констант (см. ``rf62X_types.h``) для работы с |pydll|, а также интерфейс вызываемых из библиотеки функций (см. ``rf62Xsdk.h``)."
+msgstr "File |PYSDK_functions| contains the necessary set of types, structures and constants (see ``rf62X_types.h``) for working with |pydll|, as well as the interface of functions called from the library (see ``rf62Xsdk.h``)."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:56
+msgid "Как скомпилировать"
+msgstr "How to compile"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:58
+msgid "Динамическая программная библиотека |pydll|, необходимая для работы «обёртка» на Python, может быть скомпилирован при помощи консоли или среды разработки (Visual Studio, Qt Creator)."
+msgstr "The dynamic programming library |pydll|, which is required for the Python wrapper, can be compiled using the console or development environment (Visual Studio, Qt Creator)."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:61
+msgid "Во-первых, вы должны загрузить проект (если не сделали этого ранее)"
+msgstr "First, you must download the project (if you haven't done so before)"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:65
+msgid "для получения дополнительной информации о шагах загрузки проекта см. :ref:`clone_rf62x_sdk`"
+msgstr "for more information on the steps of loading a project see :ref:`clone_rf62x_sdk`"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:70
+msgid "CMake"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:72
+msgid "Находясь в папке с проектом, для построения динамической программной библиотеки |pydll|, необходимой для работы «обёртка» на Python, введите следующую команду в консоль (терминал):"
+msgstr "Being in the folder with the project, to build the dynamic program library |pydll| required for the "wrapper" in Python, enter the following command into the console (terminal):"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:88
+msgid "Qt Creator"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:90
+msgid "Для построения библиотеки-«обёртки» (rf62Xsdk библиотеки) с использованием IDE Qt Creator:"
+msgstr "To build a wrapper library (rf62Xsdk libraries) using the Qt Creator IDE:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:92
+msgid "Загрузите файл CMakeLists.txt из папки **rf62Xwrappers/С/rf62Xsdk** через **File > Open File or Project** (выберите файл CMakeLists.txt)"
+msgstr "Load the CMakeLists.txt file from the **rf62Xwrappers/С/rf62Xsdk** folder via **File>Open File or Project** (select the CMakeLists.txt file)"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:94
+msgid "Выберите компилятор (MinGW, MSVC2017, Clang) и нажмите **Configure Project**"
+msgstr "Select the compiler (MinGW, MSVC2017, Clang) and click **Configure Project**"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:96
+msgid "Откройте **Build Settings** и отметьте пункт **install** для **Build Steps**"
+msgstr "Open **Build Settings** and check **install** for **Build Steps**"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:97
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:115
+msgid "Скомпилируйте проект"
+msgstr "Compile the project"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:102
+msgid "Visual Studio"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:104
+msgid "Находясь в папке с проектом, для построения RF62X CORE (rf62Xcore библиотеки) введите следующую команду в консоль (терминал):"
+msgstr "Being in the folder with the project, to build RF62X CORE (rf62Xcore libraries) enter the following command into the console (terminal):"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf62Xsdk_python.rst:114
+msgid "Откройте полученное решение rf62Xsdk.sln в Visual Studio"
+msgstr "Open the resulting rf62Xsdk.sln solution in Visual Studio"

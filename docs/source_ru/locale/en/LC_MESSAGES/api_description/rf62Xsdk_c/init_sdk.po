@@ -1,0 +1,49 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-31 17:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:7
+msgid "Инициализация SDK"
+msgstr "SDK initialization"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:9
+msgid "Файл ``rf62Xcore.h`` необходим для вызова функции инициализации SDK: ``core_init()``"
+msgstr "The file ``rf62Xcore.h`` is required to call the SDK initialization function: ``core_init()``"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:11
+msgid "Файл ``rf62X_sdk.h`` является основным файлом программного интерфейса (API) для разработки программ на языке C и определяет функциональность библиотеки-«обёртки» для rf62Xcore."
+msgstr "The file ``rf62X_sdk.h`` is the main program interface (API) file for developing programs in C language and defines the functionality of the «wrapper» library for rf62Xcore."
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:15
+msgid "Файл ``rf62X_types.h`` содержит основные структуры и типы, используемые в SDK."
+msgstr "The file ``rf62X_types.h`` contains the basic structures and types used in the SDK."
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:18
+msgid "core_init()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:20
+msgid "Функция инициализации SDK. Должна быть вызванна один раз перед дальнейшими вызовами любых библиотечных функций:"
+msgstr "SDK initialization function. Must be called once before further calls to any library functions:"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:27
+msgid "sdk_version()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/init_sdk.rst:29
+msgid "Функция для получения текущей версии SDK:"
+msgstr "Function to get the current SDK version:"

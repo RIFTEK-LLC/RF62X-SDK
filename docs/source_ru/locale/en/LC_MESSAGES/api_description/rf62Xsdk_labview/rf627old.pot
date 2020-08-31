@@ -21,7 +21,7 @@ msgid "Класс rf627old"
 msgstr ""
 
 #: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:9
-msgid "Данный класс определён в файле ``rf62Xsdk.h`` и пердоставляет интерфейс для работы со сканерами серии RF627Old"
+msgid "Данный класс определён в файле ``rf62Xsdk.h`` и предоставляет интерфейс для работы со сканерами серии RF627Old"
 msgstr ""
 
 #: ../../source_ru/api_description/rf62Xsdk_labview/rf627old.rst:15

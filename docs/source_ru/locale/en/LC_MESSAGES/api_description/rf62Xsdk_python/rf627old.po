@@ -1,0 +1,133 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-31 18:35+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:11
+msgid "Класс rf627_device"
+msgstr "Rf627_device class"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:13
+msgid "Данный класс определён в файле |PYSDK| и предоставляет интерфейс для работы со сканерами cерии RF62X"
+msgstr "This class is defined in the file |PYSDK| and provides an interface for working with RF62X series scanners"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:18
+msgid "__init__()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:19
+msgid "Конструктор"
+msgstr "Constructor"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:22
+msgid "__str__()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:23
+msgid "Представить информацию об объекте в виде строки, удобной для чтения"
+msgstr "Present information about an object as a readable string"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:26
+msgid "connect_to_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:27
+msgid "Функция для установки соединения со сканером"
+msgstr "Function for establishing connection with the scanner"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:31
+msgid "disconnect_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:33
+msgid "Функция для закрытия ранее установленного соединения со сканером серии RF62X"
+msgstr "Function to close a previously established connection to the RF62X series scanner"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:37
+msgid "get_profile2D_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:38
+msgid "Функция для получения профиля со сканеров серии RF62X"
+msgstr "Function for obtaining a profile from RF62X series scanners"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:41
+msgid "get_info_about_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:43
+msgid "Функция для получения информации о сканере из пакета приветствия (Hello-пакет)"
+msgstr "Function for getting information about the scanner from the hello package"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:46
+msgid "get_parameter()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:48
+msgid "Функция получения конкретного параметра по его имени. При вызове данной функции «ядро» осуществляет поиск нужного параметра из последних прочитанных при вызове функции :ref:`read_params_from_scanner`. В случае, если запрашиваемый параметр отсутствует в конкретном сканере, функция вернёт None."
+msgstr "Function for getting a specific parameter by its name. When this function is called, the "kernel" searches for the required parameter from the last read when calling the function: ref: `read_params_from_scanner`. If the requested parameter is absent in a specific scanner, the function will return None."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:53
+msgid "Для более удобной работы с параметрами можно использовать соответствующие «ключи» (ключ имени параметра, тип параметра и доступ к параметру). Для этого в файле |PYSDK| находятся следующие ``enum``:"
+msgstr "For more convenient work with parameters, you can use the appropriate «keys» (parameter name key, parameter type and parameter access). To do this, in the file |PYSDK| the following ``enum`` are located:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:58
+msgid "set_parameter()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:60
+msgid "Функция установки конкретного параметра. Новое значение new_value может быть задано двумя способами. Способ 1: новое значение передется в виде переменной variable типа (dict) с измененным полем value"
+msgstr "Function for setting a specific parameter. The new value new_value can be set in two ways. Method 1: the new value is passed as a variable of type (dict) with the changed value field"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:63
+msgid "( variable['value']=new_value )"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:64
+msgid "Способ 2: новое значение передется в виде значения (variable=new_value), однако, при этом должен быть передан второй параметр - имя («ключ») изменяемого параметра. Для более удобной работы с параметрами можно использовать соответствующие «ключи» (ключ имени параметра, тип параметра и доступ к параметру). Для этого в файле |PYSDK| находятся следующие ``enum``:"
+msgstr "Method 2: the new value is passed as a value (variable = new_value), however, the second parameter must be passed - the name («key») of the parameter being changed. For more convenient work with parameters, you can use the appropriate «keys» (parameter name key, parameter type and parameter access). To do this, in the file |PYSDK| the following ``enum`` are located:"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:70
+msgid "При вызове данной функции происходит установка передаваемого параметра в локальном списке параметров в «ядре». Для отправки изменений в сканер необходимо вызвать функцию ``write_params_to_scanner``."
+msgstr "When this function is called, the passed parameter is set in the local parameter list in the «core». To send changes to the scanner, call the ``write_params_to_scanner`` function."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:76
+msgid "read_params_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:78
+msgid "Функция получения текущих параметров сканера. При вызове данной функции «ядро» вычитывает со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей работы."
+msgstr "The function of obtaining the current parameters of the scanner. When this function is called, the “kernel” reads all the actual parameters from the scanner, saving them as a “list of parameters” for further work."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:84
+msgid "write_params_to_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:86
+msgid "Функция записи локальных параметров из «ядра» в сканер. При вызове данной функции происходит отправка списка локальных параметров из «ядра» в сканер."
+msgstr "The function of writing local parameters from the «core» to the scanner. When this function is called, the list of local parameters is sent from the «core» to the scanner."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:91
+msgid "TODO send_cmd()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:93
+msgid "Функция отправки команд в сканер"
+msgstr "Function of sending commands to the scanner"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/rf627old.rst:95
+msgid "Для более детального описания команд и их свойств см. :ref:`rf62x_more_description_commands`"
+msgstr "For a more detailed description of commands and their properties see :ref:`rf62x_more_description_commands`"
