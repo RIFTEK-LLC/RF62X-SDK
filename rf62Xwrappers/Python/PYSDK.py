@@ -1,4 +1,4 @@
-Àfrom PYSDK_functions import *
+from PYSDK_functions import *
 
 ###################### Python SDK  functions and objects ##################################
 
