@@ -5,9 +5,9 @@
 ## CONTENTS
 - [OVERVIEW](#overview)
 - [GETTING STARTED](#getting-started)
-  - [Installing software](#installing-software)
-  - [Running RF62X SDK tutorials](#)
-- [RF62X CORE](#rf62x-core)
+  - [Download project](#download-project)
+  - [Running SDK examples](#running-sdk-examples)
+- [CREATING PROJECT](#creating-project)
   - [How to compile](#how-to-compile)
 - [RF62X WRAPPER LIBRARIES](#rf62x-wrapper-libraries)
   - [C++ LIBRARY](#c-library)
@@ -82,11 +82,11 @@ git submodule update --init --recursive
 
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
-### Running RF62X SDK examples
+### Running SDK examples
 Here a basic example how to use method for searching RF62X devices in different languages by different ways.\
 You can create a new project yourself or you can just open an existing project example and build it.
 
-#### Running example in C/C++ from source
+#### Running example in C/C++
 ##### 1) Open and compile examples project in **Qt Creator**:  
 *  Load the CMakeLists.txt file from the **examples/C/RF627_old/RF627_search** or **examples/Cpp/RF627_old/RF627_search** 
 folder via **File > Open File or Project** (Select the CMakeLists.txt file)
@@ -103,7 +103,7 @@ cmake ..
 *  Open the resulting RF627_search.sln solution in Visual Studio
 *  Compile and Run it
 
-#### Running example in C\# from source
+#### Running example in C\#
 ##### 1) Open and compile examples project in **Visual Studio 2019**:  
 *  Open **RF627_TESTS.sln** from the **examples/CSharp/RF627_old** folder with Visual Studio
 *  Select **x64 Debug** or **x64 Release** target platform
@@ -111,15 +111,145 @@ cmake ..
 *  Copy the **rf62Xcore.dll** (see RF62X CORE table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Compile project
 
-#### Running example in Python from source
+#### Running example in Python
 ##### 1) Open and compile examples project in **Visual Studio Code**:  
 *  Open **demo.py** or **gui.py** from the **examples/Python/RF627_old** folder with Visual Studio Code
 *  Copy the **C WRAPPER rf62Xsdk.dll** (see C WRAPPER table from [RF62X-SDK libraries](#) link) into the path of the project executable
 *  Run example
 
-## Creating a new project with RF62X SDK
-### Creating project in C/C++ with using shared or static SDK-library
-#### 1) Create a new project in **Qt Creator** with CMake
+## CREATING PROJECT
+### Creating project in C/C++
+#### 1) Create a new project in **Qt Creator** by CMake with using SDK-sources 
+*  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
+
+![](/uploads/46932e911f2c5676f18ad43cc8214246/note2.png)
+
+*  Enter project name, Browse project location and click **Next** button
+*  Choose **CMake** build system and click **Next** button twice
+*  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
+*  Download the project:
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+*  Select the right SDK version:
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+*  Modify your **CMakeLists.txt** file according to the example below and enter to RF62XSDK_DIR your path to rf62Xwrappers/Cpp/rf62Xsdk:
+```cmake
+cmake_minimum_required(VERSION 3.5)
+
+
+##
+## PROJECT
+## name and version
+##
+project(RF627_search LANGUAGES CXX)
+
+
+##
+## CONFIGURATION
+##
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# creating output directory architecture in accordance with GNU guidelines
+set(BINARY_DIR "${CMAKE_BINARY_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BINARY_DIR}/lib")
+
+
+# create glob files for *.h, *.cpp
+file (GLOB H_FILES   ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file (GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+# concatenate the results (glob files) to variable
+set  (SOURCES ${CPP_FILES} ${H_FILES})
+
+
+##
+## TARGET
+## create target and add include path
+##
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+# set rf62Xsdk path variable
+set(RF62XSDK_DIR "path/to/RF62X-SDK/rf62Xwrappers/Cpp/rf62Xsdk")
+# add subdirectory of rf627sdk lib
+add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)
+target_link_libraries(${PROJECT_NAME} rf62Xsdk)
+```
+*  Modify your **main.cpp** file according to the example below:
+
+```c++
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
+#include <string>
+#include <iostream>
+
+using namespace SDK::SCANNERS::RF62X;
+
+int main()
+{
+
+    // Initialize sdk library
+    sdk_init();
+
+    // Print return rf627 sdk version
+    std::cout << "SDK version: " << sdk_version()                << std::endl;
+    std::cout << "========================================="     << std::endl;
+
+
+    // Create value for scanners vector's type
+    std::vector<rf627old*> list;
+    // Search for RF627old devices over network
+    list = rf627old::search(PROTOCOLS::SERVICE);
+
+
+    // Print count of discovered rf627-old in network by Service Protocol
+    std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+
+
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        rf627old::hello_info info = list[i]->get_info();
+
+        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+        std::cout << "Device information: "                      << std::endl;
+        std::cout << "* Name\t: "     << info.device_name()      << std::endl;
+        std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
+        std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
+        std::cout << "* MAC Addr\t: " << info.mac_address()      << std::endl;
+
+        std::cout << "\nWorking ranges: "                        << std::endl;
+        std::cout << "* Zsmr, mm\t: " << info.z_smr()            << std::endl;
+        std::cout << "* Zmr , mm\t: " << info.z_mr()             << std::endl;
+        std::cout << "* Xsmr, mm\t: " << info.x_smr()            << std::endl;
+        std::cout << "* Xemr, mm\t: " << info.x_emr()            << std::endl;
+
+        std::cout << "\nVersions: "                              << std::endl;
+        std::cout << "* Firmware\t: " << info.firmware_version() << std::endl;
+        std::cout << "* Hardware\t: " << info.hardware_version() << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+
+    }
+
+    // Cleanup resources allocated with sdk_init()
+    sdk_cleanup();
+}
+```
+*  Select **Debug** or **Release** build type, Run CMake and Run project 
+
+#### 1) Create a new project in **Qt Creator** by CMake with using shared(static) SDK-library
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
 
 ![](/uploads/46932e911f2c5676f18ad43cc8214246/note2.png)
@@ -229,7 +359,7 @@ int main()
 *  Also copy **rf62Xsdk.dll** into the path of the project executable (PROJECT_BINARY_DIR)
 *  Select **Debug** or **Release** build type, Run CMake and Run project 
 
-#### 1) Create a new project in **Visual Studio 2019**
+#### 2) Create a new project in **Visual Studio 2019** with using shared or static SDK-library
 *  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
 
 ![](/uploads/46932e911f2c5676f18ad43cc8214246/note2.png)
@@ -296,10 +426,11 @@ int main()
 ```
 *  Select **x64** or **x86** and **Debug** or **Release** target platform
 *  Download **rf62Xsdk.dll** and **rf62Xsdk.lib** (see C++ WRAPPER table from [RF62X-SDK libraries](#) link) and **include.zip** archive into the project directory.
-*  Open **Project > Properties**, choose **Configuration Properties > VC++ Directories** and add to **Include Directories** and **Library Directories** paths to downloaded header files and libraries.
+*  Open **Project > Properties**, choose **Configuration Properties > VC++ Directories** and add paths of downloaded header files and libraries to **Include Directories** and **Library Directories**.
 *  Compile project
 *  Copy the **rf62Xsdk.dll** (see RF62X CORE table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Run project
+
 
 
 ## RF62X CORE
