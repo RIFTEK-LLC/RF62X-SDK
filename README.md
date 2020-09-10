@@ -143,7 +143,7 @@ For work with RF62X-smart scanners:
 git checkout v2.x.x
 git submodule update --init --recursive
 ```
-*  Modify your **CMakeLists.txt** file according to the example below and enter to RF62XSDK_DIR your path to rf62Xwrappers/Cpp/rf62Xsdk:
+*  Modify your **CMakeLists.txt** file according to the example below and and update RF62XSDK_DIR according to your path to rf62Xwrappers/Cpp/rf62Xsdk:
 ```cmake
 cmake_minimum_required(VERSION 3.5)
 
