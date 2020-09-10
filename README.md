@@ -4,9 +4,6 @@
 
 ## CONTENTS
 - [OVERVIEW](#overview)
-  - [Core features](#core-features)
-  - [Supported compilers](#supported-compilers)
-  - [Resources](#resources)
 - [GETTING STARTED](#getting-started)
   - [Installing software](#installing-software)
   - [Running RF62X SDK tutorials](#)
@@ -27,95 +24,102 @@
 
 ## OVERVIEW
 
-**RF62X SDK** is a library that supports rapid development of software that deals with scanners series RF62X (RF627-old, RF627-smart).
+**RF62X-SDK** a Software Development Kit that allows specialists to create their own 
+software for working with laser scanners RF62X (RF627-old, RF627-smart) series 
+manufactured by RIFTEK LLC.
 
-The RF627X SDK consist of two parts:
-*  **RF62X CORE** is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
-*  **RF62X WRAPPER** is the library that helps to develop programs in a definite programming language and for the selected platform, simplifying the use of the main library (RF62X CORE).
-
-
-### Core features
-*  Search scanners
-*  Get scanner's profile
-*  Get/set scanner's parameters
-
-### Supported compilers
-*  GCC 5.x or newer on Linux
-*  XCode 8.0 or newer on OS X
-*  Visual Studio 2017 or newer on Windows
-
-### Resources
-This project uses [git](http://git-scm.com/) for source code management and [GitLab](https://about.gitlab.com/) for source code hosting.
-*  Code: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK
-*  Document: www.riftek.com  
-*  Website: www.riftek.com
-
+The RF62X-SDK consists of two parts:
+* **RF62X-CORE** - the main library («Core») with a basic set of functions and types for working
+with laser scanners of the RF62X series. The library is written in the C programming language
+in accordance with the C99 standard (ISO/IEC 9899:1999) and is crossplatform. To use
+this library, it is necessary to implement platform-dependent functions (working with memory,
+working with the network, input/output functions).
+* **RF62X-WRAPPERS** - «wrapper»-libraries, in which platform-dependent «Core» functions
+for a specific platform are already implemented. The use of wrapper libraries simplifies
+the process of developing applications in the following programming languages: C++, С#, 
+Python, LabVew, MatLab.
 
 
 ## GETTING STARTED
 
-**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#net-library), [PYTHON](#how-to-use-2)).\
-**For others** who want to **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
+Developers who want to use **ready-made RF62X-SDK** libraries when creating their own applications
+for working with laser scanners of the RF62X series can download the latest libraries (download the 
+[RF62X-SDK libraries](#) for C, C++, C#, Python), as well as see examples of their use (see [Examples for C](#), 
+[Examples for C++](#), [Examples for C#](#), [Examples for Python](#)).
 
-### Installing software
+Developers who prefer to compile RF62X-SDK libraries from sources, the manual contains instructions 
+for downloading sources (see [Download project](#)) and installing the necessary software 
+(see [Installation and setup](#)).
 
-###### 1. Install a git client on your local computer (if you haven’t yet)
-*  On Linux use the terminal command: `sudo apt install git`
-*  On MacOS use the terminal command: `brew install git`
-*  For other platforms see the [git installation documentation](https://git-scm.com/downloads).
-###### 2. Open a command prompt/terminal on your computer
-*  On Linux, click the launch bar and search for 'terminal'
-*  On OS X, hit ⌘-space and search for 'terminal'
-*  On Windows, click the Start menu and search for 'command line'.
-###### 3. Clone the repository using the following commands:
+### Download project 
+
+For developers who want to download the library from source using the Git-client,
+follow these instructions:
+##### 1. Install the git-client on your local computer (if not already installed):
+* On Linux, use the terminal command: `sudo apt install git`
+* On MacOS, use the terminal command: `brew install git`
+* For other platforms see [git installation documentation](#).
+##### 2. Open a command prompt/terminal on your computer:
+* On Linux, click on the launchpad and look for «terminal» `terminal`
+* In OS X, press commandspace and find «terminal» `terminal`
+* On Windows, click the Start menu and find the «command line» `cmd`.
+##### 3. Download the project:
 ```bash
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
+```
+##### 4. Select the right SDK version:
+* For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+* For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
 git submodule update --init --recursive
 ```
 
-For developers who wish to download and build the latest code using Git from the 
-IDE (Qt Creator or Visual Studio Community) should follow these instructions:
-1.  Create a Git project in one of the IDEs 
-2.  Clone `https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git`
-3.  Download submodules 
-
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
-### Running RF62X SDK tutorials
+### Running RF62X SDK examples
 Here a basic example how to use method for searching RF62X devices in different languages by different ways.\
 You can create a new project yourself or you can just open an existing project example and build it.
-#### Compiling examples in C++ from source
+
+#### Running example in C/C++ from source
 ##### 1) Open and compile examples project in **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_TESTS** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-
-![](/uploads/78032febfdfd6b2954b93ff3cfac2967/Аннотация_2020-03-10_153146.jpg)
-
+*  Load the CMakeLists.txt file from the **examples/C/RF627_old/RF627_search** or **examples/Cpp/RF627_old/RF627_search** 
+folder via **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-
-![](/uploads/aea9094ca516e84609b41ff70412ac37/Аннотация2.jpg)
-
-*  Choose one of the examples, Compile and Run it
-
-##### 2) Generate a project for **Visual Studio** and compile examples
-*  Generate Visual Studio solution by calling CMake from the console
+*  Compile and Run it
+##### 2) Create project and compile examples in **Visual Studio 2019**:  
+*  Being in the folder **examples/C/RF627_old/RF627_search** or **examples/Cpp/RF627_old/RF627_search** enter the following command 
+into the console (terminal):  
 ```bash
-cd examples/Cpp/RF627_old
 mkdir build
 cd build
-
-:: Run one of the following lines based on your Visual Studio version
-cmake -G "Visual Studio 15 2017 Win64" ..
-cmake -G "Visual Studio 16 2019 Win64" ..
+cmake ..
 ```
-*  Open the **ALL_BUILD.vcxproj** from the **examples/Cpp/RF627_old** folder by Visual Studio
-*  Select the build type and target platform - **x64 Debug** or **x64 Release**
-*  Rebuild the **ALL_BUILD** target
-*  Choose one of the examples, Compile and Run it
+*  Open the resulting RF627_search.sln solution in Visual Studio
+*  Compile and Run it
 
-#### Creating a new project in C++ with using shared or static SDK-library
-##### 1) Create a new project in **Qt Creator** by СMake
+#### Running example in C\# from source
+##### 1) Open and compile examples project in **Visual Studio 2019**:  
+*  Open **RF627_TESTS.sln** from the **examples/CSharp/RF627_old** folder with Visual Studio
+*  Select **x64 Debug** or **x64 Release** target platform
+*  Add the **rf62Xsdk.dll** C# WRAPPER library to project's **references** 
+*  Copy the **rf62Xcore.dll** (see RF62X CORE table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Compile project
+
+#### Running example in Python from source
+##### 1) Open and compile examples project in **Visual Studio Code**:  
+*  Open **demo.py** or **gui.py** from the **examples/Python/RF627_old** folder with Visual Studio Code
+*  Copy the **C WRAPPER rf62Xsdk.dll** (see C WRAPPER table from [RF62X-SDK libraries](#) link) into the path of the project executable
+*  Run example
+
+## Creating a new project with RF62X SDK
+### Creating project in C/C++ with using shared or static SDK-library
+#### 1) Create a new project in **Qt Creator** with CMake
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
 
 ![](/uploads/46932e911f2c5676f18ad43cc8214246/note2.png)
@@ -123,7 +127,7 @@ cmake -G "Visual Studio 16 2019 Win64" ..
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
 *  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
-*  [Download](#c-library) **include.zip** archive and unzip it into the project directory. Also download **rf62Xsdk.dll** and copy it into the project directory next to the main.cpp file
+*  Download **rf62Xsdk.dll** (see C/C++ WRAPPER table from [RF62X-SDK libraries](#) link) and **include.zip** archive into the project directory.
 
 ![](/uploads/f772d702180bb91cf67cad8621090b40/note3.png)
 
@@ -147,17 +151,27 @@ find_library(
     PATHS ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
-add_executable(${PROJECT_NAME}
-  main.cpp
-)
+# create glob files for *.h, *.c
+file(GLOB C_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB H_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+# concatenate the results (glob files) to variable
+set  (SOURCES ${C_FILES} ${H_FILES})
+
+
+##
+## TARGET
+## create target and add include path
+##
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} ${RF62XSDK_LIBRARY})
 ```
 *  Modify your **main.cpp** file according to the example below:
 
 ```c++
-#include <rf62Xsdk.h>
-#include <rf62Xtypes.h>
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
+#include <string>
 #include <iostream>
 
 using namespace SDK::SCANNERS::RF62X;
@@ -212,22 +226,81 @@ int main()
     sdk_cleanup();
 }
 ```
-*  Copy **rf62Xsdk.dll** into the path of the project executable (PROJECT_BINARY_DIR)
-
-You can do it in two ways:
-1) Copy rf62Xsdk.dll to the executable folder (near with *.exe) yourself.
-2) Or add a "copy command" to the end of the CMakeLists.txt file:
-
-```cmake
-# copy rf62Xsdk lib from cmake current source directory to project build directory
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${RF62XSDK_LIBRARY} ${PROJECT_BINARY_DIR})
-```
-    
+*  Also copy **rf62Xsdk.dll** into the path of the project executable (PROJECT_BINARY_DIR)
 *  Select **Debug** or **Release** build type, Run CMake and Run project 
 
-Beside this example, you may want to check the documentation where each function contains a separate code example. All example project can be compiled and executed.
+#### 1) Create a new project in **Visual Studio 2019**
+*  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
+
+![](/uploads/46932e911f2c5676f18ad43cc8214246/note2.png)
+
+*  Enter project name, Browse project location and click **Next** button
+*  Add `main.cpp` file to project and modify it according to the example below:
+```c++
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
+#include <string>
+#include <iostream>
+
+using namespace SDK::SCANNERS::RF62X;
+
+int main()
+{
+
+    // Initialize sdk library
+    sdk_init();
+
+    // Print return rf627 sdk version
+    std::cout << "SDK version: " << sdk_version()                << std::endl;
+    std::cout << "========================================="     << std::endl;
+
+
+    // Create value for scanners vector's type
+    std::vector<rf627old*> list;
+    // Search for RF627old devices over network
+    list = rf627old::search(PROTOCOLS::SERVICE);
+
+
+    // Print count of discovered rf627-old in network by Service Protocol
+    std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+
+
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        rf627old::hello_info info = list[i]->get_info();
+
+        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+        std::cout << "Device information: "                      << std::endl;
+        std::cout << "* Name\t: "     << info.device_name()      << std::endl;
+        std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
+        std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
+        std::cout << "* MAC Addr\t: " << info.mac_address()      << std::endl;
+
+        std::cout << "\nWorking ranges: "                        << std::endl;
+        std::cout << "* Zsmr, mm\t: " << info.z_smr()            << std::endl;
+        std::cout << "* Zmr , mm\t: " << info.z_mr()             << std::endl;
+        std::cout << "* Xsmr, mm\t: " << info.x_smr()            << std::endl;
+        std::cout << "* Xemr, mm\t: " << info.x_emr()            << std::endl;
+
+        std::cout << "\nVersions: "                              << std::endl;
+        std::cout << "* Firmware\t: " << info.firmware_version() << std::endl;
+        std::cout << "* Hardware\t: " << info.hardware_version() << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+
+    }
+
+    // Cleanup resources allocated with sdk_init()
+    sdk_cleanup();
+}
+```
+*  Select **x64** or **x86** and **Debug** or **Release** target platform
+*  Download **rf62Xsdk.dll** and **rf62Xsdk.lib** (see C++ WRAPPER table from [RF62X-SDK libraries](#) link) and **include.zip** archive into the project directory.
+*  Open **Project > Properties**, choose **Configuration Properties > VC++ Directories** and add to **Include Directories** and **Library Directories** paths to downloaded header files and libraries.
+*  Compile project
+*  Copy the **rf62Xsdk.dll** (see RF62X CORE table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Run project
+
 
 ## RF62X CORE
 RF62X CORE is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
