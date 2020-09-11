@@ -170,8 +170,13 @@ rfUint8 rf627_old_command_periphery_send(
 typedef struct
 {
     smart_channel* channel;
+    void* m_data_sock;
+
 
     vector_t *params_list;
+
+    rf627_smart_hello_info_by_service_protocol info_by_service_protocol;
+
 }rf627_smart_t;
 
 /**
@@ -182,7 +187,54 @@ typedef struct
  */
 uint8_t rf627_smart_search_by_service_protocol(vector_t* list, rfUint32 ip_addr);
 
+/**
+ * @brief rf627_old_get_parameter - Search parameters by his name
+ * @param scanner - ptr to scanner
+ * @param param_name - name of parameter
+ * @return param on success, else - null
+ */
+parameter_t* rf627_smart_get_parameter(
+        rf627_smart_t* scanner, const rfChar* param_name);
 
+/**
+ * @brief rf627_old_create_from_hello_msg
+ * @param msg_info
+ * @param init_msg_count
+ * @return
+ */
+rf627_smart_t* rf627_smart_create_from_hello_msg(
+        char* data, rfUint32 data_size);
+
+rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_by_service_protocol(rf627_smart_t* scanner);
+
+/**
+ * @brief rf627_old_connect - Establish connection to the device
+ * @param scanner - ptr to device
+ * @return true on success
+ */
+rfBool rf627_smart_connect(rf627_smart_t* scanner);
+
+/**
+ * @brief rf627_old_disconnect - Close connection to the device
+ * @param scanner - ptr to device
+ */
+void rf627_smart_disconnect(rf627_smart_t* scanner);
+
+/**
+ * @brief rf627_old_get_profile - Get measurement from scanner's data stream
+ * @param scanner - ptr to device
+ * @param zero_points - include zero points in return profile2D
+ * @return ptr to rf627_old_profile_t structure
+ */
+rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBool zero_points);
+
+/**
+ * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.
+ * This structure is accessible via get_params() function
+ * @param scanner - ptr to scanner
+ * @return 0 on success
+ */
+rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner);
 
 typedef struct
 {

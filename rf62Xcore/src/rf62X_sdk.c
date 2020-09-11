@@ -5,6 +5,9 @@
 #include "netwok_platform.h"
 #include "memory_platform.h"
 
+
+vector_t *search_result;
+
 void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
 {
     set_adapter_settings(host_mask, host_ip_addr);
@@ -85,7 +88,14 @@ hello_information get_info_about_scanner(scanner_base_t *device, protocol_types_
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
+        {
+            _hello_info.scanner_type = kRF627_SMART;
+            _hello_info.protocol_type = kSERVICE;
+            _hello_info.rf627smart.hello_info_service_protocol = rf627_smart_get_info_about_scanner_by_service_protocol(device->rf627_smart);
+
+            return _hello_info;
             break;
+        }
         case kETHERNET_IP:
             break;
         case kMODBUS_TCP:
@@ -137,7 +147,18 @@ rfUint8 connect_to_scanner(scanner_base_t *device, protocol_types_t protocol)
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
-            break;
+        {
+            rfBool result = FALSE;
+            rfInt32 times = 3;
+            for (rfInt32 i = 0; i < times; i++)
+                if (rf627_smart_connect(device->rf627_smart))
+                {
+                    result = TRUE;
+                    break;
+                }
+                else rf627_smart_disconnect(device->rf627_smart);
+            return result;
+        }
         case kETHERNET_IP:
             break;
         case kMODBUS_TCP:
@@ -218,6 +239,8 @@ rf627_profile2D_t* get_profile2D_from_scanner(
         profile->type = kRF627_SMART;
         switch (protocol) {
         case kSERVICE:
+            profile->rf627_profile2D = rf627_smart_get_profile2D(device->rf627_smart, zero_points);
+            return profile;
             break;
         case kETHERNET_IP:
             break;
@@ -371,7 +394,76 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
+        {
+            rfUint16 count = 0;
+            rfBool ret = 0;
+            while (vector_count(device->rf627_smart->params_list) > 0) {
+                parameter_t* p = vector_get(device->rf627_smart->params_list, vector_count(device->rf627_old->params_list)-1);
+
+                if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
+                {
+                    memory_platform.rf_free(p->val_uint32);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
+                {
+                    memory_platform.rf_free(p->val_uint64);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
+                {
+                    memory_platform.rf_free(p->val_int32);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
+                {
+                    memory_platform.rf_free(p->val_int64);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
+                {
+                    memory_platform.rf_free(p->val_flt);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
+                {
+                    memory_platform.rf_free(p->val_dbl);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
+                {
+                    //memory_platform.rf_free(p->arr_uint32->value);
+                    //memory_platform.rf_free(p->arr_uint32->defValue);
+                    memory_platform.rf_free(p->arr_uint32);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT64]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_uint64);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_INT32]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_int32);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_INT64]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_int64);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_FLT]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_flt);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_DBL]) == 0)
+                {
+                    memory_platform.rf_free(p->arr_dbl);
+                    //memory_platform.rf_free(p);
+                }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
+                {
+                    //memory_platform.rf_free(p->val_str->value);
+                    memory_platform.rf_free(p->val_str);
+                    //memory_platform.rf_free(p);
+                }
+                vector_delete(device->rf627_old->params_list, vector_count(device->rf627_old->params_list)-1);
+                memory_platform.rf_free(p);
+                count++;
+            }
+            //ret = rf627_smart_read_params_from_scanner(device->rf627_smart);
+            return ret;
             break;
+        }
         case kETHERNET_IP:
             break;
         case kMODBUS_TCP:
@@ -435,7 +527,10 @@ parameter_t* get_parameter(scanner_base_t *device, const rfChar *param_name)
         break;
     }
     case kRF627_SMART:
+    {
+        return rf627_smart_get_parameter(device->rf627_smart, param_name);
         break;
+    }
     default:
         break;
     }

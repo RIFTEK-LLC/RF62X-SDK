@@ -532,6 +532,39 @@ typedef struct
     rfUint32 x_end;
 }rf627_old_hello_info_by_service_protocol;
 
+typedef struct
+{
+    uint32_t fact_general_firmwareVer[3];
+    uint32_t fact_general_hardwareVer;
+
+    uint32_t fact_general_mr;
+    uint32_t fact_general_smr;
+    uint32_t fact_general_xsmr;
+
+    uint32_t fact_laser_waveLength;
+
+    char* user_general_deviceName;
+    uint32_t fact_general_productCode;
+    uint32_t fact_general_serial;
+
+    char* user_network_ip;
+    char* user_network_mask;
+    char* user_network_gateway;
+    char* user_network_hostIP;
+    char* fact_network_macAddr;
+
+    uint32_t user_network_hostPort;
+    uint32_t user_network_servicePort;
+    uint32_t user_network_webPort;
+
+    uint32_t user_network_speed;
+    uint8_t user_network_autoNeg;
+
+    uint32_t user_streams_udpEnabled;
+    uint32_t user_streams_format;
+
+}rf627_smart_hello_info_by_service_protocol;
+
 //Типы значений параметров
 typedef enum
 {
@@ -1196,7 +1229,7 @@ typedef struct
             rf627_old_hello_info_by_service_protocol* hello_info_service_protocol;
         }rf627old;
         union{
-            rf627_old_hello_info_by_service_protocol* hello_info_service_protocol;
+            rf627_smart_hello_info_by_service_protocol* hello_info_service_protocol;
         }rf627smart;
     };
 }hello_information;

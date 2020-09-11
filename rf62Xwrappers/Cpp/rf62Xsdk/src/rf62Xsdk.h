@@ -234,6 +234,8 @@ public:
 
             version();
             version(uint32_t value);
+            version(std::string value);
+            version(uint32_t* value);
             ~version();
         private:
             uint32_t _value;

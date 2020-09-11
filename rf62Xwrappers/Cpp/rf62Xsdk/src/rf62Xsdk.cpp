@@ -1373,7 +1373,7 @@ rf627smart::hello_info rf627smart::get_info(PROTOCOLS protocol)
     {
         hello_information info = get_info_about_scanner(((scanner_base_t*)this->scanner_base), kSERVICE);
 
-        hello_info _hello_info = hello_info(info.rf627old.hello_info_service_protocol, PROTOCOLS::SERVICE);
+        hello_info _hello_info = hello_info(info.rf627smart.hello_info_service_protocol, PROTOCOLS::SERVICE);
 
         return _hello_info;
         break;
@@ -2250,35 +2250,21 @@ rf627smart::hello_info::hello_info(void* info, PROTOCOLS protocol)
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        _device_name = ((rf627_old_hello_info_by_service_protocol*)info)->device_name;
-        _serial_number = ((rf627_old_hello_info_by_service_protocol*)info)->serial_number;
+        _device_name = ((rf627_smart_hello_info_by_service_protocol*)info)->user_general_deviceName;
+        _serial_number = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_serial;
+        _ip_address = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_ip;
+        _mac_address = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_network_macAddr;
 
-        in_addr addr = {0};
-        uint32_t ip = ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[0] << 24 |
-                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[1] << 16 |
-                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[2] << 8 |
-                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[3];
-        addr.s_addr = htonl(ip);
-        _ip_address = inet_ntoa(addr);
-        _mac_address = "";
+        _profile_port = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_hostPort;
+        _service_port = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_servicePort;
 
-        for (int i = 0; i < 6; i++)
-        {
-            if (i != 0)
-                _mac_address += ":";
-            _mac_address += convert::to_hex(((rf627_old_hello_info_by_service_protocol*)info)->mac_address[i], 2);
-        }
+        _firmware_version = hello_info::version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
+        _hardware_version = hello_info::version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
 
-        _profile_port = ((rf627_old_hello_info_by_service_protocol*)info)->profile_port;
-        _service_port = ((rf627_old_hello_info_by_service_protocol*)info)->service_port;
-
-        _firmware_version = hello_info::version(((rf627_old_hello_info_by_service_protocol*)info)->firmware_version);
-        _hardware_version = hello_info::version(((rf627_old_hello_info_by_service_protocol*)info)->hardware_version);
-
-        _z_smr = ((rf627_old_hello_info_by_service_protocol*)info)->z_begin;
-        _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
-        _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
-        _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
+        _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
+        _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
+        _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
+        //_x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr + ;
         break;
     }
     default:
@@ -2345,7 +2331,7 @@ uint32_t rf627smart::hello_info::version::to_uint()
 
 rf627smart::hello_info::version::version()
 {
-    version(0);
+    version((uint32_t)0);
 }
 
 rf627smart::hello_info::version::version(uint32_t value)
@@ -2354,6 +2340,37 @@ rf627smart::hello_info::version::version(uint32_t value)
     minor = (((uint8_t*)(void*)(&value))[2]);
     patch = (((uint8_t*)(void*)(&value))[1]);
     _value = value;
+}
+
+rf627smart::hello_info::version::version(std::string value)
+{
+    std::string s = value;
+    std::string delimiter = ".";
+
+    size_t pos = 0;
+    std::string token;
+
+    token = s.substr(0, pos);
+    major =  std::stoi(token);
+    s.erase(0, pos + delimiter.length());
+
+    token = s.substr(0, pos);
+    minor =  std::stoi(token);
+    s.erase(0, pos + delimiter.length());
+
+    token = s.substr(0, pos);
+    patch =  std::stoi(token);
+    s.erase(0, pos + delimiter.length());
+
+    _value = (major << 3) + (minor << 2) + (patch << 1);
+}
+
+rf627smart::hello_info::version::version(uint32_t *value)
+{
+    major = value[0];
+    minor = value[1];
+    patch = value[2];
+    _value = (major << 3) + (minor << 2) + (patch << 1);
 }
 
 rf627smart::hello_info::version::~version()
