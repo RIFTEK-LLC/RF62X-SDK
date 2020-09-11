@@ -11,26 +11,26 @@ int main()
     // Initialize sdk library
     sdk_init();
 
-    // Print return rf627 sdk version
+    // Print return rf62X sdk version
     std::cout << "SDK version: " << sdk_version()                << std::endl;
     std::cout << "========================================="     << std::endl;
 
 
     // Create value for scanners vector's type
-    std::vector<rf627old*> list;
-    // Search for RF627old devices over network
-    list = rf627old::search(PROTOCOLS::SERVICE);
+    std::vector<rf627smart*> list;
+    // Search for rf627smart devices over network
+    list = rf627smart::search(PROTOCOLS::SERVICE);
 
 
-    // Print count of discovered rf627-old in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+    // Print count of discovered rf627smart in network by Service Protocol
+    std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
 
 
     // Iterate over all discovered rf627-old in network, connect to each of
     // them and get a profile.
-    for(size_t i = 0; i < list.size(); i++)
+    for (size_t i = 0; i < list.size(); i++)
     {
-        rf627old::hello_info info = list[i]->get_info();
+        rf627smart::hello_info info = list[i]->get_info();
 
         // Print information about the scanner to which the profile belongs.
         std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
@@ -41,11 +41,11 @@ int main()
         std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
 
         // Establish connection to the RF627 device by Service Protocol.
-        list[i]->connect();
+        bool is_connect = list[i]->connect();
 
         // Get profile from scanner's data stream by Service Protocol.
-        profile2D_t* profile = list[i]->get_profile2D();
-        if (profile != nullptr)
+        profile2D_t* profile = nullptr;
+        if (is_connect && ((profile = list[i]->get_profile2D()) != nullptr))
         {
             std::cout << "Profile information: "                    << std::endl;
             switch (profile->header.data_type) {

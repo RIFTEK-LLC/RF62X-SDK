@@ -11,26 +11,26 @@ int main()
     // Initialize sdk library
     sdk_init();
 
-    // Print return rf62X SDK version
-    std::cout << "SDK version: " << sdk_version()                   << std::endl;
-    std::cout << "========================================="        << std::endl;
+    // Print return rf62X sdk version
+    std::cout << "SDK version: " << sdk_version()                << std::endl;
+    std::cout << "========================================="     << std::endl;
 
 
     // Create value for scanners vector's type
-    std::vector<rf627old*> scanners;
-    // Search for RF627old devices over network
-    scanners = rf627old::search(PROTOCOLS::SERVICE);
+    std::vector<rf627smart*> scanners;
+    // Search for rf627smart devices over network
+    scanners = rf627smart::search(PROTOCOLS::SERVICE);
 
 
-    // Print count of discovered rf627-old in network by Service Protocol
-    std::cout << "Discovered: " << scanners.size() << " rf627-old"  << std::endl;
+    // Print count of discovered rf627smart in network by Service Protocol
+    std::cout << "Discovered: " << scanners.size() << " rf627-smart"   << std::endl;
 
 
     // Iterate over all discovered rf627-old in network, connect to each of
-    // them and read/set parameters.
-    for(size_t i = 0; i < scanners.size(); i++)
+    // them and get a profile.
+    for (size_t i = 0; i < scanners.size(); i++)
     {
-        rf627old::hello_info info = scanners[i]->get_info();
+        rf627smart::hello_info info = scanners[i]->get_info();
 
         std::cout << "\n\n\nID scanner's list: " << i               << std::endl;
         std::cout << "-----------------------------------------"    << std::endl;

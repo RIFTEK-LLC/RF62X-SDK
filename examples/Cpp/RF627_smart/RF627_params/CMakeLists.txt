@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.5)
 ## PROJECT
 ## name and version
 ##
-project(RF627_params LANGUAGES CXX)
+project(RF62X_params LANGUAGES CXX)
 
 
 ##
