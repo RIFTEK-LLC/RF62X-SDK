@@ -1,0 +1,102 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-31 17:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:7
+msgid "Интерфейс работы с rf627old"
+msgstr "Interface for working with rf627old"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:9
+msgid "Файлы ``rf62X_sdk.h``, ``rf62X_types.h`` и ``rf62Xcore.h`` предоставляют весь необходимый интерфейс для работы со сканерами серии RF627Old"
+msgstr "The files ``rf62X_sdk.h``, ``rf62X_types.h`` and ``rf62Xcore.h`` provide all the necessary interface for working with the RF627Old series scanners"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:13
+msgid "search_scanners()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:15
+msgid "Функция для поиска устройств RF627 доступных в сети"
+msgstr "Function to search for RF627 devices available on the network"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:19
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:53
+msgid "Пример использования:"
+msgstr "Usage example:"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:47
+msgid "get_info_about_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:49
+msgid "Функция для получения информации о сканере из пакета приветствия (Hello-пакет)"
+msgstr "Function for getting information about the scanner from the hello package"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:119
+msgid "connect_to_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:121
+msgid "Функция для установки соединения со сканером серии RF627"
+msgstr "Function for establishing connection with RF627 series scanner"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:127
+msgid "disconnect_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:129
+msgid "Функция для закрытия ранее установленного соединения со сканером серии RF627"
+msgstr "Function to close a previously established connection to the RF627 series scanner"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:135
+msgid "get_profile2D_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:137
+msgid "Функция для получения профиля со сканеров серии RF627"
+msgstr "Function to get a profile from RF627 series scanners"
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:145
+msgid "read_params_from_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:147
+msgid "Функция получения текущих параметров сканера. При вызове данной функции SDK вычитывает со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей работы."
+msgstr "The function of obtaining the current parameters of the scanner. When this function is called, the SDK reads all the actual parameters from the scanner, saving them as a «parameter list» for further work."
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:154
+msgid "get_parameter()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:156
+msgid "Функция получения конкретного параметра по его имени (ключу). При вызове данной функции SDK осуществляет поиск нужного параметра из последних прочитанных при вызове функции :ref:`read_params_from_scanner`. В случае, если запрашиваемый параметр отсутствует в конкретном сканере, функция вернёт null."
+msgstr "Function for getting a specific parameter by its name (key). When this function is called, the SDK searches for the required parameter from the last read values when calling the function :ref:`read_params_from_scanner`. If the requested parameter is absent in a specific scanner, the function will return null."
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:165
+msgid "set_parameter()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:167
+msgid "Функция установки конкретного параметра. При вызове данной функции происходит установка передаваемого параметра в локальном списке параметров в SDK. Для отправки изменений в сканер необходимо вызвать функцию ``write_params``."
+msgstr "Function for setting a specific parameter. When this function is called, the passed parameter is set in the local parameter list in the SDK. To send changes to the scanner, call the ``write_params`` function."
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:175
+msgid "write_params_to_scanner()"
+msgstr ""
+
+#: ../../source_ru/api_description/rf62Xsdk_c/rf627old.rst:177
+msgid "Функция записи локальных параметров из SDK в сканер. При вызове данной функции происходит отправка списка локальных параметров из SDK в сканер."
+msgstr "Function of writing local parameters from SDK to scanner. When this function is called, the list of local parameters is sent from the SDK to the scanner."

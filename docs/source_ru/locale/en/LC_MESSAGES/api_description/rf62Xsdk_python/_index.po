@@ -1,0 +1,46 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, Vladislav Kuzmin
+# This file is distributed under the same license as the RF62X-SDK package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RF62X-SDK \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-31 17:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:26
+msgid "Работа с RF627Old"
+msgstr "Working with RF627Old"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:26
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:26
+msgid "Обзор программного интерфейса"
+msgstr "Program interface overview"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:13
+msgid "API «обёртки» на Python"
+msgstr "Python wrapper API"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:15
+msgid "Эта библиотека позволяет упростить разработку приложений на языке Python"
+msgstr "This library allows you to simplify the development of Python applications"
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:17
+msgid "Для её использования в проектах Python разработчик должен включить необходимые py-файлы библиотеки в свой проект, а также динамическую программную библиотеку |pydll|. Взаимодействие с динамической библиотекой происходит за счет встроенного в Python модуля ctypes. Модуль позволяет вызывать из Python функции динамической программной библиотеки |pydll|, пользуясь при этом структурами данных языка C (см. rf62X_types.h) непосредственно в Python."
+msgstr "To use it in Python projects, the developer must include the necessary library py-files in his project, as well as the dynamic program library |pydll|. Interaction with the dynamic library occurs through the built-in Python module ctypes. The module allows you to call functions of the dynamic program library |pydll| from Python, using the data structures of the C language (see rf62X_types.h) directly in Python."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:23
+msgid "Для скачивания библиотеки |pydll| см. :ref:`последние выпуски «обёртки» на C <rf62x_sdk_c_last_release>`."
+msgstr "To download the library |pydll| see :ref:`latest C wrapper releases <rf62x_sdk_c_last_release>`."
+
+#: ../../source_ru/api_description/rf62Xsdk_python/_index.rst:24
+msgid "Для компиляции библиотеки |pydll| см. :ref:`компиляция и запуск «обёртки» на C <compilation_rf62x_sdk_cpp>`."
+msgstr "To compile the library |pydll| see :ref:`compile and run a C wrapper <compilation_rf62x_sdk_cpp>`."

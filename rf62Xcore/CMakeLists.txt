@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.10.2)
 ## PROJECT
 ## name and version
 ##
-project(rf62Xcore LANGUAGES C VERSION 1.1.0 DESCRIPTION "rf62Xcore library" )
+project(rf62Xcore LANGUAGES C VERSION 1.3.7 DESCRIPTION "rf62Xcore library" )
 
 
 ##
@@ -42,7 +42,7 @@ set  (SOURCES ${C_FILES} ${H_FILES})
 ## TARGET
 ## create target and add include path
 ##
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/protocols/smart-protocol/)

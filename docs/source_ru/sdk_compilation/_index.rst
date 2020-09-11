@@ -28,5 +28,6 @@
    :maxdepth: 2
    :caption: Библиотеки-«обёртки»
 
+   wrappers/rf62Xsdk_c
    wrappers/rf62Xsdk_cpp
    wrappers/rf62Xsdk_csharp

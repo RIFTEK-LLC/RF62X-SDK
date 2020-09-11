@@ -45,8 +45,8 @@ msgid "**RF62X-CORE** - основная библиотека («Ядро») с 
 msgstr "**RF62X-CORE** - the main library ("Core") with a basic set of functions and types for working with laser scanners of the RF62X series. The library is written in the C programming language in accordance with the C99 standard (ISO / IEC 9899: 1999) and is cross-platform. To use this library, it is necessary to implement platform-dependent functions (working with memory, working with the network, input/output functions)."
 
 #: ../../source_ru/overview.rst:27
-msgid "**RF62X-WRAPPERS** - библиотеки-«обёртки», в которых уже реализованы платформозависимые функции «Ядра» для конкретной платформы. Использование библиотек-«обёрток» упрощает процесс разработки приложений на следующих языках программирования : С++, С#, PYTHON, LabVew, MatLab."
-msgstr "**RF62X-WRAPPERS** - «wrapper»-libraries, in which platform-dependent «Core» functions for a specific platform are already implemented. The use of wrapper libraries simplifies the process of developing applications in the following programming languages: C++, C#, PYTHON, LabVew, MatLab."
+msgid "**RF62X-WRAPPERS** - библиотеки-«обёртки», в которых уже реализованы платформозависимые функции «Ядра» для конкретной платформы. Использование библиотек-«обёрток» упрощает процесс разработки приложений на следующих языках программирования : С++, С#, Python, LabVew, MatLab."
+msgstr "**RF62X-WRAPPERS** - «wrapper»-libraries, in which platform-dependent «Core» functions for a specific platform are already implemented. The use of wrapper libraries simplifies the process of developing applications in the following programming languages: C++, C#, Python, LabVew, MatLab."
 
 #: ../../source_ru/overview.rst:34
 msgid "Способы работы"

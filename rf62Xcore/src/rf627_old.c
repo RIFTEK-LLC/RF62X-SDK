@@ -3519,7 +3519,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 vector_add(scanner->params_list, p);
 
 
-                ret = 0;
+                ret = 1;
             }
 
 
