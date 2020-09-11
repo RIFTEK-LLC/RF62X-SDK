@@ -1,4 +1,4 @@
-﻿***
+***
 ![RF62X_SDK](docs/source_ru/_static/RF62X_SDK.png)
 ***
 
@@ -119,9 +119,6 @@ cmake ..
 ### Creating a C/C++ project 
 #### 1) Create a new project in **Qt Creator** by CMake with using SDK-sources 
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
-
-![](docs/source_ru/_static/note3.png)
-
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
 *  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
@@ -248,16 +245,10 @@ int main()
 
 #### 2) Create a new project in **Qt Creator** by CMake with using shared(static) SDK-library
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
-
-![](docs/source_ru/_static/note3.png)
-
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
 *  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
 *  Download **rf62Xsdk.dll** (see C/C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **include.zip** archive into the project directory.
-
-![](docs/source_ru/_static/note4.png)
-
 *  Modify your **CMakeLists.txt** file according to the example below:
 ```cmake
 cmake_minimum_required(VERSION 3.5)
@@ -358,9 +349,6 @@ int main()
 
 #### 3) Create a new project in **Visual Studio 2019** with using shared(static) SDK-library
 *  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
-
-![](docs/source_ru/_static/VS2019 chouse tamplate.png)
-
 *  Enter project name, Browse project location and click **Next** button
 *  Add `main.cpp` file to project and modify it according to the example below:
 ```c++
@@ -431,9 +419,6 @@ int main()
 ### Creating a C\# project 
 #### Create a new project in **Visual Studio 2019** with using SDK-libraries
 *  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
-
-![](docs/source_ru/_static/VS2019 chouse tamplate csharp.png)
-
 *  Enter project name (e.g RF627_search), Browse project location and click **Next** button
 *  Modify your **Program.cs** file according to the example below:
 ```csharp
