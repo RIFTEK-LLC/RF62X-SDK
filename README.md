@@ -106,13 +106,13 @@ cmake ..
 *  Open **RF627_TESTS.sln** from the **examples/CSharp/RF627_old** folder with Visual Studio
 *  Select **x64 Debug** or **x64 Release** target platform
 *  Add the **rf62Xsdk.dll** C# WRAPPER library to project's **references** 
-*  Copy the **rf62Xcore.dll** (see RF62X CORE table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Copy the **rf62Xcore.dll** (see RF62X CORE table from [RF62X-SDK libraries](#https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-core) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Compile project
 
 #### Running a Python example
 ##### Open and compile examples project in **Visual Studio Code**:  
 *  Open **demo.py** or **gui.py** from the **examples/Python/RF627_old** folder with Visual Studio Code
-*  Copy the **C WRAPPER rf62Xsdk.dll** (see C WRAPPER table from [RF62X-SDK libraries](#) link) into the path of the project executable
+*  Copy the **C WRAPPER rf62Xsdk.dll** (see C WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) into the path of the project executable
 *  Run example
 
 ## CREATING PROJECT
@@ -145,13 +145,11 @@ git submodule update --init --recursive
 ```cmake
 cmake_minimum_required(VERSION 3.5)
 
-
 ##
 ## PROJECT
 ## name and version
 ##
 project(RF627_search LANGUAGES CXX)
-
 
 ##
 ## CONFIGURATION
@@ -255,7 +253,7 @@ int main()
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
 *  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
-*  Download **rf62Xsdk.dll** (see C/C++ WRAPPER table from [RF62X-SDK libraries](#) link) and **include.zip** archive into the project directory.
+*  Download **rf62Xsdk.dll** (see C/C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **include.zip** archive into the project directory.
 
 ![](docs/source_ru/_static/note4.png)
 
@@ -423,10 +421,10 @@ int main()
 }
 ```
 *  Select **x64** or **x86** and **Debug** or **Release** target platform
-*  Download **rf62Xsdk.dll** and **rf62Xsdk.lib** (see C++ WRAPPER table from [RF62X-SDK libraries](#) link) and **include.zip** archive into the project directory.
+*  Download **rf62Xsdk.dll** and **rf62Xsdk.lib** (see C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **include.zip** archive into the project directory.
 *  Open **Project > Properties**, choose **Configuration Properties > VC++ Directories** and add paths of downloaded header files and libraries to **Include Directories** and **Library Directories**.
 *  Compile project
-*  Copy the **rf62Xsdk.dll** (see RF62X CORE table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Copy the **rf62Xsdk.dll** (see C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Run project
 
 ### Creating a C\# project 
@@ -494,16 +492,16 @@ namespace RF627_search
 }
 ```
 *  Select **x64** or **x86** and **Debug** or **Release** target platform
-*  Download **rf62Xsdk.dll** and **rf62Xcore.dll** (see C# WRAPPER table from [RF62X-SDK libraries](#) link).
+*  Download **rf62Xsdk.dll** and **rf62Xcore.dll** (see C# WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link).
 *  Open **Project > Add References**, click **Browse...** button and add downloaded **rf62Xsdk.dll** library.
 *  Compile project
-*  Copy the **rf62Xsdk.dll** and **rf62Xcore.dll** (see C# WRAPPER table from [RF62X-SDK libraries](#) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Copy the **rf62Xsdk.dll** and **rf62Xcore.dll** (see C# WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
 *  Run project
 
 ### Creating a Python project 
 #### Create a new project in **Visual Studio Code** with using SDK-libraries
 *  Create a project directory and add new **py-file** (e.g demo.py) in this project directory 
-*  Download **rf62Xsdk.dll** (see C WRAPPER table from [RF62X-SDK libraries](#) link) and **PYSDK.zip** archive into the project directory.
+*  Download **rf62Xsdk.dll** (see PYTHON WRAPPER table from [RF62X-SDK libraries](#https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **PYSDK.zip** archive into the project directory.
 *  Modify your **py-file** (e.g demo.py) according to the example below:
 ```python
 from PYSDK import const_protocol, const_scanner_type, const_parameter_name, const_old_data_type  # PySDK classes
@@ -573,7 +571,7 @@ For work with RF62X-smart scanners:
 git checkout v2.x.x
 git submodule update --init --recursive
 ```
-> for more information about project downloading steps, see an [overview](#overview)
+> for more information about project downloading steps, see an [Download project](#download-project)
 
 #### CMake
 To build the code:
@@ -632,7 +630,7 @@ For work with RF62X-smart scanners:
 git checkout v2.x.x
 git submodule update --init --recursive
 ```
-> for more information about project downloading steps, see an [overview](#overview)
+> for more information about project downloading steps, see an [Download project](#download-project)
 
 ##### CMake
 To build the C wrapper:
@@ -685,7 +683,7 @@ For work with RF62X-smart scanners:
 git checkout v2.x.x
 git submodule update --init --recursive
 ```
-> for more information about project downloading steps, see an [overview](#overview)
+> for more information about project downloading steps, see an [Download project](#download-project)
 
 ##### CMake
 To build the С++ wrapper:
@@ -738,7 +736,7 @@ For work with RF62X-smart scanners:
 git checkout v2.x.x
 git submodule update --init --recursive
 ```
-> for more information about project downloading steps, see an [overview](#overview)
+> for more information about project downloading steps, see an [Download project](#download-project)
 
 ##### Visual Studio
 To build the code:
@@ -770,7 +768,7 @@ For work with RF62X-smart scanners:
 git checkout v2.x.x
 git submodule update --init --recursive
 ```
-> for more information about project downloading steps, see an [overview](#overview)
+> for more information about project downloading steps, see an [Download project](#download-project)
 
 *  To build the rf62Xsdk.dll (C wrapper) you should use one of the previously described 
 methods (see [compilation C WRAPPER](#c-wrapper))
