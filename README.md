@@ -4,128 +4,259 @@
 
 ## CONTENTS
 - [OVERVIEW](#overview)
-  - [Core features](#core-features)
-  - [Supported compilers](#supported-compilers)
-  - [Resources](#resources)
 - [GETTING STARTED](#getting-started)
-  - [Installing software](#installing-software)
-  - [Running RF62X SDK tutorials](#)
-- [RF62X CORE](#rf62x-core)
-  - [How to compile](#how-to-compile)
-- [RF62X WRAPPER LIBRARIES](#rf62x-wrapper-libraries)
-  - [C++ LIBRARY](#c-library)
-    - [How to compile](#how-to-compile-1)
-    - [How to use](#how-to-use)
-  - [.NET LIBRARY](#net-library)
-    - [How to compile](#how-to-compile-2)
-    - [How to use](#how-to-use-1)
-  - [PYTHON LIBRARY](#python-library)
-    - [How to compile](#how-to-compile-3)
-    - [How to use](#how-to-use-2)
-
+  - [Download project](#download-project)
+  - [Running SDK examples](#running-sdk-examples)
+- [CREATING PROJECT](#creating-project)
+  - [Creating a C/C++ project](#creating-a-cc-project)
+  - [Creating a C# project](#creating-a-c-project)
+  - [Creating a Python project](#creating-a-python-project)
+- [COMPILING RF62X-SDK](#compiling-rf62x-sdk)
+  - [COMPILING CORE LIBRARY](#compiling-core-library)
+  - [COMPILING WRAPPER LIBRARIES](compiling-wrapper-libraries)
+    - [C WRAPPER](#c-wrapper)
+    - [C++ WRAPPER](#cc-wrapper)
+    - [.NET WRAPPER](#net-wrapper)
+    - [PYTHON WRAPPER](#python-wrapper)
 
 
 ## OVERVIEW
 
-**RF62X SDK** is a library that supports rapid development of software that deals with scanners series RF62X (RF627-old, RF627-smart).
+**RF62X-SDK** a Software Development Kit that allows specialists to create their own 
+software for working with laser scanners RF62X (RF627-old, RF627-smart) series 
+manufactured by RIFTEK LLC.
 
-The RF627X SDK consist of two parts:
-*  **RF62X CORE** is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
-*  **RF62X WRAPPER** is the library that helps to develop programs in a definite programming language and for the selected platform, simplifying the use of the main library (RF62X CORE).
-
-
-### Core features
-*  Search scanners
-*  Get scanner's profile
-*  Get/set scanner's parameters
-
-### Supported compilers
-*  GCC 5.x or newer on Linux
-*  XCode 8.0 or newer on OS X
-*  Visual Studio 2017 or newer on Windows
-
-### Resources
-This project uses [git](http://git-scm.com/) for source code management and [GitLab](https://about.gitlab.com/) for source code hosting.
-*  Code: www.gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK
-*  Document: www.riftek.com  
-*  Website: www.riftek.com
-
+The RF62X-SDK consists of two parts:
+* **RF62X-CORE** - the main library («Core») with a basic set of functions and types for working
+with laser scanners of the RF62X series. The library is written in the C programming language
+in accordance with the C99 standard (ISO/IEC 9899:1999) and is crossplatform. To use
+this library, it is necessary to implement platform-dependent functions (working with memory,
+working with the network, input/output functions).
+* **RF62X-WRAPPERS** - «wrapper»-libraries, in which platform-dependent «Core» functions
+for a specific platform are already implemented. The use of wrapper libraries simplifies
+the process of developing applications in the following programming languages: C++, С#, 
+Python, LabVew, MatLab.
 
 
 ## GETTING STARTED
 
-**For developers** who simply **want to use this SDK** for work with scanners, can **download last libraries** and read usage examples ([C++](#how-to-use), [C#](#net-library), [PYTHON](#how-to-use-2)).\
-**For others** who want to **build the latest code**, should be able to use Git and do the **[Installing instructions](#installing-software)**
+Developers who want to use **ready-made RF62X-SDK** libraries when creating their own applications
+for working with laser scanners of the RF62X series can download the latest libraries (download the 
+[RF62X-SDK libraries](#https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases/) 
+for C, C++, C#, Python), as well as see examples of their use (see [Examples for C/C++](#creating-a-cc-project), 
+[Examples for C#](#creating-a-c-project), [Examples for Python](#creating-a-python-project)).
 
-### Installing software
+Developers who prefer to compile RF62X-SDK libraries from sources, the manual contains instructions 
+for downloading sources (see [Download project](#download-project)) and installing the necessary software.
 
-###### 1. Install a git client on your local computer (if you haven’t yet)
-*  On Linux use the terminal command: `sudo apt install git`
-*  On MacOS use the terminal command: `brew install git`
-*  For other platforms see the [git installation documentation](https://git-scm.com/downloads).
-###### 2. Open a command prompt/terminal on your computer
-*  On Linux, click the launch bar and search for 'terminal'
-*  On OS X, hit ⌘-space and search for 'terminal'
-*  On Windows, click the Start menu and search for 'command line'.
-###### 3. Clone the repository using the following commands:
+### Download project 
+
+For developers who want to download the library from source using the Git-client,
+follow these instructions:
+##### 1. Install the git-client on your local computer (if not already installed):
+* On Linux, use the terminal command: `sudo apt install git`
+* On MacOS, use the terminal command: `brew install git`
+* For other platforms see [git installation documentation](#).
+##### 2. Open a command prompt/terminal on your computer:
+* On Linux, click on the launchpad and look for «terminal» `terminal`
+* In OS X, press commandspace and find «terminal» `terminal`
+* On Windows, click the Start menu and find the «command line» `cmd`.
+##### 3. Download the project:
 ```bash
 git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
+```
+##### 4. Select the right SDK version:
+* For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+* For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
 git submodule update --init --recursive
 ```
 
-For developers who wish to download and build the latest code using Git from the 
-IDE (Qt Creator or Visual Studio Community) should follow these instructions:
-1.  Create a Git project in one of the IDEs 
-2.  Clone `https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git`
-3.  Download submodules 
-
 > We recommend to use a git client for downloading and Qt Creator for project building 
 
-### Running RF62X SDK tutorials
+### Running SDK examples
 Here a basic example how to use method for searching RF62X devices in different languages by different ways.\
 You can create a new project yourself or you can just open an existing project example and build it.
-#### Compiling examples in C++ from source
+
+#### Running a C/C++ example
 ##### 1) Open and compile examples project in **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_TESTS** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-
-![](/uploads/78032febfdfd6b2954b93ff3cfac2967/Аннотация_2020-03-10_153146.jpg)
-
+*  Load the CMakeLists.txt file from the **examples/C/RF627_old/RF627_search** or **examples/Cpp/RF627_old/RF627_search** 
+folder via **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-
-![](/uploads/aea9094ca516e84609b41ff70412ac37/Аннотация2.jpg)
-
-*  Choose one of the examples, Compile and Run it
-
-##### 2) Generate a project for **Visual Studio** and compile examples
-*  Generate Visual Studio solution by calling CMake from the console
+*  Compile and Run it
+##### 2) Create project and compile examples in **Visual Studio 2019**:  
+*  Being in the folder **examples/C/RF627_old/RF627_search** or **examples/Cpp/RF627_old/RF627_search** enter the following command 
+into the console (terminal):  
 ```bash
-cd examples/Cpp/RF627_old
 mkdir build
 cd build
-
-:: Run one of the following lines based on your Visual Studio version
-cmake -G "Visual Studio 15 2017 Win64" ..
-cmake -G "Visual Studio 16 2019 Win64" ..
+cmake ..
 ```
-*  Open the **ALL_BUILD.vcxproj** from the **examples/Cpp/RF627_old** folder by Visual Studio
-*  Select the build type and target platform - **x64 Debug** or **x64 Release**
-*  Rebuild the **ALL_BUILD** target
-*  Choose one of the examples, Compile and Run it
+*  Open the resulting RF627_search.sln solution in Visual Studio
+*  Compile and Run it
 
-#### Creating a new project in C++ with using shared or static SDK-library
-##### 1) Create a new project in **Qt Creator** by СMake
+#### Running a C\# example
+##### Open and compile examples project in **Visual Studio 2019**:  
+*  Open **RF627_TESTS.sln** from the **examples/CSharp/RF627_old** folder with Visual Studio
+*  Select **x64 Debug** or **x64 Release** target platform
+*  Add the **rf62Xsdk.dll** C# WRAPPER library to project's **references** 
+*  Copy the **rf62Xcore.dll** (see RF62X CORE table from [RF62X-SDK libraries](#https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-core) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Compile project
+
+#### Running a Python example
+##### Open and compile examples project in **Visual Studio Code**:  
+*  Open **demo.py** or **gui.py** from the **examples/Python/RF627_old** folder with Visual Studio Code
+*  Copy the **C WRAPPER rf62Xsdk.dll** (see C WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) into the path of the project executable
+*  Run example
+
+## CREATING PROJECT
+### Creating a C/C++ project 
+#### 1) Create a new project in **Qt Creator** by CMake with using SDK-sources 
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
 
-![](/uploads/46932e911f2c5676f18ad43cc8214246/note2.png)
+![](docs/source_ru/_static/note3.png)
 
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
 *  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
-*  [Download](#c-library) **include.zip** archive and unzip it into the project directory. Also download **rf62Xsdk.dll** and copy it into the project directory next to the main.cpp file
+*  Download the project:
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+*  Select the right SDK version:
 
-![](/uploads/f772d702180bb91cf67cad8621090b40/note3.png)
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+*  Modify your **CMakeLists.txt** file according to the example below and and update RF62XSDK_DIR according to your path to rf62Xwrappers/Cpp/rf62Xsdk:
+```cmake
+cmake_minimum_required(VERSION 3.5)
+
+##
+## PROJECT
+## name and version
+##
+project(RF627_search LANGUAGES CXX)
+
+##
+## CONFIGURATION
+##
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# creating output directory architecture in accordance with GNU guidelines
+set(BINARY_DIR "${CMAKE_BINARY_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BINARY_DIR}/lib")
+
+
+# create glob files for *.h, *.cpp
+file (GLOB H_FILES   ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+file (GLOB CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+# concatenate the results (glob files) to variable
+set  (SOURCES ${CPP_FILES} ${H_FILES})
+
+
+##
+## TARGET
+## create target and add include path
+##
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+# set rf62Xsdk path variable
+set(RF62XSDK_DIR "path/to/RF62X-SDK/rf62Xwrappers/Cpp/rf62Xsdk")
+# add subdirectory of rf627sdk lib
+add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)
+target_link_libraries(${PROJECT_NAME} rf62Xsdk)
+```
+*  Modify your **main.cpp** file according to the example below:
+
+```c++
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
+#include <string>
+#include <iostream>
+
+using namespace SDK::SCANNERS::RF62X;
+
+int main()
+{
+
+    // Initialize sdk library
+    sdk_init();
+
+    // Print return rf627 sdk version
+    std::cout << "SDK version: " << sdk_version()                << std::endl;
+    std::cout << "========================================="     << std::endl;
+
+
+    // Create value for scanners vector's type
+    std::vector<rf627old*> list;
+    // Search for RF627old devices over network
+    list = rf627old::search(PROTOCOLS::SERVICE);
+
+
+    // Print count of discovered rf627-old in network by Service Protocol
+    std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+
+
+    for (size_t i = 0; i < list.size(); i++)
+    {
+        rf627old::hello_info info = list[i]->get_info();
+
+        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+        std::cout << "Device information: "                      << std::endl;
+        std::cout << "* Name\t: "     << info.device_name()      << std::endl;
+        std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
+        std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
+        std::cout << "* MAC Addr\t: " << info.mac_address()      << std::endl;
+
+        std::cout << "\nWorking ranges: "                        << std::endl;
+        std::cout << "* Zsmr, mm\t: " << info.z_smr()            << std::endl;
+        std::cout << "* Zmr , mm\t: " << info.z_mr()             << std::endl;
+        std::cout << "* Xsmr, mm\t: " << info.x_smr()            << std::endl;
+        std::cout << "* Xemr, mm\t: " << info.x_emr()            << std::endl;
+
+        std::cout << "\nVersions: "                              << std::endl;
+        std::cout << "* Firmware\t: " << info.firmware_version() << std::endl;
+        std::cout << "* Hardware\t: " << info.hardware_version() << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+
+    }
+
+    // Cleanup resources allocated with sdk_init()
+    sdk_cleanup();
+}
+```
+*  Select **Debug** or **Release** build type, Run CMake and Run project 
+
+#### 2) Create a new project in **Qt Creator** by CMake with using shared(static) SDK-library
+*  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
+
+![](docs/source_ru/_static/note3.png)
+
+*  Enter project name, Browse project location and click **Next** button
+*  Choose **CMake** build system and click **Next** button twice
+*  Select one of 64bit compilers (MinGW, MSVC2017, Clang, etc..), click **Next** button and finish project setup.
+*  Download **rf62Xsdk.dll** (see C/C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **include.zip** archive into the project directory.
+
+![](docs/source_ru/_static/note4.png)
 
 *  Modify your **CMakeLists.txt** file according to the example below:
 ```cmake
@@ -147,17 +278,27 @@ find_library(
     PATHS ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
-add_executable(${PROJECT_NAME}
-  main.cpp
-)
+# create glob files for *.h, *.c
+file(GLOB C_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB H_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+# concatenate the results (glob files) to variable
+set  (SOURCES ${C_FILES} ${H_FILES})
+
+
+##
+## TARGET
+## create target and add include path
+##
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} ${RF62XSDK_LIBRARY})
 ```
 *  Modify your **main.cpp** file according to the example below:
 
 ```c++
-#include <rf62Xsdk.h>
-#include <rf62Xtypes.h>
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
+#include <string>
 #include <iostream>
 
 using namespace SDK::SCANNERS::RF62X;
@@ -212,143 +353,19 @@ int main()
     sdk_cleanup();
 }
 ```
-*  Copy **rf62Xsdk.dll** into the path of the project executable (PROJECT_BINARY_DIR)
-
-You can do it in two ways:
-1) Copy rf62Xsdk.dll to the executable folder (near with *.exe) yourself.
-2) Or add a "copy command" to the end of the CMakeLists.txt file:
-
-```cmake
-# copy rf62Xsdk lib from cmake current source directory to project build directory
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${RF62XSDK_LIBRARY} ${PROJECT_BINARY_DIR})
-```
-    
+*  Also copy **rf62Xsdk.dll** into the path of the project executable (PROJECT_BINARY_DIR)
 *  Select **Debug** or **Release** build type, Run CMake and Run project 
 
-Beside this example, you may want to check the documentation where each function contains a separate code example. All example project can be compiled and executed.
+#### 3) Create a new project in **Visual Studio 2019** with using shared(static) SDK-library
+*  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
 
-## RF62X CORE
-RF62X CORE is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
-This library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999).
+![](docs/source_ru/_static/VS2019 chouse tamplate.png)
 
-##### Last release libraries:
-
-| Compiler | 32bit(Debug) | 32bit(Release) | 64bit(Debug) | 64bit(Release) | Includes |
-| ------   | ------------ | -------------- | ------------ | -------------- | ---------|
-| MinGW 7.3.0 | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/W44rJD6QMz9Eqj3/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/MLdMg9z6HXx6QHi/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/X7CzbodXkj4jcxg/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/cTmYMHno3qkNZAg/download) | [include.zip](http://cloud.riftek.com/index.php/s/aQYnipwasmqr3mQ/download) |
-| MSVC2017 | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/wFzrbHgqSzTNn93/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/W7ApSaGDADRSzBx/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/AxfTNmw594YgtYf/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/dRo8RbeTkRFnRNn/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/bTCdqLbBRrj3QiC/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/bCLAZRYB3R2cFKJ/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/pqMibXpZSAEtmR2/download); [rf62Xcore.lib](http://cloud.riftek.com/index.php/s/fTaHyHoLQnmniHi/download) | [include.zip](http://cloud.riftek.com/index.php/s/MFk3d2CMwgppeCN/download) |
-
-***
-
-
-### HOW TO COMPILE
-RF62X CORE can be built on the console or in an IDE.\
-Firstly, you should download the project (if you have already done it, skip next commands)
-```bash
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
-cd RF62X-SDK
-git submodule update --init --recursive
-```
-> for more information about project downloading steps, see an [overview](#overview)
-
-###### CMake
-To build the code:
-
-```bash
-cd rf62Xcore
-mkdir build
-cd build
-cmake ..
-cmake --build .
-```
-
-###### Qt Creator
-To build the code:
-*  Load the CMakeLists.txt file from the **rf62Xcore** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-*  Open **Build Settings** and check ***install*** target for **Build Steps** 
-*  Compile project
-
-###### Visual Studio
-To build the code:
-
-```bash
-cd rf62Xcore
-mkdir build
-cd build
-cmake ..
-```
-*  Open rf62Xcore.sln with Visual Studio
-*  Compile
-
-## RF62X WRAPPER LIBRARIES
-Wrappers are help to make programs in different languages and for different platforms using the rf62Xcore library easier.
-
-### C++ LIBRARY
-This project is a C++ library that simplifies the integration of C++ 
-applications with following scanner series: 
-*  RF627-old
-*  RF627-smart
-
-##### Last release libraries:
-
-| Compiler | 32bit(Debug) | 32bit(Release) | 64bit(Debug) | 64bit(Release) | Includes |
-| ------   | ------------ | -------------- | ------------ | -------------- | ---------|
-| MinGW 7.3.0 | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/mA92Pd4pH4QAYYX/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/oTzGrE8kbk8TiP7/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/DYaYmS4w6ayBPRS/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/wcf5jmF3mJ7gkT5/download) | [include.zip](http://cloud.riftek.com/index.php/s/SBi3SadfWBjQRYR/download) |
-| MSVC2017 | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/DeQZkxDCjTnwzcW/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/bPxNqzzKybMQpYz/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/dKRYSiHo8Wn57qW/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/At2W465qYXtjw8Q/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/MzLkeWYcjrmJpgj/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/55zesCAX2pnjDpD/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/FtH4KBCtzNQnqrB/download); [rf62Xsdk.lib](http://cloud.riftek.com/index.php/s/5iYzXy9se9W3soF/download) | [include.zip](http://cloud.riftek.com/index.php/s/k7BHfcEgKSmJpLB/download) |
-
-#### HOW TO COMPILE
-RF62X SDK (C++) can be built on the console or in an IDE.\
-Firstly, you should download the project (if you have already done it, skip next commands)
-```bash
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
-cd RF62X-SDK
-git submodule update --init --recursive
-```
-> for more information about project downloading steps, see an [overview](#overview)
-
-###### CMake
-To build the С++ wrapper:
-
-```bash
-cd rf62Xsdk/Cpp/rf62Xsdk
-mkdir build
-cd build
-cmake ..
-cmake --build . 
-```
-
-###### Qt Creator
-To build the code:
-*  Load the CMakeLists.txt file from the **rf62Xsdk/Cpp/rf62Xsdk** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-*  Compile project
-
-###### Visual Studio
-To build the code:
-
-```bash
-cd rf62Xsdk/Cpp/rf62Xsdk
-mkdir build
-cd build
-cmake ..
-```
-*  Open rf62Xsdk.sln with Visual Studio
-*  Compile
-
-#### HOW TO USE
-Beside the examples below, you may want to check the documentation where each function 
-contains a separate code example. All example project can be compiled and executed.
-##### Search for RF62X devices
-Here are some examples how to use search methods
-###### Search for RF627-old devices over network by service protocol
+*  Enter project name, Browse project location and click **Next** button
+*  Add `main.cpp` file to project and modify it according to the example below:
 ```c++
-#include <rf62Xsdk.h>
-#include <rf62Xtypes.h>
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
 #include <string>
 #include <iostream>
 
@@ -404,267 +421,22 @@ int main()
     sdk_cleanup();
 }
 ```
-You can open and build this example by **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_old/RF627_search** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Select **x64** or **x86** and **Debug** or **Release** target platform
+*  Download **rf62Xsdk.dll** and **rf62Xsdk.lib** (see C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **include.zip** archive into the project directory.
+*  Open **Project > Properties**, choose **Configuration Properties > VC++ Directories** and add paths of downloaded header files and libraries to **Include Directories** and **Library Directories**.
 *  Compile project
+*  Copy the **rf62Xsdk.dll** (see C++ WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Run project
 
-##### Get Profile from RF62X devices
-Here are some examples how to use get profile methods
-###### Get Profile from RF627-old devices over network by service protocol
-```c++
-#include <rf62Xsdk.h>
-#include <rf62Xtypes.h>
-#include <string>
-#include <iostream>
+### Creating a C\# project 
+#### Create a new project in **Visual Studio 2019** with using SDK-libraries
+*  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
 
-using namespace SDK::SCANNERS::RF62X;
+![](docs/source_ru/_static/VS2019 chouse tamplate csharp.png)
 
-int main()
-{
-
-    // Initialize sdk library
-    sdk_init();
-
-    // Print return rf627 sdk version
-    std::cout << "SDK version: " << sdk_version()                << std::endl;
-    std::cout << "========================================="     << std::endl;
-
-
-    // Create value for scanners vector's type
-    std::vector<rf627old*> list;
-    // Search for RF627old devices over network
-    list = rf627old::search(PROTOCOLS::SERVICE);
-
-
-    // Print count of discovered rf627-old in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
-
-
-    // Iterate over all discovered rf627-old in network, connect to each of
-    // them and get a profile.
-    for(size_t i = 0; i < list.size(); i++)
-    {
-        rf627old::hello_info info = list[i]->get_info();
-
-        // Print information about the scanner to which the profile belongs.
-        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
-        std::cout << "-----------------------------------------" << std::endl;
-        std::cout << "Device information: "                      << std::endl;
-        std::cout << "* Name\t: "     << info.device_name()      << std::endl;
-        std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
-        std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
-
-        // Establish connection to the RF627 device by Service Protocol.
-        list[i]->connect();
-
-        // Get profile from scanner's data stream by Service Protocol.
-        profile2D_t* profile = list[i]->get_profile2D();
-        if (profile != nullptr)
-        {
-            std::cout << "Profile information: "                    << std::endl;
-            switch (profile->header.data_type) {
-            case (uint8_t)PROFILE_DATA_TYPE::PIXELS:
-                std::cout << "* DataType\t: "<< "PIXELS"            << std::endl;
-                std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
-                break;
-            case (uint8_t)PROFILE_DATA_TYPE::PIXELS_INTRP:
-                std::cout << "* DataType\t: "<< "PIXELS_INTRP"      << std::endl;
-                std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
-                break;
-            case (uint8_t)PROFILE_DATA_TYPE::PROFILE:
-                std::cout << "* DataType\t: "<< "PROFILE"           << std::endl;
-                std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
-                break;
-            case (uint8_t)PROFILE_DATA_TYPE::PROFILE_INTRP:
-                std::cout << "* DataType\t: "<< "PROFILE_INTRP"     << std::endl;
-                std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
-                break;
-            }
-            delete profile;
-            std::cout << "Profile was successfully received!"       << std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
-        }else
-        {
-            std::cout << "Profile was not received!"                << std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
-        }
-
-        // Disconnect from scanner.
-        list[i]->disconnect();
-    }
-
-    // Cleanup resources allocated with sdk_init()
-    sdk_cleanup();
-}
-```
-You can open and build this example by **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_old/RF627_profile** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-*  Compile project
-
-##### Get/Set RF62X-old parameters
-Here are some examples how to work with device's parameters
-###### Get/Set RF627-old parameters devices over network
-```c++
-#include <rf62Xsdk.h>
-#include <rf62Xtypes.h>
-#include <iostream>
-#include <string>
-
-using namespace SDK::SCANNERS::RF62X;
-
-int main()
-{
-
-    // Initialize sdk library
-    sdk_init();
-
-    // Print return rf62X SDK version
-    std::cout << "SDK version: " << sdk_version()                   << std::endl;
-    std::cout << "========================================="        << std::endl;
-
-
-    // Create value for scanners vector's type
-    std::vector<rf627old*> scanners;
-    // Search for RF627old devices over network
-    scanners = rf627old::search(PROTOCOLS::SERVICE);
-
-
-    // Print count of discovered rf627-old in network by Service Protocol
-    std::cout << "Discovered: " << scanners.size() << " rf627-old"  << std::endl;
-
-
-    // Iterate over all discovered rf627-old in network, connect to each of
-    // them and read/set parameters.
-    for(size_t i = 0; i < scanners.size(); i++)
-    {
-        rf627old::hello_info info = scanners[i]->get_info();
-
-        std::cout << "\n\n\nID scanner's list: " << i               << std::endl;
-        std::cout << "-----------------------------------------"    << std::endl;
-
-        // Establish connection to the RF627 device by Service Protocol.
-        scanners[i]->connect();
-
-        // read params from RF627 device by Service Protocol.
-        scanners[i]->read_params();
-
-        // Get parameter of Device Name
-        param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
-        if (name->type == param_value_types[(int)PARAM_VALUE_TYPE::STRING_PARAM_TYPE])
-        {
-            std::string str_name = name->get_value<value_str>();
-            std::cout << "Current Device Name \t: " << str_name     << std::endl;
-
-            // Add "_TEST" to the ending of the current name
-            str_name += "_TEST";
-            name->set_value<value_str>(str_name);
-            std::cout << "New Device Name \t: " << str_name         << std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
-
-            scanners[i]->set_param(name);
-        }
-
-        // Get parameter of Device IP Addr
-        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
-        if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE])
-        {
-            std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
-            std::cout << "Current Device IP\t: ";
-            for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
-
-            // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
-            ip[3]++;
-            ip_addr->set_value<array_uint32>(ip);
-            std::cout << "New Device IP\t: ";
-            for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
-
-            scanners[i]->set_param(ip_addr);
-        }
-
-        // Get parameter of Laser Enabled
-        param_t* laser_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
-        if (laser_enabled->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
-        {
-            bool isEnabled = laser_enabled->get_value<value_uint32>();
-            std::cout<<"Current Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
-
-            isEnabled = !isEnabled;
-            // Change the current state to the opposite
-            laser_enabled->set_value<value_uint32>(!isEnabled);
-            std::cout<<"New Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
-
-            scanners[i]->set_param(laser_enabled);
-        }
-
-        //  Write changes parameters to the device's memory
-        scanners[i]->write_params();
-
-        // Disconnect from scanner.
-        scanners[i]->disconnect();
-
-    }
-
-    // Cleanup resources allocated with sdk_init()
-    sdk_cleanup();
-
-}
-```
-You can open and build this example by **Qt Creator**:  
-*  Load the CMakeLists.txt file from the **examples/Cpp/RF627_old/RF627_params** folder via 
-**File > Open File or Project** (Select the CMakeLists.txt file)
-*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
-*  Compile project
-
-### .NET LIBRARY
-This project is a .NET library, written in C# language, that simplifies the integration of C#, 
-Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner series: 
-*  RF627-old
-*  RF627-smart
-
-##### Last release libraries:
-
-| Platform | 32bit(Debug) | 32bit(Release) | 64bit(Debug) | 64bit(Release) | Dependencies (x32) | Dependencies (x64) | 
-| -------- | ------------ |--------------- | ------------ | -------------- | ------------------ | ------------------ |
-| .NET Framework 4.5 (and late) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/CeAWqwP2acbdNPK/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/rxNwAmGG3qZx5gT/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/PWEwwDBedsWY6Yp/download) | [rf62Xsdk.dll](http://cloud.riftek.com/index.php/s/HoJXYa4JgG63kST/download) |[rf62Xcore.dll](http://cloud.riftek.com/index.php/s/ReDjx45RSXmaMMa/download) | [rf62Xcore.dll](http://cloud.riftek.com/index.php/s/kPzFiNbELp3DHTd/download) |
-
-
-#### HOW TO COMPILE
-RF62X SDK (C#) can be built in an Visual Studio IDE.\
-Firstly, you should download the project (if you have already done it, skip next commands)
-```bash
-git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
-cd RF62X-SDK
-git submodule update --init --recursive
-```
-> for more information about project downloading steps, see an [overview](#overview)
-
-###### Visual Studio
-To build the code:
-
-*  Open rf62Xsdk.sln from the **rf62Xsdk/CSharp/RF627_old** folder with Visual Studio
-*  Compile
-
-#### HOW TO USE
-Beside the examples below, you may want to check the documentation where each function 
-contains a separate code example. All example project can be compiled and executed.
-
-You can open and build these examples by **Visual Studio**:  
-*  Open **RF627_TESTS.sln** from the **rf62Xsdk/CSharp/RF627_old** folder with Visual Studio
-*  Select **x64 Debug** or **x64 Release** target platform
-*  Add the **rf62Xsdk.dll** library to project's **references** 
-*  Copy the **rf62Xcore.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
-*  Compile project
-
-##### Search for RF62X devices
-Here are some examples how to use search methods
-###### Search for RF627-old devices over network by service protocol
-```c#
+*  Enter project name (e.g RF627_search), Browse project location and click **Next** button
+*  Modify your **Program.cs** file according to the example below:
+```csharp
 using System;
 using System.Collections.Generic;
 using SDK.SCANNERS;
@@ -720,200 +492,290 @@ namespace RF627_search
     }
 }
 ```
+*  Select **x64** or **x86** and **Debug** or **Release** target platform
+*  Download **rf62Xsdk.dll** and **rf62Xcore.dll** (see C# WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link).
+*  Open **Project > Add References**, click **Browse...** button and add downloaded **rf62Xsdk.dll** library.
+*  Compile project
+*  Copy the **rf62Xsdk.dll** and **rf62Xcore.dll** (see C# WRAPPER table from [RF62X-SDK libraries](https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+*  Run project
 
-##### Get Profile from RF62X devices
-Here are some examples how to use get profile methods
-###### Get Profile from RF627-old devices over network by service protocol
-```c#
-using System;
-using System.Collections.Generic;
-using SDK.SCANNERS;
+### Creating a Python project 
+#### Create a new project in **Visual Studio Code** with using SDK-libraries
+*  Create a project directory and add new **py-file** (e.g demo.py) in this project directory 
+*  Download **rf62Xsdk.dll** (see PYTHON WRAPPER table from [RF62X-SDK libraries](#https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/-/releases#rf62x-wrappers) link) and **PYSDK.zip** archive into the project directory.
+*  Modify your **py-file** (e.g demo.py) according to the example below:
+```python
+from PYSDK import const_protocol, const_scanner_type, const_parameter_name, const_old_data_type  # PySDK classes
+from PYSDK import rf627_Error, rf627_device  # PySDK classes
+from PYSDK import sdk_init, get_sdk_version, search_scanners, select_scanner  # PySDK functions
 
-namespace RF627_profile
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            // Start initialization of the library core
-            RF62X.SdkInit();
+# ===================== RF627 Python SDK demo ================
+# Initialize sdk library
+sdk_init()
+print('sdk version', get_sdk_version()) # Print sdk version
 
-            // Search for RF627old devices over network
-            Console.WriteLine("- Start searching device");
-            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
-            Console.WriteLine("+ {0} scanners detected", Scanners.Count);
+# ===================== RF627_search =========================
+#
 
-            // foreach over an scanners list
-            for (int i = 0; i < Scanners.Count; i++)
-            {
-                RF62X.HelloInfo info = Scanners[i].GetInfo();
+# Search for RF627old devices over network
+list = search_scanners(protocol=const_protocol.kSERVICE, scanner_type=const_scanner_type.kRF627_OLD)
+# Print count of discovered rf627-old in network by Service Protocol
+print('Discovered: ', len(list), ' rf627-old')
+# Print info of all discovered devices in network by Service Protocol
+for i in range(len(list)):
+    print('Scanner index : ', i)
+    print(list[i])
 
-                Console.WriteLine("\n\n\nID scanner's list: {0}", i);
-                Console.WriteLine("-----------------------------------------");
-                Console.WriteLine("Device information: ");
-                Console.WriteLine("* Name\t: {0}", info.device_name);
-                Console.WriteLine("* Serial\t: {0}", info.serial_number);
-                Console.WriteLine("* IP Addr\t: {0}", info.ip_address);
+# Select device by ip. Note: device can be selected by device_name, serial_number, etc. (see select_scanner documentation)
+current_scanner=select_scanner(list, ip_address='192.168.1.30')
 
-                // Establish connection to the RF627 device by Service Protocol.
-                Scanners[i].Connect();
-
-                // Get profile from scanner's data stream by Service Protocol.
-                RF62X.Profile profile = Scanners[i].GetProfile();
-                if (profile.header != null)
-                {
-                    Console.WriteLine("Profile information: ");
-                    switch (profile.header.data_type)
-                    {
-                        case RF62X.PROFILE_TYPE.PIXELS_NORMAL:
-                            Console.WriteLine("* DataType\t: PIXELS");
-                            Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
-                            break;
-                        case RF62X.PROFILE_TYPE.PROFILE_NORMAL:
-                            Console.WriteLine("* DataType\t: PROFILE");
-                            Console.WriteLine("* Size\t: {0}", profile.points.Count);
-                            break;
-                        case RF62X.PROFILE_TYPE.PIXELS_INTERPOLATED:
-                            Console.WriteLine("* DataType\t: PIXELS");
-                            Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
-                            break;
-                        case RF62X.PROFILE_TYPE.PROFILE_INTERPOLATED:
-                            Console.WriteLine("* DataType\t: PROFILE");
-                            Console.WriteLine("* Size\t: {0}", profile.points.Count);
-                            break;
-                        default:
-                            break;
-                    }
-                    Console.WriteLine("Profile was successfully received!");
-                    Console.WriteLine("-----------------------------------------");
-                }else
-                {
-                    Console.WriteLine("Profile was not received!");
-                    Console.WriteLine("-----------------------------------------");
-                }
-
-                // Disconnect from scanner.
-                Scanners[i].Disconnect();
-
-            }
-
-            Console.WriteLine("{0}Press any key to end \"Search-test\"", Environment.NewLine);
-            Console.ReadKey();
-
-            // Cleanup resources allocated with sdk_init()
-            RF62X.SdkCleanup();
-        }
-    }
-}
-```
-
-##### Get/Set RF62X-old parameters
-Here are some examples how to work with device's parameters
-###### Get/Set RF627-old parameters devices over network
-```c#
-using System;
-using System.Collections.Generic;
-using SDK.SCANNERS;
-
-namespace RF627_params
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            // Start initialization of the library core
-            RF62X.SdkInit();
-
-            // Search for RF627old devices over network
-            Console.WriteLine("- Start searching device");
-            List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
-            Console.WriteLine("+ {0} scanners detected", Scanners.Count);
-
-            // foreach over an scanners list
-            for (int i = 0; i < Scanners.Count; i++)
-            {
-                // Establish connection to the RF627 device by Service Protocol.
-                Scanners[i].Connect();
-
-                // read params from RF627 device by Service Protocol.
-                Scanners[i].ReadParams();
-
-                // Get parameter of Device Name
-                RF62X.Param<string> name = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
-                if (name != null)
-                {
-                    string strName = name.GetValue();
-                    Console.WriteLine("\n\nCurrent Device Name \t: {0}", strName);
-
-                    // Add "_TEST" to the ending of the current name
-                    strName += "_TEST";
-                    name.SetValue(strName);
-                    Console.WriteLine("New Device Name \t: {0}", strName);
-                    Console.WriteLine("-----------------------------------------");
-
-                    Scanners[i].SetParam(name);
-
-                }
-
-                // Get parameter of Device IP Addr
-                RF62X.Param<List<uint>> ipAddr = Scanners[i].GetParam(RF62X.Params.User.NetWork.ip);
-                if (ipAddr != null)
-                {
-                    List<uint> ip = ipAddr.GetValue();
-                    Console.WriteLine("Current Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
-
-                    // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
-                    ip[3]++;                    
-                    ipAddr.SetValue(ip);
-                    Console.WriteLine("New Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
-                    Console.WriteLine("-----------------------------------------");
-
-                    Scanners[i].SetParam(ipAddr);
-                }
-
-                // Get parameter of Laser Enabled
-                RF62X.Param<uint> laserEnabled = Scanners[i].GetParam(RF62X.Params.User.Laser.enabled);
-                if (laserEnabled != null)
-                {
-                    bool isLaserEnabled = Convert.ToBoolean(laserEnabled.GetValue());
-                    Console.WriteLine("Current Laser State\t: {0}", isLaserEnabled ? "ON" : "OFF");
-
-                    // Change the current state to the opposite
-                    isLaserEnabled = !isLaserEnabled;
-                    laserEnabled.SetValue((uint)(Convert.ToUInt32(isLaserEnabled)));
-                    Console.WriteLine("New Laser State\t\t: {0}", isLaserEnabled ? "ON" : "OFF");
-                    Console.WriteLine("-----------------------------------------");
-
-
-                    Scanners[i].SetParam(laserEnabled);
-                }
-
-                //  Write changes parameters to the device's memory
-                Scanners[i].WriteParams();
-
-                // Disconnect from scanner.
-                Scanners[i].Disconnect();
-            }
-            Console.WriteLine("{0}Press any key to end \"Parameters-test\"", Environment.NewLine);
-            Console.ReadKey();
-
-            // Cleanup resources allocated with SdkInit()
-            RF62X.SdkCleanup();
-        }
-    }
-}
+if current_scanner:
+    # Print current_scanner device info
+    print('Current scanner info')
+    hello = current_scanner.get_info_about_scanner()
+    print('Device information fields: ')
+    print('* Name\t: ', hello['device_name'])
+    print('* Serial\t: ', hello['serial_number'])
+    print('* IP Addr\t: ', hello['ip_address'])
+    print('* MAC Addr\t: ', hello['mac_address'])
+    print('\nWorking ranges:')
+    print('* Zsmr, mm\t: ', hello['z_begin'])
+    print('* Zmr , mm\t: ', hello['z_range'])
+    print('* Xsmr, mm\t: ', hello['x_begin'])
+    print('* Xemr, mm\t: ', hello['x_end'])
+    print('\nVersions: ')
+    print('* Firmware\t: ', hello['firmware_version'])
+    print('* Hardware\t: ', hello['hardware_version'])
+    print('\n')
 ```
 
 
-Also you can open and build **Windows Forms** application for searching, getting/setting parameters and viewing profiles:  
-*  Open **RF62X_WinForms.sln** from the **rf62Xsdk/CSharp/RF62X_WinForms** folder with Visual Studio
-*  Select **x64 Debug** or **x64 Release** target platform
-*  Add the **rf62Xsdk.dll** library to project's **references** 
-*  Copy the **rf62Xcore.dll** into the path of the project executable (**../bin/x64/Debug/** or **../bin/x64/Release/**)
+## COMPILING RF62X-SDK
+### CORE LIBRARY
+RF62X CORE is the main library with basic functionality for work with scanners and platform dependent methods (such as memory, network, output/input methods, etc.) requiring initialization.
+This library was written in C programming language in accordance with C99 Sdandart (ISO/IEC 9899:1999).
+
+RF62X CORE can be built on the console or in an IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+Then you should select the right SDK version:
+
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [Download project](#download-project)
+
+#### CMake
+To build the code:
+
+```bash
+cd rf62Xcore
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+#### Qt Creator
+To build the code:
+*  Load the CMakeLists.txt file from the **rf62Xcore** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Open **Build Settings** and check ***install*** target for **Build Steps** 
 *  Compile project
 
-![photo_2020-04-13_17-50-20](/uploads/36ec7848dc4b2e2d9a4f0993208e63da/photo_2020-04-13_17-50-20.jpg)
+#### Visual Studio
+To build the code:
 
-### PYTHON LIBRARY
-#### HOW TO COMPILE
-#### HOW TO USE
+```bash
+cd rf62Xcore
+mkdir build
+cd build
+cmake ..
+```
+*  Open rf62Xcore.sln with Visual Studio
+*  Compile
+
+### RF62X WRAPPER LIBRARIES
+Wrappers are help to make programs in different languages and for different platforms using the rf62Xcore library easier.
+
+#### C WRAPPER
+This project is a C library that simplifies the integration of C 
+applications with following scanner series: 
+*  RF627-old
+*  RF627-smart
+
+RF62X SDK (C) can be built on the console or in an IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+Then you should select the right SDK version:
+
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [Download project](#download-project)
+
+##### CMake
+To build the C wrapper:
+```bash
+cd rf62Xsdk/C/rf62Xsdk
+mkdir build
+cd build
+cmake ..
+cmake --build . 
+```
+
+##### Qt Creator
+To build the code:
+*  Load the CMakeLists.txt file from the **rf62Xsdk/C/rf62Xsdk** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
+
+##### Visual Studio
+To build the code:
+```bash
+cd rf62Xsdk/C/rf62Xsdk
+mkdir build
+cd build
+cmake ..
+```
+*  Open rf62Xsdk.sln with Visual Studio
+*  Compile
+
+#### C++ WRAPPER
+This project is a C++ library that simplifies the integration of C++ 
+applications with following scanner series: 
+*  RF627-old
+*  RF627-smart
+
+RF62X SDK (C++) can be built on the console or in an IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+Then you should select the right SDK version:
+
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [Download project](#download-project)
+
+##### CMake
+To build the С++ wrapper:
+```bash
+cd rf62Xsdk/Cpp/rf62Xsdk
+mkdir build
+cd build
+cmake ..
+cmake --build . 
+```
+
+##### Qt Creator
+To build the code:
+*  Load the CMakeLists.txt file from the **rf62Xsdk/Cpp/rf62Xsdk** folder via 
+**File > Open File or Project** (Select the CMakeLists.txt file)
+*  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Compile project
+
+##### Visual Studio
+To build the code:
+```bash
+cd rf62Xsdk/Cpp/rf62Xsdk
+mkdir build
+cd build
+cmake ..
+```
+*  Open rf62Xsdk.sln with Visual Studio
+*  Compile
+
+#### .NET WRAPPER
+This project is a .NET library, written in C# language, that simplifies the integration of C#, 
+Visual Basic .NET, C++/CLI and JScript .NET applications with following scanner series: 
+*  RF627-old
+*  RF627-smart
+
+RF62X SDK (C#) can be built in an Visual Studio IDE.\
+Firstly, you should download the project (if you have already done it, skip next commands)
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+Then you should select the right SDK version:
+
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [Download project](#download-project)
+
+##### Visual Studio
+To build the code:
+
+*  Open rf62Xsdk.sln from the **rf62Xsdk/CSharp/RF627_old** folder with Visual Studio
+*  Compile
+
+#### PYTHON WRAPPER
+This library allows you to simplify the development of Python applications with 
+following scanner series: 
+*  RF627-old
+*  RF627-smart
+
+To use it in Python projects, the developer must include the necessary library py-files in a project,
+as well as the dynamic program library rf62Xsdk.dll.\
+*  Firstly, you should download the RF62X-SDK project (if you have already done it, skip next commands)
+```bash
+git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
+cd RF62X-SDK
+```
+Then you should select the right SDK version:
+
+For work with RF62X-old scanners:
+```bash
+git checkout v1.x.x
+git submodule update --init --recursive
+```
+For work with RF62X-smart scanners:
+```bash
+git checkout v2.x.x
+git submodule update --init --recursive
+```
+> for more information about project downloading steps, see an [Download project](#download-project)
+
+*  To build the rf62Xsdk.dll (C wrapper) you should use one of the previously described 
+methods (see [compilation C WRAPPER](#c-wrapper))
+*  Copy the resulting rf62Xsdk.dll library, PYSDK.py and PYSDK_functions.py to your own project folder
