@@ -131,6 +131,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 ```
 *  Select the right SDK version:
+
 For work with RF62X-old scanners:
 ```bash
 git checkout v1.x.x
@@ -561,6 +562,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 ```
 Then you should select the right SDK version:
+
 For work with RF62X-old scanners:
 ```bash
 git checkout v1.x.x
@@ -620,6 +622,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 ```
 Then you should select the right SDK version:
+
 For work with RF62X-old scanners:
 ```bash
 git checkout v1.x.x
@@ -673,6 +676,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 ```
 Then you should select the right SDK version:
+
 For work with RF62X-old scanners:
 ```bash
 git checkout v1.x.x
@@ -726,6 +730,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 ```
 Then you should select the right SDK version:
+
 For work with RF62X-old scanners:
 ```bash
 git checkout v1.x.x
@@ -758,6 +763,7 @@ git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
 cd RF62X-SDK
 ```
 Then you should select the right SDK version:
+
 For work with RF62X-old scanners:
 ```bash
 git checkout v1.x.x
