@@ -574,3 +574,8 @@ rfBool core_init()
 }
 
 
+
+char* sdk_version(void)
+{
+    return core_version();
+}

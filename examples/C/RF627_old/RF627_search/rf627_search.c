@@ -1,11 +1,10 @@
-#include <rf62Xcore.h>
 #include <network.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <rf62Xcore.h>
 #include <rf62X_sdk.h>
-#include <rf62X_core.h>
 #include <rf62X_types.h>
 
 int main()
@@ -15,7 +14,7 @@ int main()
     core_init();
 
     // Print return rf627 sdk version
-    printf("SDK version: %s\n", core_version());
+    printf("SDK version: %s\n", sdk_version());
     printf("=========================================\n");
 
 
@@ -78,7 +77,7 @@ int main()
 
     }
 
-    // Cleanup resources allocated with sdk_init()
+    // Cleanup resources allocated with core_init()
     FreeAdapterAddresses();
     WinSockDeinit();
 }

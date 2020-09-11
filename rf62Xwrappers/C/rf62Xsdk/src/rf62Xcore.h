@@ -16,6 +16,12 @@
 
 API_EXPORT rfBool core_init();
 
+/**
+ * @brief sdk_version - Return info about SDK version
+ * @return SDK version
+ */
+API_EXPORT char* sdk_version(void);
+
 /** @brief Allocates an array in memory with elements initialized to 0.
  *
  * @param num - number of elements to allocate.

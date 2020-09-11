@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+﻿# SOME DESCRIPTIVE TITLE.
 # Copyright (C) 2020, Vladislav Kuzmin
 # This file is distributed under the same license as the RF62X-SDK package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RF62X-SDK \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-26 10:17+0300\n"
+"POT-Creation-Date: 2020-08-31 18:41+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,29 +17,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../../source_ru/tutorial/rf62Xsdk_python.rst:3
-msgid "Примеры для PYTHON"
-msgstr "Examples for PYTHON"
+msgid "Примеры для Python"
+msgstr "Examples for Python"
 
-#: ../../source_ru/tutorial/rf62Xsdk_python.rst:8
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:4
+msgid "Исходный код, демонстрирующщий работу со сканером, находится в файле demo.py Ниже представлено описание каждой части кода."
+msgstr "The source code that demonstrates how to work with the scanner is located in the demo.py file. Below is a description of each part of the code."
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:7
+msgid "Импорт функций  библиотеки­ «обёртки» для rf62Xsdk.dll, которые находятся в файле PYSDK.py:"
+msgstr "Import of the functions of the "wrapper" library for rf62Xsdk.dll, which are located in the PYSDK.py file:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:25
 msgid "Поиск устройств RF62X"
-msgstr "Search for RF62X devices"
+msgstr "Find RF62X devices"
 
-#: ../../source_ru/tutorial/rf62Xsdk_python.rst:10
-msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети"
-msgstr "Below is an example of searching the RF627Old series of scanners on the network"
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:26
+msgid "Ниже приведен пример поиска сканеров серии RF627Old в сети  и выбор сканера с определенным  ip-адресом."
+msgstr "Below is an example of searching for RF627Old series scanners on the network and selecting a scanner with a specific ip-address."
 
-#: ../../source_ru/tutorial/rf62Xsdk_python.rst:15
-msgid "Получение профиля сканера"
-msgstr "Getting a scanner profile"
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:52
+msgid "Ниже приведён результат вывода приложения при успешном обнаружении сканера в сети:"
+msgstr "Below is the output of the application upon successful detection of the scanner on the network:"
 
-#: ../../source_ru/tutorial/rf62Xsdk_python.rst:17
-msgid "Ниже приведен пример получения профилей от сканеров серии RF627Old"
-msgstr "The following is an example of retrieving profiles from RF627Old Series Scanners"
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:82
+msgid "Получение  информации о сканере и профиля сканера"
+msgstr "Retrieving Scanner Information and Scanner Profile"
 
-#: ../../source_ru/tutorial/rf62Xsdk_python.rst:22
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:83
+msgid "После того, как сканер выбран, производится получение информации о сканере и чтение профиля со сканера серии RF627Old."
+msgstr "After the scanner is selected, it retrieves information about the scanner and reads the profile from the RF627Old series scanner."
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:135
+msgid "Ниже приведён результат вывода приложения при успешном получении  информации о сканере и чтении профиля со сканера:"
+msgstr "Below is the output of the application upon successful receipt of information about the scanner and reading the profile from the scanner:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:170
 msgid "Получение и установка параметров"
 msgstr "Getting and setting parameters"
 
-#: ../../source_ru/tutorial/rf62Xsdk_python.rst:24
-msgid "Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены состояния лазера (включение или отключение):"
-msgstr "The following is an example of getting and changing the name of the scanner, setting the IP address, changing the state of the laser (turning it on or off):"
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:172
+msgid "Ниже приведен пример получения и изменения имени сканера, установки IP адреса, смены состояния лазера (включение или отключение) двумя способами:"
+msgstr "Below is an example of obtaining and changing the name of the scanner, setting the IP address, changing the laser state (enabling or disabling) in two ways:"
+
+#: ../../source_ru/tutorial/rf62Xsdk_python.rst:239
+msgid "Ниже приведён результат вывода приложения при успешной установке новых параметров:"
+msgstr "Below is the output of the application when the new parameters are successfully set:"

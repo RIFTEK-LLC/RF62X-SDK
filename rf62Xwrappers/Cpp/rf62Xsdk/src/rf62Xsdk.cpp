@@ -119,6 +119,15 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         /*
+         * Cleaning detected network adapter.
+         */
+        FreeAdapterAddresses();
+        /*
+         * Retrieving addresses associated with adapters on the local computer.
+         */
+        EnumAdapterAddresses();
+
+        /*
          * Create value for scanners vector's type
          */
         vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));

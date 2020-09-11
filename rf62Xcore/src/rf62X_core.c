@@ -1,7 +1,8 @@
 #include "rf62X_core.h"
 #include "endian_conv.h"
 
-#define CORE_VERSION "2.0.1"
+#define CORE_VERSION "2.0.2"
+
 
 rfChar* core_version()
 {
