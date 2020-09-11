@@ -1,4 +1,4 @@
-***
+﻿***
 ![RF62X_SDK](docs/source_ru/_static/RF62X_SDK.png)
 ***
 

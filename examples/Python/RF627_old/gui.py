@@ -9,6 +9,8 @@ from PyQt5 import QtCore, QtWidgets, uic
 from PyQt5.QtWidgets import QMessageBox,QTableWidgetItem
 from time import sleep
 
+import sys
+sys.path.append("../../../rf62Xwrappers/Python/")
 from PYSDK import const_protocol, const_scanner_type, const_parameter_name, const_old_data_type  # enums
 from PYSDK import rf627_Error, rf627_device  # PySDK classes
 from PYSDK import sdk_init, get_sdk_version, search_scanners, select_scanner  # PySDK functions
