@@ -22,7 +22,7 @@ void delay(unsigned int mseconds)
 
 int answ_count = 0;
 vector_t *search_result;
-rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size)
+rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id)
 {
     answ_count++;
     printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
@@ -40,20 +40,6 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size)
         mpack_tree_destroy(&tree);
         return result;
     }
-    mpack_node_t root = mpack_tree_root(&tree);
-
-    // Серийник сканера
-    uint32_t fact_general_serial = 0;
-    if (mpack_node_map_contains_cstr(root, "fact_general_serial"))
-    {
-        fact_general_serial = mpack_node_uint(mpack_node_map_cstr(root, "fact_general_serial"));
-    }else
-    {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return result;
-    }
-
 
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
     {
@@ -62,7 +48,7 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size)
             parameter_t* param = rf627_smart_get_parameter(((scanner_base_t*)vector_get(search_result, i))->rf627_smart, "fact_general_serial");
             if (param != NULL)
             {
-                if (param->val_uint32->value == fact_general_serial)
+                if (param->val_uint32->value == device_id)
                     existing = TRUE;
             }
         }
@@ -109,7 +95,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
 
     smart_channel_init(&channel, config);
 
-    smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, FALSE, FALSE, FALSE,
+    smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, "blob", FALSE, FALSE, FALSE,
                                              3000,
                                              rf627_smart_get_hello_callback,
                                              rf627_smart_get_hello_timeout_callback);
@@ -357,9 +343,8 @@ rfBool rf627_smart_connect(rf627_smart_t* scanner)
             scanner->info_by_service_protocol.user_network_servicePort,
             scanner->info_by_service_protocol.user_network_servicePort);
 
-    smart_channel channel;
 
-    if (smart_channel_init(&channel, config))
+    if (smart_channel_init(&scanner->channel, config))
     {
         scanner->m_data_sock =
                 network_platform.network_methods.create_udp_socket();
@@ -406,7 +391,7 @@ rfBool rf627_smart_connect(rf627_smart_t* scanner)
 
 void rf627_smart_disconnect(rf627_smart_t* scanner)
 {
-    smart_channel_cleanup(scanner->channel);
+    smart_channel_cleanup(&scanner->channel);
 
     if (scanner->m_data_sock != NULL &&
             scanner->m_data_sock != (void*)RF_SOCKET_ERROR)
@@ -582,835 +567,1583 @@ rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBoo
     return NULL;
 }
 
-rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size)
+rfBool is_smart_params_readed = false;
+extern parameter_t* create_parameter_from_type(const rfChar* type);
+rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t device_id)
 {
     answ_count++;
     printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
 
     int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
-    rfBool existing = FALSE;
 
-    // Get params
-    mpack_tree_t tree;
-    mpack_tree_init_data(&tree, (const char*)data, data_size);
-    mpack_tree_parse(&tree);
-    if (mpack_tree_error(&tree) != mpack_ok)
-    {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return result;
-    }
-    mpack_node_t root = mpack_tree_root(&tree);
-
-    // Серийник сканера
-    uint32_t fact_general_serial = 0;
-    if (mpack_node_map_contains_cstr(root, "fact_general_serial"))
-    {
-        fact_general_serial = mpack_node_uint(mpack_node_map_cstr(root, "fact_general_serial"));
-    }else
-    {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return result;
-    }
-
-
+    int index = -1;
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
     {
         if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
         {
-            parameter_t* param = rf627_smart_get_parameter(((scanner_base_t*)vector_get(search_result, i))->rf627_smart, "fact_general_serial");
-            if (param != NULL)
+            if (((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial == device_id)
             {
-                if (param->val_uint32->value == fact_general_serial)
-                    existing = TRUE;
+                index = i;
+                break;
             }
+
+
         }
     }
-
-    if (!existing)
+    if (index != -1)
     {
-        scanner_base_t* rf627 =
-                memory_platform.rf_calloc(1, sizeof(scanner_base_t));
+        // Get params
+        mpack_tree_t tree;
+        mpack_tree_init_data(&tree, (const char*)data, data_size);
+        mpack_tree_parse(&tree);
+        if (mpack_tree_error(&tree) != mpack_ok)
+        {
+            result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+            mpack_tree_destroy(&tree);
+            return result;
+        }
+        mpack_node_t root = mpack_tree_root(&tree);
 
-        rf627->type = kRF627_SMART;
-        rf627->rf627_smart = rf627_smart_create_from_hello_msg(
-                    data, data_size);
-        vector_add(search_result, rf627);
+        mpack_node_t factory = mpack_node_map_cstr(root, "factory");
+        uint32_t factory_arr_size = mpack_node_array_length(factory);
+
+        for (uint32_t i = 0; i < factory_arr_size; i++)
+        {
+            parameter_t* p = NULL;
+            // type
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "type"))
+            {
+                char* test = mpack_node_str(mpack_node_map_cstr(mpack_node_array_at(factory, i), "type"));
+                p = (parameter_t*)create_parameter_from_type(test);
+                p->is_changed = FALSE;
+            }
+
+            if (p == NULL)
+            {
+                continue;
+            }
+
+
+            // access
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "access"))
+            {
+                int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(factory, i), "access")) + 1;
+                p->base.access = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(factory, i), "access"), param_strlen);
+            }
+
+            if(rf_strcmp(parameter_value_types[PVT_UINT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+                    p->val_uint32->defValue =
+                            mpack_node_u32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+                    p->val_uint32->value =
+                            mpack_node_u32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->val_uint32->max = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->val_uint32->min = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->val_uint32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+                    p->val_uint64->defValue =
+                            mpack_node_u64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+                    p->val_uint64->value =
+                            mpack_node_u64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->val_uint64->max = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->val_uint64->min = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->val_uint64->step = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_INT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+                    p->val_int32->defValue =
+                            mpack_node_i32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+                    p->val_int32->value =
+                            mpack_node_i32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->val_int32->max = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->val_int32->min = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->val_int32->step = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_INT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+                    p->val_int64->defValue =
+                            mpack_node_i64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+                    p->val_int64->value =
+                            mpack_node_i64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->val_int64->max = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->val_int64->min = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->val_int64->step = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_FLOAT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+                    p->val_flt->defValue =
+                            mpack_node_float(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+                    p->val_flt->value =
+                            mpack_node_float(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->val_flt->max = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->val_flt->min = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->val_flt->step = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_DOUBLE], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->val_dbl->defValue =
+                            mpack_node_double(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->val_dbl->value =
+                            mpack_node_double(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->val_dbl->max = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->val_dbl->min = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->val_dbl->step = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT32], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->arr_uint32->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                    p->arr_uint32->defValue = memory_platform.rf_calloc(p->arr_uint32->defCount, sizeof (uint32_t));
+                    for (int ii = 0; ii < p->arr_uint32->defCount; ii++)
+                        p->arr_uint32->defValue[ii] =
+                                mpack_node_u32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->arr_uint32->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                    p->arr_uint32->value = memory_platform.rf_calloc(p->arr_uint32->count, sizeof (uint32_t));
+                    for (int ii = 0; ii < p->arr_uint32->count; ii++)
+                        p->arr_uint32->value[ii] =
+                                mpack_node_u32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->arr_uint32->max = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->arr_uint32->min = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxCount"))
+                {
+                    p->arr_uint32->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->arr_uint32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->arr_uint64->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                    p->arr_uint64->defValue = memory_platform.rf_calloc(p->arr_uint64->defCount, sizeof (uint64_t));
+                    for (int ii = 0; ii < p->arr_uint64->defCount; ii++)
+                        p->arr_uint64->defValue[ii] =
+                                mpack_node_u64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->arr_uint64->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                    p->arr_uint64->value = memory_platform.rf_calloc(p->arr_uint64->count, sizeof (uint64_t));
+                    for (int ii = 0; ii < p->arr_uint64->count; ii++)
+                        p->arr_uint64->value[ii] =
+                                mpack_node_u64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->arr_uint64->max = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->arr_uint64->min = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxCount"))
+                {
+                    p->arr_uint64->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->arr_uint64->step = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT32], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->arr_int32->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                    p->arr_int32->defValue = memory_platform.rf_calloc(p->arr_int32->defCount, sizeof (int32_t));
+                    for (int ii = 0; ii < p->arr_int32->defCount; ii++)
+                        p->arr_int32->defValue[ii] =
+                                mpack_node_i32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->arr_int32->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                    p->arr_int32->value = memory_platform.rf_calloc(p->arr_int32->count, sizeof (int32_t));
+                    for (int ii = 0; ii < p->arr_int32->count; ii++)
+                        p->arr_int32->value[ii] =
+                                mpack_node_i32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->arr_int32->max = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->arr_int32->min = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxCount"))
+                {
+                    p->arr_int32->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->arr_int32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->arr_int64->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                    p->arr_int64->defValue = memory_platform.rf_calloc(p->arr_int64->defCount, sizeof (int64_t));
+                    for (int ii = 0; ii < p->arr_int64->defCount; ii++)
+                        p->arr_int64->defValue[ii] =
+                                mpack_node_i64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->arr_int64->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                    p->arr_int64->value = memory_platform.rf_calloc(p->arr_int64->count, sizeof (int64_t));
+                    for (int ii = 0; ii < p->arr_int64->count; ii++)
+                        p->arr_int64->value[ii] =
+                                mpack_node_i64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->arr_int64->max = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->arr_int64->min = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxCount"))
+                {
+                    p->arr_int64->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->arr_int64->step = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_FLT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->arr_flt->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                    p->arr_flt->defValue = memory_platform.rf_calloc(p->arr_flt->defCount, sizeof (float));
+                    for (int ii = 0; ii < p->arr_flt->defCount; ii++)
+                        p->arr_flt->defValue[ii] =
+                                mpack_node_float(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->arr_flt->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                    p->arr_flt->value = memory_platform.rf_calloc(p->arr_flt->count, sizeof (float));
+                    for (int ii = 0; ii < p->arr_flt->count; ii++)
+                        p->arr_flt->value[ii] =
+                                mpack_node_float(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->arr_flt->max = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->arr_flt->min = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxCount"))
+                {
+                    p->arr_flt->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->arr_flt->step = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_DBL], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    p->arr_dbl->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "defaultValue"));
+                    p->arr_dbl->defValue = memory_platform.rf_calloc(p->arr_dbl->defCount, sizeof (double));
+                    for (int ii = 0; ii < p->arr_dbl->defCount; ii++)
+                        p->arr_dbl->defValue[ii] =
+                                mpack_node_double(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    p->arr_dbl->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "value"));
+                    p->arr_dbl->value = memory_platform.rf_calloc(p->arr_dbl->count, sizeof (double));
+                    for (int ii = 0; ii < p->arr_dbl->count; ii++)
+                        p->arr_dbl->value[ii] =
+                                mpack_node_double(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                factory, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "max"))
+                {
+                    p->arr_dbl->max = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(factory, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "min"))
+                {
+                    p->arr_dbl->min = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(factory, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxCount"))
+                {
+                    p->arr_dbl->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "step"))
+                {
+                    p->arr_dbl->step = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_STRING], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "defaultValue"))
+                {
+
+                    int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(factory, i), "defaultValue")) + 1;
+                    p->val_str->defValue = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(factory, i), "defaultValue"), param_strlen);
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "value"))
+                {
+
+                    int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(factory, i), "value")) + 1;
+                    p->val_str->value = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(factory, i), "value"), param_strlen);
+                }
+                // maxLen
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "maxLen"))
+                {
+                    p->val_str->maxLen = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "maxLen"));
+                }
+            }
+
+
+            // index
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "index"))
+            {
+                p->base.index = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(factory, i), "index"));
+            }
+
+            // name
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "name"))
+            {
+                int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(factory, i), "name")) + 1;
+                p->base.name = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(factory, i), "name"), param_strlen);
+            }
+
+            // offset
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "offset"))
+            {
+                p->base.offset = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(factory, i), "offset"));
+            }
+
+            // size
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "size"))
+            {
+                p->base.size = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(factory, i), "size"));
+            }
+
+            vector_add(((scanner_base_t*)vector_get(search_result, index))->rf627_smart->params_list, p);
+        }
+
+        mpack_node_t user = mpack_node_map_cstr(root, "user");
+        uint32_t user_arr_size = mpack_node_array_length(user);
+
+        for (uint32_t i = 0; i < user_arr_size; i++)
+        {
+            parameter_t* p = NULL;
+            // type
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "type"))
+            {
+                char* test = mpack_node_str(mpack_node_map_cstr(mpack_node_array_at(user, i), "type"));
+                p = (parameter_t*)create_parameter_from_type(test);
+            }
+
+            if (p == NULL)
+            {
+                continue;
+            }
+
+
+            // access
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "access"))
+            {
+                int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(user, i), "access")) + 1;
+                p->base.access = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(user, i), "access"), param_strlen);
+            }
+
+            if(rf_strcmp(parameter_value_types[PVT_UINT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+                    p->val_uint32->defValue =
+                            mpack_node_u32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+                    p->val_uint32->value =
+                            mpack_node_u32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->val_uint32->max = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->val_uint32->min = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->val_uint32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+                    p->val_uint64->defValue =
+                            mpack_node_u64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+                    p->val_uint64->value =
+                            mpack_node_u64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->val_uint64->max = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->val_uint64->min = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->val_uint64->step = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_INT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+                    p->val_int32->defValue =
+                            mpack_node_i32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+                    p->val_int32->value =
+                            mpack_node_i32(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->val_int32->max = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->val_int32->min = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->val_int32->step = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_INT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+                    p->val_int64->defValue =
+                            mpack_node_i64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+                    p->val_int64->value =
+                            mpack_node_i64(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->val_int64->max = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->val_int64->min = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->val_int64->step = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_FLOAT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+                    p->val_flt->defValue =
+                            mpack_node_float(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+                    p->val_flt->value =
+                            mpack_node_float(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->val_flt->max = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->val_flt->min = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->val_flt->step = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_DOUBLE], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->val_dbl->defValue =
+                            mpack_node_double(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->val_dbl->value =
+                            mpack_node_double(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->val_dbl->max = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->val_dbl->min = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->val_dbl->step = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT32], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->arr_uint32->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                    p->arr_uint32->defValue = memory_platform.rf_calloc(p->arr_uint32->defCount, sizeof (uint32_t));
+                    for (int ii = 0; ii < p->arr_uint32->defCount; ii++)
+                        p->arr_uint32->defValue[ii] =
+                                mpack_node_u32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->arr_uint32->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                    p->arr_uint32->value = memory_platform.rf_calloc(p->arr_uint32->count, sizeof (uint32_t));
+                    for (int ii = 0; ii < p->arr_uint32->count; ii++)
+                        p->arr_uint32->value[ii] =
+                                mpack_node_u32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->arr_uint32->max = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->arr_uint32->min = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxCount"))
+                {
+                    p->arr_uint32->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->arr_uint32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->arr_uint64->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                    p->arr_uint64->defValue = memory_platform.rf_calloc(p->arr_uint64->defCount, sizeof (uint64_t));
+                    for (int ii = 0; ii < p->arr_uint64->defCount; ii++)
+                        p->arr_uint64->defValue[ii] =
+                                mpack_node_u64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->arr_uint64->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                    p->arr_uint64->value = memory_platform.rf_calloc(p->arr_uint64->count, sizeof (uint64_t));
+                    for (int ii = 0; ii < p->arr_uint64->count; ii++)
+                        p->arr_uint64->value[ii] =
+                                mpack_node_u64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->arr_uint64->max = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->arr_uint64->min = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxCount"))
+                {
+                    p->arr_uint64->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->arr_uint64->step = mpack_node_u64(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT32], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->arr_int32->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                    p->arr_int32->defValue = memory_platform.rf_calloc(p->arr_int32->defCount, sizeof (int32_t));
+                    for (int ii = 0; ii < p->arr_int32->defCount; ii++)
+                        p->arr_int32->defValue[ii] =
+                                mpack_node_i32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->arr_int32->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                    p->arr_int32->value = memory_platform.rf_calloc(p->arr_int32->count, sizeof (int32_t));
+                    for (int ii = 0; ii < p->arr_int32->count; ii++)
+                        p->arr_int32->value[ii] =
+                                mpack_node_i32(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->arr_int32->max = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->arr_int32->min = mpack_node_i32(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxCount"))
+                {
+                    p->arr_int32->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->arr_int32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT64], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->arr_int64->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                    p->arr_int64->defValue = memory_platform.rf_calloc(p->arr_int64->defCount, sizeof (int64_t));
+                    for (int ii = 0; ii < p->arr_int64->defCount; ii++)
+                        p->arr_int64->defValue[ii] =
+                                mpack_node_i64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->arr_int64->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                    p->arr_int64->value = memory_platform.rf_calloc(p->arr_int64->count, sizeof (int64_t));
+                    for (int ii = 0; ii < p->arr_int64->count; ii++)
+                        p->arr_int64->value[ii] =
+                                mpack_node_i64(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->arr_int64->max = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->arr_int64->min = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxCount"))
+                {
+                    p->arr_int64->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->arr_int64->step = mpack_node_i64(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_FLT], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->arr_flt->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                    p->arr_flt->defValue = memory_platform.rf_calloc(p->arr_flt->defCount, sizeof (float));
+                    for (int ii = 0; ii < p->arr_flt->defCount; ii++)
+                        p->arr_flt->defValue[ii] =
+                                mpack_node_float(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->arr_flt->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                    p->arr_flt->value = memory_platform.rf_calloc(p->arr_flt->count, sizeof (float));
+                    for (int ii = 0; ii < p->arr_flt->count; ii++)
+                        p->arr_flt->value[ii] =
+                                mpack_node_float(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->arr_flt->max = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->arr_flt->min = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxCount"))
+                {
+                    p->arr_flt->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->arr_flt->step = mpack_node_float(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_DBL], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    p->arr_dbl->defCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "defaultValue"));
+                    p->arr_dbl->defValue = memory_platform.rf_calloc(p->arr_dbl->defCount, sizeof (double));
+                    for (int ii = 0; ii < p->arr_dbl->defCount; ii++)
+                        p->arr_dbl->defValue[ii] =
+                                mpack_node_double(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "defaultValue"), ii));
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    p->arr_dbl->count =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "value"));
+                    p->arr_dbl->value = memory_platform.rf_calloc(p->arr_dbl->count, sizeof (double));
+                    for (int ii = 0; ii < p->arr_dbl->count; ii++)
+                        p->arr_dbl->value[ii] =
+                                mpack_node_double(
+                                    mpack_node_array_at(
+                                        mpack_node_map_cstr(
+                                            mpack_node_array_at(
+                                                user, i), "value"), ii));
+                }
+                // max
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "max"))
+                {
+                    p->arr_dbl->max = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(user, i), "max"));
+                }
+                // min
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "min"))
+                {
+                    p->arr_dbl->min = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(user, i), "min"));
+                }
+                // maxCount
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxCount"))
+                {
+                    p->arr_dbl->maxCount = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxCount"));
+                }
+                // step
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "step"))
+                {
+                    p->arr_dbl->step = mpack_node_double(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
+                }
+            }else if(rf_strcmp(parameter_value_types[PVT_STRING], p->base.type) == 0)
+            {
+                // defaultValue
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "defaultValue"))
+                {
+
+                    int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(user, i), "defaultValue")) + 1;
+                    p->val_str->defValue = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(user, i), "defaultValue"), param_strlen);
+                }
+                // value
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "value"))
+                {
+
+                    int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(user, i), "value")) + 1;
+                    p->val_str->value = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(user, i), "value"), param_strlen);
+                }
+                // maxLen
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "maxLen"))
+                {
+                    p->val_str->maxLen = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "maxLen"));
+                }
+            }
+
+
+            // index
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "index"))
+            {
+                p->base.index = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(user, i), "index"));
+            }
+
+            // name
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "name"))
+            {
+                int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(user, i), "name")) + 1;
+                p->base.name = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(user, i), "name"), param_strlen);
+            }
+
+            // offset
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "offset"))
+            {
+                p->base.offset = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(user, i), "offset"));
+            }
+
+            // size
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "size"))
+            {
+                p->base.size = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(user, i), "size"));
+            }
+
+            // units
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "units"))
+            {
+                int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(user, i), "units")) + 1;
+                p->base.units = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(user, i), "units"), param_strlen);
+            }else
+            {
+                p->base.units = "";
+            }
+
+
+            vector_add(((scanner_base_t*)vector_get(search_result, index))->rf627_smart->params_list, p);
+        }
+
+
     }
+
+    is_smart_params_readed = TRUE;
 }
 
 rfInt8 rf627_smart_read_params_timeout_callback()
 {
-    printf("get_hello_timeout\n");
+    printf("smart_read_params_timeout\n");
 }
 
 
-//rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner)
-//{
-
-//    smart_msg_t* msg = smart_create_rqst_msg("GET_PARAMS_DESCRIPTION", NULL, 0, FALSE, FALSE, TRUE,
-//                                             3000,
-//                                             rf627_smart_read_params_callback,
-//                                             rf627_smart_read_params_timeout_callback);
-
-//    // Send test msg
-//    if (!smart_channel_send_msg(&channel, msg))
-//        printf("No data has been sent.\n");
-//    else
-//        printf("Requests were sent.\n");
-
-
-//    delay(3000);
-
-//    // Cleanup test msg
-//    smart_cleanup_msg(msg);
-
-
-//                rfUint16 index = 0;
-//                parameter_t* p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_DEVICETYPE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 0;
-//                p->base.size = sizeof(scanner->factory_params.general.device_id);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.device_id;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_SERIAL];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 2;
-//                p->base.size = sizeof(scanner->factory_params.general.serial);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.serial;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4294967295;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_PCBSERIAL];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 6;
-//                p->base.size = sizeof(scanner->factory_params.general.serial_of_pcb);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.serial_of_pcb;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4294967295;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_LIFETIME];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 10;
-//                p->base.size = sizeof(scanner->factory_params.general.operating_time_h);
-//                p->base.units = "s";
-
-//                p->val_uint32->value =
-//                        scanner->factory_params.general.operating_time_h * 60 * 60 +
-//                        scanner->factory_params.general.operating_time_m * 60 +
-//                        scanner->factory_params.general.operating_time_s;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 1577846272;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_WORKTIME];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 16;
-//                p->base.size = sizeof(scanner->factory_params.general.runtime_h);
-//                p->base.units = "s";
-
-//                p->val_uint32->value =
-//                        scanner->factory_params.general.runtime_h * 60 * 60 +
-//                        scanner->factory_params.general.runtime_m * 60 +
-//                        scanner->factory_params.general.runtime_s;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 1577846272;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_STARTSCOUNT];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 22;
-//                p->base.size = sizeof(scanner->factory_params.general.startup_counter);
-//                p->base.units = "count";
-
-//                p->val_uint32->value = scanner->factory_params.general.startup_counter;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 8760;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_FIRMWAREREV];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 26;
-//                p->base.size = sizeof(scanner->factory_params.general.firmware_ver);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.firmware_ver;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4294967295;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_HARDWAREREV];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 30;
-//                p->base.size = sizeof(scanner->factory_params.general.hardware_ver);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.hardware_ver;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4294967295;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_CUSTOMERID];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 34;
-//                p->base.size = sizeof(scanner->factory_params.general.customer_id);
-//                p->base.units = "id";
-
-//                p->val_uint32->value = scanner->factory_params.general.customer_id;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4294967295;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_FPGAFREQ];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 38;
-//                p->base.size = sizeof(scanner->factory_params.general.fpga_freq);
-//                p->base.units = "Hz";
-
-//                p->val_uint32->value = scanner->factory_params.general.fpga_freq;
-//                p->val_uint32->min = 100000000;
-//                p->val_uint32->max = 100000000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_SMR];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 42;
-//                p->base.size = sizeof(scanner->factory_params.general.base_z);
-//                p->base.units = "mm";
-
-//                p->val_uint32->value = scanner->factory_params.general.base_z;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 10000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_MR];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 46;
-//                p->base.size = sizeof(scanner->factory_params.general.range_z);
-//                p->base.units = "mm";
-
-//                p->val_uint32->value = scanner->factory_params.general.range_z;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 10000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_XSMR];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 50;
-//                p->base.size = sizeof(scanner->factory_params.general.range_x_start);
-//                p->base.units = "mm";
-
-//                p->val_uint32->value = scanner->factory_params.general.range_x_start;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 10000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_XEMR];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 54;
-//                p->base.size = sizeof(scanner->factory_params.general.range_x_end);
-//                p->base.units = "mm";
-
-//                p->val_uint32->value = scanner->factory_params.general.range_x_end;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 20000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_PIXDIVIDER];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 58;
-//                p->base.size = sizeof(scanner->factory_params.general.pixels_divider);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.pixels_divider;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 8;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_PROFDIVIDER];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 60;
-//                p->base.size = sizeof(scanner->factory_params.general.profiles_divider);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.profiles_divider;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 8;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_GENERAL_FSBLREV];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 62;
-//                p->base.size = sizeof(scanner->factory_params.general.fsbl_version);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.general.fsbl_version;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4294967295;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_STRING]);
-//                p->base.name = parameter_names[FACT_GENERAL_OEMDEVNAME];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 66;
-//                p->base.size = rf_strlen(scanner->factory_params.general.oem_device_name) + 1;
-//                p->base.units = "";
-
-//                p->val_str->value = memory_platform.rf_calloc(1, sizeof(rfChar) * p->base.size);
-//                memory_platform.rf_memcpy(
-//                            (void*)p->val_str->value,
-//                            scanner->factory_params.general.oem_device_name,
-//                            p->base.size);
-//                p->val_str->maxLen = sizeof (scanner->factory_params.general.oem_device_name);
-//                p->val_str->defValue = "Laser scanner";
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_STRING]);
-//                p->base.name = parameter_names[FACT_SENSOR_NAME];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 158;
-//                p->base.size = rf_strlen(scanner->factory_params.sensor.name) + 1;
-//                p->base.units = "";
-
-//                p->val_str->value = memory_platform.rf_calloc(1, sizeof(rfChar) * p->base.size);
-//                memory_platform.rf_memcpy(
-//                            (void*)p->val_str->value,
-//                            scanner->factory_params.sensor.name,
-//                            p->base.size);
-//                p->val_str->maxLen = sizeof (scanner->factory_params.sensor.name);
-//                p->val_str->defValue = "TYPE1";
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_WIDTH];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 190;
-//                p->base.size = sizeof(scanner->factory_params.sensor.width);
-//                p->base.units = "pixels";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.width;
-//                p->val_uint32->min = 648;
-//                p->val_uint32->max = 648;
-//                p->val_uint32->step = 4;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_HEIGHT];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 192;
-//                p->base.size = sizeof(scanner->factory_params.sensor.height);
-//                p->base.units = "lines";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.height;
-//                p->val_uint32->min = 488;
-//                p->val_uint32->max = 488;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_PIXFREQ];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 194;
-//                p->base.size = sizeof(scanner->factory_params.sensor.pixel_clock);
-//                p->base.units = "Hz";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.pixel_clock;
-//                p->val_uint32->min = 40000000;
-//                p->val_uint32->max = 40000000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_BLACKODD];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 198;
-//                p->base.size = sizeof(scanner->factory_params.sensor.black_odd_lines);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.black_odd_lines;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_BLACKEVEN];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 200;
-//                p->base.size = sizeof(scanner->factory_params.sensor.black_even_lines);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.black_even_lines;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_FRMCONSTPART];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 202;
-//                p->base.size = sizeof(scanner->factory_params.sensor.frame_cycle_const_part);
-//                p->base.units = "ticks";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.frame_cycle_const_part;
-//                p->val_uint32->min = 6500;
-//                p->val_uint32->max = 6500;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_FRMPERLINEPART];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 206;
-//                p->base.size = sizeof(scanner->factory_params.sensor.frame_cycle_per_line_part);
-//                p->base.units = "ticks";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.frame_cycle_per_line_part;
-//                p->val_uint32->min = 410;
-//                p->val_uint32->max = 410;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_FPSOREXP];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 210;
-//                p->base.size = sizeof(scanner->factory_params.sensor.frame_rate_or_exposure);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.frame_rate_or_exposure;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 1;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->enumValues = &boolEnum;
-//                rfInt* def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
-//                if (def != NULL)
-//                    p->val_uint32->defValue = *def;
-//                else p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_MINEXPOSURE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 211;
-//                p->base.size = sizeof(scanner->factory_params.sensor.min_exposure);
-//                p->base.units = "ns";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.min_exposure;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 100000000;
-//                p->val_uint32->step = 10;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_IMGFLIP];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 215;
-//                p->base.size = sizeof(scanner->factory_params.sensor.image_flipping);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.image_flipping;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 3;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->enumValues = &flipEnum;
-//                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "No");
-//                if (def != NULL)
-//                    p->val_uint32->defValue = *def;
-//                else p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_SENSOR_MAXEXPOSURE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 216;
-//                p->base.size = sizeof(scanner->factory_params.sensor.max_exposure);
-//                p->base.units = "ns";
-
-//                p->val_uint32->value = scanner->factory_params.sensor.max_exposure;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 300000000;
-//                p->val_uint32->step = 10;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-//                //edr_point1_value
-//                //edr_point2_value
-//                //edr_point1_pos
-//                //edr_point2_pos
-//                //init_regs
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_ARRAY_UINT32]);
-//                p->base.name = parameter_names[FACT_NETWORK_MACADDR];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 595;
-//                p->base.size = sizeof (scanner->factory_params.network.mac);
-//                p->base.units = "";
-
-//                p->arr_uint32->value = memory_platform.rf_calloc(1, sizeof(rfUint32) * 6);
-//                for (rfUint32 i = 0; i < p->base.size; i++)
-//                    p->arr_uint32->value[i] = scanner->factory_params.network.mac[i];
-//                p->arr_uint32->min = 0;
-//                p->arr_uint32->max = 255;
-//                p->arr_uint32->step = 0;
-//                p->arr_uint32->defCount = 6;
-//                p->arr_uint32->defValue = memory_platform.rf_calloc(1, sizeof (rfUint32) * 6);
-//                rfUint32 de_arr[6] = {0, 10, 53, 1, 2, 3};
-//                for (rfUint32 i = 0; i < 6; i++)
-//                    p->arr_uint32->defValue[i] = de_arr[i];
-//                p->arr_uint32->maxCount = 6;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_EIP_IDENTITY_VENDORID];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 601;
-//                p->base.size = sizeof(scanner->factory_params.network.eip_vendor_id);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.network.eip_vendor_id;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_EIP_IDENTITY_DEVICETYPE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 603;
-//                p->base.size = sizeof(scanner->factory_params.network.eip_device_type);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.network.eip_device_type;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 65535;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_NETWORK_FORCEAUTONEGTIME];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 605;
-//                p->base.size = sizeof(scanner->factory_params.network.force_autoneg_time);
-//                p->base.units = "s";
-
-//                p->val_uint32->value = scanner->factory_params.network.force_autoneg_time;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 255;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_LASER_WAVELENGTH];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 637;
-//                p->base.size = sizeof(scanner->factory_params.laser.wave_length);
-//                p->base.units = "nm";
-
-//                p->val_uint32->value = scanner->factory_params.laser.wave_length;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 10000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_LASER_KOEFF1];
-//                p->base.access = patKey[PAT_READ_ONLY];
-//                p->base.index = index++;
-//                p->base.offset = 639;
-//                p->base.size = sizeof(scanner->factory_params.laser.koeff1);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.laser.koeff1;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 255;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_LASER_KOEFF2];
-//                p->base.access = patKey[PAT_READ_ONLY];
-//                p->base.index = index++;
-//                p->base.offset = 640;
-//                p->base.size = sizeof(scanner->factory_params.laser.koeff2);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.laser.koeff2;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 255;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_LASER_MINVALUE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 641;
-//                p->base.size = sizeof(scanner->factory_params.laser.min_value);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.laser.min_value;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4095;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_LASER_MAXVALUE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 645;
-//                p->base.size = sizeof(scanner->factory_params.laser.max_value);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.laser.max_value;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 4095;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-//                //enable_mode_change
-
-
-//                //in1_min_delay
-//                //in1_max_delay
-//                //max_divider_in1
-//                //min_divider_in1
-
-//                //out1_min_delay
-//                //out1_max_delay
-//                //out1_min_pulse_width
-//                //out1_max_pulse_width
-//                //out2_min_delay
-//                //out2_max_delay
-//                //out2_min_pulse_width
-//                //out2_max_pulse_width
-
-
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[FACT_PROFILES_MAXDUMPSIZE];
-//                p->base.access = patKey[PAT_LOCKED];
-//                p->base.index = index++;
-//                p->base.offset = 809;
-//                p->base.size = sizeof(scanner->factory_params.profiles.max_dump_size);
-//                p->base.units = "";
-
-//                p->val_uint32->value = scanner->factory_params.profiles.max_dump_size;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 80000;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = p->val_uint32->value;
-//                vector_add(scanner->params_list, p);
-
-
-//                ret = 0;
-//            }
-
-
-//        }
-//    }
-////    _mx[0].unlock();
-
-//    memory_platform.rf_free(RX);
-//    memory_platform.rf_free(TX);
-//    return ret;
-//}
-
+rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner)
+{
+
+    smart_msg_t* msg = smart_create_rqst_msg("GET_PARAMS_DESCRIPTION", NULL, 0, "blob", FALSE, FALSE, TRUE,
+                                             3000,
+                                             rf627_smart_read_params_callback,
+                                             rf627_smart_read_params_timeout_callback);
+
+    is_smart_params_readed = FALSE;
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+
+    unsigned int mseconds = 3000;
+    clock_t goal = mseconds + clock();
+    while (!is_smart_params_readed)
+    {
+        if (is_smart_params_readed) break;
+    }
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+
+    if (is_smart_params_readed)
+        return TRUE;
+    else return FALSE;
+}
+
+rfUint8 rf627_smart_set_parameter(
+        rf627_smart_t* scanner, parameter_t* param)
+{
+    for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
+    {
+        parameter_t* p = vector_get(scanner->params_list, i);
+        if (rf_strcmp(p->base.name, param->base.name) == 0)
+        {
+            if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
+            {
+                memory_platform.rf_free(p->val_str->value);
+                p->val_str->value = memory_platform.rf_calloc(param->base.size, sizeof (rfChar));
+                memory_platform.rf_memcpy(
+                            (void*)p->val_str->value,
+                            param->val_str->value,
+                            param->base.size);
+                p->base.size = param->base.size;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
+            {
+                p->val_int32->value = param->val_int32->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
+            {
+                p->val_int64->value = param->val_int64->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
+            {
+                p->val_uint32->value = param->val_uint32->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
+            {
+                p->val_uint64->value = param->val_uint64->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
+            {
+                p->val_flt->value = param->val_flt->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
+            {
+                p->val_dbl->value = param->val_dbl->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
+            {
+                memory_platform.rf_free(p->arr_uint32->value);
+                p->arr_uint32->value = memory_platform.rf_calloc(param->base.size, sizeof (uint8_t));
+                memory_platform.rf_memcpy(
+                            (void*)p->arr_uint32->value,
+                            param->arr_uint32->value,
+                            param->base.size);
+                p->base.size = param->base.size;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+
+        }
+    }
+    return FALSE;
+}
+
+rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_t device_id)
+{
+
+    return TRUE;
+}
+
+rfInt8 rf627_smart_write_params_timeout_callback()
+{
+    printf("smart_write_params_timeout\n");
+}
+
+rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
+{
+
+    int count = 0;
+    for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
+    {
+        parameter_t* p = vector_get(scanner->params_list, i);
+        if (p->is_changed)
+        {
+            count++;
+        }
+    }
+
+    if (count > 0)
+    {
+        // Create FULL DATA packet for measurement SIZE of data packet
+        mpack_writer_t writer;
+        char* send_packet = NULL;
+        size_t bytes = 0;				///< Number of msg bytes.
+        mpack_writer_init_growable(&writer, &send_packet, &bytes);
+
+        // write the example on the msgpack homepage
+        mpack_start_map(&writer, count);
+        {
+            for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
+            {
+                parameter_t* p = vector_get(scanner->params_list, i);
+                if (p->is_changed)
+                {
+                    // Идентификатор устройства, отправившего сообщения
+                    mpack_write_cstr(&writer, p->base.name);
+                    if(rf_strcmp(parameter_value_types[PVT_UINT], p->base.type) == 0)
+                    {
+                        mpack_write_u32(&writer, p->val_uint32->value);
+                    }else if(rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type) == 0)
+                    {
+                       mpack_write_u64(&writer, p->val_uint64->value);
+                    }else if(rf_strcmp(parameter_value_types[PVT_INT], p->base.type) == 0)
+                    {
+                       mpack_write_i32(&writer, p->val_int32->value);
+                    }else if(rf_strcmp(parameter_value_types[PVT_INT64], p->base.type) == 0)
+                    {
+                        mpack_write_i64(&writer, p->val_int64->value);
+                    }else if(rf_strcmp(parameter_value_types[PVT_FLOAT], p->base.type) == 0)
+                    {
+                       mpack_write_float(&writer, p->val_flt->value);
+                    }else if(rf_strcmp(parameter_value_types[PVT_DOUBLE], p->base.type) == 0)
+                    {
+                        mpack_write_double(&writer, p->val_dbl->value);
+                    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT32], p->base.type) == 0)
+                    {
+                        mpack_start_array(&writer, p->arr_uint32->count);
+                        {
+                            for (rfSize ii = 0; ii < p->arr_uint32->count; ii++)
+                                mpack_write_u32(&writer, p->arr_uint32->value[ii]);
+                        }mpack_finish_array(&writer);
+                    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT64], p->base.type) == 0)
+                    {
+                        mpack_start_array(&writer, p->arr_uint64->count);
+                        {
+                            for (rfSize ii = 0; ii < p->arr_uint64->count; ii++)
+                                mpack_write_u64(&writer, p->arr_uint64->value[ii]);
+                        }mpack_finish_array(&writer);
+                    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT32], p->base.type) == 0)
+                    {
+                        mpack_start_array(&writer, p->arr_int32->count);
+                        {
+                            for (rfSize ii = 0; ii < p->arr_int32->count; ii++)
+                                mpack_write_i32(&writer, p->arr_int32->value[ii]);
+                        }mpack_finish_array(&writer);
+                    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT64], p->base.type) == 0)
+                    {
+                        mpack_start_array(&writer, p->arr_int64->count);
+                        {
+                            for (rfSize ii = 0; ii < p->arr_int64->count; ii++)
+                                mpack_write_i64(&writer, p->arr_int64->value[ii]);
+                        }mpack_finish_array(&writer);
+                    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_FLT], p->base.type) == 0)
+                    {
+                        mpack_start_array(&writer, p->arr_flt->count);
+                        {
+                            for (rfSize ii = 0; ii < p->arr_flt->count; ii++)
+                                mpack_write_float(&writer, p->arr_flt->value[ii]);
+                        }mpack_finish_array(&writer);
+                    }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_DBL], p->base.type) == 0)
+                    {
+                        mpack_start_array(&writer, p->arr_dbl->count);
+                        {
+                            for (rfSize ii = 0; ii < p->arr_dbl->count; ii++)
+                                mpack_write_i32(&writer, p->arr_dbl->value[ii]);
+                        }mpack_finish_array(&writer);
+                    }else if(rf_strcmp(parameter_value_types[PVT_STRING], p->base.type) == 0)
+                    {
+                        mpack_write_str(&writer, p->val_str->value, p->base.size);
+                    }
+                    p->is_changed = FALSE;
+                }
+
+            }
+        }mpack_finish_map(&writer);
+
+        // finish writing
+        if (mpack_writer_destroy(&writer) != mpack_ok) {
+            fprintf(stderr, "An error occurred encoding the data!\n");
+            return FALSE;
+        }
+
+        smart_msg_t* msg = smart_create_rqst_msg("SET_PARAMETERS", send_packet, bytes, "mpack", FALSE, FALSE, TRUE,
+                                                 3000,
+                                                 rf627_smart_write_params_callback,
+                                                 rf627_smart_write_params_timeout_callback);
+
+        is_smart_params_readed = FALSE;
+        // Send test msg
+        if (!smart_channel_send_msg(&scanner->channel, msg))
+            printf("No data has been sent.\n");
+        else
+            printf("Requests were sent.\n");
+
+
+        return TRUE;
+    }
+
+    return FALSE;
+}

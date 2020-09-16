@@ -169,7 +169,7 @@ rfUint8 rf627_old_command_periphery_send(
 
 typedef struct
 {
-    smart_channel* channel;
+    smart_channel channel;
     void* m_data_sock;
 
 
@@ -235,6 +235,22 @@ rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBoo
  * @return 0 on success
  */
 rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner);
+
+/**
+ * @brief rf627_old_set_parameter - set parameters
+ * @param scanner - ptr to scanner
+ * @param param - ptr to parameter
+ * @return 0 on success
+ */
+rfUint8 rf627_smart_set_parameter(
+        rf627_smart_t* scanner, parameter_t* param);
+
+/**
+ * @brief rf627_smart_write_params_to_scanner - Write current parameters to device.
+ * @param scanner - ptr to scanner
+ * @return 0 on success
+ */
+rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner);
 
 typedef struct
 {

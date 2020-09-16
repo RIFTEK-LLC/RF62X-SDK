@@ -460,7 +460,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
                 memory_platform.rf_free(p);
                 count++;
             }
-            //ret = rf627_smart_read_params_from_scanner(device->rf627_smart);
+            ret = rf627_smart_read_params_from_scanner(device->rf627_smart);
             return ret;
             break;
         }
@@ -501,6 +501,8 @@ rfUint8 write_params_to_scanner(scanner_base_t *device, protocol_types_t protoco
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
+            rf627_smart_write_params_to_scanner(device->rf627_smart);
+            return TRUE;
             break;
         case kETHERNET_IP:
             break;
@@ -546,7 +548,10 @@ rfUint8 set_parameter(scanner_base_t *device, parameter_t* param)
         break;
     }
     case kRF627_SMART:
+    {
+        return rf627_smart_set_parameter(device->rf627_smart, param);
         break;
+    }
     default:
         break;
     }

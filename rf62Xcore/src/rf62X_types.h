@@ -986,13 +986,13 @@ typedef struct
 
 typedef struct
 {
-    const rfChar*			name;
-    const rfChar*         type;
-    const rfChar*         access;
+    const rfChar*		name;
+    const rfChar*       type;
+    const rfChar*       access;
     rfUint16			index;
     rfUint32			offset;
     rfUint32			size;
-    const rfChar*			units;
+    const rfChar*		units;
 }value_base_t;
 
 typedef struct value_uint32_t
@@ -1153,6 +1153,8 @@ typedef struct
         array_dbl_t*		arr_dbl;
         value_str_t*		val_str;
     };
+
+    uint8_t is_changed;
 }parameter_t;
 
 
