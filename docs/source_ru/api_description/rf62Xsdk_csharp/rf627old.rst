@@ -14,11 +14,21 @@
 Search()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Функция для поиска устройств RF627 доступных в сети
+Функция для поиска устройств RF627 доступных в сети:
 
-.. doxygenfunction:: Search
+.. code-block:: c#
 
-Пример использования:
+   static List<RF627old> Search(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
+
+**Входные параметры:**
+
+-  ``protocol`` (*PROTOCOLS_TYPES*) – выбор протокола, по которому будет осуществлен поиск сканеров в сети (Service Protocol, ENIP, Modbus-TCP)
+
+**Возвращаемое значение:**
+
+-  ``List<RF627old>`` – список обнаруженных в сети сканеров серии RF627-old.
+
+**Пример использования в коде:**
 
 .. code-block:: c#
    :emphasize-lines: 9
