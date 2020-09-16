@@ -129,7 +129,7 @@ def search_scanners(scanner_type=const_scanner_type.kRF627_OLD, protocol=const_p
                     continue
                 for address in iface_data[family]:
                     host_ip_addr = inet_addr(address['addr'])
-                    host_mask = inet_addr('255.255.255.0')
+                    host_mask = inet_addr(address['netmask'])
                     # Set adapter's settings
                     lib.set_platform_adapter_settings(host_mask, host_ip_addr)
                     
