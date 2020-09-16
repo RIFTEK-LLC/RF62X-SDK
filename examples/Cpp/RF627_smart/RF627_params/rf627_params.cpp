@@ -91,10 +91,6 @@ int main()
             scanners[i]->set_param(laser_enabled);
         }
 
-        std::vector<uint8_t> input =
-                std::vector<uint8_t> {0x09, 0x83, 0x83, 0x80, 0x80, 0x80};
-        std::vector<uint8_t> output;
-        scanners[i]->send_cmd("CID_PERIPHERY_SEND", &input, &output);
         //  Write changes parameters to the device's memory
         scanners[i]->write_params();
 
