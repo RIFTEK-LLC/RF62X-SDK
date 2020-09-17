@@ -772,27 +772,6 @@ namespace SDK
             /// </summary>
             public unsafe class RF627smart
             {
-                private void* scannerBase { get; set; }
-                private bool isConnected { get; set; }
-                private PROTOCOL_TYPES currentProtocol { get; set; }
-                private System.Threading.Mutex paramMutex { get; set; }
-                private System.Threading.Mutex profileMutex { get; set; }
-
-                public RF627smart(void* Base)
-                {
-                    scannerBase = Base;
-                    isConnected = false;
-                    currentProtocol = PROTOCOL_TYPES.SERVICE;
-                    paramMutex = new System.Threading.Mutex();
-                    profileMutex = new System.Threading.Mutex();
-                }
-
-                ~RF627smart()
-                {
-                    free_scanner(((scanner_base_t*)this.scannerBase));
-                }
-
-
                 /// <summary>
                 /// Search for RF627smart devices over network
                 /// </summary>
@@ -844,8 +823,6 @@ namespace SDK
                                 for (int i = 0; i < vector_count(scanners).ToUInt32(); i++)
                                 {
                                     scanner_base_t* t = ((scanner_base_t*)vector_get(scanners, (UIntPtr)i));
-
-                                    uint a = t->rf627_smart->channel.host_ip_addr;
 
                                     if (t->type == SCANNER_TYPES.RF62X_SMART)
                                     {
@@ -1000,7 +977,9 @@ namespace SDK
                 /// <param name="realtime">Enable getting profile in real time (buffering is disabled)</param>
                 /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
                 /// <returns>Profile</returns>
-                public Profile2D GetProfile(bool zero_points = true, bool realtime = true, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public Profile2D GetProfile(
+                    bool zero_points = true, bool realtime = true, 
+                    PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
                     this.profileMutex.WaitOne();
 
@@ -1521,7 +1500,25 @@ namespace SDK
                     return false;
                 }
 
-                
+                private void* scannerBase { get; set; }
+                private bool isConnected { get; set; }
+                private PROTOCOL_TYPES currentProtocol { get; set; }
+                private System.Threading.Mutex paramMutex { get; set; }
+                private System.Threading.Mutex profileMutex { get; set; }
+
+                public RF627smart(void* Base)
+                {
+                    scannerBase = Base;
+                    isConnected = false;
+                    currentProtocol = PROTOCOL_TYPES.SERVICE;
+                    paramMutex = new System.Threading.Mutex();
+                    profileMutex = new System.Threading.Mutex();
+                }
+                ~RF627smart()
+                {
+                    free_scanner(((scanner_base_t*)this.scannerBase));
+                }
+
 
             }
         }
