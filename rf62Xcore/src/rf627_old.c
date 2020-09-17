@@ -3569,6 +3569,16 @@ rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
     memory_platform.rf_memset(payload, 0, RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE);
 
     memory_platform.rf_memcpy(
+            &payload[310],
+            &scanner->user_params.sensor.gain_analog,
+            sizeof(scanner->user_params.sensor.gain_analog));
+
+    memory_platform.rf_memcpy(
+            &payload[311],
+            &scanner->user_params.sensor.gain_digital,
+            sizeof(scanner->user_params.sensor.gain_digital));
+
+    memory_platform.rf_memcpy(
             &payload[328],
             &scanner->user_params.sensor.exposure_hdr_mode,
             sizeof (scanner->user_params.sensor.exposure_hdr_mode));
