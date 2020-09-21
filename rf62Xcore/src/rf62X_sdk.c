@@ -398,7 +398,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
             rfUint16 count = 0;
             rfBool ret = 0;
             while (vector_count(device->rf627_smart->params_list) > 0) {
-                parameter_t* p = vector_get(device->rf627_smart->params_list, vector_count(device->rf627_old->params_list)-1);
+                parameter_t* p = vector_get(device->rf627_smart->params_list, vector_count(device->rf627_smart->params_list)-1);
 
                 if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
                 {
@@ -456,7 +456,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
                     memory_platform.rf_free(p->val_str);
                     //memory_platform.rf_free(p);
                 }
-                vector_delete(device->rf627_old->params_list, vector_count(device->rf627_old->params_list)-1);
+                vector_delete(device->rf627_smart->params_list, vector_count(device->rf627_smart->params_list)-1);
                 memory_platform.rf_free(p);
                 count++;
             }
