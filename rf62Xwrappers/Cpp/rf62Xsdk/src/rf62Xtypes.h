@@ -578,7 +578,7 @@ typedef struct value_uint32 : param_t
   uint32_t    min;
   uint32_t    max;
   uint32_t    defaultValue;
-  std::vector <std::pair<uint32_t, std::string>> valuesEnum;
+  std::vector <std::tuple<uint32_t, std::string, std::string>> valuesEnum;
   uint32_t    value;
 
 }value_uint32;
@@ -588,7 +588,7 @@ typedef struct value_uint64 : param_t
   uint64_t    min;
   uint64_t    max;
   uint64_t    defaultValue;
-  std::vector <std::pair<uint64_t, std::string>> valuesEnum;
+  std::vector <std::tuple<uint64_t, std::string, std::string>> valuesEnum;
   uint64_t    value;
 }value_uint64;
 
@@ -597,7 +597,7 @@ typedef struct value_int32 : param_t
   int32_t     min;
   int32_t     max;
   int32_t     defaultValue;
-  std::vector <std::pair<int32_t, std::string>> valuesEnum;
+  std::vector <std::tuple<int32_t, std::string, std::string>> valuesEnum;
   int32_t     value;
 }value_int32;
 
@@ -606,7 +606,7 @@ typedef struct value_int64 : param_t
   int64_t     min;
   int64_t     max;
   int64_t     defaultValue;
-  std::vector <std::pair<int64_t, std::string>> valuesEnum;
+  std::vector <std::tuple<int64_t, std::string, std::string>> valuesEnum;
   int64_t     value;
 }value_int64;
 

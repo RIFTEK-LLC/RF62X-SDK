@@ -669,9 +669,10 @@ param_t *rf627old::get_param(std::string param_name)
 
             if(p->val_uint32->enumValues != NULL)
             for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
-                ((value_uint32*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_uint32*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_uint32->enumValues->rec[i].value,
-                            p->val_uint32->enumValues->rec[i].key));
+                            p->val_uint32->enumValues->rec[i].key,
+                            p->val_uint32->enumValues->rec[i].label));
         }
         else if (result->type == parameter_value_types[PVT_UINT64])
         {
@@ -690,9 +691,10 @@ param_t *rf627old::get_param(std::string param_name)
 
             if(p->val_uint64->enumValues != NULL)
             for(int i = 0; i < p->val_uint64->enumValues->recCount; i++)
-                ((value_uint64*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_uint64*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_uint64->enumValues->rec[i].value,
-                            p->val_uint64->enumValues->rec[i].key));
+                            p->val_uint64->enumValues->rec[i].key,
+                            p->val_uint64->enumValues->rec[i].label));
         }
         else if (result->type == parameter_value_types[PVT_INT])
         {
@@ -711,9 +713,10 @@ param_t *rf627old::get_param(std::string param_name)
 
             if(p->val_int32->enumValues != NULL)
             for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
-                ((value_int32*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_int32*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_int32->enumValues->rec[i].value,
-                            p->val_int32->enumValues->rec[i].key));
+                            p->val_int32->enumValues->rec[i].key,
+                            p->val_int32->enumValues->rec[i].label));
 
         }
         else if (result->type == parameter_value_types[PVT_INT64])
@@ -733,9 +736,10 @@ param_t *rf627old::get_param(std::string param_name)
 
             if(p->val_int64->enumValues != NULL)
             for(int i = 0; i < p->val_int64->enumValues->recCount; i++)
-                ((value_int64*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_int64*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_int64->enumValues->rec[i].value,
-                            p->val_int64->enumValues->rec[i].key));
+                            p->val_int64->enumValues->rec[i].key,
+                            p->val_int64->enumValues->rec[i].label));
 
         }
         else if (result->type == parameter_value_types[PVT_FLOAT])
@@ -1019,10 +1023,10 @@ bool rf627old::set_param(param_t* param)
     parameter_t* p = create_parameter_from_type(param->type.c_str());
     if (p != NULL)
     {
-        p->base.name = param->name.c_str();
+        p->base.name = (char*)param->name.c_str();
         p->base.type = param->type.c_str();
-        p->base.access = param->access.c_str();
-        p->base.units = param->units.c_str();
+        p->base.access = (char*)param->access.c_str();
+        p->base.units = (char*)param->units.c_str();
         if (param->type == parameter_value_types[PVT_STRING])
         {
             std::string new_value = param->get_value<value_str>();
@@ -1064,6 +1068,7 @@ bool rf627old::set_param(param_t* param)
             p->base.size = v.size() * sizeof (rfUint32);
         }
         set_parameter((scanner_base_t*)this->scanner_base, p);
+        free_parameter(p, ((scanner_base_t*)this->scanner_base)->type);
         return true;
     }
     return false;
@@ -1803,9 +1808,10 @@ param_t *rf627smart::get_param(std::string param_name)
 
             if(p->val_uint32->enumValues != NULL)
             for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
-                ((value_uint32*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_uint32*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_uint32->enumValues->rec[i].value,
-                            p->val_uint32->enumValues->rec[i].key));
+                            p->val_uint32->enumValues->rec[i].key,
+                            p->val_uint32->enumValues->rec[i].label));
         }
         else if (result->type == parameter_value_types[PVT_UINT64])
         {
@@ -1824,9 +1830,10 @@ param_t *rf627smart::get_param(std::string param_name)
 
             if(p->val_uint64->enumValues != NULL)
             for(int i = 0; i < p->val_uint64->enumValues->recCount; i++)
-                ((value_uint64*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_uint64*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_uint64->enumValues->rec[i].value,
-                            p->val_uint64->enumValues->rec[i].key));
+                            p->val_uint64->enumValues->rec[i].key,
+                            p->val_uint64->enumValues->rec[i].label));
         }
         else if (result->type == parameter_value_types[PVT_INT])
         {
@@ -1845,9 +1852,10 @@ param_t *rf627smart::get_param(std::string param_name)
 
             if(p->val_int32->enumValues != NULL)
             for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
-                ((value_int32*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_int32*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_int32->enumValues->rec[i].value,
-                            p->val_int32->enumValues->rec[i].key));
+                            p->val_int32->enumValues->rec[i].key,
+                            p->val_int32->enumValues->rec[i].label));
 
         }
         else if (result->type == parameter_value_types[PVT_INT64])
@@ -1867,9 +1875,10 @@ param_t *rf627smart::get_param(std::string param_name)
 
             if(p->val_int64->enumValues != NULL)
             for(int i = 0; i < p->val_int64->enumValues->recCount; i++)
-                ((value_int64*)result)->valuesEnum.push_back(std::make_pair(
+                ((value_int64*)result)->valuesEnum.push_back(std::make_tuple(
                             p->val_int64->enumValues->rec[i].value,
-                            p->val_int64->enumValues->rec[i].key));
+                            p->val_int64->enumValues->rec[i].key,
+                            p->val_int64->enumValues->rec[i].label));
 
         }
         else if (result->type == parameter_value_types[PVT_FLOAT])
@@ -2081,10 +2090,22 @@ bool rf627smart::set_param(param_t* param)
     parameter_t* p = create_parameter_from_type(param->type.c_str());
     if (p != NULL)
     {
-        p->base.name = param->name.c_str();
-        p->base.type = param->type.c_str();
-        p->base.access = param->access.c_str();
-        p->base.units = param->units.c_str();
+        if (strlen(param->name.c_str()) > 0)
+        {
+            p->base.name = (char*)calloc(strlen(param->name.c_str()) + 1, sizeof(char));
+            strcpy(p->base.name, param->name.c_str());
+        }
+        if (strlen(param->access.c_str()) > 0)
+        {
+            p->base.access = (char*)calloc(strlen(param->access.c_str()) + 1, sizeof(char));
+            strcpy(p->base.access, param->access.c_str());
+        }
+        if (strlen(param->units.c_str()) > 0)
+        {
+            p->base.units = (char*)calloc(strlen(param->units.c_str()) + 1, sizeof(char));
+            strcpy(p->base.units, param->units.c_str());
+        }
+
         if (param->type == parameter_value_types[PVT_STRING])
         {
             std::string new_value = param->get_value<value_str>();
@@ -2126,6 +2147,7 @@ bool rf627smart::set_param(param_t* param)
             p->base.size = v.size() * sizeof (rfUint32);
         }
         set_parameter((scanner_base_t*)this->scanner_base, p);
+        free_parameter(p, ((scanner_base_t*)this->scanner_base)->type);
         return true;
     }
     return false;
