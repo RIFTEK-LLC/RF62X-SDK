@@ -975,24 +975,25 @@ const static rfChar*	matKey[]	=
 typedef struct
 {
     rfInt32				value;
+    rfChar*				label;
     rfChar*				key;
 }enumRec_t;
 
 typedef struct
 {
     rfInt32				recCount;
-    enumRec_t			rec[];
+    enumRec_t*			rec;
 }valuesEnum_t;
 
 typedef struct
 {
-    const rfChar*		name;
+    rfChar*             name;
     const rfChar*       type;
-    const rfChar*       access;
+    rfChar*             access;
     rfUint16			index;
     rfUint32			offset;
     rfUint32			size;
-    const rfChar*		units;
+    rfChar*             units;
 }value_base_t;
 
 typedef struct value_uint32_t
