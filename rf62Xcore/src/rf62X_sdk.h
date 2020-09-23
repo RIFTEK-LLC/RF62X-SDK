@@ -123,6 +123,13 @@ API_EXPORT rfUint8 set_parameter(
         scanner_base_t *device, parameter_t* param);
 
 /**
+ * @brief free_parameter - free parameter
+ * @param param: ptr to parameter
+ * @param type: scaner type
+ */
+API_EXPORT void free_parameter(
+        parameter_t* param, scanner_types_t type);
+/**
  * @brief set_parameter_by_name - Set parameters by his name
  * @param device - ptr to scanner
  * @param param_name - parameter name
