@@ -64,6 +64,8 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
                     data, data_size);
         vector_add(search_result, rf627);
     }
+
+    mpack_tree_destroy(&tree);
 }
 
 rfInt8 rf627_smart_get_hello_timeout_callback()
@@ -668,6 +670,58 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                 {
                     p->val_uint32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(factory, i), "step"));
                 }
+                // valuesEnum
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "valuesEnum"))
+                {
+
+                    p->val_uint32->enumValues = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+                    p->val_uint32->enumValues->recCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        factory, i), "valuesEnum"));
+                    p->val_uint32->enumValues->rec = memory_platform.rf_calloc(p->val_uint32->enumValues->recCount, sizeof(enumRec_t));
+                    for (int ii = 0; ii < p->val_uint32->enumValues->recCount; ii++)
+                    {
+                        p->val_uint32->enumValues->rec[ii].value =
+                                mpack_node_i32(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    factory, i), "valuesEnum"), ii), "value"));
+                        int key_strlen =
+                                mpack_node_strlen(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    factory, i), "valuesEnum"), ii), "key")) + 1;
+                        p->val_uint32->enumValues->rec[ii].key =
+                                mpack_node_cstr_alloc(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    factory, i), "valuesEnum"), ii), "key"), key_strlen);
+
+
+                        int label_strlen =
+                                mpack_node_strlen(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    factory, i), "valuesEnum"), ii), "label")) + 1;
+                        p->val_uint32->enumValues->rec[ii].label =
+                                mpack_node_cstr_alloc(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    factory, i), "valuesEnum"), ii), "label"), label_strlen);
+                    }
+                }
             }else if(rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type) == 0)
             {
                 // defaultValue
@@ -1217,6 +1271,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
             }
 
 
+
             // index
             if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "index"))
             {
@@ -1308,6 +1363,60 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                 {
                     p->val_uint32->step = mpack_node_u32(mpack_node_map_cstr(mpack_node_array_at(user, i), "step"));
                 }
+
+                // valuesEnum
+                if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "valuesEnum"))
+                {
+
+                    p->val_uint32->enumValues = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+                    p->val_uint32->enumValues->recCount =
+                            mpack_node_array_length(
+                                mpack_node_map_cstr(
+                                    mpack_node_array_at(
+                                        user, i), "valuesEnum"));
+                    p->val_uint32->enumValues->rec = memory_platform.rf_calloc(p->val_uint32->enumValues->recCount, sizeof(enumRec_t));
+                    for (int ii = 0; ii < p->val_uint32->enumValues->recCount; ii++)
+                    {
+                        p->val_uint32->enumValues->rec[ii].value =
+                                mpack_node_i32(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    user, i), "valuesEnum"), ii), "value"));
+                        int key_strlen =
+                                mpack_node_strlen(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    user, i), "valuesEnum"), ii), "key")) + 1;
+                        p->val_uint32->enumValues->rec[ii].key =
+                                mpack_node_cstr_alloc(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    user, i), "valuesEnum"), ii), "key"), key_strlen);
+
+
+                        int label_strlen =
+                                mpack_node_strlen(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    user, i), "valuesEnum"), ii), "label")) + 1;
+                        p->val_uint32->enumValues->rec[ii].label =
+                                mpack_node_cstr_alloc(
+                                    mpack_node_map_cstr(
+                                        mpack_node_array_at(
+                                            mpack_node_map_cstr(
+                                                mpack_node_array_at(
+                                                    user, i), "valuesEnum"), ii), "label"), label_strlen);
+                    }
+                }
+
             }else if(rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type) == 0)
             {
                 // defaultValue
@@ -1896,7 +2005,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
             vector_add(((scanner_base_t*)vector_get(search_result, index))->rf627_smart->params_list, p);
         }
 
-
+        mpack_tree_destroy(&tree);
     }
 
     is_smart_params_readed = TRUE;
@@ -2013,7 +2122,6 @@ rfUint8 rf627_smart_set_parameter(
 
 rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_t device_id)
 {
-
     return TRUE;
 }
 
@@ -2133,14 +2241,15 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
                                                  3000,
                                                  rf627_smart_write_params_callback,
                                                  rf627_smart_write_params_timeout_callback);
-
-        is_smart_params_readed = FALSE;
         // Send test msg
         if (!smart_channel_send_msg(&scanner->channel, msg))
             printf("No data has been sent.\n");
         else
             printf("Requests were sent.\n");
 
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(send_packet);
 
         return TRUE;
     }
