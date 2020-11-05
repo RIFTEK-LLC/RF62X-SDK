@@ -196,6 +196,8 @@ rfUint8 disconnect_from_scanner(scanner_base_t *device, protocol_types_t protoco
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
+            rf627_smart_disconnect(device->rf627_smart);
+            return TRUE;
             break;
         case kETHERNET_IP:
             break;
@@ -223,7 +225,7 @@ rf627_profile2D_t* get_profile2D_from_scanner(
         profile->type = kRF627_OLD;
         switch (protocol) {
         case kSERVICE:
-            profile->rf627_profile2D = rf627_old_get_profile2D(device->rf627_old, zero_points);
+            profile->rf627old_profile2D = rf627_old_get_profile2D(device->rf627_old, zero_points);
             return profile;
             break;
         case kETHERNET_IP:
@@ -239,7 +241,7 @@ rf627_profile2D_t* get_profile2D_from_scanner(
         profile->type = kRF627_SMART;
         switch (protocol) {
         case kSERVICE:
-            profile->rf627_profile2D = rf627_smart_get_profile2D(device->rf627_smart, zero_points);
+            profile->rf627smart_profile2D = rf627_smart_get_profile2D(device->rf627_smart, zero_points);
             return profile;
             break;
         case kETHERNET_IP:
@@ -717,4 +719,45 @@ void free_parameter(parameter_t *param, scanner_types_t type)
     default:
         break;
     }
+}
+
+rfChar *get_frame_from_scanner(scanner_base_t *device, protocol_types_t protocol)
+{
+    rfChar* frame = NULL;
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+            //char* frame = rf627_old_get_profile2D(device->rf627_old, zero_points);
+            //return frame;
+            break;
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return NULL; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return NULL; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+            frame = rf627_smart_get_frame(device->rf627_smart);
+            return frame;
+            break;
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return NULL; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return NULL; // Unknown device type
+        break;
+    }
+    return 0;
 }

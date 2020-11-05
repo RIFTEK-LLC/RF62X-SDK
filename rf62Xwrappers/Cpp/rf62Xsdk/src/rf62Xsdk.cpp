@@ -9,7 +9,11 @@
 
 extern "C"{
 #include <rf62X_sdk.h>
+#include <netwok_platform.h>
+#include <smartutils.h>
 }
+
+
 
 
 #ifdef _WIN32
@@ -281,70 +285,70 @@ profile2D_t* rf627old::get_profile2D(
         rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
                     (scanner_base_t*)scanner_base, zero_points, kSERVICE);
 
-        profile2D_t* result = new profile2D_t;
+        profile2D_t* result = new profile2D_t();
 
-        if(profile_from_scanner->rf627_profile2D != NULL)
+        if(profile_from_scanner->rf627old_profile2D != NULL)
         {
             result->header.data_type =
-                    profile_from_scanner->rf627_profile2D->header.data_type;
+                    profile_from_scanner->rf627old_profile2D->header.data_type;
             result->header.flags =
-                    profile_from_scanner->rf627_profile2D->header.flags;
+                    profile_from_scanner->rf627old_profile2D->header.flags;
             result->header.device_type =
-                    profile_from_scanner->rf627_profile2D->header.device_type;
+                    profile_from_scanner->rf627old_profile2D->header.device_type;
             result->header.serial_number =
-                    profile_from_scanner->rf627_profile2D->header.serial_number;
+                    profile_from_scanner->rf627old_profile2D->header.serial_number;
             result->header.system_time =
-                    profile_from_scanner->rf627_profile2D->header.system_time;
+                    profile_from_scanner->rf627old_profile2D->header.system_time;
 
             result->header.proto_version_major =
-                    profile_from_scanner->rf627_profile2D->header.proto_version_major;
+                    profile_from_scanner->rf627old_profile2D->header.proto_version_major;
             result->header.proto_version_minor =
-                    profile_from_scanner->rf627_profile2D->header.proto_version_minor;
+                    profile_from_scanner->rf627old_profile2D->header.proto_version_minor;
             result->header.hardware_params_offset =
-                    profile_from_scanner->rf627_profile2D->header.hardware_params_offset;
+                    profile_from_scanner->rf627old_profile2D->header.hardware_params_offset;
             result->header.data_offset =
-                    profile_from_scanner->rf627_profile2D->header.data_offset;
+                    profile_from_scanner->rf627old_profile2D->header.data_offset;
             result->header.packet_count =
-                    profile_from_scanner->rf627_profile2D->header.packet_count;
+                    profile_from_scanner->rf627old_profile2D->header.packet_count;
             result->header.measure_count =
-                    profile_from_scanner->rf627_profile2D->header.measure_count;
+                    profile_from_scanner->rf627old_profile2D->header.measure_count;
 
             result->header.zmr =
-                    profile_from_scanner->rf627_profile2D->header.zmr;
+                    profile_from_scanner->rf627old_profile2D->header.zmr;
             result->header.xemr =
-                    profile_from_scanner->rf627_profile2D->header.xemr;
+                    profile_from_scanner->rf627old_profile2D->header.xemr;
             result->header.discrete_value =
-                    profile_from_scanner->rf627_profile2D->header.discrete_value;
+                    profile_from_scanner->rf627old_profile2D->header.discrete_value;
 
             result->header.exposure_time =
-                    profile_from_scanner->rf627_profile2D->header.exposure_time;
+                    profile_from_scanner->rf627old_profile2D->header.exposure_time;
             result->header.laser_value =
-                    profile_from_scanner->rf627_profile2D->header.laser_value;
+                    profile_from_scanner->rf627old_profile2D->header.laser_value;
             result->header.step_count =
-                    profile_from_scanner->rf627_profile2D->header.step_count;
+                    profile_from_scanner->rf627old_profile2D->header.step_count;
             result->header.dir =
-                    profile_from_scanner->rf627_profile2D->header.dir;
+                    profile_from_scanner->rf627old_profile2D->header.dir;
 
             switch (result->header.data_type) {
             case DTY_PixelsNormal:
             case DTY_PixelsInterpolated:
             {
                 result->pixels.resize(profile_from_scanner->
-                                      rf627_profile2D->pixels_format.pixels_count);
+                                      rf627old_profile2D->pixels_format.pixels_count);
 
                 for(size_t i = 0; i < result->pixels.size(); i++)
                 {
                     result->pixels[i] = profile_from_scanner->
-                            rf627_profile2D->pixels_format.pixels[i];
+                            rf627old_profile2D->pixels_format.pixels[i];
                 }
 
-                if(profile_from_scanner->rf627_profile2D->intensity_count > 0)
+                if(profile_from_scanner->rf627old_profile2D->intensity_count > 0)
                 {
                     result->intensity.resize(
-                                profile_from_scanner->rf627_profile2D->intensity_count);
+                                profile_from_scanner->rf627old_profile2D->intensity_count);
                     for (size_t i = 0; i < result->intensity.size(); i++)
                         result->intensity[i] =
-                                profile_from_scanner->rf627_profile2D->intensity[i];
+                                profile_from_scanner->rf627old_profile2D->intensity[i];
                 }
 
                 break;
@@ -353,37 +357,36 @@ profile2D_t* rf627old::get_profile2D(
             case DTY_ProfileInterpolated:
             {
                 result->points.resize(profile_from_scanner->
-                                      rf627_profile2D->profile_format.points_count);
+                                      rf627old_profile2D->profile_format.points_count);
 
                 for(size_t i = 0; i < result->points.size(); i++)
                 {
-                    result->points[i].x = profile_from_scanner->rf627_profile2D->
+                    result->points[i].x = profile_from_scanner->rf627old_profile2D->
                             profile_format.points[i].x;
-                    result->points[i].z = profile_from_scanner->rf627_profile2D->
+                    result->points[i].z = profile_from_scanner->rf627old_profile2D->
                             profile_format.points[i].z;
                 }
 
-                if(profile_from_scanner->rf627_profile2D->intensity_count > 0)
+                if(profile_from_scanner->rf627old_profile2D->intensity_count > 0)
                 {
                     result->intensity.resize(
-                                profile_from_scanner->rf627_profile2D->intensity_count);
+                                profile_from_scanner->rf627old_profile2D->intensity_count);
                     for (size_t i = 0; i < result->intensity.size(); i++)
                         result->intensity[i] =
-                                profile_from_scanner->rf627_profile2D->intensity[i];
+                                profile_from_scanner->rf627old_profile2D->intensity[i];
                 }
                 break;
             }
             default:
                 break;
             }
-            free(profile_from_scanner->rf627_profile2D->intensity);
-            free(profile_from_scanner->rf627_profile2D->pixels_format.pixels);
-            free(profile_from_scanner->rf627_profile2D);
+            free(profile_from_scanner->rf627old_profile2D->intensity);
+            free(profile_from_scanner->rf627old_profile2D->pixels_format.pixels);
+            free(profile_from_scanner->rf627old_profile2D);
             free(profile_from_scanner);
             return result;
         }
 
-        free(profile_from_scanner->rf627_profile2D);
         free(profile_from_scanner);
         delete result;
     }
@@ -529,6 +532,11 @@ profile3D_t* rf627old::get_profile3D(float step_size, float k,
 
 }
 
+char *rf627old::get_frame(PROTOCOLS protocol)
+{
+
+}
+
 bool rf627old::read_params(PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -654,7 +662,7 @@ param_t *rf627old::get_param(std::string param_name)
 
         if (result->type == parameter_value_types[PVT_UINT])
         {
-            result->set_value<value_uint32_t>(p->val_uint32->value);
+            result->set_value<value_uint32>(p->val_uint32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -676,7 +684,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_UINT64])
         {
-            result->set_value<value_uint64_t>(p->val_uint64->value);
+            result->set_value<value_uint64>(p->val_uint64->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -698,7 +706,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_INT])
         {
-            result->set_value<value_int32_t>(p->val_int32->value);
+            result->set_value<value_int32>(p->val_int32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -721,7 +729,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_INT64])
         {
-            result->set_value<value_int64_t>(p->val_int64->value);
+            result->set_value<value_int64>(p->val_int64->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -744,7 +752,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_FLOAT])
         {
-            result->set_value<value_flt_t>(p->val_flt->value);
+            result->set_value<value_flt>(p->val_flt->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -759,7 +767,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_DOUBLE])
         {
-            result->set_value<value_dbl_t>(p->val_dbl->value);
+            result->set_value<value_dbl>(p->val_dbl->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -911,7 +919,7 @@ param_t *rf627old::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_STRING])
         {
-            result->set_value<value_str_t>(p->val_str->value);
+            result->set_value<value_str>(p->val_str->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
@@ -1463,7 +1471,7 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
 }
 
 profile2D_t* rf627smart::get_profile2D(
-        bool zero_points,
+        bool zero_points, bool realtime,
         PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -1471,6 +1479,53 @@ profile2D_t* rf627smart::get_profile2D(
         p = this->current_protocol;
     else
         p = protocol;
+
+    if (realtime)
+    {
+        if ( ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != NULL)
+        {
+            std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+            if (s != INVALID_SOCKET)
+            {
+        #ifdef _WIN32
+                closesocket(s);
+        #else
+                close(s);
+        #endif
+            }
+            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
+        }
+
+        rfUint32 recv_ip_addr;
+        rfUint16 recv_port;
+        rfInt nret;
+
+
+        ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock =
+                network_platform.network_methods.create_udp_socket();
+        if (((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
+        {
+            nret = 1;
+            network_platform.network_methods.set_reuseaddr_socket_option(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+
+            network_platform.network_methods.set_socket_recv_timeout(
+                        ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, 100);
+            //recv_addr.sin_family = RF_AF_INET;
+            recv_port = ((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostPort;
+
+            //recv_addr.sin_addr = RF_INADDR_ANY;
+            ip_string_to_uint32(((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
+
+            nret = network_platform.network_methods.socket_bind(
+                        ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
+            if (nret == RF_SOCKET_ERROR)
+            {
+                network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+                ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
+                return FALSE;
+            }
+    }
+    }
 
     switch (p) {
     case PROTOCOLS::SERVICE:
@@ -1481,68 +1536,68 @@ profile2D_t* rf627smart::get_profile2D(
 
         profile2D_t* result = new profile2D_t;
 
-        if(profile_from_scanner->rf627_profile2D != NULL)
+        if(profile_from_scanner->rf627smart_profile2D != NULL)
         {
             result->header.data_type =
-                    profile_from_scanner->rf627_profile2D->header.data_type;
+                    profile_from_scanner->rf627smart_profile2D->header.data_type;
             result->header.flags =
-                    profile_from_scanner->rf627_profile2D->header.flags;
+                    profile_from_scanner->rf627smart_profile2D->header.flags;
             result->header.device_type =
-                    profile_from_scanner->rf627_profile2D->header.device_type;
+                    profile_from_scanner->rf627smart_profile2D->header.device_type;
             result->header.serial_number =
-                    profile_from_scanner->rf627_profile2D->header.serial_number;
+                    profile_from_scanner->rf627smart_profile2D->header.serial_number;
             result->header.system_time =
-                    profile_from_scanner->rf627_profile2D->header.system_time;
+                    profile_from_scanner->rf627smart_profile2D->header.system_time;
 
             result->header.proto_version_major =
-                    profile_from_scanner->rf627_profile2D->header.proto_version_major;
+                    profile_from_scanner->rf627smart_profile2D->header.proto_version_major;
             result->header.proto_version_minor =
-                    profile_from_scanner->rf627_profile2D->header.proto_version_minor;
+                    profile_from_scanner->rf627smart_profile2D->header.proto_version_minor;
             result->header.hardware_params_offset =
-                    profile_from_scanner->rf627_profile2D->header.hardware_params_offset;
+                    profile_from_scanner->rf627smart_profile2D->header.hardware_params_offset;
             result->header.data_offset =
-                    profile_from_scanner->rf627_profile2D->header.data_offset;
+                    profile_from_scanner->rf627smart_profile2D->header.data_offset;
             result->header.packet_count =
-                    profile_from_scanner->rf627_profile2D->header.packet_count;
+                    profile_from_scanner->rf627smart_profile2D->header.packet_count;
             result->header.measure_count =
-                    profile_from_scanner->rf627_profile2D->header.measure_count;
+                    profile_from_scanner->rf627smart_profile2D->header.measure_count;
 
             result->header.zmr =
-                    profile_from_scanner->rf627_profile2D->header.zmr;
+                    profile_from_scanner->rf627smart_profile2D->header.zmr;
             result->header.xemr =
-                    profile_from_scanner->rf627_profile2D->header.xemr;
+                    profile_from_scanner->rf627smart_profile2D->header.xemr;
             result->header.discrete_value =
-                    profile_from_scanner->rf627_profile2D->header.discrete_value;
+                    profile_from_scanner->rf627smart_profile2D->header.discrete_value;
 
             result->header.exposure_time =
-                    profile_from_scanner->rf627_profile2D->header.exposure_time;
+                    profile_from_scanner->rf627smart_profile2D->header.exposure_time;
             result->header.laser_value =
-                    profile_from_scanner->rf627_profile2D->header.laser_value;
+                    profile_from_scanner->rf627smart_profile2D->header.laser_value;
             result->header.step_count =
-                    profile_from_scanner->rf627_profile2D->header.step_count;
+                    profile_from_scanner->rf627smart_profile2D->header.step_count;
             result->header.dir =
-                    profile_from_scanner->rf627_profile2D->header.dir;
+                    profile_from_scanner->rf627smart_profile2D->header.dir;
 
             switch (result->header.data_type) {
             case DTY_PixelsNormal:
             case DTY_PixelsInterpolated:
             {
                 result->pixels.resize(profile_from_scanner->
-                                      rf627_profile2D->pixels_format.pixels_count);
+                                      rf627smart_profile2D->pixels_format.pixels_count);
 
                 for(size_t i = 0; i < result->pixels.size(); i++)
                 {
                     result->pixels[i] = profile_from_scanner->
-                            rf627_profile2D->pixels_format.pixels[i];
+                            rf627smart_profile2D->pixels_format.pixels[i];
                 }
 
-                if(profile_from_scanner->rf627_profile2D->intensity_count > 0)
+                if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
                 {
                     result->intensity.resize(
-                                profile_from_scanner->rf627_profile2D->intensity_count);
+                                profile_from_scanner->rf627smart_profile2D->intensity_count);
                     for (size_t i = 0; i < result->intensity.size(); i++)
                         result->intensity[i] =
-                                profile_from_scanner->rf627_profile2D->intensity[i];
+                                profile_from_scanner->rf627smart_profile2D->intensity[i];
                 }
 
                 break;
@@ -1551,37 +1606,37 @@ profile2D_t* rf627smart::get_profile2D(
             case DTY_ProfileInterpolated:
             {
                 result->points.resize(profile_from_scanner->
-                                      rf627_profile2D->profile_format.points_count);
+                                      rf627smart_profile2D->profile_format.points_count);
 
                 for(size_t i = 0; i < result->points.size(); i++)
                 {
-                    result->points[i].x = profile_from_scanner->rf627_profile2D->
+                    result->points[i].x = profile_from_scanner->rf627smart_profile2D->
                             profile_format.points[i].x;
-                    result->points[i].z = profile_from_scanner->rf627_profile2D->
+                    result->points[i].z = profile_from_scanner->rf627smart_profile2D->
                             profile_format.points[i].z;
                 }
 
-                if(profile_from_scanner->rf627_profile2D->intensity_count > 0)
+                if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
                 {
                     result->intensity.resize(
-                                profile_from_scanner->rf627_profile2D->intensity_count);
+                                profile_from_scanner->rf627smart_profile2D->intensity_count);
                     for (size_t i = 0; i < result->intensity.size(); i++)
                         result->intensity[i] =
-                                profile_from_scanner->rf627_profile2D->intensity[i];
+                                profile_from_scanner->rf627smart_profile2D->intensity[i];
                 }
                 break;
             }
             default:
                 break;
             }
-            free(profile_from_scanner->rf627_profile2D->intensity);
-            free(profile_from_scanner->rf627_profile2D->pixels_format.pixels);
-            free(profile_from_scanner->rf627_profile2D);
+            free(profile_from_scanner->rf627smart_profile2D->intensity);
+            free(profile_from_scanner->rf627smart_profile2D->pixels_format.pixels);
+            free(profile_from_scanner->rf627smart_profile2D);
             free(profile_from_scanner);
             return result;
         }
 
-        free(profile_from_scanner->rf627_profile2D);
+        //free(profile_from_scanner->rf627smart_profile2D);
         free(profile_from_scanner);
         delete result;
     }
@@ -1727,6 +1782,30 @@ profile3D_t* rf627smart::get_profile3D(float step_size, float k,
 
 }
 
+char *rf627smart::get_frame(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        char* result = get_frame_from_scanner(
+                    (scanner_base_t*)scanner_base, kSERVICE);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return nullptr;
+}
+
 bool rf627smart::read_params(PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -1786,6 +1865,7 @@ param_t *rf627smart::get_param(std::string param_name)
 {
     parameter_t* p = get_parameter(
                 (scanner_base_t*)this->scanner_base, param_name.c_str());
+
     if (p != NULL)
     {
         param_t* result = create_param_from_type(std::string(p->base.type));
@@ -1793,18 +1873,20 @@ param_t *rf627smart::get_param(std::string param_name)
 
         if (result->type == parameter_value_types[PVT_UINT])
         {
-            result->set_value<value_uint32_t>(p->val_uint32->value);
+            result->set_value<value_uint32>(p->val_uint32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
             ((value_uint32*)result)->defaultValue = p->val_uint32->defValue;
             ((value_uint32*)result)->value = p->val_uint32->value;
             ((value_uint32*)result)->min = p->val_uint32->min;
             ((value_uint32*)result)->max = p->val_uint32->max;
+            ((value_uint32*)result)->step = p->val_uint32->step;
 
             if(p->val_uint32->enumValues != NULL)
             for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
@@ -1815,13 +1897,15 @@ param_t *rf627smart::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_UINT64])
         {
-            result->set_value<value_uint64_t>(p->val_uint64->value);
+            result->set_value<value_uint64>(p->val_uint64->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+            ((value_uint64_t*)result)->step = p->val_uint64->step;
 
             ((value_uint64*)result)->defaultValue = p->val_uint64->defValue;
             ((value_uint64*)result)->value = p->val_uint64->value;
@@ -1837,18 +1921,20 @@ param_t *rf627smart::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_INT])
         {
-            result->set_value<value_int32_t>(p->val_int32->value);
+            result->set_value<value_int32>(p->val_int32->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
             ((value_int32*)result)->defaultValue = p->val_int32->defValue;
             ((value_int32*)result)->value = p->val_int32->value;
             ((value_int32*)result)->min = p->val_int32->min;
             ((value_int32*)result)->max = p->val_int32->max;
+            ((value_int32*)result)->step = p->val_int32->step;
 
             if(p->val_int32->enumValues != NULL)
             for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
@@ -1860,18 +1946,20 @@ param_t *rf627smart::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_INT64])
         {
-            result->set_value<value_int64_t>(p->val_int64->value);
+            result->set_value<value_int64>(p->val_int64->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
             ((value_int64*)result)->defaultValue = p->val_int64->defValue;
             ((value_int64*)result)->value = p->val_int64->value;
             ((value_int64*)result)->min = p->val_int64->min;
             ((value_int64*)result)->max = p->val_int64->max;
+            ((value_int64*)result)->step = p->val_int64->step;
 
             if(p->val_int64->enumValues != NULL)
             for(int i = 0; i < p->val_int64->enumValues->recCount; i++)
@@ -1883,33 +1971,37 @@ param_t *rf627smart::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_FLOAT])
         {
-            result->set_value<value_flt_t>(p->val_flt->value);
+            result->set_value<value_flt>(p->val_flt->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
             ((value_flt*)result)->defaultValue = p->val_flt->defValue;
             ((value_flt*)result)->value = p->val_flt->value;
             ((value_flt*)result)->min = p->val_flt->min;
             ((value_flt*)result)->max = p->val_flt->max;
+            ((value_flt*)result)->step = p->val_flt->step;
         }
         else if (result->type == parameter_value_types[PVT_DOUBLE])
         {
-            result->set_value<value_dbl_t>(p->val_dbl->value);
+            result->set_value<value_dbl>(p->val_dbl->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
             ((value_dbl*)result)->defaultValue = p->val_dbl->defValue;
             ((value_dbl*)result)->value = p->val_dbl->value;
             ((value_dbl*)result)->min = p->val_dbl->min;
             ((value_dbl*)result)->max = p->val_dbl->max;
+            ((value_dbl*)result)->step = p->val_dbl->step;
         }
         else if (result->type == parameter_value_types[PVT_ARRAY_UINT32])
         {
@@ -1919,8 +2011,10 @@ param_t *rf627smart::get_param(std::string param_name)
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
+            ((array_uint32*)result)->step = p->arr_uint32->step;
             for(size_t i = 0; i < p->arr_uint32->defCount; i++)
                 ((array_uint32*)result)->defaultValue.push_back(p->arr_uint32->defValue[i]);
             for(size_t i = 0; i < p->arr_uint32->count; i++)
@@ -2050,13 +2144,14 @@ param_t *rf627smart::get_param(std::string param_name)
         }
         else if (result->type == parameter_value_types[PVT_STRING])
         {
-            result->set_value<value_str_t>(p->val_str->value);
+            result->set_value<value_str>(p->val_str->value);
             result->name = p->base.name;
             result->access = p->base.access;
             result->index = p->base.index;
             result->offset = p->base.offset;
             result->size = p->base.size;
-            result->units = p->base.units;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
 
             ((value_str*)result)->defaultValue = p->val_str->defValue;
             ((value_str*)result)->value = p->val_str->value;

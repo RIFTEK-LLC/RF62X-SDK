@@ -537,6 +537,11 @@ typedef struct
       return ((T*)this)->max;
   }
   template <typename T>
+  auto get_step()->decltype( std::declval<T>().max )
+  {
+      return ((T*)this)->step;
+  }
+  template <typename T>
   auto get_default_value()->decltype( std::declval<T>().defaultValue )
   {
       return ((T*)this)->defaultValue;
@@ -580,7 +585,7 @@ typedef struct value_uint32 : param_t
   uint32_t    defaultValue;
   std::vector <std::tuple<uint32_t, std::string, std::string>> valuesEnum;
   uint32_t    value;
-
+  uint32_t    step;
 }value_uint32;
 
 typedef struct value_uint64 : param_t
@@ -590,6 +595,7 @@ typedef struct value_uint64 : param_t
   uint64_t    defaultValue;
   std::vector <std::tuple<uint64_t, std::string, std::string>> valuesEnum;
   uint64_t    value;
+  uint64_t    step;
 }value_uint64;
 
 typedef struct value_int32 : param_t
@@ -599,6 +605,7 @@ typedef struct value_int32 : param_t
   int32_t     defaultValue;
   std::vector <std::tuple<int32_t, std::string, std::string>> valuesEnum;
   int32_t     value;
+  int32_t     step;
 }value_int32;
 
 typedef struct value_int64 : param_t
@@ -608,12 +615,14 @@ typedef struct value_int64 : param_t
   int64_t     defaultValue;
   std::vector <std::tuple<int64_t, std::string, std::string>> valuesEnum;
   int64_t     value;
+  int64_t     step;
 }value_int64;
 
 typedef struct value_flt : param_t
 {
   float        min;
   float        max;
+  float        step;
   float        defaultValue;
   float        value;
 }value_flt;
@@ -622,6 +631,7 @@ typedef struct value_dbl : param_t
 {
   double        min;
   double        max;
+  double        step;
   double        defaultValue;
   double        value;
 }value_dbl;
@@ -630,6 +640,7 @@ typedef struct array_uint32 : param_t
 {
   uint32_t    min;
   uint32_t    max;
+  uint32_t    step;
   uint32_t    maxCount;
   uint32_t    defCount;
   std::vector <uint32_t> defaultValue;

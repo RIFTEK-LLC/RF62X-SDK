@@ -252,6 +252,8 @@ rfUint8 rf627_smart_set_parameter(
  */
 rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner);
 
+rfChar* rf627_smart_get_frame(rf627_smart_t* scanner);
+
 typedef struct
 {
     scanner_types_t type;

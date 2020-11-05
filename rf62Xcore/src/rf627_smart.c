@@ -86,10 +86,10 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
     sprintf(config, "-dst_ip_addr %d.%d.%d.%d "
                     "-host_ip_addr %d.%d.%d.%d "
                     "-in_udp_port 50011 "
-                    "-max_packet_size 65000 "
+                    "-max_packet_size 65535 "
                     "-out_udp_port 50011 "
                     "-socket_timeout 100 "
-                    "-max_data_size 65535",
+                    "-max_data_size 350000",
             bytes[3], bytes[2], bytes[1], 255,
             bytes[3], bytes[2], bytes[1], bytes[0]);
 
@@ -98,7 +98,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
     smart_channel_init(&channel, config);
 
     smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, "blob", FALSE, FALSE, FALSE,
-                                             3000,
+                                             1000,
                                              rf627_smart_get_hello_callback,
                                              rf627_smart_get_hello_timeout_callback);
 
@@ -109,7 +109,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
         printf("Requests were sent.\n");
 
 
-    delay(3000);
+    delay(1000);
 
     // Cleanup test msg
     smart_cleanup_msg(msg);
@@ -336,10 +336,10 @@ rfBool rf627_smart_connect(rf627_smart_t* scanner)
     sprintf(config, "-dst_ip_addr %s "
                     "-host_ip_addr %s "
                     "-in_udp_port %d "
-                    "-max_packet_size 65000 "
+                    "-max_packet_size 65535 "
                     "-out_udp_port %d "
                     "-socket_timeout 100 "
-                    "-max_data_size 65535",
+                    "-max_data_size 350000",
             scanner->info_by_service_protocol.user_network_ip,
             scanner->info_by_service_protocol.user_network_hostIP,
             scanner->info_by_service_protocol.user_network_servicePort,
@@ -2001,7 +2001,6 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                 p->base.units = "";
             }
 
-
             vector_add(((scanner_base_t*)vector_get(search_result, index))->rf627_smart->params_list, p);
         }
 
@@ -2035,8 +2034,7 @@ rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner)
 
     unsigned int mseconds = 3000;
     clock_t goal = mseconds + clock();
-    while (!is_smart_params_readed)
-    {
+    while (goal > clock()){
         if (is_smart_params_readed) break;
     }
     // Cleanup test msg
@@ -2128,6 +2126,88 @@ rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_
 rfInt8 rf627_smart_write_params_timeout_callback()
 {
     printf("smart_write_params_timeout\n");
+}
+
+rfBool is_smart_frame_readed = false;
+char* frame = NULL;
+rfInt8 rf627_smart_get_frame_callback(char* data, uint32_t data_size, uint32_t device_id)
+{
+    answ_count++;
+    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+
+    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+
+    int index = -1;
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            if (((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial == device_id)
+            {
+                index = i;
+                break;
+            }
+
+
+        }
+    }
+    if (index != -1)
+    {
+        // Get params
+        mpack_tree_t tree;
+        mpack_tree_init_data(&tree, (const char*)data, data_size);
+        mpack_tree_parse(&tree);
+        if (mpack_tree_error(&tree) != mpack_ok)
+        {
+            result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+            mpack_tree_destroy(&tree);
+            return result;
+        }
+        mpack_node_t root = mpack_tree_root(&tree);
+
+        mpack_node_t frame_data = mpack_node_map_cstr(root, "frame");
+        uint32_t frame_size = mpack_node_data_len(frame_data);
+        frame = mpack_node_data_alloc(frame_data, frame_size+1);
+
+        mpack_tree_destroy(&tree);
+    }
+
+    is_smart_frame_readed = TRUE;
+}
+
+rfInt8 rf627_smart_get_frame_timeout_callback()
+{
+    printf("smart_read_params_timeout\n");
+}
+
+
+
+rfChar* rf627_smart_get_frame(rf627_smart_t* scanner)
+{
+    smart_msg_t* msg = smart_create_rqst_msg("GET_FRAME", NULL, 0, "blob", FALSE, FALSE, TRUE,
+                                             50000,
+                                             rf627_smart_get_frame_callback,
+                                             rf627_smart_get_frame_timeout_callback);
+
+    is_smart_frame_readed = FALSE;
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+
+    unsigned int mseconds = 50000;
+    clock_t goal = mseconds + clock();
+    while (goal > clock()){
+        if (is_smart_frame_readed) break;
+    }
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+
+    if (is_smart_frame_readed)
+        return frame;
+    else return NULL;
 }
 
 rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)

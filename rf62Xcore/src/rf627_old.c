@@ -162,56 +162,6 @@ typedef enum{
     YA_MEASURES_COUNTER			= 2,
 }yAxisSource_t;
 
-valuesEnum_t		boolEnum			= {2, {{0, "false"}, {1, "true"}}};
-
-valuesEnum_t		flipEnum			= {4, {{FM_NO, "No"}, {FM_X, "X"}, {FM_Z, "Z"}, {FM_XZ, "XZ"}}};
-
-valuesEnum_t		roiPosModeEnum		= {2, {{RPM_MANUAL, "manual"}, {RPM_AUTO, "auto"}}};
-
-valuesEnum_t		netSpeedEnum		= {3, {{LS_10MBIT, "10"}, {LS_100MBIT, "100"}, {LS_1GBIT, "1000"}}};
-
-valuesEnum_t		streamsFormatEnum	= {4, {{DF_PIXELS, "Pixels"}, {DF_PROFILE, "Profile"}, {DF_PIXELS_INTRP, "Interpolated pixels"}, {DF_PROFILE_INTRP, "Interpolated profile"}}};
-
-valuesEnum_t		processingModeEnum	= {2, {{PM_ACCURACY, "High accuracy"}, {PM_WELDING, "Welding"}}};
-
-valuesEnum_t		medianFilterEnum	= {8, {{0, "Off"}, {3, "3"}, {5, "5"}, {7, "7"}, {9, "9"}, {11, "11"}, {13, "13"}, {15, "15"}}};
-
-valuesEnum_t		bilateralFilterEnum	= {8, {{0, "Off"}, {3, "3"}, {5, "5"}, {7, "7"}, {9, "9"}, {11, "11"}, {13, "13"}, {15, "15"}}};
-
-valuesEnum_t		peakModeEnum		= {8, {{PM_MAX_INTENSITY, "Max intensity"}, {PM_FIRST, "First"}, {PM_LAST, "Last"}, {PM_NUMBER_2, "#2"}, {PM_NUMBER_3, "#3"}, {PM_NUMBER_4, "#4"}, {PM_NUMBER_5, "#5"}, {PM_NUMBER_6, "#6"}}};
-
-valuesEnum_t		laserModeEnum		= {2, {{LASER_ALWAYS_ZERO, "Always on"}, {LASER_STROBE_INV, "Expose sync"}}};
-
-valuesEnum_t		input1EventEnum		= {3, {{IN1_EVENT_IGEN, "Internal generator"}, {IN1_EVENT_EXT, "External sync"}, {IN1_EVENT_SREQ, "Software request"}}};
-
-valuesEnum_t		input1ModeEnum		= {4, {{IN1_MODE_RISE, "Rise"}, {IN1_MODE_FALL, "Fall"}, {IN1_MODE_LVL1, "High level"}, {IN1_MODE_LVL0, "Low level"}}};
-
-valuesEnum_t		input2ModeEnum		= {2, {{IN2_MODE_LVL, "Level"}, {IN2_MODE_PHASE, "Phase"}}};
-
-valuesEnum_t		input3ModeEnum		= {2, {{IN3_MODE_RISE, "Rise"}, {IN3_MODE_FALL, "Fall"}}};
-
-valuesEnum_t		outputModeEnum		= {11, {{OUT_MODE_EXP_START, "Exposure start"},
-                                                {OUT_MODE_IN1_LOG_LVL, "In1 level"},
-                                                {OUT_MODE_IN1_RISE, "In1 rise"},
-                                                {OUT_MODE_IN1_FALL, "In1 fall"},
-                                                {OUT_MODE_IN2_LOG_LVL, "In2 level"},
-                                                {OUT_MODE_IN2_RISE, "In2 rise"},
-                                                {OUT_MODE_IN2_FALL, "In2 fall"},
-                                                {OUT_MODE_IN3_LOG_LVL, "In3 level"},
-                                                {OUT_MODE_IN3_RISE, "In3 rise"},
-                                                {OUT_MODE_IN3_FALL, "In3 fall"},
-                                                {OUT_MODE_EXP_TIME, "Exposure time"}}};
-
-valuesEnum_t		motionTypeEnum		= {2, {{0, "Linear"}, {1, "Radial"}}};
-
-valuesEnum_t		ySourceEnum			= {3, {{YA_SYSTEM_TIME, "System time"}, {YA_STEP_COUNTER, "Step counter"}, {YA_MEASURES_COUNTER, "Measures counter"}}};
-
-valuesEnum_t		paintModeEnum		= {2, {{0, "Heightmap"}, {1, "Intensity"}}};
-
-
-
-
-
 //pthread_mutex_t _mutex;
 
 rfUint32 rf627_old_api_version()
@@ -1131,6 +1081,817 @@ rfBool set_value_by_key(parameter_t* p, char* key)
 rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 {
 
+    char* key;
+    char* label;
+    int enum_index;
+
+    valuesEnum_t* boolEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    boolEnum->recCount = 2;
+    boolEnum->rec =  memory_platform.rf_calloc(boolEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "false";
+    label = "false";
+    boolEnum->rec[enum_index].value = 0;
+    boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "true";
+    label = "false";
+    boolEnum->rec[enum_index].value = 0;
+    boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* flipEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    flipEnum->recCount = 4;
+    flipEnum->rec =  memory_platform.rf_calloc(flipEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "No";
+    label = "No";
+    flipEnum->rec[enum_index].value = FM_NO;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "X";
+    label = "X";
+    flipEnum->rec[enum_index].value = FM_X;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Z";
+    label = "Z";
+    flipEnum->rec[enum_index].value = FM_Z;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "XZ";
+    label = "XZ";
+    flipEnum->rec[enum_index].value = FM_XZ;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* roiPosModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    roiPosModeEnum->recCount = 2;
+    roiPosModeEnum->rec =  memory_platform.rf_calloc(roiPosModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "manual";
+    label = "manual";
+    roiPosModeEnum->rec[enum_index].value = RPM_MANUAL;
+    roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "auto";
+    label = "auto";
+    roiPosModeEnum->rec[enum_index].value = RPM_AUTO;
+    roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* netSpeedEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    netSpeedEnum->recCount = 3;
+    netSpeedEnum->rec =  memory_platform.rf_calloc(netSpeedEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "10";
+    label = "10";
+    netSpeedEnum->rec[enum_index].value = LS_10MBIT;
+    netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "100";
+    label = "100";
+    netSpeedEnum->rec[enum_index].value = LS_100MBIT;
+    netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "1000";
+    label = "1000";
+    netSpeedEnum->rec[enum_index].value = LS_1GBIT;
+    netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* streamsFormatEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    streamsFormatEnum->recCount = 4;
+    streamsFormatEnum->rec =  memory_platform.rf_calloc(streamsFormatEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Pixels";
+    label = "Pixels";
+    streamsFormatEnum->rec[enum_index].value = DF_PIXELS;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Profile";
+    label = "Profile";
+    streamsFormatEnum->rec[enum_index].value = DF_PROFILE;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Interpolated pixels";
+    label = "Interpolated pixels";
+    streamsFormatEnum->rec[enum_index].value = DF_PIXELS_INTRP;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Interpolated profile";
+    label = "Interpolated profile";
+    streamsFormatEnum->rec[enum_index].value = DF_PROFILE_INTRP;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* processingModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    processingModeEnum->recCount = 2;
+    processingModeEnum->rec =  memory_platform.rf_calloc(processingModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "High accuracy";
+    label = "High accuracy";
+    processingModeEnum->rec[enum_index].value = PM_ACCURACY;
+    processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Welding";
+    label = "Welding";
+    processingModeEnum->rec[enum_index].value = PM_WELDING;
+    processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* medianFilterEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    medianFilterEnum->recCount = 8;
+    medianFilterEnum->rec =  memory_platform.rf_calloc(medianFilterEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "0";
+    label = "0";
+    medianFilterEnum->rec[enum_index].value = 0;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "3";
+    label = "3";
+    medianFilterEnum->rec[enum_index].value = 3;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "5";
+    label = "5";
+    medianFilterEnum->rec[enum_index].value = 5;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "7";
+    label = "7";
+    medianFilterEnum->rec[enum_index].value = 7;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "9";
+    label = "9";
+    medianFilterEnum->rec[enum_index].value = 9;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "11";
+    label = "11";
+    medianFilterEnum->rec[enum_index].value = 11;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "13";
+    label = "13";
+    medianFilterEnum->rec[enum_index].value = 13;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "15";
+    label = "15";
+    medianFilterEnum->rec[enum_index].value = 15;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* bilateralFilterEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    bilateralFilterEnum->recCount = 8;
+    bilateralFilterEnum->rec =  memory_platform.rf_calloc(bilateralFilterEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "0";
+    label = "0";
+    bilateralFilterEnum->rec[enum_index].value = 0;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "3";
+    label = "3";
+    bilateralFilterEnum->rec[enum_index].value = 3;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "5";
+    label = "5";
+    bilateralFilterEnum->rec[enum_index].value = 5;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "7";
+    label = "7";
+    bilateralFilterEnum->rec[enum_index].value = 7;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "9";
+    label = "9";
+    bilateralFilterEnum->rec[enum_index].value = 9;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "11";
+    label = "11";
+    bilateralFilterEnum->rec[enum_index].value = 11;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "13";
+    label = "13";
+    bilateralFilterEnum->rec[enum_index].value = 13;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "15";
+    label = "15";
+    bilateralFilterEnum->rec[enum_index].value = 15;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* peakModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    peakModeEnum->recCount = 8;
+    peakModeEnum->rec =  memory_platform.rf_calloc(peakModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Max intensity";
+    label = "Max intensity";
+    peakModeEnum->rec[enum_index].value = PM_MAX_INTENSITY;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "First";
+    label = "First";
+    peakModeEnum->rec[enum_index].value = PM_FIRST;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Last";
+    label = "Last";
+    peakModeEnum->rec[enum_index].value = PM_LAST;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#2";
+    label = "#2";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_2;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#3";
+    label = "#3";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_3;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#4";
+    label = "#4";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_4;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#5";
+    label = "#5";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_5;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#6";
+    label = "#6";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_6;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* laserModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    laserModeEnum->recCount = 2;
+    laserModeEnum->rec =  memory_platform.rf_calloc(laserModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Always on";
+    label = "Always on";
+    laserModeEnum->rec[enum_index].value = LASER_ALWAYS_ZERO;
+    laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Expose sync";
+    label = "Expose sync";
+    laserModeEnum->rec[enum_index].value = LASER_STROBE_INV;
+    laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+
+    valuesEnum_t* input1EventEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input1EventEnum->recCount = 3;
+    input1EventEnum->rec =  memory_platform.rf_calloc(input1EventEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Internal generator";
+    label = "Internal generator";
+    input1EventEnum->rec[enum_index].value = IN1_EVENT_IGEN;
+    input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "External sync";
+    label = "External sync";
+    input1EventEnum->rec[enum_index].value = IN1_EVENT_EXT;
+    input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Software request";
+    label = "Software request";
+    input1EventEnum->rec[enum_index].value = IN1_EVENT_SREQ;
+    input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* input1ModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input1ModeEnum->recCount = 4;
+    input1ModeEnum->rec =  memory_platform.rf_calloc(input1ModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Rise";
+    label = "Rise";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_RISE;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Fall";
+    label = "Fall";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_FALL;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "High level";
+    label = "High level";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_LVL1;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Low level";
+    label = "Low level";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_LVL0;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* input2ModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input2ModeEnum->recCount = 2;
+    input2ModeEnum->rec =  memory_platform.rf_calloc(input2ModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Level";
+    label = "Level";
+    input2ModeEnum->rec[enum_index].value = IN2_MODE_LVL;
+    input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Phase";
+    label = "Phase";
+    input2ModeEnum->rec[enum_index].value = IN2_MODE_PHASE;
+    input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+
+
+
+    valuesEnum_t* input3ModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input3ModeEnum->recCount = 2;
+    input3ModeEnum->rec =  memory_platform.rf_calloc(input3ModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Rise";
+    label = "Rise";
+    input3ModeEnum->rec[enum_index].value = IN3_MODE_RISE;
+    input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Fall";
+    label = "Fall";
+    input3ModeEnum->rec[enum_index].value = IN3_MODE_FALL;
+    input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* outputModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    outputModeEnum->recCount = 11;
+    outputModeEnum->rec =  memory_platform.rf_calloc(outputModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Exposure start";
+    label = "Exposure start";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_EXP_START;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In1 level";
+    label = "In1 level";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN1_LOG_LVL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In1 rise";
+    label = "In1 rise";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN1_RISE;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In1 fall";
+    label = "In1 fall";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN1_FALL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In2 level";
+    label = "In2 level";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN2_LOG_LVL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In2 rise";
+    label = "In2 rise";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN2_RISE;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In2 fall";
+    label = "In2 fall";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN2_FALL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In3 level";
+    label = "In3 level";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN3_LOG_LVL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In3 rise";
+    label = "In3 rise";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN3_RISE;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In3 fall";
+    label = "In3 fall";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN3_FALL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Exposure time";
+    label = "Exposure time";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_EXP_TIME;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+
+    valuesEnum_t* motionTypeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    motionTypeEnum->recCount = 2;
+    motionTypeEnum->rec =  memory_platform.rf_calloc(motionTypeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Linear";
+    label = "Linear";
+    motionTypeEnum->rec[enum_index].value = 0;
+    motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Radial";
+    label = "Radial";
+    motionTypeEnum->rec[enum_index].value = 1;
+    motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* ySourceEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    ySourceEnum->recCount = 3;
+    ySourceEnum->rec =  memory_platform.rf_calloc(ySourceEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "System time";
+    label = "System time";
+    ySourceEnum->rec[enum_index].value = YA_SYSTEM_TIME;
+    ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Step counter";
+    label = "Step counter";
+    ySourceEnum->rec[enum_index].value = YA_STEP_COUNTER;
+    ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Measures counter";
+    label = "Measures counter";
+    ySourceEnum->rec[enum_index].value = YA_MEASURES_COUNTER;
+    ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* paintModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    paintModeEnum->recCount = 2;
+    paintModeEnum->rec =  memory_platform.rf_calloc(paintModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Heightmap";
+    label = "Heightmap";
+    paintModeEnum->rec[enum_index].value = 0;
+    paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Intensity";
+    label = "Intensity";
+    paintModeEnum->rec[enum_index].value = 1;
+    paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
     rfSize TX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
@@ -1227,7 +1988,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 0;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 rfInt* def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1487,7 +2248,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1525,7 +2286,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1650,7 +2411,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1672,7 +2433,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1715,7 +2476,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1737,7 +2498,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1776,7 +2537,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1832,7 +2593,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1000;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 1000;
-                p->val_uint32->enumValues = &netSpeedEnum;
+                p->val_uint32->enumValues = netSpeedEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "1000");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -1854,7 +2615,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 1;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "true");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2028,7 +2789,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 1;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2050,7 +2811,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
                 p->val_uint32->defValue = 1;
-                p->val_uint32->enumValues = &streamsFormatEnum;
+                p->val_uint32->enumValues = streamsFormatEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Profile");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2071,7 +2832,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2148,7 +2909,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &medianFilterEnum;
+                p->val_uint32->enumValues = medianFilterEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Off");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2169,7 +2930,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &bilateralFilterEnum;
+                p->val_uint32->enumValues = bilateralFilterEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Off");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2190,7 +2951,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 7;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &peakModeEnum;
+                p->val_uint32->enumValues = peakModeEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Max intensity");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2211,7 +2972,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 7;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &flipEnum;
+                p->val_uint32->enumValues = flipEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "no");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2233,7 +2994,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2329,7 +3090,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2352,7 +3113,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 3;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &input1ModeEnum;
+                p->val_uint32->enumValues = input1ModeEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Rise");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2413,7 +3174,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2436,7 +3197,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &input2ModeEnum;
+                p->val_uint32->enumValues = input2ModeEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Level");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2481,7 +3242,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2504,7 +3265,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &input3ModeEnum;
+                p->val_uint32->enumValues = input3ModeEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Rise");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2525,7 +3286,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2546,7 +3307,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 10;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &outputModeEnum;
+                p->val_uint32->enumValues = outputModeEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Exposure start");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2622,7 +3383,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2643,7 +3404,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 10;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &outputModeEnum;
+                p->val_uint32->enumValues = outputModeEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "Exposure start");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -2698,7 +3459,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 //                p->val_uint32->min = 0;
 //                p->val_uint32->max = 1;
 //                p->val_uint32->step = 0;
-//                p->val_uint32->enumValues = &boolEnum;
+//                p->val_uint32->enumValues = boolEnum;
 //                def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
 //                if (def != NULL)
 //                    p->val_uint32->defValue = *def;
@@ -2720,6 +3481,815 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 {
+
+    char* key;
+    char* label;
+    int enum_index;
+
+    valuesEnum_t* boolEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    boolEnum->recCount = 2;
+    boolEnum->rec =  memory_platform.rf_calloc(boolEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "false";
+    label = "false";
+    boolEnum->rec[enum_index].value = 0;
+    boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "true";
+    label = "false";
+    boolEnum->rec[enum_index].value = 0;
+    boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* flipEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    flipEnum->recCount = 4;
+    flipEnum->rec =  memory_platform.rf_calloc(flipEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "No";
+    label = "No";
+    flipEnum->rec[enum_index].value = FM_NO;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "X";
+    label = "X";
+    flipEnum->rec[enum_index].value = FM_X;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Z";
+    label = "Z";
+    flipEnum->rec[enum_index].value = FM_Z;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "XZ";
+    label = "XZ";
+    flipEnum->rec[enum_index].value = FM_XZ;
+    flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* roiPosModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    roiPosModeEnum->recCount = 2;
+    roiPosModeEnum->rec =  memory_platform.rf_calloc(roiPosModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "manual";
+    label = "manual";
+    roiPosModeEnum->rec[enum_index].value = RPM_MANUAL;
+    roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "auto";
+    label = "auto";
+    roiPosModeEnum->rec[enum_index].value = RPM_AUTO;
+    roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* netSpeedEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    netSpeedEnum->recCount = 3;
+    netSpeedEnum->rec =  memory_platform.rf_calloc(netSpeedEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "10";
+    label = "10";
+    netSpeedEnum->rec[enum_index].value = LS_10MBIT;
+    netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "100";
+    label = "100";
+    netSpeedEnum->rec[enum_index].value = LS_100MBIT;
+    netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "1000";
+    label = "1000";
+    netSpeedEnum->rec[enum_index].value = LS_1GBIT;
+    netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* streamsFormatEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    streamsFormatEnum->recCount = 4;
+    streamsFormatEnum->rec =  memory_platform.rf_calloc(streamsFormatEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Pixels";
+    label = "Pixels";
+    streamsFormatEnum->rec[enum_index].value = DF_PIXELS;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Profile";
+    label = "Profile";
+    streamsFormatEnum->rec[enum_index].value = DF_PROFILE;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Interpolated pixels";
+    label = "Interpolated pixels";
+    streamsFormatEnum->rec[enum_index].value = DF_PIXELS_INTRP;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Interpolated profile";
+    label = "Interpolated profile";
+    streamsFormatEnum->rec[enum_index].value = DF_PROFILE_INTRP;
+    streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* processingModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    processingModeEnum->recCount = 2;
+    processingModeEnum->rec =  memory_platform.rf_calloc(processingModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "High accuracy";
+    label = "High accuracy";
+    processingModeEnum->rec[enum_index].value = PM_ACCURACY;
+    processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Welding";
+    label = "Welding";
+    processingModeEnum->rec[enum_index].value = PM_WELDING;
+    processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* medianFilterEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    medianFilterEnum->recCount = 8;
+    medianFilterEnum->rec =  memory_platform.rf_calloc(medianFilterEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "0";
+    label = "0";
+    medianFilterEnum->rec[enum_index].value = 0;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "3";
+    label = "3";
+    medianFilterEnum->rec[enum_index].value = 3;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "5";
+    label = "5";
+    medianFilterEnum->rec[enum_index].value = 5;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "7";
+    label = "7";
+    medianFilterEnum->rec[enum_index].value = 7;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "9";
+    label = "9";
+    medianFilterEnum->rec[enum_index].value = 9;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "11";
+    label = "11";
+    medianFilterEnum->rec[enum_index].value = 11;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "13";
+    label = "13";
+    medianFilterEnum->rec[enum_index].value = 13;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "15";
+    label = "15";
+    medianFilterEnum->rec[enum_index].value = 15;
+    medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* bilateralFilterEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    bilateralFilterEnum->recCount = 8;
+    bilateralFilterEnum->rec =  memory_platform.rf_calloc(bilateralFilterEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "0";
+    label = "0";
+    bilateralFilterEnum->rec[enum_index].value = 0;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "3";
+    label = "3";
+    bilateralFilterEnum->rec[enum_index].value = 3;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "5";
+    label = "5";
+    bilateralFilterEnum->rec[enum_index].value = 5;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "7";
+    label = "7";
+    bilateralFilterEnum->rec[enum_index].value = 7;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "9";
+    label = "9";
+    bilateralFilterEnum->rec[enum_index].value = 9;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "11";
+    label = "11";
+    bilateralFilterEnum->rec[enum_index].value = 11;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "13";
+    label = "13";
+    bilateralFilterEnum->rec[enum_index].value = 13;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "15";
+    label = "15";
+    bilateralFilterEnum->rec[enum_index].value = 15;
+    bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* peakModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    peakModeEnum->recCount = 8;
+    peakModeEnum->rec =  memory_platform.rf_calloc(peakModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Max intensity";
+    label = "Max intensity";
+    peakModeEnum->rec[enum_index].value = PM_MAX_INTENSITY;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "First";
+    label = "First";
+    peakModeEnum->rec[enum_index].value = PM_FIRST;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Last";
+    label = "Last";
+    peakModeEnum->rec[enum_index].value = PM_LAST;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#2";
+    label = "#2";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_2;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#3";
+    label = "#3";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_3;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#4";
+    label = "#4";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_4;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#5";
+    label = "#5";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_5;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "#6";
+    label = "#6";
+    peakModeEnum->rec[enum_index].value = PM_NUMBER_6;
+    peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* laserModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    laserModeEnum->recCount = 2;
+    laserModeEnum->rec =  memory_platform.rf_calloc(laserModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Always on";
+    label = "Always on";
+    laserModeEnum->rec[enum_index].value = LASER_ALWAYS_ZERO;
+    laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Expose sync";
+    label = "Expose sync";
+    laserModeEnum->rec[enum_index].value = LASER_STROBE_INV;
+    laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+
+    valuesEnum_t* input1EventEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input1EventEnum->recCount = 3;
+    input1EventEnum->rec =  memory_platform.rf_calloc(input1EventEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Internal generator";
+    label = "Internal generator";
+    input1EventEnum->rec[enum_index].value = IN1_EVENT_IGEN;
+    input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "External sync";
+    label = "External sync";
+    input1EventEnum->rec[enum_index].value = IN1_EVENT_EXT;
+    input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Software request";
+    label = "Software request";
+    input1EventEnum->rec[enum_index].value = IN1_EVENT_SREQ;
+    input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* input1ModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input1ModeEnum->recCount = 4;
+    input1ModeEnum->rec =  memory_platform.rf_calloc(input1ModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Rise";
+    label = "Rise";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_RISE;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Fall";
+    label = "Fall";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_FALL;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "High level";
+    label = "High level";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_LVL1;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Low level";
+    label = "Low level";
+    input1ModeEnum->rec[enum_index].value = IN1_MODE_LVL0;
+    input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* input2ModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input2ModeEnum->recCount = 2;
+    input2ModeEnum->rec =  memory_platform.rf_calloc(input2ModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Level";
+    label = "Level";
+    input2ModeEnum->rec[enum_index].value = IN2_MODE_LVL;
+    input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Phase";
+    label = "Phase";
+    input2ModeEnum->rec[enum_index].value = IN2_MODE_PHASE;
+    input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+
+
+
+    valuesEnum_t* input3ModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    input3ModeEnum->recCount = 2;
+    input3ModeEnum->rec =  memory_platform.rf_calloc(input3ModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Rise";
+    label = "Rise";
+    input3ModeEnum->rec[enum_index].value = IN3_MODE_RISE;
+    input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Fall";
+    label = "Fall";
+    input3ModeEnum->rec[enum_index].value = IN3_MODE_FALL;
+    input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+    valuesEnum_t* outputModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    outputModeEnum->recCount = 11;
+    outputModeEnum->rec =  memory_platform.rf_calloc(outputModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Exposure start";
+    label = "Exposure start";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_EXP_START;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In1 level";
+    label = "In1 level";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN1_LOG_LVL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In1 rise";
+    label = "In1 rise";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN1_RISE;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In1 fall";
+    label = "In1 fall";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN1_FALL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In2 level";
+    label = "In2 level";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN2_LOG_LVL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In2 rise";
+    label = "In2 rise";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN2_RISE;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In2 fall";
+    label = "In2 fall";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN2_FALL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In3 level";
+    label = "In3 level";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN3_LOG_LVL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In3 rise";
+    label = "In3 rise";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN3_RISE;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "In3 fall";
+    label = "In3 fall";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_IN3_FALL;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Exposure time";
+    label = "Exposure time";
+    outputModeEnum->rec[enum_index].value = OUT_MODE_EXP_TIME;
+    outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+
+
+    valuesEnum_t* motionTypeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    motionTypeEnum->recCount = 2;
+    motionTypeEnum->rec =  memory_platform.rf_calloc(motionTypeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Linear";
+    label = "Linear";
+    motionTypeEnum->rec[enum_index].value = 0;
+    motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Radial";
+    label = "Radial";
+    motionTypeEnum->rec[enum_index].value = 1;
+    motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* ySourceEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    ySourceEnum->recCount = 3;
+    ySourceEnum->rec =  memory_platform.rf_calloc(ySourceEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "System time";
+    label = "System time";
+    ySourceEnum->rec[enum_index].value = YA_SYSTEM_TIME;
+    ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Step counter";
+    label = "Step counter";
+    ySourceEnum->rec[enum_index].value = YA_STEP_COUNTER;
+    ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Measures counter";
+    label = "Measures counter";
+    ySourceEnum->rec[enum_index].value = YA_MEASURES_COUNTER;
+    ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+
+
+
+    valuesEnum_t* paintModeEnum = memory_platform.rf_calloc(1, sizeof(valuesEnum_t));
+    paintModeEnum->recCount = 2;
+    paintModeEnum->rec =  memory_platform.rf_calloc(paintModeEnum->recCount, sizeof(enumRec_t));
+    enum_index = 0;
+
+    key = "Heightmap";
+    label = "Heightmap";
+    paintModeEnum->rec[enum_index].value = 0;
+    paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
+
+    key = "Intensity";
+    label = "Intensity";
+    paintModeEnum->rec[enum_index].value = 1;
+    paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
+    paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    enum_index++;
 
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
     rfUint8* RX = memory_platform.rf_calloc(1, RX_SIZE);
@@ -3250,7 +4820,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 1;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &boolEnum;
+                p->val_uint32->enumValues = boolEnum;
                 rfInt* def = get_value_by_key_from_enum(p->val_uint32->enumValues, "false");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;
@@ -3288,7 +4858,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
                 p->val_uint32->min = 0;
                 p->val_uint32->max = 3;
                 p->val_uint32->step = 0;
-                p->val_uint32->enumValues = &flipEnum;
+                p->val_uint32->enumValues = flipEnum;
                 def = get_value_by_key_from_enum(p->val_uint32->enumValues, "No");
                 if (def != NULL)
                     p->val_uint32->defValue = *def;

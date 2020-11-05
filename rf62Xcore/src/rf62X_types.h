@@ -1205,7 +1205,7 @@ typedef struct
 {
     scanner_types_t type;
     union{
-        rf627_old_profile2D_t* rf627_profile2D;
+        rf627_old_profile2D_t* rf627old_profile2D;
         rf627_smart_profile2D_t* rf627smart_profile2D;
     };
 }rf627_profile2D_t;

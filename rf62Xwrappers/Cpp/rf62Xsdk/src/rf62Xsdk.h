@@ -154,6 +154,8 @@ public:
             bool zero_points = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
+    char* get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief read_params - Read parameters from device to internal structure.
      * This structure is accessible via get_params() function
@@ -306,7 +308,7 @@ public:
      * @return ptr to profile2D_t structure if success, else - null
      */
     profile2D_t* get_profile2D(
-            bool zero_points = true,
+            bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
@@ -325,6 +327,8 @@ public:
             COUNT_TYPES count_type = COUNT_TYPES::MEASURE,
             bool zero_points = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    char* get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief read_params - Read parameters from device to internal structure.
