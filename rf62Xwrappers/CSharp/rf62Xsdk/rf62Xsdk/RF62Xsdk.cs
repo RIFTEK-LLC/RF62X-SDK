@@ -2266,8 +2266,9 @@ namespace SDK
                 /// Get 2D measurement from scanner’s data stream
                 /// </summary>
                 /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="zero_points">include zero points in return Profile</param>
                 /// <returns>Profile</returns>
-                public Profile GetProfile(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
+                public Profile GetProfile(bool zero_points = true, PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
                 {
                     switch (protocol)
                     {
@@ -2278,7 +2279,7 @@ namespace SDK
 
 
                                 rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
-                                            (scanner_base_t*)_base, false, PROTOCOLS_TYPES.SERVICE_PROTOKOL);
+                                            (scanner_base_t*)_base, zero_points, PROTOCOLS_TYPES.SERVICE_PROTOKOL);
 
                                 if (profile_from_scanner->rf627_profile2D != null)
                                 {
