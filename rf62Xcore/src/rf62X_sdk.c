@@ -13,7 +13,7 @@ void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
     set_adapter_settings(host_mask, host_ip_addr);
 }
 
-rfUint8 search_scanners(vector_t *list, scanner_types_t model, protocol_types_t protocol)
+rfUint8 search_scanners(vector_t *list, scanner_types_t model, rfUint32 timeout, protocol_types_t protocol)
 {
     switch (model) {
     case kRF627_OLD:
@@ -35,7 +35,7 @@ rfUint8 search_scanners(vector_t *list, scanner_types_t model, protocol_types_t 
         switch (protocol) {
         case kSERVICE:
             rf627_smart_search_by_service_protocol(
-                        list, network_platform.network_settings.host_ip_addr);
+                        list, network_platform.network_settings.host_ip_addr, timeout);
             break;
             break;
         case kETHERNET_IP:

@@ -185,7 +185,7 @@ typedef struct
  * @param ip_addr - the IP address of the adapter on which the connection should be established.
  * @return 0 on success
  */
-uint8_t rf627_smart_search_by_service_protocol(vector_t* list, rfUint32 ip_addr);
+uint8_t rf627_smart_search_by_service_protocol(vector_t* list, rfUint32 ip_addr, rfUint32 timeout);
 
 /**
  * @brief rf627_old_get_parameter - Search parameters by his name
@@ -204,6 +204,13 @@ parameter_t* rf627_smart_get_parameter(
  */
 rf627_smart_t* rf627_smart_create_from_hello_msg(
         char* data, rfUint32 data_size);
+
+/**
+ * @brief rf627_smart_free
+ * @param rf627_smart_t
+ * @return
+ */
+void rf627_smart_free(rf627_smart_t* scanner);
 
 rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_by_service_protocol(rf627_smart_t* scanner);
 

@@ -154,7 +154,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
             set_platform_adapter_settings(host_mask, host_ip_addr);
 
             // Search for RF627-old devices over network by Service Protocol.
-            search_scanners(scanners, kRF627_OLD, kSERVICE);
+            search_scanners(scanners, kRF627_OLD, 1000, kSERVICE);
         }
 
         std::vector<rf627old*> result;
@@ -1328,7 +1328,7 @@ rf627old::hello_info::version::~version()
 //
 
 
-std::vector<rf627smart*> rf627smart::search(PROTOCOLS protocol)
+std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PROTOCOLS protocol)
 {
     switch (protocol) {
     case PROTOCOLS::SERVICE:
@@ -1356,25 +1356,31 @@ std::vector<rf627smart*> rf627smart::search(PROTOCOLS protocol)
             set_platform_adapter_settings(host_mask, host_ip_addr);
 
             // Search for RF627-old devices over network by Service Protocol.
-            search_scanners(scanners, kRF627_SMART, kSERVICE);
+            search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
         }
 
-        std::vector<rf627smart*> result;
+        std::vector<std::shared_ptr<rf627smart>> result;
 
         /*
          * Iterate over all discovered rf627-old in network and push into list.
          */
         for(size_t i = 0; i < vector_count(scanners); i++)
         {
-            result.push_back(new rf627smart((void*)vector_get(scanners,i)));
+            result.push_back(std::shared_ptr<rf627smart>(std::make_shared<rf627smart>((void*)vector_get(scanners,i))));
             result[i]->current_protocol = PROTOCOLS::SERVICE;
         }
+        while (vector_count(scanners) > 0) {
+            vector_delete(scanners, vector_count(scanners)-1);
+        }
+        free (scanners);
+
+
         return result;
         break;
     }
     default:
     {
-        static std::vector<rf627smart*> result;
+        static std::vector<std::shared_ptr<rf627smart>> result;
         return result;
         break;
     }
@@ -1415,7 +1421,7 @@ rf627smart::rf627smart(void* base)
 
 rf627smart::~rf627smart()
 {
-
+    rf627_smart_free(((scanner_base_t*)this->scanner_base)->rf627_smart);
 }
 
 bool rf627smart::connect(PROTOCOLS protocol)

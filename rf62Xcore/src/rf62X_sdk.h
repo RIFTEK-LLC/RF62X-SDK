@@ -39,7 +39,7 @@ API_EXPORT void set_platform_adapter_settings(
  * @return 0 on success
  */
 API_EXPORT rfUint8 search_scanners(
-        vector_t *list, scanner_types_t model, protocol_types_t protocol);
+        vector_t *list, scanner_types_t model, uint32_t timeout, protocol_types_t protocol);
 
 /**
  * @brief get_hello_info_of_scanners - Get information about scanner from hello packet

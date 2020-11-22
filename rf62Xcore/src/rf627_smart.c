@@ -66,6 +66,7 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
     }
 
     mpack_tree_destroy(&tree);
+    return TRUE;
 }
 
 rfInt8 rf627_smart_get_hello_timeout_callback()
@@ -73,7 +74,7 @@ rfInt8 rf627_smart_get_hello_timeout_callback()
     printf("get_hello_timeout\n");
 }
 
-uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_addr)
+uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_addr, rfUint32 timeout)
 {
     char config[1024];
     search_result = result;
@@ -97,8 +98,9 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
 
     smart_channel_init(&channel, config);
 
+
     smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, "blob", FALSE, FALSE, FALSE,
-                                             1000,
+                                             timeout,
                                              rf627_smart_get_hello_callback,
                                              rf627_smart_get_hello_timeout_callback);
 
@@ -109,7 +111,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
         printf("Requests were sent.\n");
 
 
-    delay(1000);
+    delay(timeout);
 
     // Cleanup test msg
     smart_cleanup_msg(msg);
@@ -124,6 +126,7 @@ rf627_smart_t* rf627_smart_create_from_hello_msg(
         char* data, rfUint32 data_size)
 {
     rf627_smart_t* rf627_smart = memory_platform.rf_calloc(1, sizeof (rf627_smart_t));
+    memset(rf627_smart, 0, sizeof (rf627_smart_t));
 
     vector_init(&rf627_smart->params_list);
 
@@ -304,6 +307,29 @@ rf627_smart_t* rf627_smart_create_from_hello_msg(
     mpack_tree_destroy(&tree);
     return rf627_smart;
 
+}
+
+void rf627_smart_free(rf627_smart_t* scanner)
+{
+    smart_channel_cleanup(&scanner->channel);
+    network_platform.network_methods.close_socket(scanner->m_data_sock);
+
+    while (vector_count(scanner->params_list) > 0)
+    {
+        parameter_t* p = vector_get(scanner->params_list, vector_count(scanner->params_list)-1);
+        free_parameter(p, kRF627_SMART);
+
+        vector_delete(scanner->params_list, vector_count(scanner->params_list)-1);
+    }
+
+    free (scanner->info_by_service_protocol.user_general_deviceName);
+    free (scanner->info_by_service_protocol.user_network_ip);
+    free (scanner->info_by_service_protocol.user_network_mask);
+    free (scanner->info_by_service_protocol.user_network_gateway);
+    free (scanner->info_by_service_protocol.user_network_hostIP);
+    free (scanner->info_by_service_protocol.fact_network_macAddr);
+
+    free (scanner);
 }
 
 rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_by_service_protocol(rf627_smart_t* scanner)

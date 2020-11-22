@@ -279,7 +279,7 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return vector of rf627old devices
      */
-    static std::vector<rf627smart*> search(PROTOCOLS protocol);
+    static std::vector<std::shared_ptr<rf627smart>> search(uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::SERVICE);
 
     /**
      * @brief get_info - Get information about scanner from hello packet
