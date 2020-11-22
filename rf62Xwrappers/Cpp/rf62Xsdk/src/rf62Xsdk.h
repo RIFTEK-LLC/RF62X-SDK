@@ -304,6 +304,7 @@ public:
     /**
      * @brief get_profile2D  - Get 2D measurement from scanner's data stream
      * @param zero_points - include zero points in return profile2D
+     * @param realtime - getting a profile in real time (buffering is disabled)
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return ptr to profile2D_t structure if success, else - null
      */
