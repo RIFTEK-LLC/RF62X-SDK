@@ -21,7 +21,7 @@ void delay(unsigned int mseconds)
 }
 
 int answ_count = 0;
-vector_t *search_result;
+vector_t *search_result = NULL;
 rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id)
 {
     answ_count++;
@@ -77,6 +77,13 @@ rfInt8 rf627_smart_get_hello_timeout_callback()
 uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_addr, rfUint32 timeout)
 {
     char config[1024];
+    if (search_result != NULL)
+    {
+        while (vector_count(search_result) > 0) {
+            vector_delete(search_result, vector_count(search_result)-1);
+        }
+        free (search_result);
+    }
     search_result = result;
     unsigned char bytes[4];
     bytes[0] = ip_addr & 0xFF;
@@ -607,7 +614,8 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
     int index = -1;
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
     {
-        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        scanner_base_t* scanner = (scanner_base_t*)vector_get(search_result, i);
+        if(scanner->type == kRF627_SMART)
         {
             if (((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial == device_id)
             {

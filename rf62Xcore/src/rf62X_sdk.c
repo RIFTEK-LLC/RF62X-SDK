@@ -5,9 +5,6 @@
 #include "netwok_platform.h"
 #include "memory_platform.h"
 
-
-vector_t *search_result;
-
 void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
 {
     set_adapter_settings(host_mask, host_ip_addr);
@@ -540,9 +537,8 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
             rfBool ret = 0;
             while (vector_count(device->rf627_smart->params_list) > 0) {
                 parameter_t* p = vector_get(device->rf627_smart->params_list, vector_count(device->rf627_smart->params_list)-1);
-                free_smart_parameter(p);
-
                 vector_delete(device->rf627_smart->params_list, vector_count(device->rf627_smart->params_list)-1);
+                free_smart_parameter(p);
                 count++;
             }
             ret = rf627_smart_read_params_from_scanner(device->rf627_smart);
