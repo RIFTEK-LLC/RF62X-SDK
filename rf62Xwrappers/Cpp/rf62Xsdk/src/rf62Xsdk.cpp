@@ -1369,10 +1369,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
             result.push_back(std::shared_ptr<rf627smart>(std::make_shared<rf627smart>((void*)vector_get(scanners,i))));
             result[i]->current_protocol = PROTOCOLS::SERVICE;
         }
-//        while (vector_count(scanners) > 0) {
-//            vector_delete(scanners, vector_count(scanners)-1);
-//        }
-//        free (scanners);
 
 
         return result;
