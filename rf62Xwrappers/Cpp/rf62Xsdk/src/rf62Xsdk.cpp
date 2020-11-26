@@ -1418,6 +1418,7 @@ rf627smart::hello_info rf627smart::get_info(PROTOCOLS protocol)
 rf627smart::rf627smart(void* base)
 {
     this->scanner_base = base;
+    is_connected = false;
 }
 
 rf627smart::~rf627smart()
@@ -1436,10 +1437,17 @@ bool rf627smart::connect(PROTOCOLS protocol)
     switch (p) {
     case PROTOCOLS::SERVICE:
     {
-        // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
-        result = connect_to_scanner(
-                    ((scanner_base_t*)this->scanner_base), kSERVICE);
+        if (is_connected == false)
+        {
+            // Establish connection to the RF627 device by Service Protocol.
+            result = connect_to_scanner(
+                        ((scanner_base_t*)this->scanner_base), kSERVICE);
+            is_connected = result;
+        }else
+        {
+            result = is_connected;
+        }
 
         return result;
         break;
@@ -1489,10 +1497,17 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
     switch (p) {
     case PROTOCOLS::SERVICE:
     {
-        // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
-        result = disconnect_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE);
+        if (is_connected)
+        {
+            // Establish connection to the RF627 device by Service Protocol.
+            result = disconnect_from_scanner(
+                        (scanner_base_t*)scanner_base, kSERVICE);
+            is_connected = result;
+        }else
+        {
+            result = is_connected;
+        }
         return result;
         break;
     }

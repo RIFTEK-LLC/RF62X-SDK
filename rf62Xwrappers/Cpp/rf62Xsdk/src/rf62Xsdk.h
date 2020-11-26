@@ -385,6 +385,7 @@ public:
 
 private:
     void* scanner_base = NULL;
+    bool is_connected;
     PROTOCOLS current_protocol;
 };
 

@@ -17,66 +17,71 @@ int main()
 
 
     // Create value for scanners vector's type
-    std::vector<rf627smart*> list;
+    std::vector<std::shared_ptr<rf627smart>> list;
     // Search for rf627smart devices over network
-    list = rf627smart::search(PROTOCOLS::SERVICE);
+    list = rf627smart::search(500);
 
 
     // Print count of discovered rf627smart in network by Service Protocol
     std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
 
 
-    // Iterate over all discovered rf627-old in network, connect to each of
-    // them and get a profile.
-    for (size_t i = 0; i < list.size(); i++)
-    {
-        rf627smart::hello_info info = list[i]->get_info();
+    while (true) {
 
-        // Print information about the scanner to which the profile belongs.
-        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
-        std::cout << "-----------------------------------------" << std::endl;
-        std::cout << "Device information: "                      << std::endl;
-        std::cout << "* Name\t: "     << info.device_name()      << std::endl;
-        std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
-        std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
 
-        // Establish connection to the RF627 device by Service Protocol.
-        bool is_connect = list[i]->connect();
-
-        // Get profile from scanner's data stream by Service Protocol.
-        profile2D_t* profile = nullptr;
-        if (is_connect && ((profile = list[i]->get_profile2D()) != nullptr))
+        // Iterate over all discovered rf627-old in network, connect to each of
+        // them and get a profile.
+        for (size_t i = 0; i < list.size(); i++)
         {
-            std::cout << "Profile information: "                    << std::endl;
-            switch (profile->header.data_type) {
-            case (uint8_t)PROFILE_DATA_TYPE::PIXELS:
-                std::cout << "* DataType\t: "<< "PIXELS"            << std::endl;
-                std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
-                break;
-            case (uint8_t)PROFILE_DATA_TYPE::PIXELS_INTRP:
-                std::cout << "* DataType\t: "<< "PIXELS_INTRP"      << std::endl;
-                std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
-                break;
-            case (uint8_t)PROFILE_DATA_TYPE::PROFILE:
-                std::cout << "* DataType\t: "<< "PROFILE"           << std::endl;
-                std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
-                break;
-            case (uint8_t)PROFILE_DATA_TYPE::PROFILE_INTRP:
-                std::cout << "* DataType\t: "<< "PROFILE_INTRP"     << std::endl;
-                std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
-                break;
+            rf627smart::hello_info info = list[i]->get_info();
+
+            // Print information about the scanner to which the profile belongs.
+            std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
+            std::cout << "-----------------------------------------" << std::endl;
+            std::cout << "Device information: "                      << std::endl;
+            std::cout << "* Name\t: "     << info.device_name()      << std::endl;
+            std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
+            std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
+
+            // Establish connection to the RF627 device by Service Protocol.
+            bool is_connect = list[i]->connect();
+
+            // Get profile from scanner's data stream by Service Protocol.
+            profile2D_t* profile = nullptr;
+            if (is_connect && ((profile = list[i]->get_profile2D(true, true)) != nullptr))
+            {
+                std::cout << "Profile information: "                    << std::endl;
+                switch (profile->header.data_type) {
+                case (uint8_t)PROFILE_DATA_TYPE::PIXELS:
+                    std::cout << "* DataType\t: "<< "PIXELS"            << std::endl;
+                    std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
+                    break;
+                case (uint8_t)PROFILE_DATA_TYPE::PIXELS_INTRP:
+                    std::cout << "* DataType\t: "<< "PIXELS_INTRP"      << std::endl;
+                    std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
+                    break;
+                case (uint8_t)PROFILE_DATA_TYPE::PROFILE:
+                    std::cout << "* DataType\t: "<< "PROFILE"           << std::endl;
+                    std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
+                    break;
+                case (uint8_t)PROFILE_DATA_TYPE::PROFILE_INTRP:
+                    std::cout << "* DataType\t: "<< "PROFILE_INTRP"     << std::endl;
+                    std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
+                    break;
+                }
+                delete profile;
+                std::cout << "Profile was successfully received!"       << std::endl;
+                std::cout << "-----------------------------------------"<< std::endl;
+            }else
+            {
+                std::cout << "Profile was not received!"                << std::endl;
+                std::cout << "-----------------------------------------"<< std::endl;
             }
-            delete profile;
-            std::cout << "Profile was successfully received!"       << std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
-        }else
-        {
-            std::cout << "Profile was not received!"                << std::endl;
-            std::cout << "-----------------------------------------"<< std::endl;
+
+            // Disconnect from scanner.
+            list[i]->disconnect();
         }
 
-        // Disconnect from scanner.
-        list[i]->disconnect();
     }
 
     // Cleanup resources allocated with sdk_init()
