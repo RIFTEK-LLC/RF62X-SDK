@@ -22,7 +22,7 @@ void delay(unsigned int mseconds)
 
 int answ_count = 0;
 vector_t *search_result = NULL;
-rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id)
+rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
     printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
@@ -45,12 +45,9 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
     {
         if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
         {
-            parameter_t* param = rf627_smart_get_parameter(((scanner_base_t*)vector_get(search_result, i))->rf627_smart, "fact_general_serial");
-            if (param != NULL)
-            {
-                if (param->val_uint32->value == device_id)
-                    existing = TRUE;
-            }
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
         }
     }
 
@@ -77,12 +74,12 @@ rfInt8 rf627_smart_get_hello_timeout_callback()
 uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_addr, rfUint32 timeout)
 {
     char config[1024];
-    if (search_result != NULL)
+    if (search_result != result && search_result != NULL)
     {
         while (vector_count(search_result) > 0) {
             vector_delete(search_result, vector_count(search_result)-1);
         }
-        free (search_result);
+        free (search_result); search_result = NULL;
     }
     search_result = result;
     unsigned char bytes[4];
@@ -125,6 +122,92 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_add
     smart_channel_cleanup(&channel);
 
     return answ_count;
+}
+
+rfInt8 rf627_smart_check_connection_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+
+    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return result;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        msg->result = memory_platform.rf_calloc(1, sizeof (int));
+        *(int*)((smart_msg_t*)rqst_msg)->result = TRUE;
+    }
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+
+rfInt8 rf627_smart_check_connection_timeout_callback()
+{
+    printf("get_hello_timeout\n");
+}
+
+
+rfBool rf627_smart_check_connection_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
+{
+    int is_connected = FALSE;
+    smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, "blob", FALSE, FALSE, TRUE,
+                                             timeout,
+                                             rf627_smart_check_connection_callback,
+                                             rf627_smart_check_connection_timeout_callback);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+
+    clock_t goal = timeout + clock();
+    while (goal > clock()){
+        for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
+        {
+            if (scanner->channel.smart_parser.output_msg_buffer[i].msg._msg_uid == msg->_msg_uid)
+            {
+                if (scanner->channel.smart_parser.output_msg_buffer[i].msg.result != NULL)
+                {
+                    is_connected = *(int*)scanner->channel.smart_parser.output_msg_buffer[i].msg.result;
+                    free(scanner->channel.smart_parser.output_msg_buffer[i].msg.result);
+                    scanner->channel.smart_parser.output_msg_buffer[i].msg.result = NULL;
+                    if (is_connected) break;
+                }
+            }
+        }
+    }
+
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+
+    if (is_connected)
+        return TRUE;
+    else return FALSE;
 }
 
 
@@ -329,14 +412,41 @@ void rf627_smart_free(rf627_smart_t* scanner)
         vector_delete(scanner->params_list, vector_count(scanner->params_list)-1);
     }
 
-    free (scanner->info_by_service_protocol.user_general_deviceName);
-    free (scanner->info_by_service_protocol.user_network_ip);
-    free (scanner->info_by_service_protocol.user_network_mask);
-    free (scanner->info_by_service_protocol.user_network_gateway);
-    free (scanner->info_by_service_protocol.user_network_hostIP);
-    free (scanner->info_by_service_protocol.fact_network_macAddr);
-
-    free (scanner);
+    if (scanner->info_by_service_protocol.user_general_deviceName != NULL)
+    {
+        free (scanner->info_by_service_protocol.user_general_deviceName);
+        scanner->info_by_service_protocol.user_general_deviceName = NULL;
+    }
+    if (scanner->info_by_service_protocol.user_network_ip != NULL)
+    {
+        free (scanner->info_by_service_protocol.user_network_ip);
+        scanner->info_by_service_protocol.user_network_ip = NULL;
+    }
+    if (scanner->info_by_service_protocol.user_network_mask != NULL)
+    {
+        free (scanner->info_by_service_protocol.user_network_mask);
+        scanner->info_by_service_protocol.user_network_mask = NULL;
+    }
+    if (scanner->info_by_service_protocol.user_network_gateway != NULL)
+    {
+        free (scanner->info_by_service_protocol.user_network_gateway);
+        scanner->info_by_service_protocol.user_network_gateway = NULL;
+    }
+    if (scanner->info_by_service_protocol.user_network_hostIP != NULL)
+    {
+        free (scanner->info_by_service_protocol.user_network_hostIP);
+        scanner->info_by_service_protocol.user_network_hostIP = NULL;
+    }
+    if (scanner->info_by_service_protocol.user_network_hostIP != NULL)
+    {
+        free (scanner->info_by_service_protocol.user_network_hostIP);
+        scanner->info_by_service_protocol.user_network_hostIP = NULL;
+    }
+    if (scanner != NULL)
+    {
+        free (scanner);
+        scanner = NULL;
+    }
 }
 
 rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_by_service_protocol(rf627_smart_t* scanner)
@@ -2363,7 +2473,7 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
 
         // Cleanup test msg
         smart_cleanup_msg(msg);
-        free(send_packet);
+        free(send_packet); send_packet = NULL;
 
         return TRUE;
     }

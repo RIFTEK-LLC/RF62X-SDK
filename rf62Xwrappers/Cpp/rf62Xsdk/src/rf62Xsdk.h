@@ -295,6 +295,13 @@ public:
     bool connect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
+     * @brief check_connection - Сheck the connection with the RF627smart device
+     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success
+     */
+    bool check_connection(uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    /**
      * @brief disconnect_from_scanner - Close connection to the device
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success

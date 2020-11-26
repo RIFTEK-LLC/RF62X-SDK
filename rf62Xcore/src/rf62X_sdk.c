@@ -313,129 +313,158 @@ void free_smart_parameter(parameter_t* p)
             for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
             {
                 free(p->val_uint32->enumValues->rec[i].key);
+                p->val_uint32->enumValues->rec[i].key = NULL;
                 free(p->val_uint32->enumValues->rec[i].label);
+                p->val_uint32->enumValues->rec[i].label = NULL;
             }
-            free(p->val_uint32->enumValues->rec);
-            free(p->val_uint32->enumValues);
+            free(p->val_uint32->enumValues->rec); p->val_uint32->enumValues->rec = NULL;
+            free(p->val_uint32->enumValues); p->val_uint32->enumValues = NULL;
         }
-        memory_platform.rf_free(p->val_uint32);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_uint32); p->val_uint32 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-            memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
 
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
     {
-        memory_platform.rf_free(p->val_uint64);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_uint64); p->val_uint64 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
     {
-        memory_platform.rf_free(p->val_int32);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_int32); p->val_int32 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
     {
-        memory_platform.rf_free(p->val_int64);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_int64); p->val_int64 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
     {
-        memory_platform.rf_free(p->val_flt);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_flt); p->val_flt = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
     {
-        memory_platform.rf_free(p->val_dbl);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_dbl); p->val_dbl = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
     {
-        memory_platform.rf_free(p->arr_uint32->value);
-        memory_platform.rf_free(p->arr_uint32->defValue);
-        memory_platform.rf_free(p->arr_uint32);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->arr_uint32->value); p->arr_uint32->value = NULL;
+        memory_platform.rf_free(p->arr_uint32->defValue); p->arr_uint32->defValue = NULL;
+        memory_platform.rf_free(p->arr_uint32); p->arr_uint32 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT64]) == 0)
     {
-        memory_platform.rf_free(p->arr_uint64->value);
-        memory_platform.rf_free(p->arr_uint64->defValue);
-        memory_platform.rf_free(p->arr_uint64);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->arr_uint64->value); p->arr_uint64->value = NULL;
+        memory_platform.rf_free(p->arr_uint64->defValue); p->arr_uint64->defValue = NULL;
+        memory_platform.rf_free(p->arr_uint64); p->arr_uint64 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_INT32]) == 0)
     {
-        memory_platform.rf_free(p->arr_int32->value);
-        memory_platform.rf_free(p->arr_int32->defValue);
-        memory_platform.rf_free(p->arr_int32);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->arr_int32->value); p->arr_int32->value = NULL;
+        memory_platform.rf_free(p->arr_int32->defValue); p->arr_int32->defValue = NULL;
+        memory_platform.rf_free(p->arr_int32); p->arr_int32 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_INT64]) == 0)
     {
-        memory_platform.rf_free(p->arr_int64->value);
-        memory_platform.rf_free(p->arr_int64->defValue);
-        memory_platform.rf_free(p->arr_int64);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->arr_int64->value); p->arr_int64->value = NULL;
+        memory_platform.rf_free(p->arr_int64->defValue); p->arr_int64->defValue = NULL;
+        memory_platform.rf_free(p->arr_int64); p->arr_int64 = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_FLT]) == 0)
     {
-        memory_platform.rf_free(p->arr_flt->value);
-        memory_platform.rf_free(p->arr_flt->defValue);
-        memory_platform.rf_free(p->arr_flt);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->arr_flt->value); p->arr_flt->value = NULL;
+        memory_platform.rf_free(p->arr_flt->defValue); p->arr_flt->defValue = NULL;
+        memory_platform.rf_free(p->arr_flt); p->arr_flt = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_DBL]) == 0)
     {
-        memory_platform.rf_free(p->arr_dbl->value);
-        memory_platform.rf_free(p->arr_dbl->defValue);
-        memory_platform.rf_free(p->arr_dbl);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->arr_dbl->value); p->arr_dbl->value = NULL;
+        memory_platform.rf_free(p->arr_dbl->defValue); p->arr_dbl->defValue = NULL;
+        memory_platform.rf_free(p->arr_dbl); p->arr_dbl = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
         //memory_platform.rf_free(p);
     }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
     {
-        memory_platform.rf_free(p->val_str->value);
-        memory_platform.rf_free(p->val_str->defValue);
-        memory_platform.rf_free(p->val_str);
-        memory_platform.rf_free(p->base.name);
-        memory_platform.rf_free(p->base.access);
+        memory_platform.rf_free(p->val_str->value); p->val_str->value = NULL;
+        memory_platform.rf_free(p->val_str->defValue); p->val_str->defValue = NULL;
+        memory_platform.rf_free(p->val_str); p->val_str = NULL;
+        memory_platform.rf_free(p->base.name); p->base.name = NULL;
+        memory_platform.rf_free(p->base.access); p->base.access = NULL;
         if (p->base.units != NULL && (rf_strcmp(p->base.units, "") != 0))
-        memory_platform.rf_free(p->base.units);
+        {
+            memory_platform.rf_free(p->base.units); p->base.units = NULL;
+        }
     }
     memory_platform.rf_free(p);
+    p = NULL;
 }
 
 void free_old_parameter(parameter_t* p)
@@ -753,6 +782,48 @@ rfChar *get_frame_from_scanner(scanner_base_t *device, protocol_types_t protocol
         break;
     default:
         return NULL; // Unknown device type
+        break;
+    }
+    return 0;
+}
+
+rfUint8 check_connection_to_scanner(scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            return FALSE;
+        }
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return 1; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            rfBool result = FALSE;
+            result = rf627_smart_check_connection_by_service_protocol(device->rf627_smart, timeout);
+            return result;
+        }
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return 2; // Unknown device type
         break;
     }
     return 0;

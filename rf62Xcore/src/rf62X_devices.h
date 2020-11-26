@@ -222,6 +222,14 @@ rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_b
 rfBool rf627_smart_connect(rf627_smart_t* scanner);
 
 /**
+ * @brief rf627_smart_check_connection_by_service_protocol
+ * @param scanner
+ * @param timeout
+ * @return
+ */
+rfBool rf627_smart_check_connection_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout);
+
+/**
  * @brief rf627_old_disconnect - Close connection to the device
  * @param scanner - ptr to device
  */

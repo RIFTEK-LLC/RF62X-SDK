@@ -60,6 +60,15 @@ API_EXPORT rfUint8 connect_to_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
+ * @brief connect - Establish connection to the RF62X device
+ * @param device - prt to scanner
+ * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ * @return 0 on success
+ */
+API_EXPORT rfUint8 check_connection_to_scanner(
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
+
+/**
  * @brief disconnect_from_scanner - Close connection to the device
  * @param device - prt to scanner
  * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)

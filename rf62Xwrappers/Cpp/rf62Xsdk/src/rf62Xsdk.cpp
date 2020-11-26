@@ -381,13 +381,18 @@ profile2D_t* rf627old::get_profile2D(
                 break;
             }
             free(profile_from_scanner->rf627old_profile2D->intensity);
+            profile_from_scanner->rf627old_profile2D->intensity = NULL;
             free(profile_from_scanner->rf627old_profile2D->pixels_format.pixels);
+            profile_from_scanner->rf627old_profile2D->pixels_format.pixels = NULL;
             free(profile_from_scanner->rf627old_profile2D);
+            profile_from_scanner->rf627old_profile2D = NULL;
             free(profile_from_scanner);
+            profile_from_scanner = NULL;
             return result;
         }
 
         free(profile_from_scanner);
+        profile_from_scanner = NULL;
         delete result;
     }
     default:
@@ -1447,6 +1452,32 @@ bool rf627smart::connect(PROTOCOLS protocol)
 
 }
 
+bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        bool result = false;
+        result = check_connection_to_scanner(
+                    ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
+
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
 bool rf627smart::disconnect(PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -1632,9 +1663,13 @@ profile2D_t* rf627smart::get_profile2D(
                 break;
             }
             free(profile_from_scanner->rf627smart_profile2D->intensity);
+            profile_from_scanner->rf627smart_profile2D->intensity = NULL;
             free(profile_from_scanner->rf627smart_profile2D->pixels_format.pixels);
+            profile_from_scanner->rf627smart_profile2D->pixels_format.pixels = NULL;
             free(profile_from_scanner->rf627smart_profile2D);
+            profile_from_scanner->rf627smart_profile2D = NULL;
             free(profile_from_scanner);
+            profile_from_scanner = NULL;
             return result;
         }
 

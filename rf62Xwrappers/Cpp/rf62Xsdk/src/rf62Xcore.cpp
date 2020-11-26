@@ -75,6 +75,7 @@ void* platform_realloc(void *ptr, rfSize newsize)
 void platform_free(void* data)
 {
     free(data);
+    data = NULL;
 }
 
 /**
