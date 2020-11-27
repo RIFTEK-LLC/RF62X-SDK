@@ -275,11 +275,13 @@ public:
 
 public:
     /**
-     * @brief search - Search for RF627old devices over network
+     * @brief search - Search for RF627smart devices over network
+     * @param timeout - search timeout
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return vector of rf627old devices
+     * @return vector of rf627smart devices
      */
-    static std::vector<std::shared_ptr<rf627smart>> search(uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::SERVICE);
+    static std::vector<std::shared_ptr<rf627smart>> search(
+            uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::SERVICE);
 
     /**
      * @brief get_info - Get information about scanner from hello packet
@@ -296,6 +298,7 @@ public:
 
     /**
      * @brief check_connection - Сheck the connection with the RF627smart device
+     * @param timeout - connection check timeout
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success
      */

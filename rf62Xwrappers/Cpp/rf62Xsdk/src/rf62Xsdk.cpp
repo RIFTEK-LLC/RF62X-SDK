@@ -1471,10 +1471,17 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
     switch (p) {
     case PROTOCOLS::SERVICE:
     {
-        // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
-        result = check_connection_to_scanner(
-                    ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
+        if (is_connected)
+        {
+            // Establish connection to the RF627 device by Service Protocol.
+            result = check_connection_to_scanner(
+                        ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
+            is_connected = result;
+        }else
+        {
+            result = is_connected;
+        }
 
         return result;
         break;
