@@ -2384,7 +2384,7 @@ bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
         bool result = false;
         char* c_token = nullptr;
         result = get_authorization_token_from_scanner(
-                    (scanner_base_t*)scanner_base, &c_token, 10000, kSERVICE);
+                    (scanner_base_t*)scanner_base, &c_token, 1000, kSERVICE);
         if (c_token != nullptr)
         {
             int size = strlen(c_token);
