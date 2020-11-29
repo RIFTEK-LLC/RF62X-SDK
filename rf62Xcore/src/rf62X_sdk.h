@@ -168,6 +168,12 @@ API_EXPORT rfUint8 send_command(
 API_EXPORT rfUint8 send_command2(
         scanner_base_t *device, command2_t* command);
 
+API_EXPORT rfUint8 get_authorization_token_from_scanner(
+        scanner_base_t *device, char** token, uint32_t timeout, protocol_types_t protocol);
+
+API_EXPORT rfUint8 set_authorization_key_to_scanner(
+        scanner_base_t *device, char* key, uint32_t timeout, protocol_types_t protocol);
+
 
 /*! Return structure containing device information about scanner rf627(smart) version
  */

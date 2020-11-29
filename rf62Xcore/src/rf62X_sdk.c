@@ -828,3 +828,87 @@ rfUint8 check_connection_to_scanner(scanner_base_t *device, uint32_t timeout, pr
     }
     return 0;
 }
+
+rfUint8 get_authorization_token_from_scanner(scanner_base_t *device, char **token, uint32_t timeout, protocol_types_t protocol)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            return FALSE;
+        }
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return FALSE; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return FALSE; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            rfBool result = FALSE;
+            result = rf627_smart_get_authorization_token_by_service_protocol(device->rf627_smart, token, timeout);
+            return result;
+        }
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return 2; // Unknown device type
+        break;
+    }
+    return 0;
+}
+
+rfUint8 set_authorization_key_to_scanner(scanner_base_t *device, char *key, uint32_t timeout, protocol_types_t protocol)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            return FALSE;
+        }
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return FALSE; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return FALSE; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            rfBool result = FALSE;
+            //result = rf627_smart_get_authorization_token_by_service_protocol(device->rf627_smart, token, timeout);
+            return result;
+        }
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return 2; // Unknown device type
+        break;
+    }
+    return 0;
+}

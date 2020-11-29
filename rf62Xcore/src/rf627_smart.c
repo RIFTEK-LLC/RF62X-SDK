@@ -2480,3 +2480,133 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
 
     return FALSE;
 }
+
+
+
+rfInt8 rf627_smart_get_authorization_token_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+
+    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return result;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        typedef struct
+        {
+            uint8_t status;
+            char* token;
+        }answer;
+        msg->result = memory_platform.rf_calloc(1, sizeof (answer));
+
+        mpack_node_t root = mpack_tree_root(&tree);
+        mpack_node_t token_data = mpack_node_map_cstr(root, "token");
+        uint32_t token_size = mpack_node_strlen(token_data) + 1;
+        ((answer*)(msg->result))->token = mpack_node_cstr_alloc(token_data, token_size);
+        ((answer*)(msg->result))->status = TRUE;
+
+    }
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+
+rfInt8 rf627_smart_get_authorization_token_timeout_callback()
+{
+    printf("get authorization token timeout\n");
+}
+
+
+rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32 timeout)
+{
+    bool is_ok = FALSE;
+    smart_msg_t* msg = smart_create_rqst_msg("GET_AUTHORIZATION_TOKEN", NULL, 0, "blob", FALSE, FALSE, TRUE,
+                                             timeout,
+                                             rf627_smart_get_authorization_token_callback,
+                                             rf627_smart_get_authorization_token_timeout_callback);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    //delay(timeout);
+    int index = -1;
+    clock_t goal = timeout + clock();
+    smart_msg_t* a1 = &scanner->channel.smart_parser.output_msg_buffer[0].msg;
+    smart_msg_t* a2 = &scanner->channel.smart_parser.output_msg_buffer[1].msg;
+    while (goal > clock())
+    {
+        for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
+        {
+            if (scanner->channel.smart_parser.output_msg_buffer[i].msg._msg_uid == msg->_msg_uid)
+            {
+                if (scanner->channel.smart_parser.output_msg_buffer[i].msg.result != NULL)
+                {
+                    typedef struct
+                    {
+                        uint8_t status;
+                        char* token;
+                    }answer;
+
+                    answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[i].msg.result);
+                    is_ok = ans->status;
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        if (is_ok == TRUE)
+            break;
+    }
+
+    if(is_ok)
+    {
+        typedef struct
+        {
+            uint8_t status;
+            char* token;
+        }answer;
+
+        answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[index].msg.result);
+        int size = rf_strlen((rfChar*)(ans->token)) + 1;
+        *token = memory_platform.rf_calloc(1, size);
+        memory_platform.rf_memcpy(*token, ((answer*)(scanner->channel.smart_parser.output_msg_buffer[index].msg.result))->token, size);
+        //                *token = (*(answer*)(scanner->channel.smart_parser.output_msg_buffer[i].msg.result)).token;
+        free(ans->token); ans->token = NULL;
+        free(ans); ans = NULL;
+        is_ok = true;
+    }
+
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+
+    if (is_ok)
+        return TRUE;
+    else return FALSE;
+}

@@ -369,6 +369,7 @@ public:
      * @return param on success, else - null
      */
     param_t* get_param(PARAM_NAME_KEY param_key);
+
     /**
      * @brief set_param - set parameter
      * @param param - prt to parameter
@@ -382,6 +383,11 @@ public:
 
     bool send_cmd(const char* command_name,
                   std::vector<uint8_t>* input, std::vector<uint8_t>* output);
+
+
+    bool get_authorization_token(std::string& token, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool set_authorization_key(std::string key, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
 
     rf627smart(void* scanner_base);
     ~rf627smart();

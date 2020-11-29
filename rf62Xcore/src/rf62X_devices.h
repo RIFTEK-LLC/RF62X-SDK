@@ -269,6 +269,9 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner);
 
 rfChar* rf627_smart_get_frame(rf627_smart_t* scanner);
 
+rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32 timeout);
+
+
 typedef struct
 {
     scanner_types_t type;

@@ -2369,6 +2369,43 @@ bool rf627smart::send_cmd(const char* command_name,
     return result;
 }
 
+bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        bool result = false;
+        char* c_token = nullptr;
+        result = get_authorization_token_from_scanner(
+                    (scanner_base_t*)scanner_base, &c_token, 10000, kSERVICE);
+        if (c_token != nullptr)
+        {
+            int size = strlen(c_token);
+            token = c_token;
+            free(c_token); c_token = NULL;
+        }
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
+{
+
+}
+
 const std::string& rf627smart::hello_info::device_name()
 {
     return _device_name;
