@@ -302,7 +302,8 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success
      */
-    bool check_connection(uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool check_connection(
+            uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief disconnect_from_scanner - Close connection to the device
@@ -325,7 +326,8 @@ public:
     /**
      * @brief get_profile3D - Get 3D measurement from scanner's data stream
      * where y is calculated based on the next equation: y = k * x + b
-     * where b - y-intercept of the line, calculates by the next equation: b = step_size * count_value
+     * where b - y-intercept of the line, calculates by the next equation:
+     * b = step_size * count_value
      * @param step_size - step size in real units (mm, sm, etc.)
      * @param k - slope or gradient of the line , where
      * @param count_type - type of counter (STEP, MEASURE, PACKET)
@@ -385,8 +387,10 @@ public:
                   std::vector<uint8_t>* input, std::vector<uint8_t>* output);
 
 
-    bool get_authorization_token(std::string& token, PROTOCOLS protocol = PROTOCOLS::CURRENT);
-    bool set_authorization_key(std::string key, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool get_authorization_token(
+            std::string& token, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool set_authorization_key(
+            std::string key, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
     rf627smart(void* scanner_base);

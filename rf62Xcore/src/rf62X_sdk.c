@@ -829,7 +829,7 @@ rfUint8 check_connection_to_scanner(scanner_base_t *device, uint32_t timeout, pr
     return 0;
 }
 
-rfUint8 get_authorization_token_from_scanner(scanner_base_t *device, char **token, uint32_t timeout, protocol_types_t protocol)
+rfUint8 get_authorization_token_from_scanner(scanner_base_t *device, char **token, uint32_t* token_size, uint32_t timeout, protocol_types_t protocol)
 {
     switch (device->type) {
     case kRF627_OLD:
@@ -852,7 +852,7 @@ rfUint8 get_authorization_token_from_scanner(scanner_base_t *device, char **toke
         case kSERVICE:
         {
             rfBool result = FALSE;
-            result = rf627_smart_get_authorization_token_by_service_protocol(device->rf627_smart, token, timeout);
+            result = rf627_smart_get_authorization_token_by_service_protocol(device->rf627_smart, token, token_size, timeout);
             return result;
         }
         case kETHERNET_IP:
@@ -871,7 +871,7 @@ rfUint8 get_authorization_token_from_scanner(scanner_base_t *device, char **toke
     return 0;
 }
 
-rfUint8 set_authorization_key_to_scanner(scanner_base_t *device, char *key, uint32_t timeout, protocol_types_t protocol)
+rfUint8 set_authorization_key_to_scanner(scanner_base_t *device, char *key, uint32_t key_size, uint32_t timeout, protocol_types_t protocol)
 {
     switch (device->type) {
     case kRF627_OLD:
@@ -894,7 +894,7 @@ rfUint8 set_authorization_key_to_scanner(scanner_base_t *device, char *key, uint
         case kSERVICE:
         {
             rfBool result = FALSE;
-            //result = rf627_smart_get_authorization_token_by_service_protocol(device->rf627_smart, token, timeout);
+            result = rf627_smart_set_authorization_key_by_service_protocol(device->rf627_smart, key, key_size, timeout);
             return result;
         }
         case kETHERNET_IP:

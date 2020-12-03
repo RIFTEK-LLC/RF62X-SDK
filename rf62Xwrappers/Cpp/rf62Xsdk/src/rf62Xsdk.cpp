@@ -2383,8 +2383,9 @@ bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         char* c_token = nullptr;
+        uint32_t token_size = 0;
         result = get_authorization_token_from_scanner(
-                    (scanner_base_t*)scanner_base, &c_token, 1000, kSERVICE);
+                    (scanner_base_t*)scanner_base, &c_token, &token_size, 1000, kSERVICE);
         if (c_token != nullptr)
         {
             int size = strlen(c_token);
@@ -2403,7 +2404,29 @@ bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
 
 bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
 {
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
 
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        bool result = false;
+        char* c_key = (char*)key.c_str();
+        uint32_t size = key.size();
+        result = set_authorization_key_to_scanner(
+                    (scanner_base_t*)scanner_base, c_key, size, 3000, kSERVICE);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
 }
 
 const std::string& rf627smart::hello_info::device_name()

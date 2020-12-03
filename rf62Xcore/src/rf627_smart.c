@@ -2540,7 +2540,7 @@ rfInt8 rf627_smart_get_authorization_token_timeout_callback()
 }
 
 
-rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32 timeout)
+rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32* token_size, rfUint32 timeout)
 {
     bool is_ok = FALSE;
     smart_msg_t* msg = smart_create_rqst_msg("GET_AUTHORIZATION_TOKEN", NULL, 0, "blob", FALSE, FALSE, TRUE,
@@ -2557,8 +2557,6 @@ rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* sc
     //delay(timeout);
     int index = -1;
     clock_t goal = timeout + clock();
-    smart_msg_t* a1 = &scanner->channel.smart_parser.output_msg_buffer[0].msg;
-    smart_msg_t* a2 = &scanner->channel.smart_parser.output_msg_buffer[1].msg;
     while (goal > clock())
     {
         for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
@@ -2601,6 +2599,164 @@ rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* sc
         free(ans->token); ans->token = NULL;
         free(ans); ans = NULL;
         is_ok = true;
+    }
+
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+
+    if (is_ok)
+        return TRUE;
+    else return FALSE;
+}
+
+rfInt8 rf627_smart_set_authorization_key_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+
+    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return result;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        typedef struct
+        {
+            char* result;
+            char* status;
+
+            uint8_t is_end;
+        }answer;
+        msg->result = memory_platform.rf_calloc(1, sizeof (answer));
+
+        mpack_node_t root = mpack_tree_root(&tree);
+        // result
+        mpack_node_t result_data = mpack_node_map_cstr(root, "result");
+        uint32_t result_size = mpack_node_strlen(result_data) + 1;
+        ((answer*)(msg->result))->result = mpack_node_cstr_alloc(result_data, result_size);
+        // status
+        mpack_node_t status_data = mpack_node_map_cstr(root, "status");
+        uint32_t status_size = mpack_node_strlen(status_data) + 1;
+        ((answer*)(msg->result))->status = mpack_node_cstr_alloc(status_data, status_size);
+        // is_end
+        ((answer*)(msg->result))->is_end = TRUE;
+
+    }
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+
+rfInt8 rf627_smart_set_authorization_key_timeout_callback()
+{
+    printf("set authorization key timeout\n");
+}
+
+rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scanner, char* key, rfUint32 key_size, rfUint32 timeout)
+{
+    // Create payload
+    mpack_writer_t writer;
+    char* payload = NULL;
+    size_t bytes = 0;				///< Number of msg bytes.
+    mpack_writer_init_growable(&writer, &payload, &bytes);
+
+    // Идентификатор сообщения для подтверждения
+    mpack_start_map(&writer, 1);
+    {
+        mpack_write_cstr(&writer, "key");
+        mpack_write_cstr(&writer, key);
+    }mpack_finish_map(&writer);
+
+    // finish writing
+    if (mpack_writer_destroy(&writer) != mpack_ok) {
+        fprintf(stderr, "An error occurred encoding the data!\n");
+        return FALSE;
+    }
+
+    smart_msg_t* msg = smart_create_rqst_msg("SET_AUTHORIZATION_KEY", payload, bytes,
+                                             "mpack", FALSE, FALSE, TRUE,
+                                             timeout,
+                                             rf627_smart_set_authorization_key_callback,
+                                             rf627_smart_set_authorization_key_timeout_callback);
+    free(payload);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    //delay(timeout);
+    rfBool is_end = FALSE;
+    int index = -1;
+    clock_t goal = timeout + clock();
+    while (goal > clock())
+    {
+        for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
+        {
+            if (scanner->channel.smart_parser.output_msg_buffer[i].msg._msg_uid == msg->_msg_uid)
+            {
+                if (scanner->channel.smart_parser.output_msg_buffer[i].msg.result != NULL)
+                {
+                    typedef struct
+                    {
+                        char* result;
+                        char* status;
+
+                        uint8_t is_end;
+                    }answer;
+
+                    answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[i].msg.result);
+                    is_end = ans->is_end;
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        if (is_end == TRUE)
+            break;
+    }
+
+    rfBool is_ok = FALSE;
+    if(is_end == TRUE)
+    {
+        typedef struct
+        {
+            char* result;
+            char* status;
+
+            uint8_t is_end;
+        }answer;
+
+        answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[index].msg.result);
+        if (rf_strcmp(ans->result, "RF_OK") == 0)
+            is_ok = TRUE;
+
+        free(ans->result); ans->result = NULL;
+        free(ans->status); ans->status = NULL;
+
     }
 
     // Cleanup test msg
