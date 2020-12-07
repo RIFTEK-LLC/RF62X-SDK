@@ -303,7 +303,7 @@ public:
      * @return true on success
      */
     bool check_connection(
-            uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+            uint32_t timeout = 3000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief disconnect_from_scanner - Close connection to the device

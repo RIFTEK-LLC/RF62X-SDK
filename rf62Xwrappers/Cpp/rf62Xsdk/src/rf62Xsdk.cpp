@@ -556,7 +556,7 @@ bool rf627old::read_params(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = read_params_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE);
+                    (scanner_base_t*)scanner_base, 0, kSERVICE);
         return result;
         break;
     }
@@ -1879,7 +1879,7 @@ bool rf627smart::read_params(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = read_params_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE);
+                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
         return result;
         break;
     }

@@ -22,198 +22,10 @@ void delay(unsigned int mseconds)
 
 int answ_count = 0;
 vector_t *search_result = NULL;
-rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
-{
-    answ_count++;
-    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
-
-    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
-    rfBool existing = FALSE;
-
-    // Get params
-    mpack_tree_t tree;
-    mpack_tree_init_data(&tree, (const char*)data, data_size);
-    mpack_tree_parse(&tree);
-    if (mpack_tree_error(&tree) != mpack_ok)
-    {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return result;
-    }
-
-    for (rfUint32 i = 0; i < vector_count(search_result); i++)
-    {
-        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
-        {
-            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
-            if (serial == device_id)
-                existing = TRUE;
-        }
-    }
-
-    if (!existing)
-    {
-        scanner_base_t* rf627 =
-                memory_platform.rf_calloc(1, sizeof(scanner_base_t));
-
-        rf627->type = kRF627_SMART;
-        rf627->rf627_smart = rf627_smart_create_from_hello_msg(
-                    data, data_size);
-        vector_add(search_result, rf627);
-    }
-
-    mpack_tree_destroy(&tree);
-    return TRUE;
-}
-
-rfInt8 rf627_smart_get_hello_timeout_callback()
-{
-    printf("get_hello_timeout\n");
-}
-
-uint8_t rf627_smart_search_by_service_protocol(vector_t *result, rfUint32 ip_addr, rfUint32 timeout)
-{
-    char config[1024];
-    if (search_result != result && search_result != NULL)
-    {
-        while (vector_count(search_result) > 0) {
-            vector_delete(search_result, vector_count(search_result)-1);
-        }
-        free (search_result); search_result = NULL;
-    }
-    search_result = result;
-    unsigned char bytes[4];
-    bytes[0] = ip_addr & 0xFF;
-    bytes[1] = (ip_addr >> 8) & 0xFF;
-    bytes[2] = (ip_addr >> 16) & 0xFF;
-    bytes[3] = (ip_addr >> 24) & 0xFF;
-
-    sprintf(config, "-dst_ip_addr %d.%d.%d.%d "
-                    "-host_ip_addr %d.%d.%d.%d "
-                    "-in_udp_port 50011 "
-                    "-max_packet_size 65535 "
-                    "-out_udp_port 50011 "
-                    "-socket_timeout 100 "
-                    "-max_data_size 350000",
-            bytes[3], bytes[2], bytes[1], 255,
-            bytes[3], bytes[2], bytes[1], bytes[0]);
-
-    smart_channel channel;
-
-    smart_channel_init(&channel, config);
-
-
-    smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, "blob", FALSE, FALSE, FALSE,
-                                             timeout,
-                                             rf627_smart_get_hello_callback,
-                                             rf627_smart_get_hello_timeout_callback);
-
-    // Send test msg
-    if (!smart_channel_send_msg(&channel, msg))
-        printf("No data has been sent.\n");
-    else
-        printf("Requests were sent.\n");
-
-
-    delay(timeout);
-
-    // Cleanup test msg
-    smart_cleanup_msg(msg);
-    smart_channel_cleanup(&channel);
-
-    return answ_count;
-}
-
-rfInt8 rf627_smart_check_connection_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
-{
-    answ_count++;
-    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
-
-    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
-    rfBool existing = FALSE;
-
-    // Get params
-    mpack_tree_t tree;
-    mpack_tree_init_data(&tree, (const char*)data, data_size);
-    mpack_tree_parse(&tree);
-    if (mpack_tree_error(&tree) != mpack_ok)
-    {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return result;
-    }
-
-    for (rfUint32 i = 0; i < vector_count(search_result); i++)
-    {
-        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
-        {
-            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
-            if (serial == device_id)
-                existing = TRUE;
-        }
-    }
-
-    if (existing)
-    {
-        smart_msg_t* msg = rqst_msg;
-        msg->result = memory_platform.rf_calloc(1, sizeof (int));
-        *(int*)((smart_msg_t*)rqst_msg)->result = TRUE;
-    }
-
-    mpack_tree_destroy(&tree);
-    return TRUE;
-}
-
-rfInt8 rf627_smart_check_connection_timeout_callback()
-{
-    printf("get_hello_timeout\n");
-}
-
-
-rfBool rf627_smart_check_connection_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
-{
-    int is_connected = FALSE;
-    smart_msg_t* msg = smart_create_rqst_msg("GET_HELLO", NULL, 0, "blob", FALSE, FALSE, TRUE,
-                                             timeout,
-                                             rf627_smart_check_connection_callback,
-                                             rf627_smart_check_connection_timeout_callback);
-
-    // Send test msg
-    if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
-    else
-        printf("Requests were sent.\n");
-
-
-    clock_t goal = timeout + clock();
-    while (goal > clock()){
-        for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
-        {
-            if (scanner->channel.smart_parser.output_msg_buffer[i].msg._msg_uid == msg->_msg_uid)
-            {
-                if (scanner->channel.smart_parser.output_msg_buffer[i].msg.result != NULL)
-                {
-                    is_connected = *(int*)scanner->channel.smart_parser.output_msg_buffer[i].msg.result;
-                    free(scanner->channel.smart_parser.output_msg_buffer[i].msg.result);
-                    scanner->channel.smart_parser.output_msg_buffer[i].msg.result = NULL;
-                    if (is_connected) break;
-                }
-            }
-        }
-    }
-
-    // Cleanup test msg
-    smart_cleanup_msg(msg);
-
-    if (is_connected)
-        return TRUE;
-    else return FALSE;
-}
 
 
 
-rf627_smart_t* rf627_smart_create_from_hello_msg(
-        char* data, rfUint32 data_size)
+rf627_smart_t* rf627_smart_create_from_hello_msg(char* data, rfUint32 data_size)
 {
     rf627_smart_t* rf627_smart = memory_platform.rf_calloc(1, sizeof (rf627_smart_t));
     memset(rf627_smart, 0, sizeof (rf627_smart_t));
@@ -398,7 +210,6 @@ rf627_smart_t* rf627_smart_create_from_hello_msg(
     return rf627_smart;
 
 }
-
 void rf627_smart_free(rf627_smart_t* scanner)
 {
     smart_channel_cleanup(&scanner->channel);
@@ -448,14 +259,11 @@ void rf627_smart_free(rf627_smart_t* scanner)
         scanner = NULL;
     }
 }
-
 rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_by_service_protocol(rf627_smart_t* scanner)
 {
     return &scanner->info_by_service_protocol;
 }
-
-parameter_t* rf627_smart_get_parameter(
-        rf627_smart_t* scanner, const rfChar* param_name)
+parameter_t* rf627_smart_get_parameter(rf627_smart_t* scanner, const rfChar* param_name)
 {
     for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
     {
@@ -467,7 +275,6 @@ parameter_t* rf627_smart_get_parameter(
     }
     return NULL;
 }
-
 rfBool rf627_smart_connect(rf627_smart_t* scanner)
 {
     rfUint32 recv_ip_addr;
@@ -532,8 +339,6 @@ rfBool rf627_smart_connect(rf627_smart_t* scanner)
     return FALSE;
 
 }
-
-
 void rf627_smart_disconnect(rf627_smart_t* scanner)
 {
     smart_channel_cleanup(&scanner->channel);
@@ -712,14 +517,350 @@ rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBoo
     return NULL;
 }
 
-rfBool is_smart_params_readed = false;
 extern parameter_t* create_parameter_from_type(const rfChar* type);
-rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t device_id)
+
+rfUint8 rf627_smart_set_parameter(rf627_smart_t* scanner, parameter_t* param)
+{
+    for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
+    {
+        parameter_t* p = vector_get(scanner->params_list, i);
+        if (rf_strcmp(p->base.name, param->base.name) == 0)
+        {
+            if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
+            {
+                memory_platform.rf_free(p->val_str->value);
+                p->val_str->value = memory_platform.rf_calloc(param->base.size, sizeof (rfChar));
+                memory_platform.rf_memcpy(
+                            (void*)p->val_str->value,
+                            param->val_str->value,
+                            param->base.size);
+                p->base.size = param->base.size;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
+            {
+                p->val_int32->value = param->val_int32->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
+            {
+                p->val_int64->value = param->val_int64->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
+            {
+                p->val_uint32->value = param->val_uint32->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
+            {
+                p->val_uint64->value = param->val_uint64->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
+            {
+                p->val_flt->value = param->val_flt->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
+            {
+                p->val_dbl->value = param->val_dbl->value;
+                p->is_changed = TRUE;
+                return TRUE;
+            }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
+            {
+                memory_platform.rf_free(p->arr_uint32->value);
+                p->arr_uint32->value = memory_platform.rf_calloc(param->base.size, sizeof (uint8_t));
+                memory_platform.rf_memcpy(
+                            (void*)p->arr_uint32->value,
+                            param->arr_uint32->value,
+                            param->base.size);
+                p->base.size = param->base.size;
+                p->is_changed = TRUE;
+                return TRUE;
+            }
+
+        }
+    }
+    return FALSE;
+}
+
+
+
+
+rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
 
-    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return status;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (!existing)
+    {
+        scanner_base_t* rf627 =
+                memory_platform.rf_calloc(1, sizeof(scanner_base_t));
+
+        rf627->type = kRF627_SMART;
+        rf627->rf627_smart = rf627_smart_create_from_hello_msg(
+                    data, data_size);
+        vector_add(search_result, rf627);
+
+        smart_msg_t* msg = rqst_msg;
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (uint32_t));
+        }
+        *(uint32_t*)msg->result = vector_count(search_result);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+    }
+
+    mpack_tree_destroy(&tree);
+    return status;
+}
+rfInt8 rf627_smart_get_hello_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_get_hello_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+uint8_t rf627_smart_search_by_service_protocol(vector_t *scanner_list, rfUint32 ip_addr, rfUint32 timeout)
+{
+    // Если изменился указатель на старый результат поиска, значит поиск был
+    // запущен повторно. Поэтому неоходимо очистить память, выделенную во
+    // время предыдущего поиска.
+    if (search_result != scanner_list && search_result != NULL)
+    {
+        while (vector_count(search_result) > 0) {
+            vector_delete(search_result, vector_count(search_result)-1);
+        }
+        free (search_result); search_result = NULL;
+    }
+    search_result = scanner_list;
+    unsigned char bytes[4];
+    bytes[0] = ip_addr & 0xFF;
+    bytes[1] = (ip_addr >> 8) & 0xFF;
+    bytes[2] = (ip_addr >> 16) & 0xFF;
+    bytes[3] = (ip_addr >> 24) & 0xFF;
+
+    char config[1024];
+    sprintf(config, "-dst_ip_addr %d.%d.%d.%d "
+                    "-host_ip_addr %d.%d.%d.%d "
+                    "-in_udp_port 50011 "
+                    "-max_packet_size 65535 "
+                    "-out_udp_port 50011 "
+                    "-socket_timeout 100 "
+                    "-max_data_size 350000",
+            bytes[3], bytes[2], bytes[1], 255,
+            bytes[3], bytes[2], bytes[1], bytes[0]);
+
+    smart_channel channel;
+    smart_channel_init(&channel, config);
+
+
+    char* cmd_name                      = "GET_HELLO";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = FALSE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_get_hello_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_get_hello_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_get_hello_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    uint8_t scanner_count = 0;
+    void* result = smart_get_result_to_rqst_msg(&channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        scanner_count = *(uint8_t*)result;
+    }
+
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+    free(msg); msg = NULL;
+    smart_channel_cleanup(&channel);
+
+    return scanner_count;
+}
+
+rfInt8 rf627_smart_check_connection_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // check connection
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return status;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (uint32_t));
+        }
+        *(uint32_t*)msg->result = TRUE;
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+    }
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+rfInt8 rf627_smart_check_connection_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_check_connection_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+rfBool rf627_smart_check_connection_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
+{
+    char* cmd_name                      = "GET_HELLO";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_check_connection_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_check_connection_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_check_connection_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+
+    uint32_t is_connected = 0;
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        is_connected = *(uint32_t*)result;
+    }
+
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+    free(msg); msg = NULL;
+
+    if (is_connected)
+        return TRUE;
+    else return FALSE;
+}
+
+rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
 
     int index = -1;
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
@@ -732,10 +873,9 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                 index = i;
                 break;
             }
-
-
         }
     }
+
     if (index != -1)
     {
         // Get params
@@ -744,9 +884,9 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
         mpack_tree_parse(&tree);
         if (mpack_tree_error(&tree) != mpack_ok)
         {
-            result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+            status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
             mpack_tree_destroy(&tree);
-            return result;
+            return status;
         }
         mpack_node_t root = mpack_tree_root(&tree);
 
@@ -759,8 +899,9 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
             // type
             if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "type"))
             {
-                char* test = mpack_node_str(mpack_node_map_cstr(mpack_node_array_at(factory, i), "type"));
+                char* test = (char*)mpack_node_str(mpack_node_map_cstr(mpack_node_array_at(factory, i), "type"));
                 p = (parameter_t*)create_parameter_from_type(test);
+                // TODO is_changed как использовать
                 p->is_changed = FALSE;
             }
 
@@ -1055,7 +1196,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "defaultValue"));
                     p->arr_uint32->defValue = memory_platform.rf_calloc(p->arr_uint32->defCount, sizeof (uint32_t));
-                    for (int ii = 0; ii < p->arr_uint32->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint32->defCount; ii++)
                         p->arr_uint32->defValue[ii] =
                                 mpack_node_u32(
                                     mpack_node_array_at(
@@ -1073,7 +1214,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "value"));
                     p->arr_uint32->value = memory_platform.rf_calloc(p->arr_uint32->count, sizeof (uint32_t));
-                    for (int ii = 0; ii < p->arr_uint32->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint32->count; ii++)
                         p->arr_uint32->value[ii] =
                                 mpack_node_u32(
                                     mpack_node_array_at(
@@ -1113,7 +1254,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "defaultValue"));
                     p->arr_uint64->defValue = memory_platform.rf_calloc(p->arr_uint64->defCount, sizeof (uint64_t));
-                    for (int ii = 0; ii < p->arr_uint64->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint64->defCount; ii++)
                         p->arr_uint64->defValue[ii] =
                                 mpack_node_u64(
                                     mpack_node_array_at(
@@ -1131,7 +1272,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "value"));
                     p->arr_uint64->value = memory_platform.rf_calloc(p->arr_uint64->count, sizeof (uint64_t));
-                    for (int ii = 0; ii < p->arr_uint64->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint64->count; ii++)
                         p->arr_uint64->value[ii] =
                                 mpack_node_u64(
                                     mpack_node_array_at(
@@ -1171,7 +1312,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "defaultValue"));
                     p->arr_int32->defValue = memory_platform.rf_calloc(p->arr_int32->defCount, sizeof (int32_t));
-                    for (int ii = 0; ii < p->arr_int32->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int32->defCount; ii++)
                         p->arr_int32->defValue[ii] =
                                 mpack_node_i32(
                                     mpack_node_array_at(
@@ -1189,7 +1330,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "value"));
                     p->arr_int32->value = memory_platform.rf_calloc(p->arr_int32->count, sizeof (int32_t));
-                    for (int ii = 0; ii < p->arr_int32->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int32->count; ii++)
                         p->arr_int32->value[ii] =
                                 mpack_node_i32(
                                     mpack_node_array_at(
@@ -1229,7 +1370,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "defaultValue"));
                     p->arr_int64->defValue = memory_platform.rf_calloc(p->arr_int64->defCount, sizeof (int64_t));
-                    for (int ii = 0; ii < p->arr_int64->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int64->defCount; ii++)
                         p->arr_int64->defValue[ii] =
                                 mpack_node_i64(
                                     mpack_node_array_at(
@@ -1247,7 +1388,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "value"));
                     p->arr_int64->value = memory_platform.rf_calloc(p->arr_int64->count, sizeof (int64_t));
-                    for (int ii = 0; ii < p->arr_int64->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int64->count; ii++)
                         p->arr_int64->value[ii] =
                                 mpack_node_i64(
                                     mpack_node_array_at(
@@ -1287,7 +1428,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "defaultValue"));
                     p->arr_flt->defValue = memory_platform.rf_calloc(p->arr_flt->defCount, sizeof (float));
-                    for (int ii = 0; ii < p->arr_flt->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_flt->defCount; ii++)
                         p->arr_flt->defValue[ii] =
                                 mpack_node_float(
                                     mpack_node_array_at(
@@ -1305,7 +1446,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "value"));
                     p->arr_flt->value = memory_platform.rf_calloc(p->arr_flt->count, sizeof (float));
-                    for (int ii = 0; ii < p->arr_flt->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_flt->count; ii++)
                         p->arr_flt->value[ii] =
                                 mpack_node_float(
                                     mpack_node_array_at(
@@ -1345,7 +1486,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "defaultValue"));
                     p->arr_dbl->defValue = memory_platform.rf_calloc(p->arr_dbl->defCount, sizeof (double));
-                    for (int ii = 0; ii < p->arr_dbl->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_dbl->defCount; ii++)
                         p->arr_dbl->defValue[ii] =
                                 mpack_node_double(
                                     mpack_node_array_at(
@@ -1363,7 +1504,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         factory, i), "value"));
                     p->arr_dbl->value = memory_platform.rf_calloc(p->arr_dbl->count, sizeof (double));
-                    for (int ii = 0; ii < p->arr_dbl->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_dbl->count; ii++)
                         p->arr_dbl->value[ii] =
                                 mpack_node_double(
                                     mpack_node_array_at(
@@ -1453,8 +1594,10 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
             // type
             if (mpack_node_map_contains_cstr(mpack_node_array_at(user, i), "type"))
             {
-                char* test = mpack_node_str(mpack_node_map_cstr(mpack_node_array_at(user, i), "type"));
+                char* test = (char*)mpack_node_str(mpack_node_map_cstr(mpack_node_array_at(user, i), "type"));
                 p = (parameter_t*)create_parameter_from_type(test);
+                // TODO is_changed как использовать
+                p->is_changed = FALSE;
             }
 
             if (p == NULL)
@@ -1750,7 +1893,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "defaultValue"));
                     p->arr_uint32->defValue = memory_platform.rf_calloc(p->arr_uint32->defCount, sizeof (uint32_t));
-                    for (int ii = 0; ii < p->arr_uint32->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint32->defCount; ii++)
                         p->arr_uint32->defValue[ii] =
                                 mpack_node_u32(
                                     mpack_node_array_at(
@@ -1768,7 +1911,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "value"));
                     p->arr_uint32->value = memory_platform.rf_calloc(p->arr_uint32->count, sizeof (uint32_t));
-                    for (int ii = 0; ii < p->arr_uint32->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint32->count; ii++)
                         p->arr_uint32->value[ii] =
                                 mpack_node_u32(
                                     mpack_node_array_at(
@@ -1808,7 +1951,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "defaultValue"));
                     p->arr_uint64->defValue = memory_platform.rf_calloc(p->arr_uint64->defCount, sizeof (uint64_t));
-                    for (int ii = 0; ii < p->arr_uint64->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint64->defCount; ii++)
                         p->arr_uint64->defValue[ii] =
                                 mpack_node_u64(
                                     mpack_node_array_at(
@@ -1826,7 +1969,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "value"));
                     p->arr_uint64->value = memory_platform.rf_calloc(p->arr_uint64->count, sizeof (uint64_t));
-                    for (int ii = 0; ii < p->arr_uint64->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_uint64->count; ii++)
                         p->arr_uint64->value[ii] =
                                 mpack_node_u64(
                                     mpack_node_array_at(
@@ -1866,7 +2009,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "defaultValue"));
                     p->arr_int32->defValue = memory_platform.rf_calloc(p->arr_int32->defCount, sizeof (int32_t));
-                    for (int ii = 0; ii < p->arr_int32->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int32->defCount; ii++)
                         p->arr_int32->defValue[ii] =
                                 mpack_node_i32(
                                     mpack_node_array_at(
@@ -1884,7 +2027,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "value"));
                     p->arr_int32->value = memory_platform.rf_calloc(p->arr_int32->count, sizeof (int32_t));
-                    for (int ii = 0; ii < p->arr_int32->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int32->count; ii++)
                         p->arr_int32->value[ii] =
                                 mpack_node_i32(
                                     mpack_node_array_at(
@@ -1924,7 +2067,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "defaultValue"));
                     p->arr_int64->defValue = memory_platform.rf_calloc(p->arr_int64->defCount, sizeof (int64_t));
-                    for (int ii = 0; ii < p->arr_int64->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int64->defCount; ii++)
                         p->arr_int64->defValue[ii] =
                                 mpack_node_i64(
                                     mpack_node_array_at(
@@ -1942,7 +2085,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "value"));
                     p->arr_int64->value = memory_platform.rf_calloc(p->arr_int64->count, sizeof (int64_t));
-                    for (int ii = 0; ii < p->arr_int64->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_int64->count; ii++)
                         p->arr_int64->value[ii] =
                                 mpack_node_i64(
                                     mpack_node_array_at(
@@ -1982,7 +2125,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "defaultValue"));
                     p->arr_flt->defValue = memory_platform.rf_calloc(p->arr_flt->defCount, sizeof (float));
-                    for (int ii = 0; ii < p->arr_flt->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_flt->defCount; ii++)
                         p->arr_flt->defValue[ii] =
                                 mpack_node_float(
                                     mpack_node_array_at(
@@ -2000,7 +2143,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "value"));
                     p->arr_flt->value = memory_platform.rf_calloc(p->arr_flt->count, sizeof (float));
-                    for (int ii = 0; ii < p->arr_flt->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_flt->count; ii++)
                         p->arr_flt->value[ii] =
                                 mpack_node_float(
                                     mpack_node_array_at(
@@ -2040,7 +2183,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "defaultValue"));
                     p->arr_dbl->defValue = memory_platform.rf_calloc(p->arr_dbl->defCount, sizeof (double));
-                    for (int ii = 0; ii < p->arr_dbl->defCount; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_dbl->defCount; ii++)
                         p->arr_dbl->defValue[ii] =
                                 mpack_node_double(
                                     mpack_node_array_at(
@@ -2058,7 +2201,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                                     mpack_node_array_at(
                                         user, i), "value"));
                     p->arr_dbl->value = memory_platform.rf_calloc(p->arr_dbl->count, sizeof (double));
-                    for (int ii = 0; ii < p->arr_dbl->count; ii++)
+                    for (rfUint32 ii = 0; ii < p->arr_dbl->count; ii++)
                         p->arr_dbl->value[ii] =
                                 mpack_node_double(
                                     mpack_node_array_at(
@@ -2149,26 +2292,63 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
         }
 
         mpack_tree_destroy(&tree);
+
+        smart_msg_t* msg = rqst_msg;
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (uint32_t));
+        }
+        *(uint32_t*)msg->result = TRUE;
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
     }
 
-    is_smart_params_readed = TRUE;
+    return true;
 }
-
-rfInt8 rf627_smart_read_params_timeout_callback()
+rfInt8 rf627_smart_read_params_timeout_callback(void* rqst_msg)
 {
-    printf("smart_read_params_timeout\n");
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
 }
+rfInt8 rf627_smart_read_params_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
 
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
 
-rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner)
+    if (msg->result != NULL)
+    {
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner, rfUint32 timeout)
 {
 
-    smart_msg_t* msg = smart_create_rqst_msg("GET_PARAMS_DESCRIPTION", NULL, 0, "blob", FALSE, FALSE, TRUE,
-                                             3000,
-                                             rf627_smart_read_params_callback,
-                                             rf627_smart_read_params_timeout_callback);
+    char* cmd_name                      = "GET_PARAMS_DESCRIPTION";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_read_params_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_read_params_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_read_params_free_result_callback;
 
-    is_smart_params_readed = FALSE;
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
         printf("No data has been sent.\n");
@@ -2176,187 +2356,56 @@ rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner)
         printf("Requests were sent.\n");
 
 
-    unsigned int mseconds = 3000;
-    clock_t goal = mseconds + clock();
-    while (goal > clock()){
-        if (is_smart_params_readed) break;
+    uint8_t is_read = 0;
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        is_read = *(uint8_t*)result;
     }
+
     // Cleanup test msg
     smart_cleanup_msg(msg);
+    free(msg); msg = NULL;
 
-    if (is_smart_params_readed)
+    if (is_read)
         return TRUE;
     else return FALSE;
 }
 
-rfUint8 rf627_smart_set_parameter(
-        rf627_smart_t* scanner, parameter_t* param)
-{
-    for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
-    {
-        parameter_t* p = vector_get(scanner->params_list, i);
-        if (rf_strcmp(p->base.name, param->base.name) == 0)
-        {
-            if (rf_strcmp(p->base.type, parameter_value_types[PVT_STRING]) == 0)
-            {
-                memory_platform.rf_free(p->val_str->value);
-                p->val_str->value = memory_platform.rf_calloc(param->base.size, sizeof (rfChar));
-                memory_platform.rf_memcpy(
-                            (void*)p->val_str->value,
-                            param->val_str->value,
-                            param->base.size);
-                p->base.size = param->base.size;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT]) == 0)
-            {
-                p->val_int32->value = param->val_int32->value;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_INT64]) == 0)
-            {
-                p->val_int64->value = param->val_int64->value;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT]) == 0)
-            {
-                p->val_uint32->value = param->val_uint32->value;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_UINT64]) == 0)
-            {
-                p->val_uint64->value = param->val_uint64->value;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_FLOAT]) == 0)
-            {
-                p->val_flt->value = param->val_flt->value;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-            else if (rf_strcmp(p->base.type, parameter_value_types[PVT_DOUBLE]) == 0)
-            {
-                p->val_dbl->value = param->val_dbl->value;
-                p->is_changed = TRUE;
-                return TRUE;
-            }else if (rf_strcmp(p->base.type, parameter_value_types[PVT_ARRAY_UINT32]) == 0)
-            {
-                memory_platform.rf_free(p->arr_uint32->value);
-                p->arr_uint32->value = memory_platform.rf_calloc(param->base.size, sizeof (uint8_t));
-                memory_platform.rf_memcpy(
-                            (void*)p->arr_uint32->value,
-                            param->arr_uint32->value,
-                            param->base.size);
-                p->base.size = param->base.size;
-                p->is_changed = TRUE;
-                return TRUE;
-            }
-
-        }
-    }
-    return FALSE;
-}
-
-rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_t device_id)
-{
-    return TRUE;
-}
-
-rfInt8 rf627_smart_write_params_timeout_callback()
-{
-    printf("smart_write_params_timeout\n");
-}
-
-rfBool is_smart_frame_readed = false;
-char* frame = NULL;
-rfInt8 rf627_smart_get_frame_callback(char* data, uint32_t data_size, uint32_t device_id)
+rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
 
-    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
-
-    int index = -1;
-    for (rfUint32 i = 0; i < vector_count(search_result); i++)
-    {
-        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
-        {
-            if (((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial == device_id)
-            {
-                index = i;
-                break;
-            }
-
-
-        }
-    }
-    if (index != -1)
-    {
-        // Get params
-        mpack_tree_t tree;
-        mpack_tree_init_data(&tree, (const char*)data, data_size);
-        mpack_tree_parse(&tree);
-        if (mpack_tree_error(&tree) != mpack_ok)
-        {
-            result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-            mpack_tree_destroy(&tree);
-            return result;
-        }
-        mpack_node_t root = mpack_tree_root(&tree);
-
-        mpack_node_t frame_data = mpack_node_map_cstr(root, "frame");
-        uint32_t frame_size = mpack_node_data_len(frame_data);
-        frame = mpack_node_data_alloc(frame_data, frame_size+1);
-
-        mpack_tree_destroy(&tree);
-    }
-
-    is_smart_frame_readed = TRUE;
+    return TRUE;
 }
-
-rfInt8 rf627_smart_get_frame_timeout_callback()
+rfInt8 rf627_smart_write_params_timeout_callback(void* rqst_msg)
 {
-    printf("smart_read_params_timeout\n");
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
 }
-
-
-
-rfChar* rf627_smart_get_frame(rf627_smart_t* scanner)
+rfInt8 rf627_smart_write_params_free_result_callback(void* rqst_msg)
 {
-    smart_msg_t* msg = smart_create_rqst_msg("GET_FRAME", NULL, 0, "blob", FALSE, FALSE, TRUE,
-                                             50000,
-                                             rf627_smart_get_frame_callback,
-                                             rf627_smart_get_frame_timeout_callback);
+    smart_msg_t* msg = rqst_msg;
 
-    is_smart_frame_readed = FALSE;
-    // Send test msg
-    if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
-    else
-        printf("Requests were sent.\n");
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
 
-
-    unsigned int mseconds = 50000;
-    clock_t goal = mseconds + clock();
-    while (goal > clock()){
-        if (is_smart_frame_readed) break;
+    if (msg->result != NULL)
+    {
+        free(msg->result);
+        msg->result = NULL;
     }
-    // Cleanup test msg
-    smart_cleanup_msg(msg);
 
-    if (is_smart_frame_readed)
-        return frame;
-    else return NULL;
+    return TRUE;
 }
-
 rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
 {
-
     int count = 0;
     for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
     {
@@ -2461,10 +2510,24 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
             return FALSE;
         }
 
-        smart_msg_t* msg = smart_create_rqst_msg("SET_PARAMETERS", send_packet, bytes, "mpack", FALSE, FALSE, TRUE,
-                                                 3000,
-                                                 rf627_smart_write_params_callback,
-                                                 rf627_smart_write_params_timeout_callback);
+
+        char* cmd_name                      = "SET_PARAMETERS";
+        char* data                          = send_packet;
+        uint32_t data_size                  = bytes;
+        char* data_type                     = "mpack";
+        uint8_t is_check_crc                = FALSE;
+        uint8_t is_confirmation             = FALSE;
+        uint8_t is_one_answ                 = TRUE;
+        uint32_t waiting_time               = 3000;
+        smart_answ_callback answ_clb        = rf627_smart_write_params_callback;
+        smart_timeout_callback timeout_clb  = rf627_smart_write_params_timeout_callback;
+        smart_free_callback free_clb        = rf627_smart_write_params_free_result_callback;
+
+        smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                                 is_check_crc, is_confirmation, is_one_answ,
+                                                 waiting_time,
+                                                 answ_clb, timeout_clb, free_clb);
+
         // Send test msg
         if (!smart_channel_send_msg(&scanner->channel, msg))
             printf("No data has been sent.\n");
@@ -2473,7 +2536,8 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
 
         // Cleanup test msg
         smart_cleanup_msg(msg);
-        free(send_packet); send_packet = NULL;
+        free(msg); msg = NULL;
+        free(send_packet);
 
         return TRUE;
     }
@@ -2481,25 +2545,140 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
     return FALSE;
 }
 
+rfInt8 rf627_smart_get_frame_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
 
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+
+    int index = -1;
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            if (((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial == device_id)
+            {
+                index = i;
+                break;
+            }
+        }
+    }
+
+    if (index != -1)
+    {
+        // Get params
+        mpack_tree_t tree;
+        mpack_tree_init_data(&tree, (const char*)data, data_size);
+        mpack_tree_parse(&tree);
+        if (mpack_tree_error(&tree) != mpack_ok)
+        {
+            status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+            mpack_tree_destroy(&tree);
+            return status;
+        }
+        mpack_node_t root = mpack_tree_root(&tree);
+
+        mpack_node_t frame_data = mpack_node_map_cstr(root, "frame");
+        uint32_t frame_size = mpack_node_data_len(frame_data);
+
+        smart_msg_t* msg = rqst_msg;
+        msg->result = (char*)mpack_node_data_alloc(frame_data, frame_size+1);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+
+        mpack_tree_destroy(&tree);
+        return true;
+    }
+
+    return false;
+}
+rfInt8 rf627_smart_get_frame_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_get_frame_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+rfChar* rf627_smart_get_frame(rf627_smart_t* scanner)
+{
+    char* cmd_name                      = "GET_FRAME";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = 3000;
+    smart_answ_callback answ_clb        = rf627_smart_get_frame_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_get_frame_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_get_frame_free_result_callback;
+
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+
+    char* frame = NULL;
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        int frame_size = 648*488;
+        frame = calloc(1, frame_size);
+        memcpy(frame, (char*)result, frame_size);
+    }
+
+    // Cleanup test msg
+    smart_cleanup_msg(msg);
+    free(msg); msg = NULL;
+
+    return frame;
+}
 
 rfInt8 rf627_smart_get_authorization_token_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
 
-    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
 
-    // Get params
+    // get authorization token
     mpack_tree_t tree;
     mpack_tree_init_data(&tree, (const char*)data, data_size);
     mpack_tree_parse(&tree);
     if (mpack_tree_error(&tree) != mpack_ok)
     {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
         mpack_tree_destroy(&tree);
-        return result;
+        return status;
     }
 
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
@@ -2517,36 +2696,78 @@ rfInt8 rf627_smart_get_authorization_token_callback(char* data, uint32_t data_si
         smart_msg_t* msg = rqst_msg;
         typedef struct
         {
-            uint8_t status;
+            uint32_t status;
             char* token;
         }answer;
-        msg->result = memory_platform.rf_calloc(1, sizeof (answer));
 
         mpack_node_t root = mpack_tree_root(&tree);
         mpack_node_t token_data = mpack_node_map_cstr(root, "token");
         uint32_t token_size = mpack_node_strlen(token_data) + 1;
-        ((answer*)(msg->result))->token = mpack_node_cstr_alloc(token_data, token_size);
-        ((answer*)(msg->result))->status = TRUE;
+        mpack_node_t status_data = mpack_node_map_cstr(root, "status");     
 
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (answer));
+        }
+
+        ((answer*)msg->result)->token = mpack_node_cstr_alloc(token_data, token_size);
+        ((answer*)msg->result)->status = mpack_node_u32(status_data);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
     }
 
     mpack_tree_destroy(&tree);
     return TRUE;
 }
-
-rfInt8 rf627_smart_get_authorization_token_timeout_callback()
+rfInt8 rf627_smart_get_authorization_token_timeout_callback(void* rqst_msg)
 {
-    printf("get authorization token timeout\n");
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
 }
+rfInt8 rf627_smart_get_authorization_token_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
 
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
 
+    if (msg->result != NULL)
+    {
+        typedef struct
+        {
+            uint32_t status;
+            char* token;
+        }answer;
+
+        free(((answer*)msg->result)->token);
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
 rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32* token_size, rfUint32 timeout)
 {
-    bool is_ok = FALSE;
-    smart_msg_t* msg = smart_create_rqst_msg("GET_AUTHORIZATION_TOKEN", NULL, 0, "blob", FALSE, FALSE, TRUE,
-                                             timeout,
-                                             rf627_smart_get_authorization_token_callback,
-                                             rf627_smart_get_authorization_token_timeout_callback);
+    char* cmd_name                      = "GET_AUTHORIZATION_TOKEN";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_get_authorization_token_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_get_authorization_token_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_get_authorization_token_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
@@ -2554,67 +2775,35 @@ rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* sc
     else
         printf("Requests were sent.\n");
 
-    //delay(timeout);
-    int index = -1;
-    clock_t goal = timeout + clock();
-    while (goal > clock())
-    {
-        for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
-        {
-            if (scanner->channel.smart_parser.output_msg_buffer[i].msg._msg_uid == msg->_msg_uid)
-            {
-                if (scanner->channel.smart_parser.output_msg_buffer[i].msg.result != NULL)
-                {
-                    typedef struct
-                    {
-                        uint8_t status;
-                        char* token;
-                    }answer;
-
-                    answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[i].msg.result);
-                    is_ok = ans->status;
-                    index = i;
-                    break;
-                }
-            }
-        }
-
-        if (is_ok == TRUE)
-            break;
-    }
-
-    if(is_ok)
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
     {
         typedef struct
         {
-            uint8_t status;
+            uint32_t status;
             char* token;
         }answer;
 
-        answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[index].msg.result);
-        int size = rf_strlen((rfChar*)(ans->token)) + 1;
-        *token = memory_platform.rf_calloc(1, size);
-        memory_platform.rf_memcpy(*token, ((answer*)(scanner->channel.smart_parser.output_msg_buffer[index].msg.result))->token, size);
-        //                *token = (*(answer*)(scanner->channel.smart_parser.output_msg_buffer[i].msg.result)).token;
-        free(ans->token); ans->token = NULL;
-        free(ans); ans = NULL;
-        is_ok = true;
+        *token_size = rf_strlen(((answer*)result)->token);
+        *token = calloc(*token_size + 1, sizeof (char));
+        memcpy(*token, ((answer*)result)->token, *token_size);
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        return TRUE;
     }
 
-    // Cleanup test msg
-    smart_cleanup_msg(msg);
-
-    if (is_ok)
-        return TRUE;
-    else return FALSE;
+    return FALSE;
 }
 
 rfInt8 rf627_smart_set_authorization_key_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("%d - Answers were received. Received payload size: %d\n", answ_count, data_size);
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
 
-    int32_t result = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
 
     // Get params
@@ -2623,9 +2812,9 @@ rfInt8 rf627_smart_set_authorization_key_callback(char* data, uint32_t data_size
     mpack_tree_parse(&tree);
     if (mpack_tree_error(&tree) != mpack_ok)
     {
-        result = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
         mpack_tree_destroy(&tree);
-        return result;
+        return status;
     }
 
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
@@ -2644,35 +2833,60 @@ rfInt8 rf627_smart_set_authorization_key_callback(char* data, uint32_t data_size
         typedef struct
         {
             char* result;
-            char* status;
-
-            uint8_t is_end;
+            uint32_t status;
         }answer;
-        msg->result = memory_platform.rf_calloc(1, sizeof (answer));
 
         mpack_node_t root = mpack_tree_root(&tree);
-        // result
         mpack_node_t result_data = mpack_node_map_cstr(root, "result");
         uint32_t result_size = mpack_node_strlen(result_data) + 1;
-        ((answer*)(msg->result))->result = mpack_node_cstr_alloc(result_data, result_size);
-        // status
         mpack_node_t status_data = mpack_node_map_cstr(root, "status");
-        uint32_t status_size = mpack_node_strlen(status_data) + 1;
-        ((answer*)(msg->result))->status = mpack_node_cstr_alloc(status_data, status_size);
-        // is_end
-        ((answer*)(msg->result))->is_end = TRUE;
 
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (answer));
+        }
+
+        ((answer*)msg->result)->result = mpack_node_cstr_alloc(result_data, result_size);
+        ((answer*)msg->result)->status = mpack_node_u32(status_data);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
     }
+
 
     mpack_tree_destroy(&tree);
     return TRUE;
 }
-
-rfInt8 rf627_smart_set_authorization_key_timeout_callback()
+rfInt8 rf627_smart_set_authorization_key_timeout_callback(void* rqst_msg)
 {
-    printf("set authorization key timeout\n");
-}
+    smart_msg_t* msg = rqst_msg;
 
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_set_authorization_key_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+            uint32_t status;
+        }answer;
+
+        free(((answer*)msg->result)->result);
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
 rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scanner, char* key, rfUint32 key_size, rfUint32 timeout)
 {
     // Create payload
@@ -2694,11 +2908,24 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
         return FALSE;
     }
 
-    smart_msg_t* msg = smart_create_rqst_msg("SET_AUTHORIZATION_KEY", payload, bytes,
-                                             "mpack", FALSE, FALSE, TRUE,
-                                             timeout,
-                                             rf627_smart_set_authorization_key_callback,
-                                             rf627_smart_set_authorization_key_timeout_callback);
+
+    char* cmd_name                      = "SET_AUTHORIZATION_KEY";
+    char* data                          = payload;
+    uint32_t data_size                  = bytes;
+    char* data_type                     = "mpack";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_set_authorization_key_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_set_authorization_key_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_set_authorization_key_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
     free(payload);
 
     // Send test msg
@@ -2707,62 +2934,31 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
     else
         printf("Requests were sent.\n");
 
-    //delay(timeout);
-    rfBool is_end = FALSE;
-    int index = -1;
-    clock_t goal = timeout + clock();
-    while (goal > clock())
-    {
-        for(int i = 0; i < SMART_PARSER_OUTPUT_BUFFER_QUEUE; i++)
-        {
-            if (scanner->channel.smart_parser.output_msg_buffer[i].msg._msg_uid == msg->_msg_uid)
-            {
-                if (scanner->channel.smart_parser.output_msg_buffer[i].msg.result != NULL)
-                {
-                    typedef struct
-                    {
-                        char* result;
-                        char* status;
-
-                        uint8_t is_end;
-                    }answer;
-
-                    answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[i].msg.result);
-                    is_end = ans->is_end;
-                    index = i;
-                    break;
-                }
-            }
-        }
-
-        if (is_end == TRUE)
-            break;
-    }
-
-    rfBool is_ok = FALSE;
-    if(is_end == TRUE)
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
     {
         typedef struct
         {
             char* result;
-            char* status;
-
-            uint8_t is_end;
+            uint32_t status;
         }answer;
 
-        answer* ans = (answer*)(scanner->channel.smart_parser.output_msg_buffer[index].msg.result);
-        if (rf_strcmp(ans->result, "RF_OK") == 0)
-            is_ok = TRUE;
+        answer* test = (answer*)result;
 
-        free(ans->result); ans->result = NULL;
-        free(ans->status); ans->status = NULL;
+        if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0 &&
+                ((answer*)result)->status != 0)
+        {
+            // Cleanup test msg
+            smart_cleanup_msg(msg);
+            free(msg); msg = NULL;
+            return TRUE;
+        }
 
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        return FALSE;
     }
 
-    // Cleanup test msg
-    smart_cleanup_msg(msg);
-
-    if (is_ok)
-        return TRUE;
-    else return FALSE;
+    return FALSE;
 }

@@ -528,7 +528,7 @@ void free_old_parameter(parameter_t* p)
     memory_platform.rf_free(p);
 }
 
-rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protocol)
+rfUint8 read_params_from_scanner(scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
 {
     switch (device->type) {
     case kRF627_OLD:
@@ -570,7 +570,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, protocol_types_t protoc
                 free_smart_parameter(p);
                 count++;
             }
-            ret = rf627_smart_read_params_from_scanner(device->rf627_smart);
+            ret = rf627_smart_read_params_from_scanner(device->rf627_smart, timeout);
             return ret;
             break;
         }

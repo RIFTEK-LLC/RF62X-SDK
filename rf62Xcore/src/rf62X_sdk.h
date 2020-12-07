@@ -104,7 +104,7 @@ API_EXPORT rfChar* get_frame_from_scanner(scanner_base_t *device, protocol_types
  * @return 0 on success
  */
 API_EXPORT rfUint8 read_params_from_scanner(
-        scanner_base_t *device, protocol_types_t protocol);
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
 
 /**
  * @brief write_params_to_scanner - Write current parameters to device's memory

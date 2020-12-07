@@ -249,7 +249,7 @@ rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBoo
  * @param scanner - ptr to scanner
  * @return 0 on success
  */
-rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner);
+rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner, rfUint32 timeout);
 
 /**
  * @brief rf627_old_set_parameter - set parameters
