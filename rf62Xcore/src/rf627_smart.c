@@ -918,6 +918,7 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
                 p->base.access = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(factory, i), "access"), param_strlen);
             }
 
+
             if(rf_strcmp(parameter_value_types[PVT_UINT], p->base.type) == 0)
             {
                 // defaultValue
@@ -1580,6 +1581,16 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
             if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "size"))
             {
                 p->base.size = mpack_node_uint(mpack_node_map_cstr(mpack_node_array_at(factory, i), "size"));
+            }
+
+            // units
+            if (mpack_node_map_contains_cstr(mpack_node_array_at(factory, i), "units"))
+            {
+                int param_strlen = mpack_node_strlen(mpack_node_map_cstr(mpack_node_array_at(factory, i), "units")) + 1;
+                p->base.units = mpack_node_cstr_alloc(mpack_node_map_cstr(mpack_node_array_at(factory, i), "units"), param_strlen);
+            }else
+            {
+                p->base.units = "";
             }
 
             vector_add(((scanner_base_t*)vector_get(search_result, index))->rf627_smart->params_list, p);
