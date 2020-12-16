@@ -267,7 +267,7 @@ rfUint8 rf627_smart_set_parameter(
  */
 rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner);
 
-rfChar* rf627_smart_get_frame(rf627_smart_t* scanner);
+rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner);
 
 rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32* token_size, rfUint32 timeout);
 rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scanner, char* key, rfUint32 key_size, rfUint32 timeout);

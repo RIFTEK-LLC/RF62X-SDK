@@ -108,7 +108,80 @@ class convert{
           }
 };
 
+frame::frame(void* frame_base)
+{
+    m_FrameBase = frame_base;
+    rf627_frame_t* _frame = (rf627_frame_t*)m_FrameBase;
+    if (_frame != nullptr)
+    {
+        switch (_frame->type) {
+        case kRF627_OLD:
+        {
+            m_Data = _frame->rf627old_frame->data;
+            m_DataSize = _frame->rf627old_frame->data_size;
+            m_PixelSize = _frame->rf627old_frame->pixel_size;
+            m_FrameWidth = _frame->rf627old_frame->width;
+            m_FrameHeight = _frame->rf627old_frame->height;
+        }
+        case kRF627_SMART:
+        {
+            m_Data = _frame->rf627smart_frame->data;
+            m_DataSize = _frame->rf627smart_frame->data_size;
+            m_PixelSize = _frame->rf627smart_frame->pixel_size;
+            m_FrameWidth = _frame->rf627smart_frame->width;
+            m_FrameHeight = _frame->rf627smart_frame->height;
+        }
+        }
+    }
+}
 
+frame::~frame()
+{
+    rf627_frame_t* _frame = (rf627_frame_t*)m_FrameBase;
+    if (_frame != nullptr)
+    {
+        switch (_frame->type) {
+        case kRF627_OLD:
+        {
+            if(_frame->rf627old_frame->data != nullptr)
+                free(_frame->rf627old_frame->data);
+            free(_frame);
+        }
+        case kRF627_SMART:
+        {
+            if(_frame->rf627smart_frame->data != nullptr)
+                free(_frame->rf627smart_frame->data);
+            free(_frame);
+        }
+        }
+    }
+}
+
+std::vector<char> frame::getData()
+{
+    std::vector<char> v(m_Data, m_Data + m_DataSize);
+    return v;
+}
+
+uint32_t frame::getDataSize()
+{
+    return m_DataSize;
+}
+
+uint8_t frame::getPixelSize()
+{
+    return m_PixelSize;
+}
+
+uint32_t frame::getFrameWidth()
+{
+    return m_FrameWidth;
+}
+
+uint32_t frame::getFrameHeight()
+{
+    return m_FrameHeight;
+}
 
 
 //
@@ -592,7 +665,7 @@ profile3D_t* rf627old::get_profile3D(float step_size, float k,
 
 char *rf627old::get_frame(PROTOCOLS protocol)
 {
-
+    return nullptr;
 }
 
 bool rf627old::read_params(PROTOCOLS protocol)
@@ -1898,7 +1971,7 @@ profile3D_t* rf627smart::get_profile3D(float step_size, float k,
 
 }
 
-char *rf627smart::get_frame(PROTOCOLS protocol)
+std::shared_ptr<frame> rf627smart::get_frame(PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -1910,9 +1983,33 @@ char *rf627smart::get_frame(PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         // Establish connection to the RF627 device by Service Protocol.
-        char* result = get_frame_from_scanner(
+        rf627_frame_t* _frame = get_frame_from_scanner(
                     (scanner_base_t*)scanner_base, kSERVICE);
-        return result;
+        if (_frame->rf627smart_frame != NULL)
+        {
+            param_t* width = get_param("fact_sensor_width");
+            param_t* height = get_param("fact_sensor_height");
+
+            if (width != NULL)
+            {
+                _frame->rf627smart_frame->width = width->get_value<value_uint32>();
+                delete width;
+            }
+            if (height != NULL)
+            {
+                _frame->rf627smart_frame->height = height->get_value<value_uint32>();
+                delete height;
+            }
+
+            if (_frame->rf627smart_frame->data_size == _frame->rf627smart_frame->width * _frame->rf627smart_frame->height * 1)
+            {
+                _frame->rf627smart_frame->pixel_size = 1;
+            }
+
+            std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
+            return result;
+        }
+        free(_frame);
         break;
     }
     default:

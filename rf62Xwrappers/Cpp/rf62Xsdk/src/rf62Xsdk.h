@@ -350,7 +350,7 @@ public:
             bool zero_points = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
-    char* get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<frame> get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief read_params - Read parameters from device to internal structure.

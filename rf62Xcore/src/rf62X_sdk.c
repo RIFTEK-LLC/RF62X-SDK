@@ -745,9 +745,10 @@ void free_parameter(parameter_t *param, scanner_types_t type)
     }
 }
 
-rfChar *get_frame_from_scanner(scanner_base_t *device, protocol_types_t protocol)
+rf627_frame_t* get_frame_from_scanner(scanner_base_t* device, protocol_types_t protocol)
 {
-    rfChar* frame = NULL;
+    rf627_frame_t* frame =
+            memory_platform.rf_calloc(1 ,sizeof(rf627_frame_t));
     switch (device->type) {
     case kRF627_OLD:
         switch (protocol) {
@@ -767,7 +768,8 @@ rfChar *get_frame_from_scanner(scanner_base_t *device, protocol_types_t protocol
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
-            frame = rf627_smart_get_frame(device->rf627_smart);
+            frame->type = kRF627_SMART;
+            frame->rf627smart_frame = rf627_smart_get_frame(device->rf627_smart);
             return frame;
             break;
         case kETHERNET_IP:

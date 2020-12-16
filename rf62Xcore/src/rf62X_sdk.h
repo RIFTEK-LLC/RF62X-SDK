@@ -94,7 +94,8 @@ API_EXPORT rf627_profile3D_t* get_profile3D_from_scanner(
         rfBool zero_points,
         protocol_types_t protocol);
 
-API_EXPORT rfChar* get_frame_from_scanner(scanner_base_t *device, protocol_types_t protocol);
+API_EXPORT rf627_frame_t* get_frame_from_scanner(
+        scanner_base_t *device, protocol_types_t protocol);
 
 /**
  * @brief read_params_from_scanner - Read parameters from device to rfInternal structure.

@@ -2591,11 +2591,15 @@ rfInt8 rf627_smart_get_frame_callback(char* data, uint32_t data_size, uint32_t d
         }
         mpack_node_t root = mpack_tree_root(&tree);
 
+        smart_msg_t* msg = rqst_msg;
+        msg->result = calloc(1, sizeof (rf627_smart_frame_t));
+        rf627_smart_frame_t* frame = msg->result;
+
         mpack_node_t frame_data = mpack_node_map_cstr(root, "frame");
         uint32_t frame_size = mpack_node_data_len(frame_data);
 
-        smart_msg_t* msg = rqst_msg;
-        msg->result = (char*)mpack_node_data_alloc(frame_data, frame_size+1);
+        frame->data_size = frame_size;
+        frame->data = (char*)mpack_node_data_alloc(frame_data, frame_size+1);
 
         status = SMART_PARSER_RETURN_STATUS_DATA_READY;
 
@@ -2623,13 +2627,19 @@ rfInt8 rf627_smart_get_frame_free_result_callback(void* rqst_msg)
 
     if (msg->result != NULL)
     {
+        rf627_smart_frame_t* frame = msg->result;
+        if (frame->data != NULL && frame->data_size > 0)
+        {
+            free(frame->data);
+            frame->data_size = 0;
+        }
         free(msg->result);
         msg->result = NULL;
     }
 
     return TRUE;
 }
-rfChar* rf627_smart_get_frame(rf627_smart_t* scanner)
+rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner)
 {
     char* cmd_name                      = "GET_FRAME";
     char* data                          = NULL;
@@ -2656,13 +2666,14 @@ rfChar* rf627_smart_get_frame(rf627_smart_t* scanner)
         printf("Requests were sent.\n");
 
 
-    char* frame = NULL;
-    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    rf627_smart_frame_t* frame = NULL;
+    rf627_smart_frame_t* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
     if (result != NULL)
     {
-        int frame_size = 648*488;
-        frame = calloc(1, frame_size);
-        memcpy(frame, (char*)result, frame_size);
+        frame = calloc(1, sizeof (rf627_smart_frame_t));
+        frame->data_size = result->data_size;
+        frame->data = calloc(1, frame->data_size);
+        memcpy(frame->data, (char*)result->data, frame->data_size);
     }
 
     // Cleanup test msg

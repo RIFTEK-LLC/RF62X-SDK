@@ -477,6 +477,16 @@ typedef struct
     rfUint32 intensity_count;
 }rf627_old_profile3D_t;
 
+
+typedef struct
+{
+    rfChar* data;
+    rfUint32 data_size;
+    rfUint8 pixel_size;
+    rfUint32 width;
+    rfUint32 height;
+}rf627_old_frame_t;
+
 /*! Structure to store a profile for rf627_old
  */
 typedef struct
@@ -515,6 +525,14 @@ typedef struct
     rfUint32 intensity_count;
 }rf627_smart_profile3D_t;
 
+typedef struct
+{
+    rfChar* data;
+    rfUint32 data_size;
+    rfUint8 pixel_size;
+    rfUint32 width;
+    rfUint32 height;
+}rf627_smart_frame_t;
 
 typedef struct
 {
@@ -1209,6 +1227,15 @@ typedef struct
         rf627_smart_profile2D_t* rf627smart_profile2D;
     };
 }rf627_profile2D_t;
+
+typedef struct
+{
+    scanner_types_t type;
+    union{
+        rf627_old_frame_t* rf627old_frame;
+        rf627_smart_frame_t* rf627smart_frame;
+    };
+}rf627_frame_t;
 
 /*! Structure to store a profile
  */

@@ -43,6 +43,31 @@ typedef struct
     float z;
 }point3D_t;
 
+/*! Structure to store a 3D-point of profile
+ */
+class frame
+{
+public:
+    frame(void* frame_base);
+    ~frame();
+
+
+    std::vector<char> getData();
+    uint32_t getDataSize();
+    uint8_t getPixelSize();
+    uint32_t getFrameWidth();
+    uint32_t getFrameHeight();
+
+private:
+    void* m_FrameBase = nullptr;
+
+    char* m_Data;
+    uint32_t m_DataSize;
+    uint8_t m_PixelSize;
+    uint32_t m_FrameWidth;
+    uint32_t m_FrameHeight;
+};
+
 //Формат представления профиля
 enum class PROFILE_DATA_TYPE{
     PIXELS				= 0x10,
