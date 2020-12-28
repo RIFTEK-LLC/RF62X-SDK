@@ -78,9 +78,13 @@ enum class PROFILE_DATA_TYPE{
 
 /*! Structure to store a profile
  */
-typedef struct
+class profile2D
 {
-    struct
+public:
+    profile2D(void* frame_base);
+    ~profile2D();
+
+    typedef struct
     {
         uint8_t     data_type;
         uint8_t     flags;
@@ -105,13 +109,21 @@ typedef struct
         uint8_t     dir;
     }header;
 
+    header getHeader();
 
-        std::vector<point2D_t> points;
-        std::vector<uint16_t> pixels;
+    const std::vector<point2D_t>& getPoints();
+    const std::vector<uint16_t>& getPixels();
+    const std::vector<uint8_t>& getIntensity();
 
+private:
+    void* m_ProfileBase;
 
-    std::vector<uint8_t> intensity;
-}profile2D_t;
+    std::vector<point2D_t> m_Points;
+    std::vector<uint16_t> m_Pixels;
+    std::vector<uint8_t> m_Intensity;
+
+    header m_Header;
+};
 
 /*! Structure to store a profile
  */
@@ -531,214 +543,47 @@ const static std::string parameter_names[]	=
     "user_roi_size"
 };
 
-
-typedef struct
+class param
 {
-  std::string  name;
-  std::string  type;
-  std::string  access;
-  uint16_t     index;
-  uint32_t	   offset;
-  uint32_t	   size;
-  std::string  units;
-  template <typename T>
-  auto get_value()->decltype( std::declval<T>().value )
-  {
-      return ((T*)this)->value;
-  }
-  template <typename T>
-  void set_value(decltype( std::declval<T>().value) value)
-  {
-      ((T*)this)->value = value;
-  }
-  template <typename T>
-  auto get_min()->decltype( std::declval<T>().min )
-  {
-      return ((T*)this)->min;
-  }
-  template <typename T>
-  auto get_max()->decltype( std::declval<T>().max )
-  {
-      return ((T*)this)->max;
-  }
-  template <typename T>
-  auto get_step()->decltype( std::declval<T>().max )
-  {
-      return ((T*)this)->step;
-  }
-  template <typename T>
-  auto get_default_value()->decltype( std::declval<T>().defaultValue )
-  {
-      return ((T*)this)->defaultValue;
-  }
-  template <typename T>
-  auto get_values_enum()->decltype( std::declval<T>().valuesEnum )
-  {
-      return ((T*)this)->valuesEnum;
-  }
-  template <typename T>
-  auto get_units()->decltype( std::declval<T>().units )
-  {
-      return ((T*)this)->units;
-  }
-  template <typename T>
-  auto get_count()->decltype( std::declval<T>().maxCount )
-  {
-      return ((T*)this)->maxCount;
-  }
-  template <typename T>
-  auto get_default_count()->decltype( std::declval<T>().defCount )
-  {
-      return ((T*)this)->defCount;
-  }
-  template <typename T>
-  auto get_max_length()->decltype( std::declval<T>().maxLen )
-  {
-      return ((T*)this)->maxLen;
-  }
-}param_t;
+public:
+    param(void* param_base);
+    ~param();
+
+    std::string getName();
+    std::string getType();
+    std::string getAccess();
+    std::string getUnits();
+
+    uint16_t getIndex();
+    uint32_t getOffset();
+    uint32_t getSize();
+
+    template <typename T>
+    T getValue() const;
+    template <typename T>
+    bool setValue(T) const;
+    template <typename T>
+    T getMin() const;
+    template <typename T>
+    T getMax() const;
+    template <typename T>
+    T getStep() const;
+
+    template <typename T>
+    T getDefValue() const;
+    template <typename T>
+    T getValuesEnum() const;
+private:
+    void* param_base;
+
+};
 
 typedef struct {
     int ID;
-    std::vector<param_t> args;
+    std::vector<param> args;
 }cmd_t;
 
-typedef struct value_uint32 : param_t
-{
-  uint32_t    min;
-  uint32_t    max;
-  uint32_t    defaultValue;
-  std::vector <std::tuple<uint32_t, std::string, std::string>> valuesEnum;
-  uint32_t    value;
-  uint32_t    step;
-}value_uint32;
 
-typedef struct value_uint64 : param_t
-{
-  uint64_t    min;
-  uint64_t    max;
-  uint64_t    defaultValue;
-  std::vector <std::tuple<uint64_t, std::string, std::string>> valuesEnum;
-  uint64_t    value;
-  uint64_t    step;
-}value_uint64;
-
-typedef struct value_int32 : param_t
-{
-  int32_t     min;
-  int32_t     max;
-  int32_t     defaultValue;
-  std::vector <std::tuple<int32_t, std::string, std::string>> valuesEnum;
-  int32_t     value;
-  int32_t     step;
-}value_int32;
-
-typedef struct value_int64 : param_t
-{
-  int64_t     min;
-  int64_t     max;
-  int64_t     defaultValue;
-  std::vector <std::tuple<int64_t, std::string, std::string>> valuesEnum;
-  int64_t     value;
-  int64_t     step;
-}value_int64;
-
-typedef struct value_flt : param_t
-{
-  float        min;
-  float        max;
-  float        step;
-  float        defaultValue;
-  float        value;
-}value_flt;
-
-typedef struct value_dbl : param_t
-{
-  double        min;
-  double        max;
-  double        step;
-  double        defaultValue;
-  double        value;
-}value_dbl;
-
-typedef struct array_uint32 : param_t
-{
-  uint32_t    min;
-  uint32_t    max;
-  uint32_t    step;
-  uint32_t    maxCount;
-  uint32_t    defCount;
-  std::vector <uint32_t> defaultValue;
-  uint32_t    count;
-  std::vector <uint32_t> value;
-}array_uint32;
-
-typedef struct array_uint64 : param_t
-{
-  uint64_t    min;
-  uint64_t    max;
-  uint32_t    maxCount;
-  uint32_t    defCount;
-  std::vector <uint64_t>   defaultValue;
-  uint32_t    count;
-  std::vector <uint64_t>   value;
-}array_uint64;
-
-typedef struct array_int32 : param_t
-{
-  int32_t     min;
-  int32_t     max;
-  uint32_t    maxCount;
-  uint32_t    defCount;
-  std::vector <int32_t> defaultValue;
-  uint32_t    count;
-  std::vector <int32_t> value;
-}array_int32;
-
-typedef struct array_int64 : param_t
-{
-  int64_t     min;
-  int64_t     max;
-  uint32_t    maxCount;
-  uint32_t    defCount;
-  std::vector <int64_t> defaultValue;
-  uint32_t    count;
-  std::vector <int64_t> value;
-}array_int64;
-
-typedef struct array_flt : param_t
-{
-  float       min;
-  float       max;
-  uint32_t    maxCount;
-  uint32_t    defCount;
-  std::vector <float> defaultValue;
-  uint32_t    count;
-  std::vector <float> value;
-}array_flt;
-
-typedef struct array_dbl : param_t
-{
-  double      min;
-  double      max;
-  uint32_t    maxCount;
-  uint32_t    defCount;
-  std::vector <double> defaultValue;
-  uint32_t    count;
-  std::vector <double> value;
-}array_dbl;
-
-typedef struct value_str : param_t
-{
-  uint16_t      maxLen;
-  std::string   defaultValue;
-  std::string   value;
-}value_str;
-
-typedef struct value_raw : param_t
-{
-  void*         raw_data;
-}value_raw;
 
 }
 }

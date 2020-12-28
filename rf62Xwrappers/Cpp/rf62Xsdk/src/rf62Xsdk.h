@@ -141,7 +141,7 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return ptr to profile2D_t structure if success, else - null
      */
-    profile2D_t* get_profile2D(
+    std::shared_ptr<profile2D> get_profile2D(
             bool zero_points = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
@@ -184,20 +184,20 @@ public:
      * @param param_name - name of parameter
      * @return param on success, else - null
      */
-    param_t* get_param(std::string param_name);
+    std::shared_ptr<param> get_param(std::string param_name);
 
     /**
      * @brief get_param - Search parameters by his name's key
      * @param param_name - name's key of parameter
      * @return param on success, else - null
      */
-    param_t* get_param(PARAM_NAME_KEY param_key);
+    std::shared_ptr<param> get_param(PARAM_NAME_KEY param_key);
     /**
      * @brief set_param - set parameter
      * @param param - prt to parameter
      * @return true on success, else - false
      */
-    bool set_param(param_t* param);
+    bool set_param(std::shared_ptr<param>& param);
     bool set_param(const char* param_name, int arg_count, ...);
     bool set_param(int param_id, int arg_count, ...);
 
@@ -328,7 +328,7 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return ptr to profile2D_t structure if success, else - null
      */
-    profile2D_t* get_profile2D(
+    std::shared_ptr<profile2D> get_profile2D(
             bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
@@ -372,21 +372,21 @@ public:
      * @param param_name - name of parameter
      * @return param on success, else - null
      */
-    param_t* get_param(std::string param_name);
+    std::shared_ptr<param> get_param(std::string param_name);
 
     /**
      * @brief get_param - Search parameters by his name's key
      * @param param_name - name's key of parameter
      * @return param on success, else - null
      */
-    param_t* get_param(PARAM_NAME_KEY param_key);
+    std::shared_ptr<param> get_param(PARAM_NAME_KEY param_key);
 
     /**
      * @brief set_param - set parameter
      * @param param - prt to parameter
      * @return true on success, else - false
      */
-    bool set_param(param_t* param);
+    bool set_param(std::shared_ptr<param>& param);
     bool set_param(const char* param_name, int arg_count, ...);
     bool set_param(int param_id, int arg_count, ...);
 

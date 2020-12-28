@@ -145,15 +145,16 @@ frame::~frame()
         {
             if(_frame->rf627old_frame->data != nullptr)
                 free(_frame->rf627old_frame->data);
-            free(_frame);
+            break;
         }
         case kRF627_SMART:
         {
             if(_frame->rf627smart_frame->data != nullptr)
                 free(_frame->rf627smart_frame->data);
-            free(_frame);
+            break;
         }
         }
+        free(_frame);
     }
 }
 
@@ -183,6 +184,1153 @@ uint32_t frame::getFrameHeight()
     return m_FrameHeight;
 }
 
+
+
+typedef struct
+{
+  std::string  name;
+  std::string  type;
+  std::string  access;
+  uint16_t     index;
+  uint32_t	   offset;
+  uint32_t	   size;
+  std::string  units;
+  template <typename T>
+  auto get_value()->decltype( std::declval<T>().value )
+  {
+      return ((T*)this)->value;
+  }
+  template <typename T>
+  void set_value(decltype( std::declval<T>().value) value)
+  {
+      ((T*)this)->value = value;
+  }
+  template <typename T>
+  auto get_min()->decltype( std::declval<T>().min )
+  {
+      return ((T*)this)->min;
+  }
+  template <typename T>
+  auto get_max()->decltype( std::declval<T>().max )
+  {
+      return ((T*)this)->max;
+  }
+  template <typename T>
+  auto get_step()->decltype( std::declval<T>().max )
+  {
+      return ((T*)this)->step;
+  }
+  template <typename T>
+  auto get_default_value()->decltype( std::declval<T>().defaultValue )
+  {
+      return ((T*)this)->defaultValue;
+  }
+  template <typename T>
+  auto get_values_enum()->decltype( std::declval<T>().valuesEnum )
+  {
+      return ((T*)this)->valuesEnum;
+  }
+  template <typename T>
+  auto get_units()->decltype( std::declval<T>().units )
+  {
+      return ((T*)this)->units;
+  }
+  template <typename T>
+  auto get_count()->decltype( std::declval<T>().maxCount )
+  {
+      return ((T*)this)->maxCount;
+  }
+  template <typename T>
+  auto get_default_count()->decltype( std::declval<T>().defCount )
+  {
+      return ((T*)this)->defCount;
+  }
+  template <typename T>
+  auto get_max_length()->decltype( std::declval<T>().maxLen )
+  {
+      return ((T*)this)->maxLen;
+  }
+}param_t;
+
+typedef struct value_uint32 : param_t
+{
+  uint32_t    min;
+  uint32_t    max;
+  uint32_t    defaultValue;
+  std::vector <std::tuple<uint32_t, std::string, std::string>> valuesEnum;
+  uint32_t    value;
+  uint32_t    step;
+}value_uint32;
+
+typedef struct value_uint64 : param_t
+{
+  uint64_t    min;
+  uint64_t    max;
+  uint64_t    defaultValue;
+  std::vector <std::tuple<uint64_t, std::string, std::string>> valuesEnum;
+  uint64_t    value;
+  uint64_t    step;
+}value_uint64;
+
+typedef struct value_int32 : param_t
+{
+  int32_t     min;
+  int32_t     max;
+  int32_t     defaultValue;
+  std::vector <std::tuple<int32_t, std::string, std::string>> valuesEnum;
+  int32_t     value;
+  int32_t     step;
+}value_int32;
+
+typedef struct value_int64 : param_t
+{
+  int64_t     min;
+  int64_t     max;
+  int64_t     defaultValue;
+  std::vector <std::tuple<int64_t, std::string, std::string>> valuesEnum;
+  int64_t     value;
+  int64_t     step;
+}value_int64;
+
+typedef struct value_flt : param_t
+{
+  float        min;
+  float        max;
+  float        step;
+  float        defaultValue;
+  float        value;
+}value_flt;
+
+typedef struct value_dbl : param_t
+{
+  double        min;
+  double        max;
+  double        step;
+  double        defaultValue;
+  double        value;
+}value_dbl;
+
+typedef struct array_uint32 : param_t
+{
+  uint32_t    min;
+  uint32_t    max;
+  uint32_t    step;
+  uint32_t    maxCount;
+  uint32_t    defCount;
+  std::vector <uint32_t> defaultValue;
+  uint32_t    count;
+  std::vector <uint32_t> value;
+}array_uint32;
+
+typedef struct array_uint64 : param_t
+{
+  uint64_t    min;
+  uint64_t    max;
+  uint64_t    step;
+  uint32_t    maxCount;
+  uint32_t    defCount;
+  std::vector <uint64_t>   defaultValue;
+  uint32_t    count;
+  std::vector <uint64_t>   value;
+}array_uint64;
+
+typedef struct array_int32 : param_t
+{
+  int32_t     min;
+  int32_t     max;
+  int32_t     step;
+  uint32_t    maxCount;
+  uint32_t    defCount;
+  std::vector <int32_t> defaultValue;
+  uint32_t    count;
+  std::vector <int32_t> value;
+}array_int32;
+
+typedef struct array_int64 : param_t
+{
+  int64_t     min;
+  int64_t     max;
+  int64_t     step;
+  uint32_t    maxCount;
+  uint32_t    defCount;
+  std::vector <int64_t> defaultValue;
+  uint32_t    count;
+  std::vector <int64_t> value;
+}array_int64;
+
+typedef struct array_flt : param_t
+{
+  float       min;
+  float       max;
+  uint32_t    maxCount;
+  uint32_t    defCount;
+  std::vector <float> defaultValue;
+  uint32_t    count;
+  std::vector <float> value;
+}array_flt;
+
+typedef struct array_dbl : param_t
+{
+  double      min;
+  double      max;
+  uint32_t    maxCount;
+  uint32_t    defCount;
+  std::vector <double> defaultValue;
+  uint32_t    count;
+  std::vector <double> value;
+}array_dbl;
+
+typedef struct value_str : param_t
+{
+  uint16_t      maxLen;
+  std::string   defaultValue;
+  std::string   value;
+}value_str;
+
+typedef struct value_raw : param_t
+{
+  void*         raw_data;
+}value_raw;
+
+
+
+
+param_t* create_param_from_type(std::string type)
+{
+    param_t* p = nullptr;
+    if(type == parameter_value_types[PVT_UINT])
+    {
+        p = new value_uint32();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_UINT64])
+    {
+        p = new value_uint64();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_INT])
+    {
+        p = new value_int32();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_INT64])
+    {
+        p = new value_int64();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_FLOAT])
+    {
+        p = new value_flt();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_DOUBLE])
+    {
+        p = new value_dbl();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_ARRAY_UINT32])
+    {
+        p = new array_uint32();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_ARRAY_UINT64])
+    {
+        p = new array_uint64();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_ARRAY_INT32])
+    {
+        p = new array_int32();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_ARRAY_INT64])
+    {
+        p = new array_int64();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_ARRAY_FLT])
+    {
+        p = new array_flt();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_ARRAY_DBL])
+    {
+        p = new array_dbl();
+        p->type = type;
+    }else if(type == parameter_value_types[PVT_STRING])
+    {
+        p = new value_str();
+        p->type = type;
+    }
+    return p;
+}
+
+param::param(void* init_param)
+{
+    parameter_t* p = (parameter_t*)init_param;
+
+    if (p != NULL)
+    {
+        param_base = create_param_from_type(std::string(p->base.type));
+        param_t* result = (param_t*)param_base;
+
+        if (result->type == parameter_value_types[PVT_UINT])
+        {
+            result->set_value<value_uint32>(p->val_uint32->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((value_uint32*)result)->defaultValue = p->val_uint32->defValue;
+            ((value_uint32*)result)->value = p->val_uint32->value;
+            ((value_uint32*)result)->min = p->val_uint32->min;
+            ((value_uint32*)result)->max = p->val_uint32->max;
+            ((value_uint32*)result)->step = p->val_uint32->step;
+
+            if(p->val_uint32->enumValues != NULL)
+            for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
+                ((value_uint32*)result)->valuesEnum.push_back(std::make_tuple(
+                            p->val_uint32->enumValues->rec[i].value,
+                            p->val_uint32->enumValues->rec[i].key,
+                            p->val_uint32->enumValues->rec[i].label));
+        }
+        else if (result->type == parameter_value_types[PVT_UINT64])
+        {
+            result->set_value<value_uint64>(p->val_uint64->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+            ((value_uint64_t*)result)->step = p->val_uint64->step;
+
+            ((value_uint64*)result)->defaultValue = p->val_uint64->defValue;
+            ((value_uint64*)result)->value = p->val_uint64->value;
+            ((value_uint64*)result)->min = p->val_uint64->min;
+            ((value_uint64*)result)->max = p->val_uint64->max;
+
+            if(p->val_uint64->enumValues != NULL)
+            for(int i = 0; i < p->val_uint64->enumValues->recCount; i++)
+                ((value_uint64*)result)->valuesEnum.push_back(std::make_tuple(
+                            p->val_uint64->enumValues->rec[i].value,
+                            p->val_uint64->enumValues->rec[i].key,
+                            p->val_uint64->enumValues->rec[i].label));
+        }
+        else if (result->type == parameter_value_types[PVT_INT])
+        {
+            result->set_value<value_int32>(p->val_int32->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((value_int32*)result)->defaultValue = p->val_int32->defValue;
+            ((value_int32*)result)->value = p->val_int32->value;
+            ((value_int32*)result)->min = p->val_int32->min;
+            ((value_int32*)result)->max = p->val_int32->max;
+            ((value_int32*)result)->step = p->val_int32->step;
+
+            if(p->val_int32->enumValues != NULL)
+            for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
+                ((value_int32*)result)->valuesEnum.push_back(std::make_tuple(
+                            p->val_int32->enumValues->rec[i].value,
+                            p->val_int32->enumValues->rec[i].key,
+                            p->val_int32->enumValues->rec[i].label));
+
+        }
+        else if (result->type == parameter_value_types[PVT_INT64])
+        {
+            result->set_value<value_int64>(p->val_int64->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((value_int64*)result)->defaultValue = p->val_int64->defValue;
+            ((value_int64*)result)->value = p->val_int64->value;
+            ((value_int64*)result)->min = p->val_int64->min;
+            ((value_int64*)result)->max = p->val_int64->max;
+            ((value_int64*)result)->step = p->val_int64->step;
+
+            if(p->val_int64->enumValues != NULL)
+            for(int i = 0; i < p->val_int64->enumValues->recCount; i++)
+                ((value_int64*)result)->valuesEnum.push_back(std::make_tuple(
+                            p->val_int64->enumValues->rec[i].value,
+                            p->val_int64->enumValues->rec[i].key,
+                            p->val_int64->enumValues->rec[i].label));
+
+        }
+        else if (result->type == parameter_value_types[PVT_FLOAT])
+        {
+            result->set_value<value_flt>(p->val_flt->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((value_flt*)result)->defaultValue = p->val_flt->defValue;
+            ((value_flt*)result)->value = p->val_flt->value;
+            ((value_flt*)result)->min = p->val_flt->min;
+            ((value_flt*)result)->max = p->val_flt->max;
+            ((value_flt*)result)->step = p->val_flt->step;
+        }
+        else if (result->type == parameter_value_types[PVT_DOUBLE])
+        {
+            result->set_value<value_dbl>(p->val_dbl->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((value_dbl*)result)->defaultValue = p->val_dbl->defValue;
+            ((value_dbl*)result)->value = p->val_dbl->value;
+            ((value_dbl*)result)->min = p->val_dbl->min;
+            ((value_dbl*)result)->max = p->val_dbl->max;
+            ((value_dbl*)result)->step = p->val_dbl->step;
+        }
+        else if (result->type == parameter_value_types[PVT_ARRAY_UINT32])
+        {
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((array_uint32*)result)->step = p->arr_uint32->step;
+            for(size_t i = 0; i < p->arr_uint32->defCount; i++)
+                ((array_uint32*)result)->defaultValue.push_back(p->arr_uint32->defValue[i]);
+            for(size_t i = 0; i < p->arr_uint32->count; i++)
+                ((array_uint32*)result)->value.push_back(p->arr_uint32->value[i]);
+            ((array_uint32*)result)->min = p->arr_uint32->min;
+            ((array_uint32*)result)->max = p->arr_uint32->max;
+            ((array_uint32*)result)->maxCount = p->arr_uint32->maxCount;
+            ((array_uint32*)result)->defCount = p->arr_uint32->defCount;
+            ((array_uint32*)result)->count = p->arr_uint32->count;
+        }
+        else if (result->type == parameter_value_types[PVT_ARRAY_UINT64])
+        {
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((array_uint64*)result)->step = p->arr_uint64->step;
+            for(size_t i = 0; i < p->arr_uint64->defCount; i++)
+                ((array_uint64*)result)->defaultValue.push_back(p->arr_uint64->defValue[i]);
+            for(size_t i = 0; i < p->arr_uint64->count; i++)
+                ((array_uint64*)result)->value.push_back(p->arr_uint64->value[i]);
+            ((array_uint64*)result)->min = p->arr_uint64->min;
+            ((array_uint64*)result)->max = p->arr_uint64->max;
+            ((array_uint64*)result)->maxCount = p->arr_uint64->maxCount;
+            ((array_uint64*)result)->defCount = p->arr_uint64->defCount;
+            ((array_uint64*)result)->count = p->arr_uint64->count;
+        }
+        else if (result->type == parameter_value_types[PVT_ARRAY_INT32])
+        {
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((array_int32*)result)->step = p->arr_int32->step;
+            for(size_t i = 0; i < p->arr_int32->defCount; i++)
+                ((array_int32*)result)->defaultValue.push_back(p->arr_int32->defValue[i]);
+            for(size_t i = 0; i < p->arr_int32->count; i++)
+                ((array_int32*)result)->value.push_back(p->arr_int32->value[i]);
+            ((array_int32*)result)->min = p->arr_int32->min;
+            ((array_int32*)result)->max = p->arr_int32->max;
+            ((array_int32*)result)->maxCount = p->arr_int32->maxCount;
+            ((array_int32*)result)->defCount = p->arr_int32->defCount;
+            ((array_int32*)result)->count = p->arr_int32->count;
+        }
+        else if (result->type == parameter_value_types[PVT_ARRAY_INT64])
+        {
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((array_int64*)result)->step = p->arr_int64->step;
+            for(size_t i = 0; i < p->arr_int64->defCount; i++)
+                ((array_int64*)result)->defaultValue.push_back(p->arr_int64->defValue[i]);
+            for(size_t i = 0; i < p->arr_int64->count; i++)
+                ((array_int64*)result)->value.push_back(p->arr_int64->value[i]);
+            ((array_int64*)result)->min = p->arr_int64->min;
+            ((array_int64*)result)->max = p->arr_int64->max;
+            ((array_int64*)result)->maxCount = p->arr_int64->maxCount;
+            ((array_int64*)result)->defCount = p->arr_int64->defCount;
+            ((array_int64*)result)->count = p->arr_int64->count;
+        }
+        else if (result->type == parameter_value_types[PVT_ARRAY_FLT])
+        {
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            //((array_flt*)result)->step = p->arr_flt->step;
+            for(size_t i = 0; i < p->arr_flt->defCount; i++)
+                ((array_flt*)result)->defaultValue.push_back(p->arr_flt->defValue[i]);
+            for(size_t i = 0; i < p->arr_flt->count; i++)
+                ((array_flt*)result)->value.push_back(p->arr_flt->value[i]);
+            ((array_flt*)result)->min = p->arr_flt->min;
+            ((array_flt*)result)->max = p->arr_flt->max;
+            ((array_flt*)result)->maxCount = p->arr_flt->maxCount;
+            ((array_flt*)result)->defCount = p->arr_flt->defCount;
+            ((array_flt*)result)->count = p->arr_flt->count;
+        }
+        else if (result->type == parameter_value_types[PVT_ARRAY_DBL])
+        {
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            //((array_dbl*)result)->step = p->arr_flt->step;
+            for(size_t i = 0; i < p->arr_dbl->defCount; i++)
+                ((array_dbl*)result)->defaultValue.push_back(p->arr_dbl->defValue[i]);
+            for(size_t i = 0; i < p->arr_dbl->count; i++)
+                ((array_dbl*)result)->value.push_back(p->arr_dbl->value[i]);
+            ((array_dbl*)result)->min = p->arr_dbl->min;
+            ((array_dbl*)result)->max = p->arr_dbl->max;
+            ((array_dbl*)result)->maxCount = p->arr_dbl->maxCount;
+            ((array_dbl*)result)->defCount = p->arr_dbl->defCount;
+            ((array_dbl*)result)->count = p->arr_dbl->count;
+        }
+        else if (result->type == parameter_value_types[PVT_STRING])
+        {
+            result->set_value<value_str>(p->val_str->value);
+            result->name = p->base.name;
+            result->access = p->base.access;
+            result->index = p->base.index;
+            result->offset = p->base.offset;
+            result->size = p->base.size;
+            if (p->base.units != nullptr)
+                result->units = p->base.units;
+
+            ((value_str*)result)->defaultValue = p->val_str->defValue;
+            ((value_str*)result)->value = p->val_str->value;
+            ((value_str*)result)->maxLen = p->val_str->maxLen;
+
+//            parse_string_param(p, value_str_t, defaultValue);
+//            parse_string_param(p, value_str_t, value);
+//            parse_uint16_param(p, value_str_t, maxLen);
+
+        }else if (result->type == parameter_value_types[PVT_UNKN])
+        {
+//            parse_string_param(p, value_raw_t, name);
+//            parse_string_param(p, value_raw_t, type);
+//            parse_string_param(p, value_raw_t, access);
+//            parse_uint16_param(p, value_raw_t, index);
+//            parse_uint32_param(p, value_raw_t, offset);
+//            parse_uint32_param(p, value_raw_t, size);
+
+//            parse_raw_param(p, value_raw_t);
+
+
+        }
+    }
+}
+
+param::~param()
+{
+
+}
+
+std::string param::getName()
+{
+    return ((param_t*)param_base)->name;
+}
+std::string param::getType()
+{
+    return ((param_t*)param_base)->type;
+}
+std::string param::getAccess()
+{
+    return ((param_t*)param_base)->access;
+}
+std::string param::getUnits()
+{
+    return ((param_t*)param_base)->units;
+}
+
+uint16_t param::getIndex()
+{
+    return ((param_t*)param_base)->index;
+}
+uint32_t param::getOffset()
+{
+    return ((param_t*)param_base)->offset;
+}
+uint32_t param::getSize()
+{
+    return ((param_t*)param_base)->size;
+}
+
+template<> uint32_t param::getValue<uint32_t>() const
+{
+    return ((value_uint32*)param_base)->value;
+}
+template<> uint32_t param::getDefValue<uint32_t>() const
+{
+    return ((value_uint32*)param_base)->defaultValue;
+}
+template<> std::vector <std::tuple<uint32_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<uint32_t, std::string, std::string>>>() const
+{
+    return ((value_uint32*)param_base)->valuesEnum;
+}
+template<> bool param::setValue(uint32_t value) const
+{
+    ((value_uint32*)param_base)->value = value;
+    return true;
+}
+template<> uint32_t param::getMin<uint32_t>() const
+{
+    return ((value_uint32*)param_base)->min;
+}
+template<> uint32_t param::getMax<uint32_t>() const
+{
+    return ((value_uint32*)param_base)->max;
+}
+template<> uint32_t param::getStep<uint32_t>() const
+{
+    return ((value_uint32*)param_base)->step;
+}
+
+
+template<> uint64_t param::getValue<uint64_t>() const
+{
+    return ((value_uint64*)param_base)->value;
+}
+template<> uint64_t param::getDefValue<uint64_t>() const
+{
+    return ((value_uint64*)param_base)->defaultValue;
+}
+template<> std::vector <std::tuple<uint64_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<uint64_t, std::string, std::string>>>() const
+{
+    return ((value_uint64*)param_base)->valuesEnum;
+}
+template<> bool param::setValue(uint64_t value) const
+{
+    ((value_uint64*)param_base)->value = value;
+    return true;
+}
+template<> uint64_t param::getMin<uint64_t>() const
+{
+    return ((value_uint64*)param_base)->min;
+}
+template<> uint64_t param::getMax<uint64_t>() const
+{
+    return ((value_uint64*)param_base)->max;
+}
+template<> uint64_t param::getStep<uint64_t>() const
+{
+    return ((value_uint64*)param_base)->step;
+}
+
+
+template<> int32_t param::getValue<int32_t>() const
+{
+    return ((value_int32*)param_base)->value;
+}
+template<> int32_t param::getDefValue<int32_t>() const
+{
+    return ((value_int32*)param_base)->defaultValue;
+}
+template<> std::vector <std::tuple<int32_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<int32_t, std::string, std::string>>>() const
+{
+    return ((value_int32*)param_base)->valuesEnum;
+}
+template<> bool param::setValue(int32_t value) const
+{
+    ((value_int32*)param_base)->value = value;
+    return true;
+}
+template<> int32_t param::getMin<int32_t>() const
+{
+    return ((value_int32*)param_base)->min;
+}
+template<> int32_t param::getMax<int32_t>() const
+{
+    return ((value_int32*)param_base)->max;
+}
+template<> int32_t param::getStep<int32_t>() const
+{
+    return ((value_int32*)param_base)->step;
+}
+
+
+template<> int64_t param::getValue<int64_t>() const
+{
+    return ((value_int64*)param_base)->value;
+}
+template<> int64_t param::getDefValue<int64_t>() const
+{
+    return ((value_int64*)param_base)->defaultValue;
+}
+template<> std::vector <std::tuple<int64_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<int64_t, std::string, std::string>>>() const
+{
+    return ((value_int64*)param_base)->valuesEnum;
+}
+template<> bool param::setValue(int64_t value) const
+{
+    ((value_int64*)param_base)->value = value;
+    return true;
+}
+template<> int64_t param::getMin<int64_t>() const
+{
+    return ((value_int64*)param_base)->min;
+}
+template<> int64_t param::getMax<int64_t>() const
+{
+    return ((value_int64*)param_base)->max;
+}
+template<> int64_t param::getStep<int64_t>() const
+{
+    return ((value_int64*)param_base)->step;
+}
+
+
+template<> float param::getValue<float>() const
+{
+    return ((value_flt*)param_base)->value;
+}
+template<> float param::getDefValue<float>() const
+{
+    return ((value_flt*)param_base)->defaultValue;
+}
+template<> bool param::setValue(float value) const
+{
+    ((value_flt*)param_base)->value = value;
+    return true;
+}
+template<> float param::getMin<float>() const
+{
+    return ((value_flt*)param_base)->min;
+}
+template<> float param::getMax<float>() const
+{
+    return ((value_flt*)param_base)->max;
+}
+template<> float param::getStep<float>() const
+{
+    return ((value_flt*)param_base)->step;
+}
+
+
+template<> double param::getValue<double>() const
+{
+    return ((value_dbl*)param_base)->value;
+}
+template<> double param::getDefValue<double>() const
+{
+    return ((value_dbl*)param_base)->defaultValue;
+}
+template<> bool param::setValue(double value) const
+{
+    ((value_dbl*)param_base)->value = value;
+    return true;
+}
+template<> double param::getMin<double>() const
+{
+    return ((value_dbl*)param_base)->min;
+}
+template<> double param::getMax<double>() const
+{
+    return ((value_dbl*)param_base)->max;
+}
+template<> double param::getStep<double>() const
+{
+    return ((value_dbl*)param_base)->step;
+}
+
+
+template<> std::vector<uint32_t> param::getValue<std::vector<uint32_t>>() const
+{
+    return ((array_uint32*)param_base)->value;
+}
+template<> std::vector<uint32_t> param::getDefValue<std::vector<uint32_t>>() const
+{
+    return ((array_uint32*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::vector<uint32_t> value) const
+{
+    ((array_uint32*)param_base)->value = value;
+    return true;
+}
+
+template<> std::vector<int32_t> param::getValue<std::vector<int32_t>>() const
+{
+    return ((array_int32*)param_base)->value;
+}
+template<> std::vector<int32_t> param::getDefValue<std::vector<int32_t>>() const
+{
+    return ((array_int32*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::vector<int32_t> value) const
+{
+    ((array_int32*)param_base)->value = value;
+    return true;
+}
+
+template<> std::vector<uint64_t> param::getValue<std::vector<uint64_t>>() const
+{
+    return ((array_uint64*)param_base)->value;
+}
+template<> std::vector<uint64_t> param::getDefValue<std::vector<uint64_t>>() const
+{
+    return ((array_uint64*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::vector<uint64_t> value) const
+{
+    ((array_uint64*)param_base)->value = value;
+    return true;
+}
+
+
+template<> std::vector<int64_t> param::getValue<std::vector<int64_t>>() const
+{
+    return ((array_int64*)param_base)->value;
+}
+template<> std::vector<int64_t> param::getDefValue<std::vector<int64_t>>() const
+{
+    return ((array_int64*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::vector<int64_t> value) const
+{
+    ((array_int64*)param_base)->value = value;
+    return true;
+}
+
+template<> std::vector<float> param::getValue<std::vector<float>>() const
+{
+    return ((array_flt*)param_base)->value;
+}
+template<> std::vector<float> param::getDefValue<std::vector<float>>() const
+{
+    return ((array_flt*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::vector<float> value) const
+{
+    ((array_flt*)param_base)->value = value;
+    return true;
+}
+
+template<> std::vector<double> param::getValue<std::vector<double>>() const
+{
+    return ((array_dbl*)param_base)->value;
+}
+template<> std::vector<double> param::getDefValue<std::vector<double>>() const
+{
+    return ((array_dbl*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::vector<double> value) const
+{
+    ((array_dbl*)param_base)->value = value;
+    return true;
+}
+
+template<> std::string param::getValue<std::string>() const
+{
+    return ((value_str*)param_base)->value;
+}
+template<> std::string param::getDefValue<std::string>() const
+{
+    return ((value_str*)param_base)->defaultValue;
+}
+template<> bool param::setValue(std::string value) const
+{
+    ((value_str*)param_base)->value = value;
+    return true;
+}
+
+profile2D::profile2D(void* profile_base)
+{
+    m_ProfileBase = profile_base;
+    rf627_profile2D_t* profile_from_scanner = (rf627_profile2D_t*)profile_base;
+    if(profile_from_scanner != nullptr)
+    {
+        switch (profile_from_scanner->type) {
+        case kRF627_OLD:
+        {
+            if(profile_from_scanner->rf627old_profile2D != NULL)
+            {
+                m_Header.data_type =
+                        profile_from_scanner->rf627old_profile2D->header.data_type;
+                m_Header.flags =
+                        profile_from_scanner->rf627old_profile2D->header.flags;
+                m_Header.device_type =
+                        profile_from_scanner->rf627old_profile2D->header.device_type;
+                m_Header.serial_number =
+                        profile_from_scanner->rf627old_profile2D->header.serial_number;
+                m_Header.system_time =
+                        profile_from_scanner->rf627old_profile2D->header.system_time;
+
+                m_Header.proto_version_major =
+                        profile_from_scanner->rf627old_profile2D->header.proto_version_major;
+                m_Header.proto_version_minor =
+                        profile_from_scanner->rf627old_profile2D->header.proto_version_minor;
+                m_Header.hardware_params_offset =
+                        profile_from_scanner->rf627old_profile2D->header.hardware_params_offset;
+                m_Header.data_offset =
+                        profile_from_scanner->rf627old_profile2D->header.data_offset;
+                m_Header.packet_count =
+                        profile_from_scanner->rf627old_profile2D->header.packet_count;
+                m_Header.measure_count =
+                        profile_from_scanner->rf627old_profile2D->header.measure_count;
+
+                m_Header.zmr =
+                        profile_from_scanner->rf627old_profile2D->header.zmr;
+                m_Header.xemr =
+                        profile_from_scanner->rf627old_profile2D->header.xemr;
+                m_Header.discrete_value =
+                        profile_from_scanner->rf627old_profile2D->header.discrete_value;
+
+                m_Header.exposure_time =
+                        profile_from_scanner->rf627old_profile2D->header.exposure_time;
+                m_Header.laser_value =
+                        profile_from_scanner->rf627old_profile2D->header.laser_value;
+                m_Header.step_count =
+                        profile_from_scanner->rf627old_profile2D->header.step_count;
+                m_Header.dir =
+                        profile_from_scanner->rf627old_profile2D->header.dir;
+
+                switch (m_Header.data_type) {
+                case DTY_PixelsNormal:
+                case DTY_PixelsInterpolated:
+                {
+                    m_Pixels.resize(profile_from_scanner->
+                                          rf627old_profile2D->pixels_format.pixels_count);
+
+                    for(size_t i = 0; i < m_Pixels.size(); i++)
+                    {
+                        m_Pixels[i] = profile_from_scanner->
+                                rf627old_profile2D->pixels_format.pixels[i];
+                    }
+
+                    if(profile_from_scanner->rf627old_profile2D->intensity_count > 0)
+                    {
+                        m_Intensity.resize(
+                                    profile_from_scanner->rf627old_profile2D->intensity_count);
+                        for (size_t i = 0; i < m_Intensity.size(); i++)
+                            m_Intensity[i] =
+                                    profile_from_scanner->rf627old_profile2D->intensity[i];
+                    }
+
+                    break;
+                }
+                case DTY_ProfileNormal:
+                case DTY_ProfileInterpolated:
+                {
+                    m_Points.resize(profile_from_scanner->
+                                          rf627old_profile2D->profile_format.points_count);
+
+                    for(size_t i = 0; i < m_Points.size(); i++)
+                    {
+                        m_Points[i].x = profile_from_scanner->rf627old_profile2D->
+                                profile_format.points[i].x;
+                        m_Points[i].z = profile_from_scanner->rf627old_profile2D->
+                                profile_format.points[i].z;
+                    }
+
+                    if(profile_from_scanner->rf627old_profile2D->intensity_count > 0)
+                    {
+                        m_Intensity.resize(
+                                    profile_from_scanner->rf627old_profile2D->intensity_count);
+                        for (size_t i = 0; i < m_Intensity.size(); i++)
+                            m_Intensity[i] =
+                                    profile_from_scanner->rf627old_profile2D->intensity[i];
+                    }
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
+            break;
+        }
+        case kRF627_SMART:
+        {
+            if(profile_from_scanner->rf627smart_profile2D != NULL)
+            {
+                m_Header.data_type =
+                        profile_from_scanner->rf627smart_profile2D->header.data_type;
+                m_Header.flags =
+                        profile_from_scanner->rf627smart_profile2D->header.flags;
+                m_Header.device_type =
+                        profile_from_scanner->rf627smart_profile2D->header.device_type;
+                m_Header.serial_number =
+                        profile_from_scanner->rf627smart_profile2D->header.serial_number;
+                m_Header.system_time =
+                        profile_from_scanner->rf627smart_profile2D->header.system_time;
+
+                m_Header.proto_version_major =
+                        profile_from_scanner->rf627smart_profile2D->header.proto_version_major;
+                m_Header.proto_version_minor =
+                        profile_from_scanner->rf627smart_profile2D->header.proto_version_minor;
+                m_Header.hardware_params_offset =
+                        profile_from_scanner->rf627smart_profile2D->header.hardware_params_offset;
+                m_Header.data_offset =
+                        profile_from_scanner->rf627smart_profile2D->header.data_offset;
+                m_Header.packet_count =
+                        profile_from_scanner->rf627smart_profile2D->header.packet_count;
+                m_Header.measure_count =
+                        profile_from_scanner->rf627smart_profile2D->header.measure_count;
+
+                m_Header.zmr =
+                        profile_from_scanner->rf627smart_profile2D->header.zmr;
+                m_Header.xemr =
+                        profile_from_scanner->rf627smart_profile2D->header.xemr;
+                m_Header.discrete_value =
+                        profile_from_scanner->rf627smart_profile2D->header.discrete_value;
+
+                m_Header.exposure_time =
+                        profile_from_scanner->rf627smart_profile2D->header.exposure_time;
+                m_Header.laser_value =
+                        profile_from_scanner->rf627smart_profile2D->header.laser_value;
+                m_Header.step_count =
+                        profile_from_scanner->rf627smart_profile2D->header.step_count;
+                m_Header.dir =
+                        profile_from_scanner->rf627smart_profile2D->header.dir;
+
+                switch (m_Header.data_type) {
+                case DTY_PixelsNormal:
+                case DTY_PixelsInterpolated:
+                {
+                    m_Pixels.resize(profile_from_scanner->
+                                          rf627smart_profile2D->pixels_format.pixels_count);
+
+                    for(size_t i = 0; i < m_Pixels.size(); i++)
+                    {
+                        m_Pixels[i] = profile_from_scanner->
+                                rf627smart_profile2D->pixels_format.pixels[i];
+                    }
+
+                    if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                    {
+                        m_Intensity.resize(
+                                    profile_from_scanner->rf627smart_profile2D->intensity_count);
+                        for (size_t i = 0; i < m_Intensity.size(); i++)
+                            m_Intensity[i] =
+                                    profile_from_scanner->rf627smart_profile2D->intensity[i];
+                    }
+
+                    break;
+                }
+                case DTY_ProfileNormal:
+                case DTY_ProfileInterpolated:
+                {
+                    m_Points.resize(profile_from_scanner->
+                                          rf627smart_profile2D->profile_format.points_count);
+
+                    for(size_t i = 0; i < m_Points.size(); i++)
+                    {
+                        m_Points[i].x = profile_from_scanner->rf627smart_profile2D->
+                                profile_format.points[i].x;
+                        m_Points[i].z = profile_from_scanner->rf627smart_profile2D->
+                                profile_format.points[i].z;
+                    }
+
+                    if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                    {
+                        m_Intensity.resize(
+                                    profile_from_scanner->rf627smart_profile2D->intensity_count);
+                        for (size_t i = 0; i < m_Intensity.size(); i++)
+                            m_Intensity[i] =
+                                    profile_from_scanner->rf627smart_profile2D->intensity[i];
+                    }
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
+            break;
+        }
+        }
+    }
+}
+
+profile2D::~profile2D()
+{
+    rf627_profile2D_t* _profile = (rf627_profile2D_t*)m_ProfileBase;
+    if (_profile != nullptr)
+    {
+        switch (_profile->type) {
+        case kRF627_OLD:
+        {
+            if(_profile->rf627old_profile2D != NULL)
+            {
+                free(_profile->rf627old_profile2D->intensity);
+                _profile->rf627old_profile2D->intensity = NULL;
+                free(_profile->rf627old_profile2D->pixels_format.pixels);
+                _profile->rf627old_profile2D->pixels_format.pixels = NULL;
+                free(_profile->rf627old_profile2D);
+                _profile->rf627old_profile2D = NULL;
+            }
+            break;
+        }
+        case kRF627_SMART:
+        {
+            if(_profile->rf627smart_profile2D != NULL)
+            {
+                free(_profile->rf627smart_profile2D->intensity);
+                _profile->rf627smart_profile2D->intensity = NULL;
+                free(_profile->rf627smart_profile2D->pixels_format.pixels);
+                _profile->rf627smart_profile2D->pixels_format.pixels = NULL;
+                free(_profile->rf627smart_profile2D);
+                _profile->rf627smart_profile2D = NULL;
+            }
+            break;
+        }
+        }
+        free(_profile);
+    }
+}
+
+profile2D::header profile2D::getHeader()
+{
+    return m_Header;
+}
+
+const std::vector<uint8_t>& profile2D::getIntensity()
+{
+    return m_Intensity;
+}
+
+const std::vector<uint16_t>& profile2D::getPixels()
+{
+    return m_Pixels;
+}
+
+const std::vector<point2D_t>& profile2D::getPoints()
+{
+    return m_Points;
+}
 
 //
 // RF627
@@ -394,7 +1542,7 @@ bool rf627old::disconnect(PROTOCOLS protocol)
     return false;
 }
 
-profile2D_t* rf627old::get_profile2D(
+std::shared_ptr<profile2D> rf627old::get_profile2D(
         bool zero_points,
         PROTOCOLS protocol)
 {
@@ -411,115 +1559,15 @@ profile2D_t* rf627old::get_profile2D(
         rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
                     (scanner_base_t*)scanner_base, zero_points, kSERVICE);
 
-        profile2D_t* result = new profile2D_t();
-
-        if(profile_from_scanner->rf627old_profile2D != NULL)
+        if (profile_from_scanner != nullptr)
         {
-            result->header.data_type =
-                    profile_from_scanner->rf627old_profile2D->header.data_type;
-            result->header.flags =
-                    profile_from_scanner->rf627old_profile2D->header.flags;
-            result->header.device_type =
-                    profile_from_scanner->rf627old_profile2D->header.device_type;
-            result->header.serial_number =
-                    profile_from_scanner->rf627old_profile2D->header.serial_number;
-            result->header.system_time =
-                    profile_from_scanner->rf627old_profile2D->header.system_time;
-
-            result->header.proto_version_major =
-                    profile_from_scanner->rf627old_profile2D->header.proto_version_major;
-            result->header.proto_version_minor =
-                    profile_from_scanner->rf627old_profile2D->header.proto_version_minor;
-            result->header.hardware_params_offset =
-                    profile_from_scanner->rf627old_profile2D->header.hardware_params_offset;
-            result->header.data_offset =
-                    profile_from_scanner->rf627old_profile2D->header.data_offset;
-            result->header.packet_count =
-                    profile_from_scanner->rf627old_profile2D->header.packet_count;
-            result->header.measure_count =
-                    profile_from_scanner->rf627old_profile2D->header.measure_count;
-
-            result->header.zmr =
-                    profile_from_scanner->rf627old_profile2D->header.zmr;
-            result->header.xemr =
-                    profile_from_scanner->rf627old_profile2D->header.xemr;
-            result->header.discrete_value =
-                    profile_from_scanner->rf627old_profile2D->header.discrete_value;
-
-            result->header.exposure_time =
-                    profile_from_scanner->rf627old_profile2D->header.exposure_time;
-            result->header.laser_value =
-                    profile_from_scanner->rf627old_profile2D->header.laser_value;
-            result->header.step_count =
-                    profile_from_scanner->rf627old_profile2D->header.step_count;
-            result->header.dir =
-                    profile_from_scanner->rf627old_profile2D->header.dir;
-
-            switch (result->header.data_type) {
-            case DTY_PixelsNormal:
-            case DTY_PixelsInterpolated:
+            if (profile_from_scanner->rf627old_profile2D != nullptr)
             {
-                result->pixels.resize(profile_from_scanner->
-                                      rf627old_profile2D->pixels_format.pixels_count);
-
-                for(size_t i = 0; i < result->pixels.size(); i++)
-                {
-                    result->pixels[i] = profile_from_scanner->
-                            rf627old_profile2D->pixels_format.pixels[i];
-                }
-
-                if(profile_from_scanner->rf627old_profile2D->intensity_count > 0)
-                {
-                    result->intensity.resize(
-                                profile_from_scanner->rf627old_profile2D->intensity_count);
-                    for (size_t i = 0; i < result->intensity.size(); i++)
-                        result->intensity[i] =
-                                profile_from_scanner->rf627old_profile2D->intensity[i];
-                }
-
-                break;
+                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                return result;
             }
-            case DTY_ProfileNormal:
-            case DTY_ProfileInterpolated:
-            {
-                result->points.resize(profile_from_scanner->
-                                      rf627old_profile2D->profile_format.points_count);
-
-                for(size_t i = 0; i < result->points.size(); i++)
-                {
-                    result->points[i].x = profile_from_scanner->rf627old_profile2D->
-                            profile_format.points[i].x;
-                    result->points[i].z = profile_from_scanner->rf627old_profile2D->
-                            profile_format.points[i].z;
-                }
-
-                if(profile_from_scanner->rf627old_profile2D->intensity_count > 0)
-                {
-                    result->intensity.resize(
-                                profile_from_scanner->rf627old_profile2D->intensity_count);
-                    for (size_t i = 0; i < result->intensity.size(); i++)
-                        result->intensity[i] =
-                                profile_from_scanner->rf627old_profile2D->intensity[i];
-                }
-                break;
-            }
-            default:
-                break;
-            }
-            free(profile_from_scanner->rf627old_profile2D->intensity);
-            profile_from_scanner->rf627old_profile2D->intensity = NULL;
-            free(profile_from_scanner->rf627old_profile2D->pixels_format.pixels);
-            profile_from_scanner->rf627old_profile2D->pixels_format.pixels = NULL;
-            free(profile_from_scanner->rf627old_profile2D);
-            profile_from_scanner->rf627old_profile2D = NULL;
             free(profile_from_scanner);
-            profile_from_scanner = NULL;
-            return result;
         }
-
-        free(profile_from_scanner);
-        profile_from_scanner = NULL;
-        delete result;
     }
     default:
         break;
@@ -718,368 +1766,20 @@ bool rf627old::write_params(PROTOCOLS protocol)
     return false;
 }
 
-param_t* create_param_from_type(std::string type)
-{
-    param_t* p = nullptr;
-    if(type == parameter_value_types[PVT_UINT])
-    {
-        p = new value_uint32();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_UINT64])
-    {
-        p = new value_uint64();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_INT])
-    {
-        p = new value_int32();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_INT64])
-    {
-        p = new value_int64();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_FLOAT])
-    {
-        p = new value_flt();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_DOUBLE])
-    {
-        p = new value_dbl();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_ARRAY_UINT32])
-    {
-        p = new array_uint32();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_ARRAY_UINT64])
-    {
-        p = new array_uint64();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_ARRAY_INT32])
-    {
-        p = new array_int32();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_ARRAY_INT64])
-    {
-        p = new array_int64();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_ARRAY_FLT])
-    {
-        p = new array_flt();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_ARRAY_DBL])
-    {
-        p = new array_dbl();
-        p->type = type;
-    }else if(type == parameter_value_types[PVT_STRING])
-    {
-        p = new value_str();
-        p->type = type;
-    }
-    return p;
-}
 
-param_t *rf627old::get_param(PARAM_NAME_KEY param_name)
+std::shared_ptr<param> rf627old::get_param(PARAM_NAME_KEY param_name)
 {
     return get_param(parameter_names[(uint8_t)param_name]);
 }
 
-param_t *rf627old::get_param(std::string param_name)
+std::shared_ptr<param> rf627old::get_param(std::string param_name)
 {
     parameter_t* p = get_parameter(
                 (scanner_base_t*)this->scanner_base, param_name.c_str());
-    if (p != NULL)
+
+    if (p != nullptr)
     {
-        param_t* result = create_param_from_type(std::string(p->base.type));
-
-
-        if (result->type == parameter_value_types[PVT_UINT])
-        {
-            result->set_value<value_uint32>(p->val_uint32->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_uint32*)result)->defaultValue = p->val_uint32->defValue;
-            ((value_uint32*)result)->value = p->val_uint32->value;
-            ((value_uint32*)result)->min = p->val_uint32->min;
-            ((value_uint32*)result)->max = p->val_uint32->max;
-
-            if(p->val_uint32->enumValues != NULL)
-            for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
-                ((value_uint32*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_uint32->enumValues->rec[i].value,
-                            p->val_uint32->enumValues->rec[i].key,
-                            p->val_uint32->enumValues->rec[i].label));
-        }
-        else if (result->type == parameter_value_types[PVT_UINT64])
-        {
-            result->set_value<value_uint64>(p->val_uint64->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_uint64*)result)->defaultValue = p->val_uint64->defValue;
-            ((value_uint64*)result)->value = p->val_uint64->value;
-            ((value_uint64*)result)->min = p->val_uint64->min;
-            ((value_uint64*)result)->max = p->val_uint64->max;
-
-            if(p->val_uint64->enumValues != NULL)
-            for(int i = 0; i < p->val_uint64->enumValues->recCount; i++)
-                ((value_uint64*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_uint64->enumValues->rec[i].value,
-                            p->val_uint64->enumValues->rec[i].key,
-                            p->val_uint64->enumValues->rec[i].label));
-        }
-        else if (result->type == parameter_value_types[PVT_INT])
-        {
-            result->set_value<value_int32>(p->val_int32->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_int32*)result)->defaultValue = p->val_int32->defValue;
-            ((value_int32*)result)->value = p->val_int32->value;
-            ((value_int32*)result)->min = p->val_int32->min;
-            ((value_int32*)result)->max = p->val_int32->max;
-
-            if(p->val_int32->enumValues != NULL)
-            for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
-                ((value_int32*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_int32->enumValues->rec[i].value,
-                            p->val_int32->enumValues->rec[i].key,
-                            p->val_int32->enumValues->rec[i].label));
-
-        }
-        else if (result->type == parameter_value_types[PVT_INT64])
-        {
-            result->set_value<value_int64>(p->val_int64->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_int64*)result)->defaultValue = p->val_int64->defValue;
-            ((value_int64*)result)->value = p->val_int64->value;
-            ((value_int64*)result)->min = p->val_int64->min;
-            ((value_int64*)result)->max = p->val_int64->max;
-
-            if(p->val_int64->enumValues != NULL)
-            for(int i = 0; i < p->val_int64->enumValues->recCount; i++)
-                ((value_int64*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_int64->enumValues->rec[i].value,
-                            p->val_int64->enumValues->rec[i].key,
-                            p->val_int64->enumValues->rec[i].label));
-
-        }
-        else if (result->type == parameter_value_types[PVT_FLOAT])
-        {
-            result->set_value<value_flt>(p->val_flt->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_flt*)result)->defaultValue = p->val_flt->defValue;
-            ((value_flt*)result)->value = p->val_flt->value;
-            ((value_flt*)result)->min = p->val_flt->min;
-            ((value_flt*)result)->max = p->val_flt->max;
-        }
-        else if (result->type == parameter_value_types[PVT_DOUBLE])
-        {
-            result->set_value<value_dbl>(p->val_dbl->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_dbl*)result)->defaultValue = p->val_dbl->defValue;
-            ((value_dbl*)result)->value = p->val_dbl->value;
-            ((value_dbl*)result)->min = p->val_dbl->min;
-            ((value_dbl*)result)->max = p->val_dbl->max;
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_UINT32])
-        {
-            //result->set_value<array_uint32_t>(p->arr_uint32->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            for(size_t i = 0; i < p->arr_uint32->defCount; i++)
-                ((array_uint32*)result)->defaultValue.push_back(p->arr_uint32->defValue[i]);
-            for(size_t i = 0; i < p->arr_uint32->count; i++)
-                ((array_uint32*)result)->value.push_back(p->arr_uint32->value[i]);
-            ((array_uint32*)result)->min = p->arr_uint32->min;
-            ((array_uint32*)result)->max = p->arr_uint32->max;
-            ((array_uint32*)result)->maxCount = p->arr_uint32->maxCount;
-            ((array_uint32*)result)->defCount = p->arr_uint32->defCount;
-            ((array_uint32*)result)->count = p->arr_uint32->count;
-//            parse_string_param(p, array_uint_t, name);
-//            parse_string_param(p, array_uint_t, type);
-//            parse_string_param(p, array_uint_t, access);
-//            parse_uint16_param(p, array_uint_t, index);
-//            parse_uint32_param(p, array_uint_t, offset);
-//            parse_uint32_param(p, array_uint_t, size);
-//            parse_string_param(p, array_uint_t, units);
-
-//            parse_uint32_param(p, array_uint_t, maxCount);
-//            parse_uint32_param(p, array_uint_t, defCount);
-//            parse_uint32_param(p, array_uint_t, count);
-
-//            parse_arr_param(p, array_uint_t, defaultValue, uint32_t);
-//            parse_arr_param(p, array_uint_t, value, uint32_t);
-
-//            parse_uint32_param(p, array_uint_t, min);
-//            parse_uint32_param(p, array_uint_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_UINT64])
-        {
-//            parse_string_param(p, array_uint64_t, name);
-//            parse_string_param(p, array_uint64_t, type);
-//            parse_string_param(p, array_uint64_t, access);
-//            parse_uint16_param(p, array_uint64_t, index);
-//            parse_uint32_param(p, array_uint64_t, offset);
-//            parse_uint32_param(p, array_uint64_t, size);
-//            parse_string_param(p, array_uint64_t, units);
-
-//            parse_uint32_param(p, array_uint64_t, maxCount);
-//            parse_uint32_param(p, array_uint64_t, defCount);
-//            parse_uint32_param(p, array_uint64_t, count);
-
-//            parse_arr_param(p, array_uint64_t, defaultValue, uint64_t);
-//            parse_arr_param(p, array_uint64_t, value, uint64_t);
-
-//            parse_uint64_param(p, array_uint64_t, min);
-//            parse_uint64_param(p, array_uint64_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_INT32])
-        {
-//            parse_string_param(p, array_int32_t, name);
-//            parse_string_param(p, array_int32_t, type);
-//            parse_string_param(p, array_int32_t, access);
-//            parse_uint16_param(p, array_int32_t, index);
-//            parse_uint32_param(p, array_int32_t, offset);
-//            parse_uint32_param(p, array_int32_t, size);
-//            parse_string_param(p, array_int32_t, units);
-
-//            parse_uint32_param(p, array_int32_t, maxCount);
-//            parse_uint32_param(p, array_int32_t, defCount);
-//            parse_uint32_param(p, array_int32_t, count);
-
-//            parse_arr_param(p, array_int32_t, defaultValue, int32_t);
-//            parse_arr_param(p, array_int32_t, value, int32_t);
-
-//            parse_int32_param(p, array_int32_t, min);
-//            parse_int32_param(p, array_int32_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_INT64])
-        {
-//            parse_string_param(p, array_int64_t, name);
-//            parse_string_param(p, array_int64_t, type);
-//            parse_string_param(p, array_int64_t, access);
-//            parse_uint16_param(p, array_int64_t, index);
-//            parse_uint32_param(p, array_int64_t, offset);
-//            parse_uint32_param(p, array_int64_t, size);
-//            parse_string_param(p, array_int64_t, units);
-
-//            parse_uint32_param(p, array_int64_t, maxCount);
-//            parse_uint32_param(p, array_int64_t, defCount);
-//            parse_uint32_param(p, array_int64_t, count);
-
-//            parse_arr_param(p, array_int64_t, defaultValue, int64_t);
-//            parse_arr_param(p, array_int64_t, value, int64_t);
-
-//            parse_int64_param(p, array_int64_t, min);
-//            parse_int64_param(p, array_int64_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_FLT])
-        {
-//            parse_string_param(p, array_flt_t, name);
-//            parse_string_param(p, array_flt_t, type);
-//            parse_string_param(p, array_flt_t, access);
-//            parse_uint16_param(p, array_flt_t, index);
-//            parse_uint32_param(p, array_flt_t, offset);
-//            parse_uint32_param(p, array_flt_t, size);
-//            parse_string_param(p, array_flt_t, units);
-
-//            parse_uint32_param(p, array_flt_t, maxCount);
-//            parse_uint32_param(p, array_flt_t, defCount);
-//            parse_uint32_param(p, array_flt_t, count);
-
-//            parse_arr_param(p, array_flt_t, defaultValue, float);
-//            parse_arr_param(p, array_flt_t, value, float);
-
-//            parse_float_param(p, array_flt_t, min);
-//            parse_float_param(p, array_flt_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_DBL])
-        {
-//            parse_string_param(p, array_dbl_t, name);
-//            parse_string_param(p, array_dbl_t, type);
-//            parse_string_param(p, array_dbl_t, access);
-//            parse_uint16_param(p, array_dbl_t, index);
-//            parse_uint32_param(p, array_dbl_t, offset);
-//            parse_uint32_param(p, array_dbl_t, size);
-//            parse_string_param(p, array_dbl_t, units);
-
-//            parse_uint32_param(p, array_dbl_t, maxCount);
-//            parse_uint32_param(p, array_dbl_t, defCount);
-//            parse_uint32_param(p, array_dbl_t, count);
-
-//            parse_arr_param(p, array_dbl_t, defaultValue, double);
-//            parse_arr_param(p, array_dbl_t, value, double);
-
-//            parse_double_param(p, array_dbl_t, min);
-//            parse_double_param(p, array_dbl_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_STRING])
-        {
-            result->set_value<value_str>(p->val_str->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            result->units = p->base.units;
-
-            ((value_str*)result)->defaultValue = p->val_str->defValue;
-            ((value_str*)result)->value = p->val_str->value;
-            ((value_str*)result)->maxLen = p->val_str->maxLen;
-
-//            parse_string_param(p, value_str_t, defaultValue);
-//            parse_string_param(p, value_str_t, value);
-//            parse_uint16_param(p, value_str_t, maxLen);
-
-        }else if (result->type == parameter_value_types[PVT_UNKN])
-        {
-//            parse_string_param(p, value_raw_t, name);
-//            parse_string_param(p, value_raw_t, type);
-//            parse_string_param(p, value_raw_t, access);
-//            parse_uint16_param(p, value_raw_t, index);
-//            parse_uint32_param(p, value_raw_t, offset);
-//            parse_uint32_param(p, value_raw_t, size);
-
-//            parse_raw_param(p, value_raw_t);
-
-
-        }
-
+        std::shared_ptr<param> result = std::make_shared<param>(p);
         return result;
     }
     return nullptr;
@@ -1157,54 +1857,106 @@ parameter_t* create_parameter_from_type(std::string type)
     return p;
 }
 
-bool rf627old::set_param(param_t* param)
+bool rf627old::set_param(std::shared_ptr<param>& param)
 {
-    parameter_t* p = create_parameter_from_type(param->type.c_str());
+    parameter_t* p = create_parameter_from_type(param->getType().c_str());
     if (p != NULL)
     {
-        p->base.name = (char*)param->name.c_str();
-        p->base.type = param->type.c_str();
-        p->base.access = (char*)param->access.c_str();
-        p->base.units = (char*)param->units.c_str();
-        if (param->type == parameter_value_types[PVT_STRING])
+        if (strlen(param->getName().c_str()) > 0)
         {
-            std::string new_value = param->get_value<value_str>();
+            p->base.name = (char*)calloc(strlen(param->getName().c_str()) + 1, sizeof(char));
+            strcpy(p->base.name, param->getName().c_str());
+        }
+        if (strlen(param->getAccess().c_str()) > 0)
+        {
+            p->base.access = (char*)calloc(strlen(param->getAccess().c_str()) + 1, sizeof(char));
+            strcpy(p->base.access, param->getAccess().c_str());
+        }
+        if (strlen(param->getUnits().c_str()) > 0)
+        {
+            p->base.units = (char*)calloc(strlen(param->getUnits().c_str()) + 1, sizeof(char));
+            strcpy(p->base.units, param->getUnits().c_str());
+        }
+
+        if (param->getType() == parameter_value_types[PVT_STRING])
+        {
+            std::string new_value = param->getValue<std::string>();
             delete[] p->val_str->value;
             p->val_str->value = new char[new_value.length() + 1];
             strcpy(p->val_str->value, new_value.c_str());
             p->base.size = new_value.length() + 1;
         }
-        else if (param->type == parameter_value_types[PVT_INT])
+        else if (param->getType() == parameter_value_types[PVT_INT])
         {
-            p->val_int32->value = param->get_value<value_int32>();
+            p->val_int32->value = param->getValue<int32_t>();
         }
-        else if (param->type == parameter_value_types[PVT_INT64])
+        else if (param->getType() == parameter_value_types[PVT_INT64])
         {
-            p->val_int64->value = param->get_value<value_int64>();
+            p->val_int64->value = param->getValue<int64_t>();
         }
-        else if (param->type == parameter_value_types[PVT_UINT])
+        else if (param->getType() == parameter_value_types[PVT_UINT])
         {
-            p->val_uint32->value = param->get_value<value_uint32>();
+            p->val_uint32->value = param->getValue<uint32_t>();
         }
-        else if (param->type == parameter_value_types[PVT_UINT64])
+        else if (param->getType() == parameter_value_types[PVT_UINT64])
         {
-            p->val_uint64->value = param->get_value<value_uint64>();
+            p->val_uint64->value = param->getValue<uint64_t>();
         }
-        else if (param->type == parameter_value_types[PVT_FLOAT])
+        else if (param->getType() == parameter_value_types[PVT_FLOAT])
         {
-            p->val_flt->value = param->get_value<value_flt>();
+            p->val_flt->value = param->getValue<float>();
         }
-        else if (param->type ==  parameter_value_types[PVT_DOUBLE])
+        else if (param->getType() ==  parameter_value_types[PVT_DOUBLE])
         {
-            p->val_dbl->value = param->get_value<value_dbl>();
+            p->val_dbl->value = param->getValue<double>();
         }
-        else if (param->type ==  parameter_value_types[PVT_ARRAY_UINT32])
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_UINT32])
         {
-            std::vector<uint32_t> v = param->get_value<array_uint32>();
+            std::vector<uint32_t> v = param->getValue<std::vector<uint32_t>>();
             p->arr_uint32->value = (rfUint32*)calloc(v.size(), sizeof (rfUint32));
             for (rfSize j = 0; j < v.size(); j++)
                 p->arr_uint32->value[j] = v[j];
             p->base.size = v.size() * sizeof (rfUint32);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_INT32])
+        {
+            std::vector<int32_t> v = param->getValue<std::vector<int32_t>>();
+            p->arr_int32->value = (rfInt32*)calloc(v.size(), sizeof (rfInt32));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_int32->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfInt32);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_UINT64])
+        {
+            std::vector<uint64_t> v = param->getValue<std::vector<uint64_t>>();
+            p->arr_uint64->value = (rfUint64*)calloc(v.size(), sizeof (rfUint64));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_uint64->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfUint64);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_INT64])
+        {
+            std::vector<int64_t> v = param->getValue<std::vector<int64_t>>();
+            p->arr_int64->value = (rfInt64*)calloc(v.size(), sizeof (rfInt64));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_int64->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfInt64);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_FLT])
+        {
+            std::vector<float> v = param->getValue<std::vector<float>>();
+            p->arr_flt->value = (rfFloat*)calloc(v.size(), sizeof (rfFloat));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_flt->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfFloat);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_DBL])
+        {
+            std::vector<double> v = param->getValue<std::vector<double>>();
+            p->arr_dbl->value = (rfDouble*)calloc(v.size(), sizeof (rfDouble));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_dbl->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfDouble);
         }
         set_parameter((scanner_base_t*)this->scanner_base, p);
         free_parameter(p, ((scanner_base_t*)this->scanner_base)->type);
@@ -1655,7 +2407,7 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
     return false;
 }
 
-profile2D_t* rf627smart::get_profile2D(
+std::shared_ptr<profile2D> rf627smart::get_profile2D(
         bool zero_points, bool realtime,
         PROTOCOLS protocol)
 {
@@ -1672,11 +2424,11 @@ profile2D_t* rf627smart::get_profile2D(
             std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
             if (s != INVALID_SOCKET)
             {
-        #ifdef _WIN32
+#ifdef _WIN32
                 closesocket(s);
-        #else
+#else
                 close(s);
-        #endif
+#endif
             }
             ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
         }
@@ -1709,7 +2461,7 @@ profile2D_t* rf627smart::get_profile2D(
                 ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
                 return FALSE;
             }
-    }
+        }
     }
 
     switch (p) {
@@ -1719,121 +2471,22 @@ profile2D_t* rf627smart::get_profile2D(
         rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
                     (scanner_base_t*)scanner_base, zero_points, kSERVICE);
 
-        profile2D_t* result = new profile2D_t;
-
-        if(profile_from_scanner->rf627smart_profile2D != NULL)
+        if (profile_from_scanner != nullptr)
         {
-            result->header.data_type =
-                    profile_from_scanner->rf627smart_profile2D->header.data_type;
-            result->header.flags =
-                    profile_from_scanner->rf627smart_profile2D->header.flags;
-            result->header.device_type =
-                    profile_from_scanner->rf627smart_profile2D->header.device_type;
-            result->header.serial_number =
-                    profile_from_scanner->rf627smart_profile2D->header.serial_number;
-            result->header.system_time =
-                    profile_from_scanner->rf627smart_profile2D->header.system_time;
-
-            result->header.proto_version_major =
-                    profile_from_scanner->rf627smart_profile2D->header.proto_version_major;
-            result->header.proto_version_minor =
-                    profile_from_scanner->rf627smart_profile2D->header.proto_version_minor;
-            result->header.hardware_params_offset =
-                    profile_from_scanner->rf627smart_profile2D->header.hardware_params_offset;
-            result->header.data_offset =
-                    profile_from_scanner->rf627smart_profile2D->header.data_offset;
-            result->header.packet_count =
-                    profile_from_scanner->rf627smart_profile2D->header.packet_count;
-            result->header.measure_count =
-                    profile_from_scanner->rf627smart_profile2D->header.measure_count;
-
-            result->header.zmr =
-                    profile_from_scanner->rf627smart_profile2D->header.zmr;
-            result->header.xemr =
-                    profile_from_scanner->rf627smart_profile2D->header.xemr;
-            result->header.discrete_value =
-                    profile_from_scanner->rf627smart_profile2D->header.discrete_value;
-
-            result->header.exposure_time =
-                    profile_from_scanner->rf627smart_profile2D->header.exposure_time;
-            result->header.laser_value =
-                    profile_from_scanner->rf627smart_profile2D->header.laser_value;
-            result->header.step_count =
-                    profile_from_scanner->rf627smart_profile2D->header.step_count;
-            result->header.dir =
-                    profile_from_scanner->rf627smart_profile2D->header.dir;
-
-            switch (result->header.data_type) {
-            case DTY_PixelsNormal:
-            case DTY_PixelsInterpolated:
+            if (profile_from_scanner->rf627smart_profile2D != nullptr)
             {
-                result->pixels.resize(profile_from_scanner->
-                                      rf627smart_profile2D->pixels_format.pixels_count);
-
-                for(size_t i = 0; i < result->pixels.size(); i++)
-                {
-                    result->pixels[i] = profile_from_scanner->
-                            rf627smart_profile2D->pixels_format.pixels[i];
-                }
-
-                if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
-                {
-                    result->intensity.resize(
-                                profile_from_scanner->rf627smart_profile2D->intensity_count);
-                    for (size_t i = 0; i < result->intensity.size(); i++)
-                        result->intensity[i] =
-                                profile_from_scanner->rf627smart_profile2D->intensity[i];
-                }
-
-                break;
+                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                return result;
             }
-            case DTY_ProfileNormal:
-            case DTY_ProfileInterpolated:
-            {
-                result->points.resize(profile_from_scanner->
-                                      rf627smart_profile2D->profile_format.points_count);
-
-                for(size_t i = 0; i < result->points.size(); i++)
-                {
-                    result->points[i].x = profile_from_scanner->rf627smart_profile2D->
-                            profile_format.points[i].x;
-                    result->points[i].z = profile_from_scanner->rf627smart_profile2D->
-                            profile_format.points[i].z;
-                }
-
-                if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
-                {
-                    result->intensity.resize(
-                                profile_from_scanner->rf627smart_profile2D->intensity_count);
-                    for (size_t i = 0; i < result->intensity.size(); i++)
-                        result->intensity[i] =
-                                profile_from_scanner->rf627smart_profile2D->intensity[i];
-                }
-                break;
-            }
-            default:
-                break;
-            }
-            free(profile_from_scanner->rf627smart_profile2D->intensity);
-            profile_from_scanner->rf627smart_profile2D->intensity = NULL;
-            free(profile_from_scanner->rf627smart_profile2D->pixels_format.pixels);
-            profile_from_scanner->rf627smart_profile2D->pixels_format.pixels = NULL;
-            free(profile_from_scanner->rf627smart_profile2D);
-            profile_from_scanner->rf627smart_profile2D = NULL;
             free(profile_from_scanner);
-            profile_from_scanner = NULL;
-            return result;
         }
 
-        //free(profile_from_scanner->rf627smart_profile2D);
-        free(profile_from_scanner);
-        delete result;
     }
     default:
         break;
     }
 
-    return NULL;
+    return nullptr;
 
 }
 
@@ -1985,31 +2638,32 @@ std::shared_ptr<frame> rf627smart::get_frame(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         rf627_frame_t* _frame = get_frame_from_scanner(
                     (scanner_base_t*)scanner_base, kSERVICE);
-        if (_frame->rf627smart_frame != NULL)
+        if (_frame != nullptr)
         {
-            param_t* width = get_param("fact_sensor_width");
-            param_t* height = get_param("fact_sensor_height");
-
-            if (width != NULL)
+            if (_frame->rf627smart_frame != nullptr)
             {
-                _frame->rf627smart_frame->width = width->get_value<value_uint32>();
-                delete width;
-            }
-            if (height != NULL)
-            {
-                _frame->rf627smart_frame->height = height->get_value<value_uint32>();
-                delete height;
-            }
+                std::shared_ptr<param> width = get_param("fact_sensor_width");
+                std::shared_ptr<param> height = get_param("fact_sensor_height");
 
-            if (_frame->rf627smart_frame->data_size == _frame->rf627smart_frame->width * _frame->rf627smart_frame->height * 1)
-            {
-                _frame->rf627smart_frame->pixel_size = 1;
-            }
+                if (width != NULL)
+                {
+                    _frame->rf627smart_frame->width = width->getValue<uint32_t>();
+                }
+                if (height != NULL)
+                {
+                    _frame->rf627smart_frame->height = height->getValue<uint32_t>();
+                }
 
-            std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
-            return result;
+                if (_frame->rf627smart_frame->data_size == _frame->rf627smart_frame->width * _frame->rf627smart_frame->height * 1)
+                {
+                    _frame->rf627smart_frame->pixel_size = 1;
+                }
+
+                std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
+                return result;
+            }
+            free(_frame);
         }
-        free(_frame);
         break;
     }
     default:
@@ -2069,390 +2723,124 @@ bool rf627smart::write_params(PROTOCOLS protocol)
     return false;
 }
 
-param_t *rf627smart::get_param(PARAM_NAME_KEY param_name)
+std::shared_ptr<param> rf627smart::get_param(PARAM_NAME_KEY param_name)
 {
     return get_param(parameter_names[(uint8_t)param_name]);
 }
 
-param_t *rf627smart::get_param(std::string param_name)
+std::shared_ptr<param> rf627smart::get_param(std::string param_name)
 {
     parameter_t* p = get_parameter(
                 (scanner_base_t*)this->scanner_base, param_name.c_str());
 
-    if (p != NULL)
+    if (p != nullptr)
     {
-        param_t* result = create_param_from_type(std::string(p->base.type));
-
-
-        if (result->type == parameter_value_types[PVT_UINT])
-        {
-            result->set_value<value_uint32>(p->val_uint32->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((value_uint32*)result)->defaultValue = p->val_uint32->defValue;
-            ((value_uint32*)result)->value = p->val_uint32->value;
-            ((value_uint32*)result)->min = p->val_uint32->min;
-            ((value_uint32*)result)->max = p->val_uint32->max;
-            ((value_uint32*)result)->step = p->val_uint32->step;
-
-            if(p->val_uint32->enumValues != NULL)
-            for(int i = 0; i < p->val_uint32->enumValues->recCount; i++)
-                ((value_uint32*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_uint32->enumValues->rec[i].value,
-                            p->val_uint32->enumValues->rec[i].key,
-                            p->val_uint32->enumValues->rec[i].label));
-        }
-        else if (result->type == parameter_value_types[PVT_UINT64])
-        {
-            result->set_value<value_uint64>(p->val_uint64->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-            ((value_uint64_t*)result)->step = p->val_uint64->step;
-
-            ((value_uint64*)result)->defaultValue = p->val_uint64->defValue;
-            ((value_uint64*)result)->value = p->val_uint64->value;
-            ((value_uint64*)result)->min = p->val_uint64->min;
-            ((value_uint64*)result)->max = p->val_uint64->max;
-
-            if(p->val_uint64->enumValues != NULL)
-            for(int i = 0; i < p->val_uint64->enumValues->recCount; i++)
-                ((value_uint64*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_uint64->enumValues->rec[i].value,
-                            p->val_uint64->enumValues->rec[i].key,
-                            p->val_uint64->enumValues->rec[i].label));
-        }
-        else if (result->type == parameter_value_types[PVT_INT])
-        {
-            result->set_value<value_int32>(p->val_int32->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((value_int32*)result)->defaultValue = p->val_int32->defValue;
-            ((value_int32*)result)->value = p->val_int32->value;
-            ((value_int32*)result)->min = p->val_int32->min;
-            ((value_int32*)result)->max = p->val_int32->max;
-            ((value_int32*)result)->step = p->val_int32->step;
-
-            if(p->val_int32->enumValues != NULL)
-            for(int i = 0; i < p->val_int32->enumValues->recCount; i++)
-                ((value_int32*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_int32->enumValues->rec[i].value,
-                            p->val_int32->enumValues->rec[i].key,
-                            p->val_int32->enumValues->rec[i].label));
-
-        }
-        else if (result->type == parameter_value_types[PVT_INT64])
-        {
-            result->set_value<value_int64>(p->val_int64->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((value_int64*)result)->defaultValue = p->val_int64->defValue;
-            ((value_int64*)result)->value = p->val_int64->value;
-            ((value_int64*)result)->min = p->val_int64->min;
-            ((value_int64*)result)->max = p->val_int64->max;
-            ((value_int64*)result)->step = p->val_int64->step;
-
-            if(p->val_int64->enumValues != NULL)
-            for(int i = 0; i < p->val_int64->enumValues->recCount; i++)
-                ((value_int64*)result)->valuesEnum.push_back(std::make_tuple(
-                            p->val_int64->enumValues->rec[i].value,
-                            p->val_int64->enumValues->rec[i].key,
-                            p->val_int64->enumValues->rec[i].label));
-
-        }
-        else if (result->type == parameter_value_types[PVT_FLOAT])
-        {
-            result->set_value<value_flt>(p->val_flt->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((value_flt*)result)->defaultValue = p->val_flt->defValue;
-            ((value_flt*)result)->value = p->val_flt->value;
-            ((value_flt*)result)->min = p->val_flt->min;
-            ((value_flt*)result)->max = p->val_flt->max;
-            ((value_flt*)result)->step = p->val_flt->step;
-        }
-        else if (result->type == parameter_value_types[PVT_DOUBLE])
-        {
-            result->set_value<value_dbl>(p->val_dbl->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((value_dbl*)result)->defaultValue = p->val_dbl->defValue;
-            ((value_dbl*)result)->value = p->val_dbl->value;
-            ((value_dbl*)result)->min = p->val_dbl->min;
-            ((value_dbl*)result)->max = p->val_dbl->max;
-            ((value_dbl*)result)->step = p->val_dbl->step;
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_UINT32])
-        {
-            //result->set_value<array_uint32_t>(p->arr_uint32->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((array_uint32*)result)->step = p->arr_uint32->step;
-            for(size_t i = 0; i < p->arr_uint32->defCount; i++)
-                ((array_uint32*)result)->defaultValue.push_back(p->arr_uint32->defValue[i]);
-            for(size_t i = 0; i < p->arr_uint32->count; i++)
-                ((array_uint32*)result)->value.push_back(p->arr_uint32->value[i]);
-            ((array_uint32*)result)->min = p->arr_uint32->min;
-            ((array_uint32*)result)->max = p->arr_uint32->max;
-            ((array_uint32*)result)->maxCount = p->arr_uint32->maxCount;
-            ((array_uint32*)result)->defCount = p->arr_uint32->defCount;
-            ((array_uint32*)result)->count = p->arr_uint32->count;
-//            parse_string_param(p, array_uint_t, name);
-//            parse_string_param(p, array_uint_t, type);
-//            parse_string_param(p, array_uint_t, access);
-//            parse_uint16_param(p, array_uint_t, index);
-//            parse_uint32_param(p, array_uint_t, offset);
-//            parse_uint32_param(p, array_uint_t, size);
-//            parse_string_param(p, array_uint_t, units);
-
-//            parse_uint32_param(p, array_uint_t, maxCount);
-//            parse_uint32_param(p, array_uint_t, defCount);
-//            parse_uint32_param(p, array_uint_t, count);
-
-//            parse_arr_param(p, array_uint_t, defaultValue, uint32_t);
-//            parse_arr_param(p, array_uint_t, value, uint32_t);
-
-//            parse_uint32_param(p, array_uint_t, min);
-//            parse_uint32_param(p, array_uint_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_UINT64])
-        {
-//            parse_string_param(p, array_uint64_t, name);
-//            parse_string_param(p, array_uint64_t, type);
-//            parse_string_param(p, array_uint64_t, access);
-//            parse_uint16_param(p, array_uint64_t, index);
-//            parse_uint32_param(p, array_uint64_t, offset);
-//            parse_uint32_param(p, array_uint64_t, size);
-//            parse_string_param(p, array_uint64_t, units);
-
-//            parse_uint32_param(p, array_uint64_t, maxCount);
-//            parse_uint32_param(p, array_uint64_t, defCount);
-//            parse_uint32_param(p, array_uint64_t, count);
-
-//            parse_arr_param(p, array_uint64_t, defaultValue, uint64_t);
-//            parse_arr_param(p, array_uint64_t, value, uint64_t);
-
-//            parse_uint64_param(p, array_uint64_t, min);
-//            parse_uint64_param(p, array_uint64_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_INT32])
-        {
-//            parse_string_param(p, array_int32_t, name);
-//            parse_string_param(p, array_int32_t, type);
-//            parse_string_param(p, array_int32_t, access);
-//            parse_uint16_param(p, array_int32_t, index);
-//            parse_uint32_param(p, array_int32_t, offset);
-//            parse_uint32_param(p, array_int32_t, size);
-//            parse_string_param(p, array_int32_t, units);
-
-//            parse_uint32_param(p, array_int32_t, maxCount);
-//            parse_uint32_param(p, array_int32_t, defCount);
-//            parse_uint32_param(p, array_int32_t, count);
-
-//            parse_arr_param(p, array_int32_t, defaultValue, int32_t);
-//            parse_arr_param(p, array_int32_t, value, int32_t);
-
-//            parse_int32_param(p, array_int32_t, min);
-//            parse_int32_param(p, array_int32_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_INT64])
-        {
-//            parse_string_param(p, array_int64_t, name);
-//            parse_string_param(p, array_int64_t, type);
-//            parse_string_param(p, array_int64_t, access);
-//            parse_uint16_param(p, array_int64_t, index);
-//            parse_uint32_param(p, array_int64_t, offset);
-//            parse_uint32_param(p, array_int64_t, size);
-//            parse_string_param(p, array_int64_t, units);
-
-//            parse_uint32_param(p, array_int64_t, maxCount);
-//            parse_uint32_param(p, array_int64_t, defCount);
-//            parse_uint32_param(p, array_int64_t, count);
-
-//            parse_arr_param(p, array_int64_t, defaultValue, int64_t);
-//            parse_arr_param(p, array_int64_t, value, int64_t);
-
-//            parse_int64_param(p, array_int64_t, min);
-//            parse_int64_param(p, array_int64_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_FLT])
-        {
-//            parse_string_param(p, array_flt_t, name);
-//            parse_string_param(p, array_flt_t, type);
-//            parse_string_param(p, array_flt_t, access);
-//            parse_uint16_param(p, array_flt_t, index);
-//            parse_uint32_param(p, array_flt_t, offset);
-//            parse_uint32_param(p, array_flt_t, size);
-//            parse_string_param(p, array_flt_t, units);
-
-//            parse_uint32_param(p, array_flt_t, maxCount);
-//            parse_uint32_param(p, array_flt_t, defCount);
-//            parse_uint32_param(p, array_flt_t, count);
-
-//            parse_arr_param(p, array_flt_t, defaultValue, float);
-//            parse_arr_param(p, array_flt_t, value, float);
-
-//            parse_float_param(p, array_flt_t, min);
-//            parse_float_param(p, array_flt_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_ARRAY_DBL])
-        {
-//            parse_string_param(p, array_dbl_t, name);
-//            parse_string_param(p, array_dbl_t, type);
-//            parse_string_param(p, array_dbl_t, access);
-//            parse_uint16_param(p, array_dbl_t, index);
-//            parse_uint32_param(p, array_dbl_t, offset);
-//            parse_uint32_param(p, array_dbl_t, size);
-//            parse_string_param(p, array_dbl_t, units);
-
-//            parse_uint32_param(p, array_dbl_t, maxCount);
-//            parse_uint32_param(p, array_dbl_t, defCount);
-//            parse_uint32_param(p, array_dbl_t, count);
-
-//            parse_arr_param(p, array_dbl_t, defaultValue, double);
-//            parse_arr_param(p, array_dbl_t, value, double);
-
-//            parse_double_param(p, array_dbl_t, min);
-//            parse_double_param(p, array_dbl_t, max);
-        }
-        else if (result->type == parameter_value_types[PVT_STRING])
-        {
-            result->set_value<value_str>(p->val_str->value);
-            result->name = p->base.name;
-            result->access = p->base.access;
-            result->index = p->base.index;
-            result->offset = p->base.offset;
-            result->size = p->base.size;
-            if (p->base.units != nullptr)
-                result->units = p->base.units;
-
-            ((value_str*)result)->defaultValue = p->val_str->defValue;
-            ((value_str*)result)->value = p->val_str->value;
-            ((value_str*)result)->maxLen = p->val_str->maxLen;
-
-//            parse_string_param(p, value_str_t, defaultValue);
-//            parse_string_param(p, value_str_t, value);
-//            parse_uint16_param(p, value_str_t, maxLen);
-
-        }else if (result->type == parameter_value_types[PVT_UNKN])
-        {
-//            parse_string_param(p, value_raw_t, name);
-//            parse_string_param(p, value_raw_t, type);
-//            parse_string_param(p, value_raw_t, access);
-//            parse_uint16_param(p, value_raw_t, index);
-//            parse_uint32_param(p, value_raw_t, offset);
-//            parse_uint32_param(p, value_raw_t, size);
-
-//            parse_raw_param(p, value_raw_t);
-
-
-        }
-
+        std::shared_ptr<param> result = std::make_shared<param>(p);
         return result;
     }
     return nullptr;
 }
 
-bool rf627smart::set_param(param_t* param)
+bool rf627smart::set_param(std::shared_ptr<param>& param)
 {
-    parameter_t* p = create_parameter_from_type(param->type.c_str());
+    parameter_t* p = create_parameter_from_type(param->getType().c_str());
     if (p != NULL)
     {
-        if (strlen(param->name.c_str()) > 0)
+        if (strlen(param->getName().c_str()) > 0)
         {
-            p->base.name = (char*)calloc(strlen(param->name.c_str()) + 1, sizeof(char));
-            strcpy(p->base.name, param->name.c_str());
+            p->base.name = (char*)calloc(strlen(param->getName().c_str()) + 1, sizeof(char));
+            strcpy(p->base.name, param->getName().c_str());
         }
-        if (strlen(param->access.c_str()) > 0)
+        if (strlen(param->getAccess().c_str()) > 0)
         {
-            p->base.access = (char*)calloc(strlen(param->access.c_str()) + 1, sizeof(char));
-            strcpy(p->base.access, param->access.c_str());
+            p->base.access = (char*)calloc(strlen(param->getAccess().c_str()) + 1, sizeof(char));
+            strcpy(p->base.access, param->getAccess().c_str());
         }
-        if (strlen(param->units.c_str()) > 0)
+        if (strlen(param->getUnits().c_str()) > 0)
         {
-            p->base.units = (char*)calloc(strlen(param->units.c_str()) + 1, sizeof(char));
-            strcpy(p->base.units, param->units.c_str());
+            p->base.units = (char*)calloc(strlen(param->getUnits().c_str()) + 1, sizeof(char));
+            strcpy(p->base.units, param->getUnits().c_str());
         }
 
-        if (param->type == parameter_value_types[PVT_STRING])
+        if (param->getType() == parameter_value_types[PVT_STRING])
         {
-            std::string new_value = param->get_value<value_str>();
+            std::string new_value = param->getValue<std::string>();
             delete[] p->val_str->value;
             p->val_str->value = new char[new_value.length() + 1];
             strcpy(p->val_str->value, new_value.c_str());
             p->base.size = new_value.length() + 1;
         }
-        else if (param->type == parameter_value_types[PVT_INT])
+        else if (param->getType() == parameter_value_types[PVT_INT])
         {
-            p->val_int32->value = param->get_value<value_int32>();
+            p->val_int32->value = param->getValue<int32_t>();
         }
-        else if (param->type == parameter_value_types[PVT_INT64])
+        else if (param->getType() == parameter_value_types[PVT_INT64])
         {
-            p->val_int64->value = param->get_value<value_int64>();
+            p->val_int64->value = param->getValue<int64_t>();
         }
-        else if (param->type == parameter_value_types[PVT_UINT])
+        else if (param->getType() == parameter_value_types[PVT_UINT])
         {
-            p->val_uint32->value = param->get_value<value_uint32>();
+            p->val_uint32->value = param->getValue<uint32_t>();
         }
-        else if (param->type == parameter_value_types[PVT_UINT64])
+        else if (param->getType() == parameter_value_types[PVT_UINT64])
         {
-            p->val_uint64->value = param->get_value<value_uint64>();
+            p->val_uint64->value = param->getValue<uint64_t>();
         }
-        else if (param->type == parameter_value_types[PVT_FLOAT])
+        else if (param->getType() == parameter_value_types[PVT_FLOAT])
         {
-            p->val_flt->value = param->get_value<value_flt>();
+            p->val_flt->value = param->getValue<float>();
         }
-        else if (param->type ==  parameter_value_types[PVT_DOUBLE])
+        else if (param->getType() ==  parameter_value_types[PVT_DOUBLE])
         {
-            p->val_dbl->value = param->get_value<value_dbl>();
+            p->val_dbl->value = param->getValue<double>();
         }
-        else if (param->type ==  parameter_value_types[PVT_ARRAY_UINT32])
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_UINT32])
         {
-            std::vector<uint32_t> v = param->get_value<array_uint32>();
+            std::vector<uint32_t> v = param->getValue<std::vector<uint32_t>>();
             p->arr_uint32->value = (rfUint32*)calloc(v.size(), sizeof (rfUint32));
             for (rfSize j = 0; j < v.size(); j++)
                 p->arr_uint32->value[j] = v[j];
             p->base.size = v.size() * sizeof (rfUint32);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_INT32])
+        {
+            std::vector<int32_t> v = param->getValue<std::vector<int32_t>>();
+            p->arr_int32->value = (rfInt32*)calloc(v.size(), sizeof (rfInt32));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_int32->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfInt32);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_UINT64])
+        {
+            std::vector<uint64_t> v = param->getValue<std::vector<uint64_t>>();
+            p->arr_uint64->value = (rfUint64*)calloc(v.size(), sizeof (rfUint64));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_uint64->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfUint64);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_INT64])
+        {
+            std::vector<int64_t> v = param->getValue<std::vector<int64_t>>();
+            p->arr_int64->value = (rfInt64*)calloc(v.size(), sizeof (rfInt64));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_int64->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfInt64);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_FLT])
+        {
+            std::vector<float> v = param->getValue<std::vector<float>>();
+            p->arr_flt->value = (rfFloat*)calloc(v.size(), sizeof (rfFloat));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_flt->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfFloat);
+        }
+        else if (param->getType() ==  parameter_value_types[PVT_ARRAY_DBL])
+        {
+            std::vector<double> v = param->getValue<std::vector<double>>();
+            p->arr_dbl->value = (rfDouble*)calloc(v.size(), sizeof (rfDouble));
+            for (rfSize j = 0; j < v.size(); j++)
+                p->arr_dbl->value[j] = v[j];
+            p->base.size = v.size() * sizeof (rfDouble);
         }
         set_parameter((scanner_base_t*)this->scanner_base, p);
         free_parameter(p, ((scanner_base_t*)this->scanner_base)->type);

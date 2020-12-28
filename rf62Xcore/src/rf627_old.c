@@ -1096,16 +1096,16 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "true";
-    label = "false";
+    label = "true";
     boolEnum->rec[enum_index].value = 0;
     boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1123,7 +1123,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "X";
@@ -1132,7 +1132,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Z";
@@ -1141,7 +1141,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "XZ";
@@ -1150,7 +1150,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1168,7 +1168,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "auto";
@@ -1177,7 +1177,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1195,7 +1195,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "100";
@@ -1204,7 +1204,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "1000";
@@ -1213,7 +1213,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1231,7 +1231,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Profile";
@@ -1240,7 +1240,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Interpolated pixels";
@@ -1249,7 +1249,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Interpolated profile";
@@ -1258,7 +1258,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1276,7 +1276,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Welding";
@@ -1285,7 +1285,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1302,7 +1302,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "3";
@@ -1311,7 +1311,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "5";
@@ -1320,7 +1320,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "7";
@@ -1329,7 +1329,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "9";
@@ -1338,7 +1338,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "11";
@@ -1347,7 +1347,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "13";
@@ -1356,7 +1356,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "15";
@@ -1365,7 +1365,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1382,7 +1382,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "3";
@@ -1391,7 +1391,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "5";
@@ -1400,7 +1400,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "7";
@@ -1409,7 +1409,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "9";
@@ -1418,7 +1418,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "11";
@@ -1427,7 +1427,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "13";
@@ -1436,7 +1436,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "15";
@@ -1445,7 +1445,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1462,7 +1462,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "First";
@@ -1471,7 +1471,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Last";
@@ -1480,7 +1480,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#2";
@@ -1489,7 +1489,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#3";
@@ -1498,7 +1498,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#4";
@@ -1507,7 +1507,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#5";
@@ -1516,7 +1516,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#6";
@@ -1525,7 +1525,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1543,7 +1543,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Expose sync";
@@ -1552,7 +1552,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1571,7 +1571,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "External sync";
@@ -1580,7 +1580,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Software request";
@@ -1589,7 +1589,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1606,7 +1606,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Fall";
@@ -1615,7 +1615,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "High level";
@@ -1624,7 +1624,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Low level";
@@ -1633,7 +1633,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1651,7 +1651,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Phase";
@@ -1660,7 +1660,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1681,7 +1681,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Fall";
@@ -1690,7 +1690,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1708,7 +1708,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In1 level";
@@ -1717,7 +1717,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In1 rise";
@@ -1726,7 +1726,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In1 fall";
@@ -1735,7 +1735,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In2 level";
@@ -1744,7 +1744,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In2 rise";
@@ -1753,7 +1753,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In2 fall";
@@ -1762,7 +1762,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In3 level";
@@ -1771,7 +1771,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In3 rise";
@@ -1780,7 +1780,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In3 fall";
@@ -1789,7 +1789,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Exposure time";
@@ -1798,7 +1798,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1817,7 +1817,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Radial";
@@ -1826,7 +1826,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1843,7 +1843,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Step counter";
@@ -1852,7 +1852,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Measures counter";
@@ -1861,7 +1861,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -1878,7 +1878,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Intensity";
@@ -1887,7 +1887,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
     paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -2451,15 +2451,11 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.units = "";
 
                 p->val_uint32->value = scanner->user_params.sensor.column_exposure_div;
-                p->val_uint32->min = 2;
-                p->val_uint32->max = 32;
+                p->val_uint32->min = 1;
+                p->val_uint32->max = scanner->user_params.sensor.column_exposure_max_div;
                 p->val_uint32->step = 0;
-                p->val_uint32->defValue = 2;
+                p->val_uint32->defValue = 1;
                 vector_add(scanner->params_list, p);
-
-
-
-                // column_exposure_max_div
 
 
                 //roi
@@ -2516,7 +2512,7 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
                 p->base.units = "";
 
                 p->val_uint32->value = scanner->user_params.roi.size;
-                p->val_uint32->min = 1;
+                p->val_uint32->min = 0;
                 p->val_uint32->max = 1024;
                 p->val_uint32->step = 8;
                 p->val_uint32->defValue = 64;
@@ -3497,7 +3493,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "true";
@@ -3506,7 +3502,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     boolEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     boolEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(boolEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(boolEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3524,7 +3520,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "X";
@@ -3533,7 +3529,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Z";
@@ -3542,7 +3538,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "XZ";
@@ -3551,7 +3547,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     flipEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     flipEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(flipEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(flipEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3569,7 +3565,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "auto";
@@ -3578,7 +3574,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     roiPosModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     roiPosModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(roiPosModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3596,7 +3592,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "100";
@@ -3605,7 +3601,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "1000";
@@ -3614,7 +3610,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     netSpeedEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     netSpeedEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(netSpeedEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3632,7 +3628,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Profile";
@@ -3641,7 +3637,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Interpolated pixels";
@@ -3650,7 +3646,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Interpolated profile";
@@ -3659,7 +3655,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     streamsFormatEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     streamsFormatEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(streamsFormatEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3677,7 +3673,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Welding";
@@ -3686,7 +3682,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     processingModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     processingModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(processingModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3703,7 +3699,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "3";
@@ -3712,7 +3708,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "5";
@@ -3721,7 +3717,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "7";
@@ -3730,7 +3726,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "9";
@@ -3739,7 +3735,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "11";
@@ -3748,7 +3744,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "13";
@@ -3757,7 +3753,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "15";
@@ -3766,7 +3762,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     medianFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     medianFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(medianFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3783,7 +3779,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "3";
@@ -3792,7 +3788,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "5";
@@ -3801,7 +3797,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "7";
@@ -3810,7 +3806,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "9";
@@ -3819,7 +3815,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "11";
@@ -3828,7 +3824,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "13";
@@ -3837,7 +3833,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "15";
@@ -3846,7 +3842,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     bilateralFilterEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     bilateralFilterEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(bilateralFilterEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3863,7 +3859,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "First";
@@ -3872,7 +3868,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Last";
@@ -3881,7 +3877,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#2";
@@ -3890,7 +3886,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#3";
@@ -3899,7 +3895,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#4";
@@ -3908,7 +3904,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#5";
@@ -3917,7 +3913,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "#6";
@@ -3926,7 +3922,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     peakModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     peakModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(peakModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3944,7 +3940,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Expose sync";
@@ -3953,7 +3949,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     laserModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     laserModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(laserModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -3972,7 +3968,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "External sync";
@@ -3981,7 +3977,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Software request";
@@ -3990,7 +3986,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1EventEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1EventEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1EventEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4007,7 +4003,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Fall";
@@ -4016,7 +4012,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "High level";
@@ -4025,7 +4021,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Low level";
@@ -4034,7 +4030,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input1ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input1ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input1ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4052,7 +4048,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Phase";
@@ -4061,7 +4057,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input2ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input2ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input2ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4082,7 +4078,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Fall";
@@ -4091,7 +4087,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     input3ModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     input3ModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(input3ModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4109,7 +4105,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In1 level";
@@ -4118,7 +4114,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In1 rise";
@@ -4127,7 +4123,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In1 fall";
@@ -4136,7 +4132,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In2 level";
@@ -4145,7 +4141,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In2 rise";
@@ -4154,7 +4150,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In2 fall";
@@ -4163,7 +4159,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In3 level";
@@ -4172,7 +4168,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In3 rise";
@@ -4181,7 +4177,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "In3 fall";
@@ -4190,7 +4186,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Exposure time";
@@ -4199,7 +4195,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     outputModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     outputModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(outputModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4218,7 +4214,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Radial";
@@ -4227,7 +4223,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     motionTypeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     motionTypeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(motionTypeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4244,7 +4240,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Step counter";
@@ -4253,7 +4249,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Measures counter";
@@ -4262,7 +4258,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     ySourceEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     ySourceEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(ySourceEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
 
@@ -4279,7 +4275,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     key = "Intensity";
@@ -4288,7 +4284,7 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
     paintModeEnum->rec[enum_index].key = memory_platform.rf_calloc(1, rf_strlen(key) + 1);
     memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(key) + 1);
     paintModeEnum->rec[enum_index].label = memory_platform.rf_calloc(1, rf_strlen(label) + 1);
-    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].key, key, rf_strlen(label) + 1);
+    memory_platform.rf_memcpy(paintModeEnum->rec[enum_index].label, label, rf_strlen(label) + 1);
     enum_index++;
 
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
