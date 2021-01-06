@@ -58,6 +58,11 @@ public:
     uint32_t getFrameWidth();
     uint32_t getFrameHeight();
 
+    bool getRoiActive();
+    bool getRoiEnabled();
+    uint32_t getRoiPos();
+    uint32_t getRoiSize();
+
 private:
     void* m_FrameBase = nullptr;
 
@@ -66,6 +71,11 @@ private:
     uint8_t m_PixelSize;
     uint32_t m_FrameWidth;
     uint32_t m_FrameHeight;
+
+    bool m_RoiActive;
+    bool m_RoiEnabled;
+    uint32_t m_RoiPos;
+    uint32_t m_RoiSize;
 };
 
 //Формат представления профиля

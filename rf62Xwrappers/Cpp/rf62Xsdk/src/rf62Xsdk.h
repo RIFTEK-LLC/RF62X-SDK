@@ -401,6 +401,11 @@ public:
     bool set_authorization_key(
             std::string key, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
+    bool set_calibration_data(
+            std::vector<uint8_t> calib_data, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    bool write_calibration_data(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
 
     rf627smart(void* scanner_base);
     ~rf627smart();

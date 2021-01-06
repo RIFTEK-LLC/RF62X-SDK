@@ -289,7 +289,7 @@ rfBool rf627_smart_connect(rf627_smart_t* scanner)
                     "-max_packet_size 65535 "
                     "-out_udp_port %d "
                     "-socket_timeout 100 "
-                    "-max_data_size 350000",
+                    "-max_data_size 20000000",
             scanner->info_by_service_protocol.user_network_ip,
             scanner->info_by_service_protocol.user_network_hostIP,
             scanner->info_by_service_protocol.user_network_servicePort,
@@ -697,7 +697,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *scanner_list, rfUint32 
                     "-max_packet_size 65535 "
                     "-out_udp_port 50011 "
                     "-socket_timeout 100 "
-                    "-max_data_size 350000",
+                    "-max_data_size 20000000",
             bytes[3], bytes[2], bytes[1], 255,
             bytes[3], bytes[2], bytes[1], bytes[0]);
 
@@ -2601,6 +2601,30 @@ rfInt8 rf627_smart_get_frame_callback(char* data, uint32_t data_size, uint32_t d
         frame->data_size = frame_size;
         frame->data = (char*)mpack_node_data_alloc(frame_data, frame_size+1);
 
+        if (mpack_node_map_contains_cstr(root, "user_roi_active"))
+        {
+            mpack_node_t frame_roi_active = mpack_node_map_cstr(root, "user_roi_active");
+            frame->user_roi_active = mpack_node_bool(frame_roi_active);
+        }
+
+        if (mpack_node_map_contains_cstr(root, "user_roi_enabled"))
+        {
+            mpack_node_t frame_roi_enabled = mpack_node_map_cstr(root, "user_roi_enabled");
+            frame->user_roi_enabled = mpack_node_bool(frame_roi_enabled);
+        }
+
+        if (mpack_node_map_contains_cstr(root, "user_roi_pos"))
+        {
+            mpack_node_t frame_roi_pos = mpack_node_map_cstr(root, "user_roi_pos");
+            frame->user_roi_pos = mpack_node_u32(frame_roi_pos);
+        }
+
+        if (mpack_node_map_contains_cstr(root, "user_roi_size"))
+        {
+            mpack_node_t frame_roi_size = mpack_node_map_cstr(root, "user_roi_size");
+            frame->user_roi_size = mpack_node_u32(frame_roi_size);
+        }
+
         status = SMART_PARSER_RETURN_STATUS_DATA_READY;
 
         mpack_tree_destroy(&tree);
@@ -2674,6 +2698,12 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner)
         frame->data_size = result->data_size;
         frame->data = calloc(1, frame->data_size);
         memcpy(frame->data, (char*)result->data, frame->data_size);
+
+        frame->user_roi_active = result->user_roi_active;
+
+        frame->user_roi_enabled = result->user_roi_enabled;
+        frame->user_roi_pos = result->user_roi_pos;
+        frame->user_roi_size = result->user_roi_size;
     }
 
     // Cleanup test msg
@@ -2969,6 +2999,325 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
 
         if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0 &&
                 ((answer*)result)->status != 0)
+        {
+            // Cleanup test msg
+            smart_cleanup_msg(msg);
+            free(msg); msg = NULL;
+            return TRUE;
+        }
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        return FALSE;
+    }
+
+    return FALSE;
+}
+
+
+uint16_t gen_crc16(const uint8_t *data, uint32_t len)
+{
+    uint16_t crc = 0;
+    uint16_t* data16 = (uint16_t*)data;
+
+    while(len > 1)
+    {
+        crc += 44111 * *data16++;
+        len -= sizeof(uint16_t);
+    }
+    if (len > 0) crc += *(uint8_t*)data16;
+    crc = crc ^ (crc >> 8);
+    return crc;
+}
+rfInt8 rf627_smart_set_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return status;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        mpack_node_t root = mpack_tree_root(&tree);
+        mpack_node_t result_data = mpack_node_map_cstr(root, "result");
+        uint32_t result_size = mpack_node_strlen(result_data) + 1;
+
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (answer));
+        }
+
+        ((answer*)msg->result)->result = mpack_node_cstr_alloc(result_data, result_size);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+    }
+
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+rfInt8 rf627_smart_set_calibration_data_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_set_calibration_data_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        free(((answer*)msg->result)->result);
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+rfBool rf627_smart_set_calibration_data_by_service_protocol(rf627_smart_t* scanner, uint8_t* calib_data, rfUint32 calib_size, rfUint32 timeout)
+{
+    // Create payload
+    mpack_writer_t writer;
+    char* payload = NULL;
+    size_t bytes = 0;				///< Number of msg bytes.
+    mpack_writer_init_growable(&writer, &payload, &bytes);
+
+    // Идентификатор сообщения для подтверждения
+    mpack_start_map(&writer, 4);
+    {
+        mpack_write_cstr(&writer, "type");
+        mpack_write_uint(&writer, 0x03);
+
+        mpack_write_cstr(&writer, "crc");
+        mpack_write_uint(&writer, gen_crc16((const uint8_t*)calib_data, calib_size));
+
+        mpack_write_cstr(&writer, "serial");
+        mpack_write_uint(&writer, scanner->info_by_service_protocol.fact_general_serial);
+
+        mpack_write_cstr(&writer, "data");
+        mpack_write_bin(&writer, (const char*)calib_data, calib_size);
+    }mpack_finish_map(&writer);
+
+    // finish writing
+    if (mpack_writer_destroy(&writer) != mpack_ok) {
+        fprintf(stderr, "An error occurred encoding the data!\n");
+        return FALSE;
+    }
+
+
+    char* cmd_name                      = "SET_CALIBRATION_DATA";
+    char* data                          = payload;
+    uint32_t data_size                  = bytes;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = TRUE;
+    uint8_t is_confirmation             = TRUE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_set_calibration_data_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_set_calibration_data_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_set_calibration_data_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    free(payload);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0)
+        {
+            // Cleanup test msg
+            smart_cleanup_msg(msg);
+            free(msg); msg = NULL;
+            return TRUE;
+        }
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        return FALSE;
+    }
+
+    return FALSE;
+}
+
+
+rfInt8 rf627_smart_write_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return status;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        mpack_node_t root = mpack_tree_root(&tree);
+        mpack_node_t result_data = mpack_node_map_cstr(root, "result");
+        uint32_t result_size = mpack_node_strlen(result_data) + 1;
+
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (answer));
+        }
+
+        ((answer*)msg->result)->result = mpack_node_cstr_alloc(result_data, result_size);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+    }
+
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+rfInt8 rf627_smart_write_calibration_data_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_write_calibration_data_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        free(((answer*)msg->result)->result);
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
+{
+    char* cmd_name                      = "SAVE_CALIBRATION_DATA";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_write_calibration_data_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_write_calibration_data_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_write_calibration_data_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0)
         {
             // Cleanup test msg
             smart_cleanup_msg(msg);

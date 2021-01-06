@@ -122,6 +122,11 @@ frame::frame(void* frame_base)
             m_PixelSize = _frame->rf627old_frame->pixel_size;
             m_FrameWidth = _frame->rf627old_frame->width;
             m_FrameHeight = _frame->rf627old_frame->height;
+
+            m_RoiActive = _frame->rf627old_frame->user_roi_active;
+            m_RoiEnabled = _frame->rf627old_frame->user_roi_enabled;
+            m_RoiPos = _frame->rf627old_frame->user_roi_pos;
+            m_RoiSize = _frame->rf627old_frame->user_roi_size;
         }
         case kRF627_SMART:
         {
@@ -130,6 +135,11 @@ frame::frame(void* frame_base)
             m_PixelSize = _frame->rf627smart_frame->pixel_size;
             m_FrameWidth = _frame->rf627smart_frame->width;
             m_FrameHeight = _frame->rf627smart_frame->height;
+
+            m_RoiActive = _frame->rf627smart_frame->user_roi_active;
+            m_RoiEnabled = _frame->rf627smart_frame->user_roi_enabled;
+            m_RoiPos = _frame->rf627smart_frame->user_roi_pos;
+            m_RoiSize = _frame->rf627smart_frame->user_roi_size;
         }
         }
     }
@@ -182,6 +192,26 @@ uint32_t frame::getFrameWidth()
 uint32_t frame::getFrameHeight()
 {
     return m_FrameHeight;
+}
+
+bool frame::getRoiActive()
+{
+    return m_RoiActive;
+}
+
+bool frame::getRoiEnabled()
+{
+    return m_RoiEnabled;
+}
+
+uint32_t frame::getRoiPos()
+{
+    return m_RoiPos;
+}
+
+uint32_t frame::getRoiSize()
+{
+    return m_RoiSize;
 }
 
 
@@ -2417,75 +2447,77 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
     else
         p = protocol;
 
-    if (realtime)
+    if (is_connected)
     {
-        if ( ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != NULL)
+        if (realtime)
         {
-            std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-            if (s != INVALID_SOCKET)
+            if ( ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != NULL)
             {
+                std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+                if (s != INVALID_SOCKET)
+                {
 #ifdef _WIN32
-                closesocket(s);
+                    closesocket(s);
 #else
-                close(s);
+                    close(s);
 #endif
-            }
-            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
-        }
-
-        rfUint32 recv_ip_addr;
-        rfUint16 recv_port;
-        rfInt nret;
-
-
-        ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock =
-                network_platform.network_methods.create_udp_socket();
-        if (((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
-        {
-            nret = 1;
-            network_platform.network_methods.set_reuseaddr_socket_option(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-
-            network_platform.network_methods.set_socket_recv_timeout(
-                        ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, 100);
-            //recv_addr.sin_family = RF_AF_INET;
-            recv_port = ((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostPort;
-
-            //recv_addr.sin_addr = RF_INADDR_ANY;
-            ip_string_to_uint32(((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
-
-            nret = network_platform.network_methods.socket_bind(
-                        ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
-            if (nret == RF_SOCKET_ERROR)
-            {
-                network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+                }
                 ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
-                return FALSE;
             }
-        }
-    }
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
-    {
-        // Get profile from scanner's data stream by Service Protocol.
-        rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
-                    (scanner_base_t*)scanner_base, zero_points, kSERVICE);
+            rfUint32 recv_ip_addr;
+            rfUint16 recv_port;
+            rfInt nret;
 
-        if (profile_from_scanner != nullptr)
-        {
-            if (profile_from_scanner->rf627smart_profile2D != nullptr)
+
+            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock =
+                    network_platform.network_methods.create_udp_socket();
+            if (((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
-                return result;
+                nret = 1;
+                network_platform.network_methods.set_reuseaddr_socket_option(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+
+                network_platform.network_methods.set_socket_recv_timeout(
+                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, 100);
+                //recv_addr.sin_family = RF_AF_INET;
+                recv_port = ((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostPort;
+
+                //recv_addr.sin_addr = RF_INADDR_ANY;
+                ip_string_to_uint32(((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
+
+                nret = network_platform.network_methods.socket_bind(
+                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
+                if (nret == RF_SOCKET_ERROR)
+                {
+                    network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+                    ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
+                    return FALSE;
+                }
             }
-            free(profile_from_scanner);
         }
 
-    }
-    default:
-        break;
-    }
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Get profile from scanner's data stream by Service Protocol.
+            rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
+                        (scanner_base_t*)scanner_base, zero_points, kSERVICE);
 
+            if (profile_from_scanner != nullptr)
+            {
+                if (profile_from_scanner->rf627smart_profile2D != nullptr)
+                {
+                    std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                    return result;
+                }
+                free(profile_from_scanner);
+            }
+
+        }
+        default:
+            break;
+        }
+    }
     return nullptr;
 
 }
@@ -2961,6 +2993,60 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
         uint32_t size = key.size();
         result = set_authorization_key_to_scanner(
                     (scanner_base_t*)scanner_base, c_key, size, 3000, kSERVICE);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool rf627smart::set_calibration_data(std::vector<uint8_t> calib_data, PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        bool result = false;
+        uint8_t* c_data = new uint8_t[calib_data.size()];
+        std::copy(calib_data.begin(), calib_data.end(), c_data);
+        uint32_t size = calib_data.size();
+        result = set_calibration_data_to_scanner(
+                    (scanner_base_t*)scanner_base, c_data, size, 3000, kSERVICE);
+        delete [] c_data;
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool rf627smart::write_calibration_data(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        bool result = false;
+        result = write_calibration_data_to_scanner(
+                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
         return result;
         break;
     }

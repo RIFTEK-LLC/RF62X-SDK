@@ -485,6 +485,11 @@ typedef struct
     rfUint8 pixel_size;
     rfUint32 width;
     rfUint32 height;
+
+    rfBool user_roi_active;
+    rfBool user_roi_enabled;
+    rfUint32 user_roi_pos;
+    rfUint32 user_roi_size;
 }rf627_old_frame_t;
 
 /*! Structure to store a profile for rf627_old
@@ -532,6 +537,11 @@ typedef struct
     rfUint8 pixel_size;
     rfUint32 width;
     rfUint32 height;
+
+    rfBool user_roi_active;
+    rfBool user_roi_enabled;
+    rfUint32 user_roi_pos;
+    rfUint32 user_roi_size;
 }rf627_smart_frame_t;
 
 typedef struct
