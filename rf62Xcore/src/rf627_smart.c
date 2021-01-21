@@ -364,152 +364,160 @@ rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBoo
                 scanner->m_data_sock, RX, RX_SIZE);
     if(nret > 0)
     {
-        rfSize profile_header_size =
+        rfUint32 profile_header_size =
                 rf627_protocol_old_get_size_of_response_profile_header_packet();
 
-        rf627_smart_profile2D_t* profile =
-                memory_platform.rf_calloc(1, sizeof(rf627_smart_profile2D_t));
-
-        rf627_old_stream_msg_t header_from_msg = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
-
-        profile->header.data_type = header_from_msg.data_type;
-        profile->header.flags = header_from_msg.flags;
-        profile->header.device_type = header_from_msg.device_type;
-        profile->header.serial_number = header_from_msg.serial_number;
-        profile->header.system_time = header_from_msg.system_time;
-
-        profile->header.proto_version_major = header_from_msg.proto_version_major;
-        profile->header.proto_version_minor = header_from_msg.proto_version_minor;
-        profile->header.hardware_params_offset = header_from_msg.hardware_params_offset;
-        profile->header.data_offset = header_from_msg.data_offset;
-        profile->header.packet_count = header_from_msg.packet_count;
-        profile->header.measure_count = header_from_msg.measure_count;
-
-        profile->header.zmr = header_from_msg.zmr;
-        profile->header.xemr = header_from_msg.xemr;
-        profile->header.discrete_value = header_from_msg.discrete_value;
-
-        profile->header.exposure_time = header_from_msg.exposure_time;
-        profile->header.laser_value = header_from_msg.laser_value;
-        profile->header.step_count = header_from_msg.step_count;
-        profile->header.dir = header_from_msg.dir;
-
-        if(profile->header.serial_number == scanner->info_by_service_protocol.fact_general_serial)
+        if ((rfUint32)nret > profile_header_size)
         {
-            rfInt16 x;
-            rfUint16 z;
+            rf627_smart_profile2D_t* profile =
+                    memory_platform.rf_calloc(1, sizeof(rf627_smart_profile2D_t));
 
-            rfUint32 pt_count;
-            switch (profile->header.data_type)
-            {
-            case DTY_PixelsNormal:
-                pt_count = RF627_PROFILE_SIZE;
-                profile->pixels_format.pixels_count = 0;
-                profile->pixels_format.pixels =
-                        memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
-                if (profile->header.flags & 0x01){
-                    profile->intensity_count = 0;
-                    profile->intensity =
-                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
-                }
-                break;
-            case DTY_ProfileNormal:
-                pt_count = RF627_PROFILE_SIZE;
-                profile->profile_format.points_count = 0;
-                profile->profile_format.points =
-                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
-                if (profile->header.flags & 0x01){
-                    profile->intensity_count = 0;
-                    profile->intensity =
-                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
-                }
-                break;
-            case DTY_PixelsInterpolated:
-                pt_count = RF627_EXT_PROFILE_SIZE;
-                profile->pixels_format.pixels_count = 0;
-                profile->pixels_format.pixels =
-                        memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
-                if (profile->header.flags & 0x01){
-                    profile->intensity_count = 0;
-                    profile->intensity =
-                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
-                }
-                break;
-            case DTY_ProfileInterpolated:
-                pt_count = RF627_EXT_PROFILE_SIZE;
-                profile->profile_format.points_count = 0;
-                profile->profile_format.points =
-                        memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
-                if (profile->header.flags & 0x01){
-                    profile->intensity_count = 0;
-                    profile->intensity =
-                            memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
-                }
-                break;
-            }
+            rf627_old_stream_msg_t header_from_msg = rf627_protocol_old_unpack_header_msg_from_profile_packet(RX);
 
-            for (rfUint32 i=0; i<pt_count; i++)
+            profile->header.data_type = header_from_msg.data_type;
+            profile->header.flags = header_from_msg.flags;
+            profile->header.device_type = header_from_msg.device_type;
+            profile->header.serial_number = header_from_msg.serial_number;
+            profile->header.system_time = header_from_msg.system_time;
+
+            profile->header.proto_version_major = header_from_msg.proto_version_major;
+            profile->header.proto_version_minor = header_from_msg.proto_version_minor;
+            profile->header.hardware_params_offset = header_from_msg.hardware_params_offset;
+            profile->header.data_offset = header_from_msg.data_offset;
+            profile->header.packet_count = header_from_msg.packet_count;
+            profile->header.measure_count = header_from_msg.measure_count;
+
+            profile->header.zmr = header_from_msg.zmr;
+            profile->header.xemr = header_from_msg.xemr;
+            profile->header.discrete_value = header_from_msg.discrete_value;
+
+            profile->header.exposure_time = header_from_msg.exposure_time;
+            profile->header.laser_value = header_from_msg.laser_value;
+            profile->header.step_count = header_from_msg.step_count;
+            profile->header.dir = header_from_msg.dir;
+            profile->header.payload_size = header_from_msg.payload_size;
+            profile->header.bytes_per_point = header_from_msg.bytes_per_point;
+
+            if(profile->header.serial_number == scanner->info_by_service_protocol.fact_general_serial)
             {
-                rf627_old_point2D_t pt;
+                rfInt16 x;
+                rfUint16 z;
+
+                rfUint32 pt_count;
                 switch (profile->header.data_type)
                 {
-                case DTY_ProfileNormal:
-                case DTY_ProfileInterpolated:
-                    z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
-                    x = *(rfInt16*)(&RX[profile_header_size + i*4]);
-                    if (zero_points == 0 && z > 0 && x != 0)
-                    {
-                        pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
-                                (rfDouble)(profile->header.discrete_value);
-                        pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
-                                (rfDouble)(profile->header.discrete_value);
-
-                        profile->profile_format.points[profile->profile_format.points_count] = pt;
-                        profile->profile_format.points_count++;
-                        if (profile->header.flags & 0x01)
-                        {
-                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
-                            profile->intensity_count++;
-                        }
-                    }else if(zero_points != 0)
-                    {
-                        pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
-                                (rfDouble)(profile->header.discrete_value);
-                        pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
-                                (rfDouble)(profile->header.discrete_value);
-
-                        profile->profile_format.points[profile->profile_format.points_count] = pt;
-                        profile->profile_format.points_count++;
-                        if (profile->header.flags & 0x01)
-                        {
-                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
-                            profile->intensity_count++;
-                        }
+                case DTY_PixelsNormal:
+                    pt_count = profile->header.payload_size / profile->header.bytes_per_point;
+                    profile->pixels_format.pixels_count = 0;
+                    profile->pixels_format.pixels =
+                            memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
+                    if (profile->header.flags & 0x01){
+                        profile->intensity_count = 0;
+                        profile->intensity =
+                                memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
                     }
                     break;
-                case DTY_PixelsNormal:
-                case DTY_PixelsInterpolated:
-                    z = *(rfUint16*)(&RX[profile_header_size + i*2]);
-                    //pt.x = i;
-
-                    profile->pixels_format.pixels[profile->pixels_format.pixels_count] = z;
-                    profile->pixels_format.pixels_count++;
-                    if (profile->header.flags & 0x01)
-                    {
-                        profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
-                        profile->intensity_count++;
+                case DTY_ProfileNormal:
+                    pt_count = profile->header.payload_size / profile->header.bytes_per_point;
+                    profile->profile_format.points_count = 0;
+                    profile->profile_format.points =
+                            memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
+                    if (profile->header.flags & 0x01){
+                        profile->intensity_count = 0;
+                        profile->intensity =
+                                memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
                     }
-
-                    //pt.z = (rfDouble)(z) / (rfDouble)(profile->header.discrete_value);
-
+                    break;
+                case DTY_PixelsInterpolated:
+                    pt_count = profile->header.payload_size / profile->header.bytes_per_point;
+                    profile->pixels_format.pixels_count = 0;
+                    profile->pixels_format.pixels =
+                            memory_platform.rf_calloc(pt_count, sizeof (rfUint16));
+                    if (profile->header.flags & 0x01){
+                        profile->intensity_count = 0;
+                        profile->intensity =
+                                memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
+                    }
+                    break;
+                case DTY_ProfileInterpolated:
+                    pt_count = profile->header.payload_size / profile->header.bytes_per_point;
+                    profile->profile_format.points_count = 0;
+                    profile->profile_format.points =
+                            memory_platform.rf_calloc(pt_count, sizeof (rf627_old_point2D_t));
+                    if (profile->header.flags & 0x01){
+                        profile->intensity_count = 0;
+                        profile->intensity =
+                                memory_platform.rf_calloc(pt_count, sizeof (rfUint8));
+                    }
                     break;
                 }
 
+                for (rfUint32 i=0; i<pt_count; i++)
+                {
+                    rf627_old_point2D_t pt;
+                    switch (profile->header.data_type)
+                    {
+                    case DTY_ProfileNormal:
+                    case DTY_ProfileInterpolated:
+                        z = *(rfUint16*)(&RX[profile_header_size + i*4 + 2]);
+                        x = *(rfInt16*)(&RX[profile_header_size + i*4]);
+                        if (zero_points == 0 && z > 0 && x != 0)
+                        {
+                            pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
+                                    (rfDouble)(profile->header.discrete_value);
+                            pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
+                                    (rfDouble)(profile->header.discrete_value);
+
+                            profile->profile_format.points[profile->profile_format.points_count] = pt;
+                            profile->profile_format.points_count++;
+                            if (profile->header.flags & 0x01)
+                            {
+                                profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
+                                profile->intensity_count++;
+                            }
+                        }else if(zero_points != 0)
+                        {
+                            pt.x = (rfDouble)(x) * (rfDouble)(profile->header.xemr) /
+                                    (rfDouble)(profile->header.discrete_value);
+                            pt.z = (rfDouble)(z) * (rfDouble)(profile->header.zmr) /
+                                    (rfDouble)(profile->header.discrete_value);
+
+                            profile->profile_format.points[profile->profile_format.points_count] = pt;
+                            profile->profile_format.points_count++;
+                            if (profile->header.flags & 0x01)
+                            {
+                                profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
+                                profile->intensity_count++;
+                            }
+                        }
+                        break;
+                    case DTY_PixelsNormal:
+                    case DTY_PixelsInterpolated:
+                        z = *(rfUint16*)(&RX[profile_header_size + i*2]);
+                        //pt.x = i;
+
+                        profile->pixels_format.pixels[profile->pixels_format.pixels_count] = z;
+                        profile->pixels_format.pixels_count++;
+                        if (profile->header.flags & 0x01)
+                        {
+                            profile->intensity[profile->intensity_count] = RX[profile_header_size + pt_count*4 + i];
+                            profile->intensity_count++;
+                        }
+
+                        //pt.z = (rfDouble)(z) / (rfDouble)(profile->header.discrete_value);
+
+                        break;
+                    }
+
+                }
+                //_mx[1].unlock();
+                memory_platform.rf_free(RX);
+                memory_platform.rf_free(TX);
+                return profile;
+            }else
+            {
+                memory_platform.rf_free(profile);
             }
-            //_mx[1].unlock();
-            memory_platform.rf_free(RX);
-            memory_platform.rf_free(TX);
-            return profile;
         }
     }
     memory_platform.rf_free(RX);
@@ -3015,6 +3023,30 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
     return FALSE;
 }
 
+rfBool rf627_smart_read_calibration_table_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
+{
+    if (scanner->calib_table.m_Data != NULL)
+    {
+        free(scanner->calib_table.m_Data);
+        scanner->calib_table.m_Data = NULL;
+        scanner->calib_table.m_DataSize = 0;
+    }
+
+    scanner->calib_table.m_Data = NULL;
+    scanner->calib_table.m_DataSize = 0;
+
+    scanner->calib_table.m_Serial = scanner->info_by_service_protocol.fact_general_serial;
+    scanner->calib_table.m_CRC16 = 0;
+    scanner->calib_table.m_Type = 0x03;
+
+    parameter_t* width = rf627_smart_get_parameter(scanner, "fact_sensor_width");
+    parameter_t* height = rf627_smart_get_parameter(scanner, "fact_sensor_height");
+
+    scanner->calib_table.m_Width = width->val_uint32->value;
+    scanner->calib_table.m_Height = height->val_uint32->value;
+
+    return TRUE;
+}
 
 uint16_t gen_crc16(const uint8_t *data, uint32_t len)
 {
@@ -3030,174 +3062,6 @@ uint16_t gen_crc16(const uint8_t *data, uint32_t len)
     crc = crc ^ (crc >> 8);
     return crc;
 }
-rfInt8 rf627_smart_set_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
-{
-    answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
-
-    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
-    rfBool existing = FALSE;
-
-    // Get params
-    mpack_tree_t tree;
-    mpack_tree_init_data(&tree, (const char*)data, data_size);
-    mpack_tree_parse(&tree);
-    if (mpack_tree_error(&tree) != mpack_ok)
-    {
-        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return status;
-    }
-
-    for (rfUint32 i = 0; i < vector_count(search_result); i++)
-    {
-        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
-        {
-            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
-            if (serial == device_id)
-                existing = TRUE;
-        }
-    }
-
-    if (existing)
-    {
-        smart_msg_t* msg = rqst_msg;
-        typedef struct
-        {
-            char* result;
-        }answer;
-
-        mpack_node_t root = mpack_tree_root(&tree);
-        mpack_node_t result_data = mpack_node_map_cstr(root, "result");
-        uint32_t result_size = mpack_node_strlen(result_data) + 1;
-
-        if (msg->result == NULL)
-        {
-            msg->result = calloc(1, sizeof (answer));
-        }
-
-        ((answer*)msg->result)->result = mpack_node_cstr_alloc(result_data, result_size);
-
-        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
-    }
-
-
-    mpack_tree_destroy(&tree);
-    return TRUE;
-}
-rfInt8 rf627_smart_set_calibration_data_timeout_callback(void* rqst_msg)
-{
-    smart_msg_t* msg = rqst_msg;
-
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
-
-    return TRUE;
-}
-rfInt8 rf627_smart_set_calibration_data_free_result_callback(void* rqst_msg)
-{
-    smart_msg_t* msg = rqst_msg;
-
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
-
-    if (msg->result != NULL)
-    {
-        typedef struct
-        {
-            char* result;
-        }answer;
-
-        free(((answer*)msg->result)->result);
-        free(msg->result);
-        msg->result = NULL;
-    }
-
-    return TRUE;
-}
-rfBool rf627_smart_set_calibration_data_by_service_protocol(rf627_smart_t* scanner, uint8_t* calib_data, rfUint32 calib_size, rfUint32 timeout)
-{
-    // Create payload
-    mpack_writer_t writer;
-    char* payload = NULL;
-    size_t bytes = 0;				///< Number of msg bytes.
-    mpack_writer_init_growable(&writer, &payload, &bytes);
-
-    // Идентификатор сообщения для подтверждения
-    mpack_start_map(&writer, 4);
-    {
-        mpack_write_cstr(&writer, "type");
-        mpack_write_uint(&writer, 0x03);
-
-        mpack_write_cstr(&writer, "crc");
-        mpack_write_uint(&writer, gen_crc16((const uint8_t*)calib_data, calib_size));
-
-        mpack_write_cstr(&writer, "serial");
-        mpack_write_uint(&writer, scanner->info_by_service_protocol.fact_general_serial);
-
-        mpack_write_cstr(&writer, "data");
-        mpack_write_bin(&writer, (const char*)calib_data, calib_size);
-    }mpack_finish_map(&writer);
-
-    // finish writing
-    if (mpack_writer_destroy(&writer) != mpack_ok) {
-        fprintf(stderr, "An error occurred encoding the data!\n");
-        return FALSE;
-    }
-
-
-    char* cmd_name                      = "SET_CALIBRATION_DATA";
-    char* data                          = payload;
-    uint32_t data_size                  = bytes;
-    char* data_type                     = "blob";
-    uint8_t is_check_crc                = TRUE;
-    uint8_t is_confirmation             = TRUE;
-    uint8_t is_one_answ                 = TRUE;
-    uint32_t waiting_time               = timeout;
-    smart_answ_callback answ_clb        = rf627_smart_set_calibration_data_callback;
-    smart_timeout_callback timeout_clb  = rf627_smart_set_calibration_data_timeout_callback;
-    smart_free_callback free_clb        = rf627_smart_set_calibration_data_free_result_callback;
-
-    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
-                                             is_check_crc, is_confirmation, is_one_answ,
-                                             waiting_time,
-                                             answ_clb, timeout_clb, free_clb);
-
-    free(payload);
-
-    // Send test msg
-    if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
-    else
-        printf("Requests were sent.\n");
-
-    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
-    if (result != NULL)
-    {
-        typedef struct
-        {
-            char* result;
-        }answer;
-
-        if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0)
-        {
-            // Cleanup test msg
-            smart_cleanup_msg(msg);
-            free(msg); msg = NULL;
-            return TRUE;
-        }
-
-        // Cleanup test msg
-        smart_cleanup_msg(msg);
-        free(msg); msg = NULL;
-        return FALSE;
-    }
-
-    return FALSE;
-}
-
-
 rfInt8 rf627_smart_write_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
@@ -3286,6 +3150,174 @@ rfInt8 rf627_smart_write_calibration_data_free_result_callback(void* rqst_msg)
 }
 rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
 {
+    // Create payload
+    mpack_writer_t writer;
+    char* payload = NULL;
+    size_t bytes = 0;				///< Number of msg bytes.
+    mpack_writer_init_growable(&writer, &payload, &bytes);
+
+    // Идентификатор сообщения для подтверждения
+    mpack_start_map(&writer, 4);
+    {
+        mpack_write_cstr(&writer, "type");
+        mpack_write_uint(&writer, scanner->calib_table.m_Type);
+
+        mpack_write_cstr(&writer, "crc");
+        mpack_write_uint(&writer, scanner->calib_table.m_CRC16);
+
+        mpack_write_cstr(&writer, "serial");
+        mpack_write_uint(&writer, scanner->calib_table.m_Serial);
+
+        mpack_write_cstr(&writer, "data");
+        mpack_write_bin(&writer, (const char*)scanner->calib_table.m_Data, scanner->calib_table.m_DataSize);
+    }mpack_finish_map(&writer);
+
+    // finish writing
+    if (mpack_writer_destroy(&writer) != mpack_ok) {
+        fprintf(stderr, "An error occurred encoding the data!\n");
+        return FALSE;
+    }
+
+
+    char* cmd_name                      = "SET_CALIBRATION_DATA";
+    char* data                          = payload;
+    uint32_t data_size                  = bytes;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = TRUE;
+    uint8_t is_confirmation             = TRUE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_write_calibration_data_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_write_calibration_data_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_write_calibration_data_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    free(payload);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0)
+        {
+            // Cleanup test msg
+            smart_cleanup_msg(msg);
+            free(msg); msg = NULL;
+            return TRUE;
+        }
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        return FALSE;
+    }
+
+    return FALSE;
+}
+
+
+rfInt8 rf627_smart_save_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return status;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        mpack_node_t root = mpack_tree_root(&tree);
+        mpack_node_t result_data = mpack_node_map_cstr(root, "result");
+        uint32_t result_size = mpack_node_strlen(result_data) + 1;
+
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (answer));
+        }
+
+        ((answer*)msg->result)->result = mpack_node_cstr_alloc(result_data, result_size);
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+    }
+
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+rfInt8 rf627_smart_save_calibration_data_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_save_calibration_data_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+        }answer;
+
+        free(((answer*)msg->result)->result);
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
+rfBool rf627_smart_save_calibration_data_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
+{
     char* cmd_name                      = "SAVE_CALIBRATION_DATA";
     char* data                          = NULL;
     uint32_t data_size                  = 0;
@@ -3294,9 +3326,9 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
     uint8_t is_confirmation             = FALSE;
     uint8_t is_one_answ                 = TRUE;
     uint32_t waiting_time               = timeout;
-    smart_answ_callback answ_clb        = rf627_smart_write_calibration_data_callback;
-    smart_timeout_callback timeout_clb  = rf627_smart_write_calibration_data_timeout_callback;
-    smart_free_callback free_clb        = rf627_smart_write_calibration_data_free_result_callback;
+    smart_answ_callback answ_clb        = rf627_smart_save_calibration_data_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_save_calibration_data_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_save_calibration_data_free_result_callback;
 
     smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
                                              is_check_crc, is_confirmation, is_one_answ,
@@ -3332,4 +3364,41 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
     }
 
     return FALSE;
+}
+
+
+rf627_smart_calib_table_t* rf627_smart_get_calibration_table(rf627_smart_t* scanner)
+{
+    rf627_smart_calib_table_t* _calib_table = (rf627_smart_calib_table_t*)calloc(1, sizeof (rf627_smart_calib_table_t));
+
+    _calib_table->m_CRC16 = scanner->calib_table.m_CRC16;
+    _calib_table->m_Height = scanner->calib_table.m_Height;
+    _calib_table->m_HeightStep = scanner->calib_table.m_HeightStep;
+    _calib_table->m_Serial = scanner->calib_table.m_Serial;
+    _calib_table->m_TimeStamp = scanner->calib_table.m_TimeStamp;
+    _calib_table->m_Type = scanner->calib_table.m_Type;
+    _calib_table->m_Width = scanner->calib_table.m_Width;
+    _calib_table->m_WidthStep = scanner->calib_table.m_WidthStep;
+    _calib_table->m_DataSize = scanner->calib_table.m_DataSize;
+
+    _calib_table->m_Data = calloc(_calib_table->m_DataSize, sizeof (uint8_t));
+    memcpy(_calib_table->m_Data, scanner->calib_table.m_Data, _calib_table->m_DataSize * sizeof (uint8_t));
+
+    return _calib_table;
+}
+
+rfBool rf627_smart_set_calibration_table(rf627_smart_t* scanner, rf627_smart_calib_table_t* table)
+{
+    scanner->calib_table.m_CRC16 = table->m_CRC16;
+    scanner->calib_table.m_Height = table->m_Height;
+    scanner->calib_table.m_HeightStep = table->m_HeightStep;
+    scanner->calib_table.m_Serial = table->m_Serial;
+    scanner->calib_table.m_TimeStamp = table->m_TimeStamp;
+    scanner->calib_table.m_Type = table->m_Type;
+    scanner->calib_table.m_Width = table->m_Width;
+    scanner->calib_table.m_WidthStep = table->m_WidthStep;
+    scanner->calib_table.m_DataSize = table->m_DataSize;
+
+    scanner->calib_table.m_Data = calloc(scanner->calib_table.m_DataSize, sizeof (uint8_t));
+    memcpy(scanner->calib_table.m_Data, table->m_Data, scanner->calib_table.m_DataSize * sizeof (uint8_t));
 }

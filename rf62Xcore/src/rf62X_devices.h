@@ -176,6 +176,7 @@ typedef struct
     vector_t *params_list;
 
     rf627_smart_hello_info_by_service_protocol info_by_service_protocol;
+    rf627_smart_calib_table_t calib_table;
 
 }rf627_smart_t;
 
@@ -271,8 +272,13 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner);
 
 rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* scanner, char** token, rfUint32* token_size, rfUint32 timeout);
 rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scanner, char* key, rfUint32 key_size, rfUint32 timeout);
-rfBool rf627_smart_set_calibration_data_by_service_protocol(rf627_smart_t* scanner, uint8_t* data, rfUint32 data_size, rfUint32 timeout);
+
+rfBool rf627_smart_read_calibration_table_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout);
 rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout);
+rfBool rf627_smart_save_calibration_data_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout);
+
+rf627_smart_calib_table_t* rf627_smart_get_calibration_table(rf627_smart_t* scanner);
+rfBool rf627_smart_set_calibration_table(rf627_smart_t* scanner, rf627_smart_calib_table_t* table);
 
 typedef struct
 {

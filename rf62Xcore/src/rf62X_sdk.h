@@ -175,10 +175,19 @@ API_EXPORT rfUint8 get_authorization_token_from_scanner(
 API_EXPORT rfUint8 set_authorization_key_to_scanner(
         scanner_base_t *device, char* key, uint32_t key_size, uint32_t timeout, protocol_types_t protocol);
 
-API_EXPORT rfUint8 set_calibration_data_to_scanner(
-        scanner_base_t *device, uint8_t* data, uint32_t data_size, uint32_t timeout, protocol_types_t protocol);
+API_EXPORT rfUint8 read_calibration_table_from_scanner(
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
+API_EXPORT rf627_calib_table_t* convert_calibration_table_from_bytes(char* bytes, uint32_t data_size);
+API_EXPORT rfBool convert_calibration_table_to_bytes(rf627_calib_table_t* table, char** bytes, uint32_t* data_size);
+API_EXPORT rfUint8 write_calibration_table_to_scanner(
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
 
-API_EXPORT rfUint8 write_calibration_data_to_scanner(
+API_EXPORT rf627_calib_table_t* get_calibration_table_from_scanner(
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
+API_EXPORT rfUint8 set_calibration_table_to_scanner(
+        scanner_base_t *device, rf627_calib_table_t* table, uint32_t timeout, protocol_types_t protocol);
+
+API_EXPORT rfUint8 save_calibration_table_to_scanner(
         scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
 
 

@@ -399,7 +399,8 @@ typedef struct
     rfUint32    laser_value;
     rfUint32    step_count;
     rfUint8     dir;
-    rfUint8     reserved_1[3];
+    rfUint16    payload_size;
+    rfUint8     bytes_per_point;
 }
 rf627_old_profile_header_t;
 
@@ -492,6 +493,11 @@ typedef struct
     rfUint32 user_roi_size;
 }rf627_old_frame_t;
 
+typedef struct
+{
+    rfChar* data;
+}rf627_old_calib_table_t;
+
 /*! Structure to store a profile for rf627_old
  */
 typedef struct
@@ -543,6 +549,21 @@ typedef struct
     rfUint32 user_roi_pos;
     rfUint32 user_roi_size;
 }rf627_smart_frame_t;
+
+typedef struct
+{
+    rfUint16 m_Type;
+    rfUint16 m_CRC16;
+    rfUint32 m_Serial;
+    rfUint32 m_Width;
+    rfUint32 m_Height;
+    rfFloat m_WidthStep;
+    rfFloat m_HeightStep;
+    rfInt m_TimeStamp;
+
+    rfUint8* m_Data;
+    rfUint32 m_DataSize;
+}rf627_smart_calib_table_t;
 
 typedef struct
 {
@@ -1246,6 +1267,15 @@ typedef struct
         rf627_smart_frame_t* rf627smart_frame;
     };
 }rf627_frame_t;
+
+typedef struct
+{
+    scanner_types_t type;
+    union{
+        rf627_old_calib_table_t* rf627old_calib_table;
+        rf627_smart_calib_table_t* rf627smart_calib_table;
+    };
+}rf627_calib_table_t;
 
 /*! Structure to store a profile
  */

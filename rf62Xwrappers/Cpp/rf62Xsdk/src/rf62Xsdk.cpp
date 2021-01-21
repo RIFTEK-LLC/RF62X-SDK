@@ -6,12 +6,17 @@
 #include <algorithm>
 #include <sstream>
 #include <cstring>
+#include <fstream>
+#include <iterator>
+#include <algorithm>
 
 extern "C"{
 #include <rf62X_sdk.h>
 #include <netwok_platform.h>
 #include <smartutils.h>
 }
+
+
 
 
 
@@ -214,6 +219,351 @@ uint32_t frame::getRoiSize()
     return m_RoiSize;
 }
 
+
+calib_table::calib_table(void* table_base)
+{
+    m_CalibTableBase = table_base;
+    rf627_calib_table_t* _calib_table = (rf627_calib_table_t*)m_CalibTableBase;
+    if (_calib_table != nullptr)
+    {
+        switch (_calib_table->type) {
+        case kRF627_OLD:
+        {
+            break;
+        }
+        case kRF627_SMART:
+        {
+            m_Type = _calib_table->rf627smart_calib_table->m_Type;
+            m_CRC16 = _calib_table->rf627smart_calib_table->m_CRC16;
+            m_Serial = _calib_table->rf627smart_calib_table->m_Serial;
+            m_Width = _calib_table->rf627smart_calib_table->m_Width;
+            m_Height = _calib_table->rf627smart_calib_table->m_Height;
+            m_WidthStep = _calib_table->rf627smart_calib_table->m_WidthStep;
+            m_HeightStep = _calib_table->rf627smart_calib_table->m_HeightStep;
+            m_TimeStamp = _calib_table->rf627smart_calib_table->m_TimeStamp;
+
+            m_Data = std::vector<uint8_t>(_calib_table->rf627smart_calib_table->m_Data,
+                                          _calib_table->rf627smart_calib_table->m_Data +
+                                          _calib_table->rf627smart_calib_table->m_DataSize);
+
+            break;
+        }
+        }
+    }
+}
+
+calib_table::~calib_table()
+{
+    rf627_calib_table_t* _calib_table = (rf627_calib_table_t*)m_CalibTableBase;
+    if (_calib_table != nullptr)
+    {
+        switch (_calib_table->type) {
+        case kRF627_OLD:
+        {
+            break;
+        }
+        case kRF627_SMART:
+        {
+            if (_calib_table->rf627smart_calib_table != nullptr)
+            {
+                if(_calib_table->rf627smart_calib_table->m_Data != nullptr)
+                {
+                    free(_calib_table->rf627smart_calib_table->m_Data);
+                    _calib_table->rf627smart_calib_table->m_Data = nullptr;
+                    _calib_table->rf627smart_calib_table->m_DataSize = 0;
+                }
+                free(_calib_table->rf627smart_calib_table);
+                _calib_table->rf627smart_calib_table = nullptr;
+            }
+            break;
+        }
+        }
+        free(_calib_table);
+    }
+}
+
+std::shared_ptr<calib_table> calib_table::read_from_file(std::string file_name)
+{
+    std::ifstream input(file_name, std::ios::binary);
+    std::vector<char> buffer(std::istreambuf_iterator<char>(input), {});
+    return parse_from_bytes(buffer);
+}
+
+std::shared_ptr<calib_table> calib_table::parse_from_bytes(std::vector<char> bytes)
+{
+    rf627_calib_table_t* _table =
+            convert_calibration_table_from_bytes(bytes.data(), bytes.size());
+
+    return std::make_shared<calib_table>(_table);
+}
+
+uint16_t calib_table::getType()
+{
+    return m_Type;
+}
+uint16_t calib_table::getCRC16()
+{
+    return m_CRC16;
+}
+uint32_t calib_table::getSerial()
+{
+    return m_Serial;
+}
+uint32_t calib_table::getWidth()
+{
+    return m_Width;
+}
+uint32_t calib_table::getHeight()
+{
+    return m_Height;
+}
+float calib_table::getWidthStep()
+{
+    return m_WidthStep;
+}
+float calib_table::getHeightStep()
+{
+    return m_HeightStep;
+}
+int calib_table::getTimeStamp()
+{
+    return m_TimeStamp;
+}
+
+std::vector<uint8_t> calib_table::getData()
+{
+    return m_Data;
+}
+
+bool calib_table::setData(std::vector<uint8_t> data)
+{
+    m_Data = data;
+    if (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize != 0)
+    {
+        free (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data);
+        ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = 0;
+    }
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data
+            = (uint8_t*)calloc(m_Data.size(), sizeof (uint8_t));
+    memcpy(((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data, m_Data.data(), m_Data.size());
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = m_Data.size();
+
+    uint16_t crc = 0;
+    int len = m_Data.size();
+    uint16_t* data16 = (uint16_t*)m_Data.data();
+
+    while(len > 1)
+    {
+        crc += 44111 * *data16++;
+        len -= sizeof(uint16_t);
+    }
+    if (len > 0) crc += *(uint8_t*)data16;
+    crc = crc ^ (crc >> 8);
+    m_CRC16 = crc;
+    return true;
+}
+bool calib_table::setZ(std::vector<int16_t> Zd)
+{
+    if(m_Data.size() != 2047*2048*4)
+        m_Data.resize(2047*2048*4);
+
+    int16_t NaN = -32768;
+    // Copy tables
+    for (size_t iRow = 0; iRow < 2*m_Height; iRow++) // x2 resolution in vertical
+    {
+        for (size_t iCol = 0; iCol < m_Width; iCol++)
+        {
+            int16_t valZ = Zd[iRow*m_Width + iCol];
+            if (valZ != NaN)
+            {
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 0] = ((uint8_t*)&valZ)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 1] = ((uint8_t*)&valZ)[1];
+            }
+            else
+            {
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 0] = ((uint8_t*)&NaN)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 1] = ((uint8_t*)&NaN)[1];
+            }
+        }
+    }
+
+    if (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize != 0)
+    {
+        free (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data);
+        ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = 0;
+    }
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data
+            = (uint8_t*)calloc(m_Data.size(), sizeof (uint8_t));
+    memcpy(((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data, m_Data.data(), m_Data.size());
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = m_Data.size();
+
+    uint16_t crc = 0;
+    int len = m_Data.size();
+    uint16_t* data16 = (uint16_t*)m_Data.data();
+
+    while(len > 1)
+    {
+        crc += 44111 * *data16++;
+        len -= sizeof(uint16_t);
+    }
+    if (len > 0) crc += *(uint8_t*)data16;
+    crc = crc ^ (crc >> 8);
+    m_CRC16 = crc;
+
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_CRC16 = m_CRC16;
+
+    return true;
+}
+
+bool calib_table::setX(std::vector<int16_t> Xd)
+{
+
+    if(m_Data.size() != 2047*2048*4)
+        m_Data.resize(2047*2048*4);
+
+    int16_t NaN = -32768;
+    // Copy tables
+    for (size_t iRow = 0; iRow < 2*m_Height; iRow++) // x2 resolution in vertical
+    {
+        for (size_t iCol = 0; iCol < m_Width; iCol++)
+        {
+            int16_t valX = Xd[iRow * m_Width + iCol];
+            if (valX != NaN)
+            {
+                m_Data[iCol*2048*4 + iRow*4 + 0] = ((uint8_t*)&valX)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 1] = ((uint8_t*)&valX)[1];
+            }
+            else
+            {
+                m_Data[iCol*2048*4 + iRow*4 + 0] = ((uint8_t*)&NaN)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 1] = ((uint8_t*)&NaN)[1];
+            }
+        }
+    }
+
+    if (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize != 0)
+    {
+        free (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data);
+        ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = 0;
+    }
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data
+            = (uint8_t*)calloc(m_Data.size(), sizeof (uint8_t));
+    memcpy(((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data, m_Data.data(), m_Data.size());
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = m_Data.size();
+
+    uint16_t crc = 0;
+    int len = m_Data.size();
+    uint16_t* data16 = (uint16_t*)m_Data.data();
+
+    while(len > 1)
+    {
+        crc += 44111 * *data16++;
+        len -= sizeof(uint16_t);
+    }
+    if (len > 0) crc += *(uint8_t*)data16;
+    crc = crc ^ (crc >> 8);
+    m_CRC16 = crc;
+
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_CRC16 = m_CRC16;
+
+    return true;
+}
+bool calib_table::setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd)
+{
+    if(m_Data.size() != 2047*2048*4)
+        m_Data.resize(2047*2048*4);
+
+    int16_t NaN = -32768;
+    // Copy tables
+    for (size_t iRow = 0; iRow < 2*m_Height; iRow++) // x2 resolution in vertical
+    {
+        for (size_t iCol = 0; iCol < m_Width; iCol++)
+        {
+            int16_t valX = Xd[iRow*m_Width + iCol];
+            int16_t valZ = Zd[iRow*m_Width + iCol];
+            if (valZ != NaN)
+            {
+                m_Data[iCol*2048*4 + iRow*4 + 0] = ((uint8_t*)&valX)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 1] = ((uint8_t*)&valX)[1];
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 0] = ((uint8_t*)&valZ)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 1] = ((uint8_t*)&valZ)[1];
+            }
+            else
+            {
+                m_Data[iCol*2048*4 + iRow*4 + 0] = ((uint8_t*)&NaN)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 1] = ((uint8_t*)&NaN)[1];
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 0] = ((uint8_t*)&NaN)[0];
+                m_Data[iCol*2048*4 + iRow*4 + 2 + 1] = ((uint8_t*)&NaN)[1];
+            }
+        }
+    }
+
+    if (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize != 0)
+    {
+        free (((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data);
+        ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = 0;
+    }
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data
+            = (uint8_t*)calloc(m_Data.size(), sizeof (uint8_t));
+    memcpy(((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_Data, m_Data.data(), m_Data.size());
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_DataSize = m_Data.size();
+
+    uint16_t crc = 0;
+    int len = m_Data.size();
+    uint16_t* data16 = (uint16_t*)m_Data.data();
+
+    while(len > 1)
+    {
+        crc += 44111 * *data16++;
+        len -= sizeof(uint16_t);
+    }
+    if (len > 0) crc += *(uint8_t*)data16;
+    crc = crc ^ (crc >> 8);
+    m_CRC16 = crc;
+
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_CRC16 = m_CRC16;
+
+    return true;
+
+}
+
+bool calib_table::save_to_file(std::string file_name)
+{
+    FILE* pFile;
+    pFile = fopen(file_name.c_str(), "wb");
+
+    std::vector<char> bytes;
+
+    if (this->convert_to_bytes(bytes))
+    {
+        char* data = bytes.data();
+        fwrite(data, 1, bytes.size(), pFile);
+        fclose(pFile);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool calib_table::convert_to_bytes(std::vector<char>& bytes)
+{
+
+    uint32_t data_size = 0;
+    char* data = nullptr;
+    bool result = convert_calibration_table_to_bytes(
+                (rf627_calib_table_t*)m_CalibTableBase, &data, &data_size);
+
+    if (result && data_size > 0)
+    {
+        bytes = std::vector<char>(data, data + data_size);
+        free(data);
+        return true;
+    }
+    else
+        return false;
+}
 
 
 typedef struct
@@ -2773,7 +3123,7 @@ std::shared_ptr<param> rf627smart::get_param(std::string param_name)
     return nullptr;
 }
 
-bool rf627smart::set_param(std::shared_ptr<param>& param)
+bool rf627smart::set_param(std::shared_ptr<param> param)
 {
     parameter_t* p = create_parameter_from_type(param->getType().c_str());
     if (p != NULL)
@@ -3003,7 +3353,55 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
     return false;
 }
 
-bool rf627smart::set_calibration_data(std::vector<uint8_t> calib_data, PROTOCOLS protocol)
+std::shared_ptr<calib_table> rf627smart::get_calibration_table()
+{
+    // Set authorization key to the RF627 device by Service Protocol.
+    rf627_calib_table_t* result;
+    result = get_calibration_table_from_scanner(
+                (scanner_base_t*)scanner_base, 3000, kSERVICE);
+    if (result != nullptr)
+    {
+        std::shared_ptr<calib_table> table = std::make_shared<calib_table>(result);
+        return table;
+    }else
+    {
+        return nullptr;
+    }
+}
+bool rf627smart::set_calibration_table(std::shared_ptr<calib_table> table)
+{
+    bool result = false;
+
+    rf627_calib_table_t* _table = (rf627_calib_table_t*)calloc(1, sizeof (rf627_calib_table_t));
+    _table->type = kRF627_SMART;
+
+    _table->rf627smart_calib_table = (rf627_smart_calib_table_t*)calloc(1, sizeof (rf627_smart_calib_table_t));
+
+    _table->rf627smart_calib_table->m_CRC16 = table.get()->getCRC16();
+    _table->rf627smart_calib_table->m_Height = table.get()->getHeight();
+    _table->rf627smart_calib_table->m_HeightStep = table.get()->getHeightStep();
+    _table->rf627smart_calib_table->m_Serial = table.get()->getSerial();
+    _table->rf627smart_calib_table->m_TimeStamp = table.get()->getTimeStamp();
+    _table->rf627smart_calib_table->m_Type = table.get()->getType();
+    _table->rf627smart_calib_table->m_Width = table.get()->getWidth();
+    _table->rf627smart_calib_table->m_WidthStep = table.get()->getWidthStep();
+    _table->rf627smart_calib_table->m_DataSize = table.get()->getData().size();
+
+    _table->rf627smart_calib_table->m_Data = (unsigned char*)calloc(_table->rf627smart_calib_table->m_DataSize, sizeof (uint8_t));
+    memcpy(_table->rf627smart_calib_table->m_Data, table.get()->getData().data(), _table->rf627smart_calib_table->m_DataSize * sizeof (uint8_t));
+
+    result = set_calibration_table_to_scanner(
+                    (scanner_base_t*)scanner_base, _table, 3000, kSERVICE);
+
+    if (_table->rf627smart_calib_table->m_DataSize > 0)
+        free(_table->rf627smart_calib_table->m_Data);
+    free (_table->rf627smart_calib_table);
+    free(_table);
+
+    return result;
+}
+
+bool rf627smart::read_calibration_table(PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -3015,14 +3413,10 @@ bool rf627smart::set_calibration_data(std::vector<uint8_t> calib_data, PROTOCOLS
     case PROTOCOLS::SERVICE:
     {
         // Set authorization key to the RF627 device by Service Protocol.
-        bool result = false;
-        uint8_t* c_data = new uint8_t[calib_data.size()];
-        std::copy(calib_data.begin(), calib_data.end(), c_data);
-        uint32_t size = calib_data.size();
-        result = set_calibration_data_to_scanner(
-                    (scanner_base_t*)scanner_base, c_data, size, 3000, kSERVICE);
-        delete [] c_data;
-        return result;
+        bool result;
+        result = read_calibration_table_from_scanner(
+                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+        return true;
         break;
     }
     default:
@@ -3032,7 +3426,7 @@ bool rf627smart::set_calibration_data(std::vector<uint8_t> calib_data, PROTOCOLS
     return false;
 }
 
-bool rf627smart::write_calibration_data(PROTOCOLS protocol)
+bool rf627smart::write_calibration_table(PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -3045,7 +3439,7 @@ bool rf627smart::write_calibration_data(PROTOCOLS protocol)
     {
         // Set authorization key to the RF627 device by Service Protocol.
         bool result = false;
-        result = write_calibration_data_to_scanner(
+        result = write_calibration_table_to_scanner(
                     (scanner_base_t*)scanner_base, 3000, kSERVICE);
         return result;
         break;
@@ -3056,6 +3450,32 @@ bool rf627smart::write_calibration_data(PROTOCOLS protocol)
 
     return false;
 }
+
+bool rf627smart::save_calibration_table(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        bool result = false;
+        result = save_calibration_table_to_scanner(
+                    (scanner_base_t*)scanner_base, 1000 * 60, kSERVICE);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
 
 const std::string& rf627smart::hello_info::device_name()
 {

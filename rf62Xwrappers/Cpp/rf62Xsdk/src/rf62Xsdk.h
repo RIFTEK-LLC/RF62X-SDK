@@ -386,7 +386,7 @@ public:
      * @param param - prt to parameter
      * @return true on success, else - false
      */
-    bool set_param(std::shared_ptr<param>& param);
+    bool set_param(std::shared_ptr<param> param);
     bool set_param(const char* param_name, int arg_count, ...);
     bool set_param(int param_id, int arg_count, ...);
 
@@ -401,10 +401,13 @@ public:
     bool set_authorization_key(
             std::string key, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
-    bool set_calibration_data(
-            std::vector<uint8_t> calib_data, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
-    bool write_calibration_data(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<calib_table> get_calibration_table();
+    bool set_calibration_table(std::shared_ptr<calib_table>table);
+
+    bool read_calibration_table(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool write_calibration_table(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool save_calibration_table(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
     rf627smart(void* scanner_base);

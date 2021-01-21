@@ -78,6 +78,52 @@ private:
     uint32_t m_RoiSize;
 };
 
+class calib_table
+{
+public:
+    calib_table(void* table_base);
+    ~calib_table();
+
+    static std::shared_ptr<calib_table> read_from_file(std::string file_name);
+    static std::shared_ptr<calib_table> parse_from_bytes(std::vector<char> bytes);
+
+    uint16_t getType();
+    uint16_t getCRC16();
+    uint32_t getSerial();
+    uint32_t getWidth();
+    uint32_t getHeight();
+    float getWidthStep();
+    float getHeightStep();
+    int getTimeStamp();
+
+    std::vector<uint8_t> getData();
+
+    bool setData(std::vector<uint8_t> data);
+    bool setZ(std::vector<int16_t> Zd);
+    bool setX(std::vector<int16_t> Xd);
+    bool setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd);
+
+    bool save_to_file(std::string file_name);
+    bool convert_to_bytes(std::vector<char>& bytes);
+
+private:
+    void* m_CalibTableBase = nullptr;
+
+    uint16_t m_Type;
+    uint16_t m_CRC16;
+    uint32_t m_Serial;
+    uint32_t m_Width;
+    uint32_t m_Height;
+    float m_WidthStep;
+    float m_HeightStep;
+    int m_TimeStamp;
+
+    std::vector<uint8_t> m_Data;
+
+    std::vector<int16_t> m_Zd;
+    std::vector<int16_t> m_Xd;
+};
+
 //Формат представления профиля
 enum class PROFILE_DATA_TYPE{
     PIXELS				= 0x10,

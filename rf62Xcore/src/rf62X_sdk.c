@@ -5,6 +5,8 @@
 #include "netwok_platform.h"
 #include "memory_platform.h"
 
+#include <mpack/mpack.h>
+
 void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
 {
     set_adapter_settings(host_mask, host_ip_addr);
@@ -914,7 +916,94 @@ rfUint8 set_authorization_key_to_scanner(scanner_base_t *device, char *key, uint
     return 0;
 }
 
-rfUint8 set_calibration_data_to_scanner(scanner_base_t *device, uint8_t *calib_data, uint32_t calib_size, uint32_t timeout, protocol_types_t protocol)
+rfBool read_calibration_table_from_scanner(
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            return FALSE;
+        }
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return FALSE; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return FALSE; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            rfBool status = FALSE;
+            status = rf627_smart_read_calibration_table_by_service_protocol(device->rf627_smart, timeout);         
+            return status;
+        }
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return 2; // Unknown device type
+        break;
+    }
+    return 0;
+}
+rf627_calib_table_t* get_calibration_table_from_scanner(
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
+{
+    rf627_calib_table_t* _table = calloc(1, sizeof(rf627_calib_table_t));
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            _table->type = kRF627_OLD;
+            _table->rf627old_calib_table = NULL;
+            return _table;
+        }
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return FALSE; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return FALSE; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            _table->type = kRF627_SMART;
+            _table->rf627smart_calib_table = rf627_smart_get_calibration_table(device->rf627_smart);
+            return _table;
+        }
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return 2; // Unknown device type
+        break;
+    }
+    return 0;
+}
+rfUint8 set_calibration_table_to_scanner(scanner_base_t *device, rf627_calib_table_t* table, uint32_t timeout, protocol_types_t protocol)
 {
     switch (device->type) {
     case kRF627_OLD:
@@ -937,7 +1026,7 @@ rfUint8 set_calibration_data_to_scanner(scanner_base_t *device, uint8_t *calib_d
         case kSERVICE:
         {
             rfBool result = FALSE;
-            result = rf627_smart_set_calibration_data_by_service_protocol(device->rf627_smart, calib_data, calib_size, timeout);
+            result = rf627_smart_set_calibration_table(device->rf627_smart, table->rf627smart_calib_table);
             return result;
         }
         case kETHERNET_IP:
@@ -956,7 +1045,7 @@ rfUint8 set_calibration_data_to_scanner(scanner_base_t *device, uint8_t *calib_d
     return 0;
 }
 
-rfUint8 write_calibration_data_to_scanner(scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
+rfUint8 write_calibration_table_to_scanner(scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
 {
     switch (device->type) {
     case kRF627_OLD:
@@ -996,4 +1085,123 @@ rfUint8 write_calibration_data_to_scanner(scanner_base_t *device, uint32_t timeo
         break;
     }
     return 0;
+}
+
+rfUint8 save_calibration_table_to_scanner(scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
+{
+    switch (device->type) {
+    case kRF627_OLD:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            return FALSE;
+        }
+        case kETHERNET_IP:
+        case kMODBUS_TCP:
+            return FALSE; // RF627-old doesn't support this protocol
+            break;
+        default:
+            return FALSE; // Unknown protocol type
+            break;
+        }
+        break;
+    case kRF627_SMART:
+        switch (protocol) {
+        case kSERVICE:
+        {
+            rfBool result = FALSE;
+            result = rf627_smart_save_calibration_data_by_service_protocol(device->rf627_smart, timeout);
+            return result;
+        }
+        case kETHERNET_IP:
+            break;
+        case kMODBUS_TCP:
+            break;
+        default:
+            return 1; // Unknown protocol type
+            break;
+        }
+        break;
+    default:
+        return 2; // Unknown device type
+        break;
+    }
+    return 0;
+}
+
+rfBool convert_calibration_table_to_bytes(rf627_calib_table_t* table, char** bytes, uint32_t* data_size)
+{
+    // Create calib_file
+    mpack_writer_t writer;
+    char* calib_file = NULL;
+    size_t calib_file_size = 0;
+    mpack_writer_init_growable(&writer, &calib_file, &calib_file_size);
+
+    // Идентификатор сообщения для подтверждения
+    mpack_start_map(&writer, 4);
+    {
+        mpack_write_cstr(&writer, "type");
+        mpack_write_uint(&writer, table->rf627smart_calib_table->m_Type);
+
+        mpack_write_cstr(&writer, "crc");
+        mpack_write_uint(&writer, table->rf627smart_calib_table->m_CRC16);
+
+        mpack_write_cstr(&writer, "serial");
+        mpack_write_uint(&writer, table->rf627smart_calib_table->m_Serial);
+
+        mpack_write_cstr(&writer, "data");
+        mpack_write_bin(&writer, (char*)table->rf627smart_calib_table->m_Data,
+                        table->rf627smart_calib_table->m_DataSize);
+    }mpack_finish_map(&writer);
+
+    // finish writing
+    if (mpack_writer_destroy(&writer) != mpack_ok) {
+        fprintf(stderr, "An error occurred encoding the data!\n");
+        return FALSE;
+    }
+
+    *data_size = calib_file_size;
+    *bytes = calloc(calib_file_size, sizeof (char));
+    memcpy(*bytes, calib_file, calib_file_size);
+    free(calib_file);
+    return TRUE;
+}
+
+rf627_calib_table_t *convert_calibration_table_from_bytes(char *bytes, uint32_t data_size)
+{
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)bytes, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        mpack_tree_destroy(&tree);
+        return NULL;
+    }
+    mpack_node_t root = mpack_tree_root(&tree);
+
+    rf627_calib_table_t* _table =
+            (rf627_calib_table_t*)calloc(1, sizeof (rf627_calib_table_t));
+
+    _table->type = kRF627_SMART;
+    _table->rf627smart_calib_table =
+            (rf627_smart_calib_table_t*)calloc(1, sizeof(rf627_smart_calib_table_t));
+
+    _table->rf627smart_calib_table->m_Type =
+            mpack_node_uint(mpack_node_map_cstr(root, "type"));
+
+    _table->rf627smart_calib_table->m_CRC16 =
+            mpack_node_uint(mpack_node_map_cstr(root, "crc"));
+
+    _table->rf627smart_calib_table->m_Serial =
+            mpack_node_uint(mpack_node_map_cstr(root, "serial"));
+
+    _table->rf627smart_calib_table->m_DataSize =
+            mpack_node_bin_size(mpack_node_map_cstr(root, "data"));
+
+    _table->rf627smart_calib_table->m_Data =
+            (unsigned char*)mpack_node_data_alloc(
+                mpack_node_map_cstr(root, "data"),
+                _table->rf627smart_calib_table->m_DataSize);
+
+    return _table;
 }
