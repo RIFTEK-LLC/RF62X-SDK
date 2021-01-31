@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <mutex>
 
 #if (defined _WIN32 && defined RF627_LIBRARY)
 #define API_EXPORT __declspec(dllexport)
@@ -417,6 +418,8 @@ private:
     void* scanner_base = NULL;
     bool is_connected;
     PROTOCOLS current_protocol;
+    std::mutex param_mutex;
+    std::mutex profile_mutex;
 };
 
 

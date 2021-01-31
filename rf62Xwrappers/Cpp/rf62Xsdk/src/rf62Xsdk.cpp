@@ -1926,6 +1926,7 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
         bool zero_points,
         PROTOCOLS protocol)
 {
+
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
         p = this->current_protocol;
@@ -2791,6 +2792,9 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
         bool zero_points, bool realtime,
         PROTOCOLS protocol)
 {
+
+    profile_mutex.lock();
+
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
         p = this->current_protocol;
@@ -2841,6 +2845,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
                 {
                     network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
                     ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
+                    profile_mutex.unlock();
                     return FALSE;
                 }
             }
@@ -2858,6 +2863,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
                 if (profile_from_scanner->rf627smart_profile2D != nullptr)
                 {
                     std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                    profile_mutex.unlock();
                     return result;
                 }
                 free(profile_from_scanner);
@@ -2868,6 +2874,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
             break;
         }
     }
+    profile_mutex.unlock();
     return nullptr;
 
 }
@@ -3068,8 +3075,10 @@ bool rf627smart::read_params(PROTOCOLS protocol)
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
+        param_mutex.lock();
         result = read_params_from_scanner(
                     (scanner_base_t*)scanner_base, 3000, kSERVICE);
+        param_mutex.unlock();
         return result;
         break;
     }
@@ -3093,8 +3102,10 @@ bool rf627smart::write_params(PROTOCOLS protocol)
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
+        param_mutex.lock();
         result = write_params_to_scanner(
                     (scanner_base_t*)scanner_base, kSERVICE);
+        param_mutex.unlock();
         return result;
         break;
     }
@@ -3112,9 +3123,10 @@ std::shared_ptr<param> rf627smart::get_param(PARAM_NAME_KEY param_name)
 
 std::shared_ptr<param> rf627smart::get_param(std::string param_name)
 {
+    param_mutex.lock();
     parameter_t* p = get_parameter(
                 (scanner_base_t*)this->scanner_base, param_name.c_str());
-
+    param_mutex.unlock();
     if (p != nullptr)
     {
         std::shared_ptr<param> result = std::make_shared<param>(p);
@@ -3224,7 +3236,9 @@ bool rf627smart::set_param(std::shared_ptr<param> param)
                 p->arr_dbl->value[j] = v[j];
             p->base.size = v.size() * sizeof (rfDouble);
         }
+        param_mutex.lock();
         set_parameter((scanner_base_t*)this->scanner_base, p);
+        param_mutex.unlock();
         free_parameter(p, ((scanner_base_t*)this->scanner_base)->type);
         return true;
     }

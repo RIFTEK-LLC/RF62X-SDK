@@ -350,8 +350,6 @@ void rf627_smart_disconnect(rf627_smart_t* scanner)
         scanner->m_data_sock = NULL;
     }
 }
-#define RF627_PROFILE_SIZE          648
-#define RF627_EXT_PROFILE_SIZE      1296
 rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBool zero_points)
 {
 
@@ -3045,6 +3043,11 @@ rfBool rf627_smart_read_calibration_table_by_service_protocol(rf627_smart_t* sca
     scanner->calib_table.m_Width = width->val_uint32->value;
     scanner->calib_table.m_Height = height->val_uint32->value;
 
+    scanner->calib_table.m_WidthStep = 1.0;
+    scanner->calib_table.m_HeightStep = 0.5;
+
+    scanner->calib_table.m_TimeStamp = time(NULL);
+
     return TRUE;
 }
 
@@ -3157,7 +3160,7 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
     mpack_writer_init_growable(&writer, &payload, &bytes);
 
     // Идентификатор сообщения для подтверждения
-    mpack_start_map(&writer, 4);
+    mpack_start_map(&writer, 9);
     {
         mpack_write_cstr(&writer, "type");
         mpack_write_uint(&writer, scanner->calib_table.m_Type);
@@ -3167,6 +3170,21 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
 
         mpack_write_cstr(&writer, "serial");
         mpack_write_uint(&writer, scanner->calib_table.m_Serial);
+
+        mpack_write_cstr(&writer, "width");
+        mpack_write_uint(&writer, scanner->calib_table.m_Width);
+
+        mpack_write_cstr(&writer, "height");
+        mpack_write_uint(&writer, scanner->calib_table.m_Height);
+
+        mpack_write_cstr(&writer, "step_w");
+        mpack_write_float(&writer, scanner->calib_table.m_WidthStep);
+
+        mpack_write_cstr(&writer, "step_h");
+        mpack_write_float(&writer, scanner->calib_table.m_HeightStep);
+
+        mpack_write_cstr(&writer, "time_stamp");
+        mpack_write_int(&writer, scanner->calib_table.m_TimeStamp);
 
         mpack_write_cstr(&writer, "data");
         mpack_write_bin(&writer, (const char*)scanner->calib_table.m_Data, scanner->calib_table.m_DataSize);

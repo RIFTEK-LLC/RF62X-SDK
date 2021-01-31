@@ -1138,7 +1138,7 @@ rfBool convert_calibration_table_to_bytes(rf627_calib_table_t* table, char** byt
     mpack_writer_init_growable(&writer, &calib_file, &calib_file_size);
 
     // Идентификатор сообщения для подтверждения
-    mpack_start_map(&writer, 4);
+    mpack_start_map(&writer, 9);
     {
         mpack_write_cstr(&writer, "type");
         mpack_write_uint(&writer, table->rf627smart_calib_table->m_Type);
@@ -1148,6 +1148,21 @@ rfBool convert_calibration_table_to_bytes(rf627_calib_table_t* table, char** byt
 
         mpack_write_cstr(&writer, "serial");
         mpack_write_uint(&writer, table->rf627smart_calib_table->m_Serial);
+
+        mpack_write_cstr(&writer, "width");
+        mpack_write_uint(&writer, table->rf627smart_calib_table->m_Width);
+
+        mpack_write_cstr(&writer, "height");
+        mpack_write_uint(&writer, table->rf627smart_calib_table->m_Height);
+
+        mpack_write_cstr(&writer, "step_w");
+        mpack_write_float(&writer, table->rf627smart_calib_table->m_WidthStep);
+
+        mpack_write_cstr(&writer, "step_h");
+        mpack_write_float(&writer, table->rf627smart_calib_table->m_HeightStep);
+
+        mpack_write_cstr(&writer, "time_stamp");
+        mpack_write_int(&writer, table->rf627smart_calib_table->m_TimeStamp);
 
         mpack_write_cstr(&writer, "data");
         mpack_write_bin(&writer, (char*)table->rf627smart_calib_table->m_Data,
@@ -1194,6 +1209,21 @@ rf627_calib_table_t *convert_calibration_table_from_bytes(char *bytes, uint32_t 
 
     _table->rf627smart_calib_table->m_Serial =
             mpack_node_uint(mpack_node_map_cstr(root, "serial"));
+
+    _table->rf627smart_calib_table->m_Width =
+            mpack_node_uint(mpack_node_map_cstr(root, "width"));
+
+    _table->rf627smart_calib_table->m_Height =
+            mpack_node_uint(mpack_node_map_cstr(root, "height"));
+
+    _table->rf627smart_calib_table->m_WidthStep =
+            mpack_node_float(mpack_node_map_cstr(root, "step_w"));
+
+    _table->rf627smart_calib_table->m_HeightStep =
+            mpack_node_float(mpack_node_map_cstr(root, "step_h"));
+
+    _table->rf627smart_calib_table->m_TimeStamp =
+            mpack_node_int(mpack_node_map_cstr(root, "time_stamp"));
 
     _table->rf627smart_calib_table->m_DataSize =
             mpack_node_bin_size(mpack_node_map_cstr(root, "data"));
