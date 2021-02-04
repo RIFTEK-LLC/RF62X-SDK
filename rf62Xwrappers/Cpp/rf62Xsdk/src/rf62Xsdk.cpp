@@ -26,6 +26,10 @@ extern "C"{
 #else
 #include <arpa/inet.h>
 typedef int BOOL;
+#define INVALID_SOCKET          (-1)
+#define SOCKET_ERROR            (-1)
+#define TRUE 1
+#define FALSE 0
 #endif
 
 
