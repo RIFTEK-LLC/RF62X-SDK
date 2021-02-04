@@ -47,29 +47,28 @@ int main()
             bool is_connect = list[i]->connect();
 
             // Get profile from scanner's data stream by Service Protocol.
-            profile2D_t* profile = nullptr;
+            std::shared_ptr<profile2D> profile = nullptr;
             if (is_connect && ((profile = list[i]->get_profile2D(true, true)) != nullptr))
             {
                 std::cout << "Profile information: "                    << std::endl;
-                switch (profile->header.data_type) {
-                case (uint8_t)PROFILE_DATA_TYPE::PIXELS:
+                switch (profile->getHeader().data_type) {
+                case (int)PROFILE_DATA_TYPE::PIXELS:
                     std::cout << "* DataType\t: "<< "PIXELS"            << std::endl;
-                    std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
+                    std::cout << "* Count\t: " << profile->getPixels().size()<< std::endl;
                     break;
-                case (uint8_t)PROFILE_DATA_TYPE::PIXELS_INTRP:
+                case (int)PROFILE_DATA_TYPE::PIXELS_INTRP:
                     std::cout << "* DataType\t: "<< "PIXELS_INTRP"      << std::endl;
-                    std::cout << "* Count\t: " << profile->pixels.size()<< std::endl;
+                    std::cout << "* Count\t: " << profile->getPixels().size()<< std::endl;
                     break;
-                case (uint8_t)PROFILE_DATA_TYPE::PROFILE:
+                case (int)PROFILE_DATA_TYPE::PROFILE:
                     std::cout << "* DataType\t: "<< "PROFILE"           << std::endl;
-                    std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
+                    std::cout << "* Size\t: "  << profile->getPixels().size()<< std::endl;
                     break;
-                case (uint8_t)PROFILE_DATA_TYPE::PROFILE_INTRP:
+                case (int)PROFILE_DATA_TYPE::PROFILE_INTRP:
                     std::cout << "* DataType\t: "<< "PROFILE_INTRP"     << std::endl;
-                    std::cout << "* Size\t: "  << profile->points.size()<< std::endl;
+                    std::cout << "* Size\t: "  << profile->getPixels().size()<< std::endl;
                     break;
                 }
-                delete profile;
                 std::cout << "Profile was successfully received!"       << std::endl;
                 std::cout << "-----------------------------------------"<< std::endl;
             }else

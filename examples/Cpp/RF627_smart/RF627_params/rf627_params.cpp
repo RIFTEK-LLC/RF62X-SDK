@@ -17,9 +17,9 @@ int main()
 
 
     // Create value for scanners vector's type
-    std::vector<rf627smart*> scanners;
+    std::vector<std::shared_ptr<rf627smart>> scanners;
     // Search for rf627smart devices over network
-    scanners = rf627smart::search(PROTOCOLS::SERVICE);
+    scanners = rf627smart::search(500);
 
 
     // Print count of discovered rf627smart in network by Service Protocol
@@ -42,15 +42,15 @@ int main()
         scanners[i]->read_params();
 
         // Get parameter of Device Name
-        param_t* name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
-        if (name->type == param_value_types[(int)PARAM_VALUE_TYPE::STRING_PARAM_TYPE])
+        std::shared_ptr<param> name = scanners[i]->get_param(PARAM_NAME_KEY::USER_GENERAL_DEVICENAME);
+        if (name->getType() == param_value_types[(int)PARAM_VALUE_TYPE::STRING_PARAM_TYPE])
         {
-            std::string str_name = name->get_value<value_str>();
+            std::string str_name = name->getValue<std::string>();
             std::cout << "Current Device Name \t: " << str_name     << std::endl;
 
             // Add "_TEST" to the ending of the current name
             str_name += "_TEST";
-            name->set_value<value_str>(str_name);
+            name->setValue<std::string>(str_name);
             std::cout << "New Device Name \t: " << str_name         << std::endl;
             std::cout << "-----------------------------------------"<< std::endl;
 
@@ -58,16 +58,16 @@ int main()
         }
 
         // Get parameter of Device IP Addr
-        param_t* ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
-        if (ip_addr->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE])
+        std::shared_ptr<param> ip_addr = scanners[i]->get_param(PARAM_NAME_KEY::USER_NETWORK_IP);
+        if (ip_addr->getType() == param_value_types[(int)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE])
         {
-            std::vector <uint32_t> ip = ip_addr->get_value<array_uint32>();
+            std::vector <uint32_t> ip = ip_addr->getValue<std::vector<uint32_t>>();
             std::cout << "Current Device IP\t: ";
             for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
 
             // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
             ip[3]++;
-            ip_addr->set_value<array_uint32>(ip);
+            ip_addr->setValue<std::vector<uint32_t>>(ip);
             std::cout << "New Device IP\t: ";
             for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
             std::cout << "-----------------------------------------"<< std::endl;
@@ -76,15 +76,15 @@ int main()
         }
 
         // Get parameter of Laser Enabled
-        param_t* laser_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
-        if (laser_enabled->type == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+        std::shared_ptr<param> laser_enabled = scanners[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
+        if (laser_enabled->getType() == param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
         {
-            bool isEnabled = laser_enabled->get_value<value_uint32>();
+            bool isEnabled = laser_enabled->getValue<uint32_t>();
             std::cout<<"Current Laser State\t: "<<(isEnabled?"ON":"OFF")<<std::endl;
 
             isEnabled = !isEnabled;
             // Change the current state to the opposite
-            laser_enabled->set_value<value_uint32>(isEnabled);
+            laser_enabled->setValue<uint32_t>(isEnabled);
             std::cout<<"New Laser State\t: "<<(isEnabled?"ON":"OFF")<< std::endl;
             std::cout << "-----------------------------------------"<< std::endl;
 
