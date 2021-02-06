@@ -5100,6 +5100,120 @@ rfBool rf627_old_read_factory_params_from_scanner(rf627_old_t* scanner)
 
 #include <stdlib.h>
 
+/**
+ * @brief rf627_protocol_old_unpack_header_msg_from_profile_packet - unpack
+ * payload msg from user_params network packet
+ * @param buffer - ptr to network buffer
+ * @return rf627_old_user_params_t
+ */
+rfUint32 rf627_protocol_old_pack_payload_msg_to_user_params_packet(
+        rfUint8* buffer, vector_t *params_list)
+{
+    rfUint8 *buf = &buffer[0];
+
+
+
+    for(rfSize i = 0; i < vector_count(params_list); i++)
+    {
+        parameter_t* p = vector_get(params_list, i);
+
+        if (rf_strcmp(patKey[PAT_WRITE], p->base.access) != 0)
+            continue;
+
+        if (p != NULL)
+        {
+            if(rf_strcmp(parameter_value_types[PVT_UINT], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], &p->val_uint32->value, p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_UINT64], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], &p->val_uint64->value, p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_INT], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], &p->val_int32->value, p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_INT64], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], &p->val_int64->value, p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_FLOAT], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], &p->val_flt->value, p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_DOUBLE], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], &p->val_dbl->value, p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT32], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                {
+                    rfUint32 size = 4;
+                    if (p->arr_uint32->count != 0)
+                        size = p->base.size / p->arr_uint32->count;
+                    else if (p->arr_uint32->defCount != 0)
+                        size = p->base.size / p->arr_uint32->defCount;
+
+                    switch (size) {
+                    case 1:
+                    {
+                        for(rfSize j = 0; j < p->arr_uint32->count; j++)
+                        {
+                            memory_platform.rf_memcpy(&buf[p->base.offset + j * 1],
+                                    (rfUint8*)&p->arr_uint32->value[j], 1);
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        memory_platform.rf_memcpy(&buf[p->base.offset + i * 2],
+                                (rfUint16*)&p->arr_uint32->value[i], 2);
+                        break;
+                    }
+                    case 4:
+                    {
+                        memory_platform.rf_memcpy(&buf[p->base.offset + i * 4],
+                                (rfUint32*)&p->arr_uint32->value[i], 4);
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                }
+
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_UINT64], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], p->arr_uint64->value,  p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT32], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], p->arr_int32->value,  p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_INT64], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], p->arr_int64->value,  p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_FLT], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], p->arr_flt->value,  p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_ARRAY_DBL], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], p->arr_dbl->value,  p->base.size);
+            }else if(rf_strcmp(parameter_value_types[PVT_STRING], p->base.type) == 0)
+            {
+                //if (rf_strcmp(patKey[PAT_WRITE], p->base.access) == 0)
+                    memory_platform.rf_memcpy(&buf[p->base.offset], p->val_str->value,  p->base.size);
+            }
+        }
+    }
+
+    return RF627_PROTOCOL_OLD_USER_REQUEST_PAYLOAD_PACKET_SIZE;
+}
+
 rfBool rf627_old_write_params_to_scanner(rf627_old_t* scanner)
 {
     rfSize RX_SIZE = rf627_protocol_old_get_size_of_header() + RF627_MAX_PAYLOAD_SIZE;
