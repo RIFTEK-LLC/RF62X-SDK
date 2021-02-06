@@ -90,7 +90,8 @@ hello_information get_info_about_scanner(scanner_base_t *device, protocol_types_
         {
             _hello_info.scanner_type = kRF627_SMART;
             _hello_info.protocol_type = kSERVICE;
-            _hello_info.rf627smart.hello_info_service_protocol = rf627_smart_get_info_about_scanner_by_service_protocol(device->rf627_smart);
+            _hello_info.rf627smart.hello_info_service_protocol =
+                    rf627_smart_get_scanner_info_by_service_protocol(device->rf627_smart);
 
             return _hello_info;
             break;
@@ -591,7 +592,7 @@ rfUint8 read_params_from_scanner(scanner_base_t *device, uint32_t timeout, proto
     return 0;
 }
 
-rfUint8 write_params_to_scanner(scanner_base_t *device, protocol_types_t protocol)
+rfUint8 write_params_to_scanner(scanner_base_t *device, uint32_t timeout, protocol_types_t protocol)
 {
     switch (device->type) {
     case kRF627_OLD:
@@ -612,7 +613,7 @@ rfUint8 write_params_to_scanner(scanner_base_t *device, protocol_types_t protoco
     case kRF627_SMART:
         switch (protocol) {
         case kSERVICE:
-            rf627_smart_write_params_to_scanner(device->rf627_smart);
+            rf627_smart_write_params_to_scanner(device->rf627_smart, timeout);
             return TRUE;
             break;
         case kETHERNET_IP:
@@ -771,7 +772,7 @@ rf627_frame_t* get_frame_from_scanner(scanner_base_t* device, protocol_types_t p
         switch (protocol) {
         case kSERVICE:
             frame->type = kRF627_SMART;
-            frame->rf627smart_frame = rf627_smart_get_frame(device->rf627_smart);
+            frame->rf627smart_frame = rf627_smart_get_frame(device->rf627_smart, 3000);
             return frame;
             break;
         case kETHERNET_IP:

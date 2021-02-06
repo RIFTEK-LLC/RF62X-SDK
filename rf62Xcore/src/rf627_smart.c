@@ -259,7 +259,7 @@ void rf627_smart_free(rf627_smart_t* scanner)
         scanner = NULL;
     }
 }
-rf627_smart_hello_info_by_service_protocol* rf627_smart_get_info_about_scanner_by_service_protocol(rf627_smart_t* scanner)
+rf627_smart_hello_info_by_service_protocol* rf627_smart_get_scanner_info_by_service_protocol(rf627_smart_t* scanner)
 {
     return &scanner->info_by_service_protocol;
 }
@@ -339,7 +339,7 @@ rfBool rf627_smart_connect(rf627_smart_t* scanner)
     return FALSE;
 
 }
-void rf627_smart_disconnect(rf627_smart_t* scanner)
+rfBool rf627_smart_disconnect(rf627_smart_t* scanner)
 {
     smart_channel_cleanup(&scanner->channel);
 
@@ -349,6 +349,8 @@ void rf627_smart_disconnect(rf627_smart_t* scanner)
         network_platform.network_methods.close_socket(scanner->m_data_sock);
         scanner->m_data_sock = NULL;
     }
+
+    return TRUE;
 }
 rf627_smart_profile2D_t* rf627_smart_get_profile2D(rf627_smart_t* scanner, rfBool zero_points)
 {
@@ -2421,7 +2423,7 @@ rfInt8 rf627_smart_write_params_free_result_callback(void* rqst_msg)
 
     return TRUE;
 }
-rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
+rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner, rfUint32 timeout)
 {
     int count = 0;
     for(rfSize i = 0; i < vector_count(scanner->params_list); i++)
@@ -2535,7 +2537,7 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner)
         uint8_t is_check_crc                = FALSE;
         uint8_t is_confirmation             = FALSE;
         uint8_t is_one_answ                 = TRUE;
-        uint32_t waiting_time               = 3000;
+        uint32_t waiting_time               = timeout;
         smart_answ_callback answ_clb        = rf627_smart_write_params_callback;
         smart_timeout_callback timeout_clb  = rf627_smart_write_params_timeout_callback;
         smart_free_callback free_clb        = rf627_smart_write_params_free_result_callback;
@@ -2669,7 +2671,7 @@ rfInt8 rf627_smart_get_frame_free_result_callback(void* rqst_msg)
 
     return TRUE;
 }
-rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner)
+rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner, rfUint32 timeout)
 {
     char* cmd_name                      = "GET_FRAME";
     char* data                          = NULL;
@@ -2678,7 +2680,7 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner)
     uint8_t is_check_crc                = FALSE;
     uint8_t is_confirmation             = FALSE;
     uint8_t is_one_answ                 = TRUE;
-    uint32_t waiting_time               = 3000;
+    uint32_t waiting_time               = timeout;
     smart_answ_callback answ_clb        = rf627_smart_get_frame_callback;
     smart_timeout_callback timeout_clb  = rf627_smart_get_frame_timeout_callback;
     smart_free_callback free_clb        = rf627_smart_get_frame_free_result_callback;

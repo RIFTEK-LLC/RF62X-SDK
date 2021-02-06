@@ -22,57 +22,75 @@
     #define API_EXPORT
 #endif
 
+
 /**
  * @brief change_platform_adapter_settings - change adapter's settings
+ *
  * @param[in] subnet_mask Subnet mask on your local machine. A subnet mask is a
- * number that defines a range of IP addresses that can be used in a network.
+ *            number that defines a range of IP addresses that can be used in a
+ *            network.
  * @param[in] host_ip_addr IP address of your network adapter(card)
  */
 API_EXPORT void set_platform_adapter_settings(
         rfUint32 subnet_mask, rfUint32 host_ip_addr);
 
-/**
- * @brief search - Search for RF62X devices over network
- * @param list - ptr to list of rf627 objects. If not null list will be filled with found devices
- * @param model - scanner's type (RF627-old, RF627-smart)
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
- * @return 0 on success
- */
-API_EXPORT rfUint8 search_scanners(
-        vector_t *list, scanner_types_t model, uint32_t timeout, protocol_types_t protocol);
 
 /**
- * @brief get_hello_info_of_scanners - Get information about scanner from hello packet
- * @param device - prt to scanner
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
- * @return 0 on success
+ * @brief search - Search for RF62X devices over network
+ *
+ * @param[out] list Ptr to list of rf627 objects. If not null list will be
+ *                  filled with found devices
+ * @param[in] type Scanner's type (RF627-old, RF627-smart)
+ * @param[in] timeout Time to search
+ * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ *
+ * @return TRUE on success
+ */
+API_EXPORT rfUint8 search_scanners(
+        vector_t *list, scanner_types_t type, uint32_t timeout, protocol_types_t protocol);
+
+/**
+ * @brief get_info_about_scanner - Get information about scanner from hello packet
+ *
+ * @param[in] device Ptr to scanner
+ * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ *
+ * @return hello_information on success
  */
 API_EXPORT hello_information get_info_about_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
- * @brief connect - Establish connection to the RF62X device
- * @param device - prt to scanner
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
- * @return 0 on success
+ * @brief connect_to_scanner - Establish connection to the RF62X device
+ *
+ * @param[in] device Ptr to scanner
+ * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ *
+ * @return TRUE on success
  */
 API_EXPORT rfUint8 connect_to_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
 /**
- * @brief connect - Establish connection to the RF62X device
- * @param device - prt to scanner
- * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
- * @return 0 on success
+ * @brief check_connection_to_scanner - Check connection to the RF62X device
+ *
+ * @param[in] device Ptr to scanner
+ * @param[in] timeout Time to check connection
+ * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+ *
+ * @return TRUE on success
  */
 API_EXPORT rfUint8 check_connection_to_scanner(
         scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
 
+
 /**
  * @brief disconnect_from_scanner - Close connection to the device
- * @param device - prt to scanner
- * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)
- * @return 0 on success
+ *
+ * @param[in] device Prt to scanner
+ * @param[in] protocol Protocol's type (Service, ENIP, Modbus-TCP)
+ *
+ * @return TRUE on success
  */
 API_EXPORT rfUint8 disconnect_from_scanner(
         scanner_base_t *device, protocol_types_t protocol);
@@ -114,7 +132,7 @@ API_EXPORT rfUint8 read_params_from_scanner(
  * @return 0 on success
  */
 API_EXPORT rfUint8 write_params_to_scanner(
-        scanner_base_t *device, protocol_types_t protocol);
+        scanner_base_t *device, uint32_t timeout, protocol_types_t protocol);
 
 /**
  * @brief get_parameter - Search parameters by his name
