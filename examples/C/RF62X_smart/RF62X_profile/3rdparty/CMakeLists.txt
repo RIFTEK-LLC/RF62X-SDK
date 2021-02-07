@@ -14,6 +14,7 @@ project(3rdparty LANGUAGES C)
 ## INCLUDING SUBDIRECTORIES
 ## Adding subdirectories according to the 3rd-party configuration
 ###############################################################################
-# set rf627core path variable
-set(RF62XCORE_DIR "../../../../rf62Xcore")
-add_subdirectory(${RF62XCORE_DIR} rf62Xcore)
+# set rf627sdk path variable
+set(RF62XSDK_DIR "../../../../../rf62Xwrappers/C/rf62Xsdk")
+# add subdirectory of rf627sdk lib
+add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)

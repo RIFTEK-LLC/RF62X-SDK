@@ -52,6 +52,8 @@ _deps
 mono_crash.*
 
 # Build results
+*[Dd]ebug/
+*[Rr]elease/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -390,3 +392,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Ignored docs
+.mp4
