@@ -33,7 +33,7 @@ typedef struct sockaddr SOCKADDR;
 /**************************************************
  */
 char* _ifs[64];
-int _ifs_cnt;
+int _ifs_cnt = 0;
 
 int GetAdaptersCount()
 {

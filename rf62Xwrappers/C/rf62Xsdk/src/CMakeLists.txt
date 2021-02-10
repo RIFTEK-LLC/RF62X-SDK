@@ -50,7 +50,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
 ## LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-target_link_libraries(${PROJECT_NAME} PUBLIC rf62Xcore)
+target_link_libraries(${PROJECT_NAME} rf62Xcore)
 
 find_package (Threads)
 target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
