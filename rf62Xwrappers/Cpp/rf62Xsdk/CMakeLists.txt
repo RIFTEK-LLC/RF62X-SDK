@@ -41,7 +41,6 @@ set  (SOURCES ${CPP_FILES} ${H_FILES})
 ## create target and add include path
 ##
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
-set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX  "")
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
