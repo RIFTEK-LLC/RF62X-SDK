@@ -612,15 +612,15 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
     rfBool existing = FALSE;
 
     // Get params
-    mpack_tree_t tree;
-    mpack_tree_init_data(&tree, (const char*)data, data_size);
-    mpack_tree_parse(&tree);
-    if (mpack_tree_error(&tree) != mpack_ok)
-    {
-        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-        mpack_tree_destroy(&tree);
-        return status;
-    }
+//    mpack_tree_t tree;
+//    mpack_tree_init_data(&tree, (const char*)data, data_size);
+//    mpack_tree_parse(&tree);
+//    if (mpack_tree_error(&tree) != mpack_ok)
+//    {
+//        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+//        mpack_tree_destroy(&tree);
+//        return status;
+//    }
 
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
     {
@@ -631,6 +631,8 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
                 existing = TRUE;
         }
     }
+
+//    mpack_tree_destroy(&tree);
 
     if (!existing)
     {
@@ -652,8 +654,8 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
         status = SMART_PARSER_RETURN_STATUS_DATA_READY;
     }
 
-    mpack_tree_destroy(&tree);
     return status;
+
 }
 rfInt8 rf627_smart_get_hello_timeout_callback(void* rqst_msg)
 {
@@ -710,8 +712,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *scanner_list, rfUint32 
             bytes[3], bytes[2], bytes[1], bytes[0]);
 
     smart_channel channel;
-    smart_channel_init(&channel, config);
-
+    rfBool res = smart_channel_init(&channel, config);
 
     char* cmd_name                      = "GET_HELLO";
     char* data                          = NULL;
@@ -749,6 +750,7 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *scanner_list, rfUint32 
     smart_channel_cleanup(&channel);
 
     return scanner_count;
+
 }
 
 rfInt8 rf627_smart_check_connection_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)

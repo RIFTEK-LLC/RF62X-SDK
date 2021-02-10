@@ -393,5 +393,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# Ignored docs
-.mp4
+# Ignored docs files
+*.mp4
