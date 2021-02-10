@@ -33,7 +33,7 @@ int main()
         set_platform_adapter_settings(host_mask, host_ip_addr);
 
         // Search for RF627-old devices over network by Service Protocol.
-        search_scanners(scanners, kRF627_SMART, 500, kSERVICE);
+        search_scanners(scanners, kRF627_SMART, 1000, kSERVICE);
     }
 
     // Print count of discovered rf627-smart in network by Service Protocol
