@@ -555,10 +555,11 @@ typedef struct
     rfUint16 m_Type;
     rfUint16 m_CRC16;
     rfUint32 m_Serial;
+    rfUint32 m_DataRowLength;
     rfUint32 m_Width;
     rfUint32 m_Height;
-    rfFloat m_WidthStep;
-    rfFloat m_HeightStep;
+    rfUint32 m_MultW;
+    rfUint32 m_MultH;
     rfInt m_TimeStamp;
 
     rfUint8* m_Data;
