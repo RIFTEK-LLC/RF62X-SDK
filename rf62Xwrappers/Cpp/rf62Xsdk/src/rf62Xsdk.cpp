@@ -240,10 +240,11 @@ calib_table::calib_table(void* table_base)
             m_Type = _calib_table->rf627smart_calib_table->m_Type;
             m_CRC16 = _calib_table->rf627smart_calib_table->m_CRC16;
             m_Serial = _calib_table->rf627smart_calib_table->m_Serial;
+            m_DataRowLength = _calib_table->rf627smart_calib_table->m_DataRowLength;
             m_Width = _calib_table->rf627smart_calib_table->m_Width;
             m_Height = _calib_table->rf627smart_calib_table->m_Height;
-            m_WidthStep = _calib_table->rf627smart_calib_table->m_WidthStep;
-            m_HeightStep = _calib_table->rf627smart_calib_table->m_HeightStep;
+            m_MultW = _calib_table->rf627smart_calib_table->m_MultW;
+            m_MultH = _calib_table->rf627smart_calib_table->m_MultH;
             m_TimeStamp = _calib_table->rf627smart_calib_table->m_TimeStamp;
 
             m_Data = std::vector<uint8_t>(_calib_table->rf627smart_calib_table->m_Data,
@@ -313,6 +314,11 @@ uint32_t calib_table::getSerial()
 {
     return m_Serial;
 }
+
+uint32_t calib_table::getDataRowLength()
+{
+    return m_DataRowLength;
+}
 uint32_t calib_table::getWidth()
 {
     return m_Width;
@@ -321,13 +327,13 @@ uint32_t calib_table::getHeight()
 {
     return m_Height;
 }
-float calib_table::getWidthStep()
+uint8_t calib_table::getMultWidth()
 {
-    return m_WidthStep;
+    return m_MultW;
 }
-float calib_table::getHeightStep()
+uint8_t calib_table::getMultHeight()
 {
-    return m_HeightStep;
+    return m_MultH;
 }
 int calib_table::getTimeStamp()
 {
@@ -3395,16 +3401,17 @@ bool rf627smart::set_calibration_table(std::shared_ptr<calib_table> table)
 
     _table->rf627smart_calib_table = (rf627_smart_calib_table_t*)calloc(1, sizeof (rf627_smart_calib_table_t));
 
-    _table->rf627smart_calib_table->m_CRC16 = table.get()->getCRC16();
-    _table->rf627smart_calib_table->m_Height = table.get()->getHeight();
-    _table->rf627smart_calib_table->m_HeightStep = table.get()->getHeightStep();
-    _table->rf627smart_calib_table->m_Serial = table.get()->getSerial();
-    _table->rf627smart_calib_table->m_TimeStamp = table.get()->getTimeStamp();
     _table->rf627smart_calib_table->m_Type = table.get()->getType();
+    _table->rf627smart_calib_table->m_CRC16 = table.get()->getCRC16();
+    _table->rf627smart_calib_table->m_Serial = table.get()->getSerial();
+    _table->rf627smart_calib_table->m_DataRowLength = table.get()->getDataRowLength();
     _table->rf627smart_calib_table->m_Width = table.get()->getWidth();
-    _table->rf627smart_calib_table->m_WidthStep = table.get()->getWidthStep();
-    _table->rf627smart_calib_table->m_DataSize = table.get()->getData().size();
+    _table->rf627smart_calib_table->m_Height = table.get()->getHeight();
+    _table->rf627smart_calib_table->m_MultW = table.get()->getMultWidth();
+    _table->rf627smart_calib_table->m_MultH = table.get()->getMultHeight();
+    _table->rf627smart_calib_table->m_TimeStamp = table.get()->getTimeStamp();
 
+    _table->rf627smart_calib_table->m_DataSize = table.get()->getData().size();
     _table->rf627smart_calib_table->m_Data = (unsigned char*)calloc(_table->rf627smart_calib_table->m_DataSize, sizeof (uint8_t));
     memcpy(_table->rf627smart_calib_table->m_Data, table.get()->getData().data(), _table->rf627smart_calib_table->m_DataSize * sizeof (uint8_t));
 

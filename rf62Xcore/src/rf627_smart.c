@@ -3025,8 +3025,154 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
     return FALSE;
 }
 
+rfInt8 rf627_smart_read_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
+{
+    answ_count++;
+    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+
+    int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
+
+    // Get params
+    mpack_tree_t tree;
+    mpack_tree_init_data(&tree, (const char*)data, data_size);
+    mpack_tree_parse(&tree);
+    if (mpack_tree_error(&tree) != mpack_ok)
+    {
+        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
+        mpack_tree_destroy(&tree);
+        return status;
+    }
+
+    for (rfUint32 i = 0; i < vector_count(search_result); i++)
+    {
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
+        {
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
+                existing = TRUE;
+        }
+    }
+
+    if (existing)
+    {
+        smart_msg_t* msg = rqst_msg;
+        typedef struct
+        {
+            char* result;
+
+            rfUint32 m_Serial;
+            rfUint32 m_DataRowLength;
+            rfUint32 m_Width;
+            rfUint32 m_Height;
+            rfUint32 m_MultW;
+            rfUint32 m_MultH;
+            rfInt m_TimeStamp;
+        }answer;
+
+        if (msg->result == NULL)
+        {
+            msg->result = calloc(1, sizeof (answer));
+        }
+
+        mpack_node_t root = mpack_tree_root(&tree);
+
+        if (mpack_node_map_contains_cstr(root, "result"))
+        {
+            mpack_node_t result_data = mpack_node_map_cstr(root, "result");
+            uint32_t result_size = mpack_node_strlen(result_data) + 1;
+            answer* answ =  (answer*)msg->result;
+            answ->result = mpack_node_cstr_alloc(result_data, result_size);
+
+            if (rf_strcmp(answ->result, "RF_OK") == 0)
+            {
+                if (mpack_node_map_contains_cstr(root, "serial"))
+                {
+                    mpack_node_t serial = mpack_node_map_cstr(root, "serial");
+                    answ->m_Serial = mpack_node_u32(serial);
+                }
+                if (mpack_node_map_contains_cstr(root, "data_row_length"))
+                {
+                    mpack_node_t data_row_length = mpack_node_map_cstr(root, "data_row_length");
+                    answ->m_DataRowLength = mpack_node_u32(data_row_length);
+                }
+                if (mpack_node_map_contains_cstr(root, "width"))
+                {
+                    mpack_node_t width = mpack_node_map_cstr(root, "width");
+                    answ->m_Width = mpack_node_u32(width);
+                }
+                if (mpack_node_map_contains_cstr(root, "height"))
+                {
+                    mpack_node_t height = mpack_node_map_cstr(root, "height");
+                    answ->m_Height = mpack_node_u32(height);
+                }
+                if (mpack_node_map_contains_cstr(root, "mult_w"))
+                {
+                    mpack_node_t mult_w = mpack_node_map_cstr(root, "mult_w");
+                    answ->m_MultW = mpack_node_u32(mult_w);
+                }
+                if (mpack_node_map_contains_cstr(root, "mult_h"))
+                {
+                    mpack_node_t mult_h = mpack_node_map_cstr(root, "mult_h");
+                    answ->m_MultH = mpack_node_u32(mult_h);
+                }
+                if (mpack_node_map_contains_cstr(root, "time_stamp"))
+                {
+                    mpack_node_t time_stamp = mpack_node_map_cstr(root, "time_stamp");
+                    answ->m_TimeStamp = mpack_node_i32(time_stamp);
+                }
+            }
+        }
+
+        status = SMART_PARSER_RETURN_STATUS_DATA_READY;
+    }
+
+
+    mpack_tree_destroy(&tree);
+    return TRUE;
+}
+rfInt8 rf627_smart_read_calibration_data_timeout_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    return TRUE;
+}
+rfInt8 rf627_smart_read_calibration_data_free_result_callback(void* rqst_msg)
+{
+    smart_msg_t* msg = rqst_msg;
+
+    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_msg_uid);
+
+    if (msg->result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+
+            rfUint32 m_Serial;
+            rfUint32 m_DataRowLength;
+            rfUint32 m_Width;
+            rfUint32 m_Height;
+            rfUint32 m_MultW;
+            rfUint32 m_MultH;
+            rfInt m_TimeStamp;
+        }answer;
+
+        free(((answer*)msg->result)->result);
+        free(msg->result);
+        msg->result = NULL;
+    }
+
+    return TRUE;
+}
 rfBool rf627_smart_read_calibration_table_by_service_protocol(rf627_smart_t* scanner, rfUint32 timeout)
 {
+
     if (scanner->calib_table.m_Data != NULL)
     {
         free(scanner->calib_table.m_Data);
@@ -3047,12 +3193,148 @@ rfBool rf627_smart_read_calibration_table_by_service_protocol(rf627_smart_t* sca
     scanner->calib_table.m_Width = width->val_uint32->value;
     scanner->calib_table.m_Height = height->val_uint32->value;
 
-    scanner->calib_table.m_WidthStep = 1.0;
-    scanner->calib_table.m_HeightStep = 0.5;
+    scanner->calib_table.m_DataRowLength = 8192;
+
+    scanner->calib_table.m_MultW = 1;
+    scanner->calib_table.m_MultH = 2;
 
     scanner->calib_table.m_TimeStamp = time(NULL);
 
     return TRUE;
+
+    char* cmd_name                      = "GET_CALIBRATION_INFO";
+    char* data                          = NULL;
+    uint32_t data_size                  = 0;
+    char* data_type                     = "blob";
+    uint8_t is_check_crc                = FALSE;
+    uint8_t is_confirmation             = FALSE;
+    uint8_t is_one_answ                 = TRUE;
+    uint32_t waiting_time               = timeout;
+    smart_answ_callback answ_clb        = rf627_smart_read_calibration_data_callback;
+    smart_timeout_callback timeout_clb  = rf627_smart_read_calibration_data_timeout_callback;
+    smart_free_callback free_clb        = rf627_smart_read_calibration_data_free_result_callback;
+
+    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                             is_check_crc, is_confirmation, is_one_answ,
+                                             waiting_time,
+                                             answ_clb, timeout_clb, free_clb);
+
+    // Send test msg
+    if (!smart_channel_send_msg(&scanner->channel, msg))
+        printf("No data has been sent.\n");
+    else
+        printf("Requests were sent.\n");
+
+    void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
+    if (result != NULL)
+    {
+        typedef struct
+        {
+            char* result;
+
+            rfUint32 m_Serial;
+            rfUint32 m_DataRowLength;
+            rfUint32 m_Width;
+            rfUint32 m_Height;
+            rfUint32 m_MultW;
+            rfUint32 m_MultH;
+            rfInt m_TimeStamp;
+        }answer;
+
+        answer* answ = (answer*)result;
+
+        if (rf_strcmp(answ->result, "RF_OK") == 0)
+        {
+            if (scanner->calib_table.m_Data != NULL)
+            {
+                free(scanner->calib_table.m_Data);
+                scanner->calib_table.m_Data = NULL;
+                scanner->calib_table.m_DataSize = 0;
+            }
+
+            scanner->calib_table.m_Data = NULL;
+            scanner->calib_table.m_DataSize = 0;
+
+            scanner->calib_table.m_Serial = answ->m_Serial;
+            scanner->calib_table.m_CRC16 = 0;
+            scanner->calib_table.m_Type = 0x03;
+            scanner->calib_table.m_DataRowLength = answ->m_DataRowLength;
+            scanner->calib_table.m_Width = answ->m_Width;
+            scanner->calib_table.m_Height = answ->m_Height;
+
+            scanner->calib_table.m_MultW = answ->m_MultW;
+            scanner->calib_table.m_MultH = answ->m_MultH;
+
+            scanner->calib_table.m_TimeStamp = answ->m_TimeStamp;
+            // Cleanup test msg
+            smart_cleanup_msg(msg);
+            free(msg); msg = NULL;
+            return TRUE;
+        }else
+        {
+            if (scanner->calib_table.m_Data != NULL)
+            {
+                free(scanner->calib_table.m_Data);
+                scanner->calib_table.m_Data = NULL;
+                scanner->calib_table.m_DataSize = 0;
+            }
+
+            scanner->calib_table.m_Data = NULL;
+            scanner->calib_table.m_DataSize = 0;
+
+            scanner->calib_table.m_Serial = scanner->info_by_service_protocol.fact_general_serial;
+            scanner->calib_table.m_CRC16 = 0;
+            scanner->calib_table.m_Type = 0x03;
+
+            parameter_t* width = rf627_smart_get_parameter(scanner, "fact_sensor_width");
+            parameter_t* height = rf627_smart_get_parameter(scanner, "fact_sensor_height");
+
+            scanner->calib_table.m_Width = width->val_uint32->value;
+            scanner->calib_table.m_Height = height->val_uint32->value;
+
+            scanner->calib_table.m_DataRowLength = 8192;
+
+            scanner->calib_table.m_MultW = 1;
+            scanner->calib_table.m_MultH = 2;
+
+            scanner->calib_table.m_TimeStamp = time(NULL);
+        }
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        return FALSE;
+    }else
+    {
+        if (scanner->calib_table.m_Data != NULL)
+        {
+            free(scanner->calib_table.m_Data);
+            scanner->calib_table.m_Data = NULL;
+            scanner->calib_table.m_DataSize = 0;
+        }
+
+        scanner->calib_table.m_Data = NULL;
+        scanner->calib_table.m_DataSize = 0;
+
+        scanner->calib_table.m_Serial = scanner->info_by_service_protocol.fact_general_serial;
+        scanner->calib_table.m_CRC16 = 0;
+        scanner->calib_table.m_Type = 0x03;
+
+        parameter_t* width = rf627_smart_get_parameter(scanner, "fact_sensor_width");
+        parameter_t* height = rf627_smart_get_parameter(scanner, "fact_sensor_height");
+
+        scanner->calib_table.m_Width = width->val_uint32->value;
+        scanner->calib_table.m_Height = height->val_uint32->value;
+
+        scanner->calib_table.m_DataRowLength = 8192;
+
+        scanner->calib_table.m_MultW = 1;
+        scanner->calib_table.m_MultH = 2;
+
+        scanner->calib_table.m_TimeStamp = time(NULL);
+    }
+
+    return FALSE;
 }
 
 uint16_t gen_crc16(const uint8_t *data, uint32_t len)
@@ -3164,7 +3446,7 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
     mpack_writer_init_growable(&writer, &payload, &bytes);
 
     // Идентификатор сообщения для подтверждения
-    mpack_start_map(&writer, 9);
+    mpack_start_map(&writer, 10);
     {
         mpack_write_cstr(&writer, "type");
         mpack_write_uint(&writer, scanner->calib_table.m_Type);
@@ -3175,17 +3457,20 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
         mpack_write_cstr(&writer, "serial");
         mpack_write_uint(&writer, scanner->calib_table.m_Serial);
 
+        mpack_write_cstr(&writer, "data_row_length");
+        mpack_write_uint(&writer, scanner->calib_table.m_DataRowLength);
+
         mpack_write_cstr(&writer, "width");
         mpack_write_uint(&writer, scanner->calib_table.m_Width);
 
         mpack_write_cstr(&writer, "height");
         mpack_write_uint(&writer, scanner->calib_table.m_Height);
 
-        mpack_write_cstr(&writer, "step_w");
-        mpack_write_float(&writer, scanner->calib_table.m_WidthStep);
+        mpack_write_cstr(&writer, "mult_w");
+        mpack_write_uint(&writer, scanner->calib_table.m_MultW);
 
-        mpack_write_cstr(&writer, "step_h");
-        mpack_write_float(&writer, scanner->calib_table.m_HeightStep);
+        mpack_write_cstr(&writer, "mult_h");
+        mpack_write_uint(&writer, scanner->calib_table.m_MultH);
 
         mpack_write_cstr(&writer, "time_stamp");
         mpack_write_int(&writer, scanner->calib_table.m_TimeStamp);
@@ -3393,16 +3678,17 @@ rf627_smart_calib_table_t* rf627_smart_get_calibration_table(rf627_smart_t* scan
 {
     rf627_smart_calib_table_t* _calib_table = (rf627_smart_calib_table_t*)calloc(1, sizeof (rf627_smart_calib_table_t));
 
-    _calib_table->m_CRC16 = scanner->calib_table.m_CRC16;
-    _calib_table->m_Height = scanner->calib_table.m_Height;
-    _calib_table->m_HeightStep = scanner->calib_table.m_HeightStep;
-    _calib_table->m_Serial = scanner->calib_table.m_Serial;
-    _calib_table->m_TimeStamp = scanner->calib_table.m_TimeStamp;
     _calib_table->m_Type = scanner->calib_table.m_Type;
+    _calib_table->m_CRC16 = scanner->calib_table.m_CRC16;
+    _calib_table->m_Serial = scanner->calib_table.m_Serial;
+    _calib_table->m_DataRowLength = scanner->calib_table.m_DataRowLength;
     _calib_table->m_Width = scanner->calib_table.m_Width;
-    _calib_table->m_WidthStep = scanner->calib_table.m_WidthStep;
-    _calib_table->m_DataSize = scanner->calib_table.m_DataSize;
+    _calib_table->m_Height = scanner->calib_table.m_Height;
+    _calib_table->m_MultW = scanner->calib_table.m_MultW;
+    _calib_table->m_MultH = scanner->calib_table.m_MultH;
+    _calib_table->m_TimeStamp = scanner->calib_table.m_TimeStamp;
 
+    _calib_table->m_DataSize = scanner->calib_table.m_DataSize;
     _calib_table->m_Data = calloc(_calib_table->m_DataSize, sizeof (uint8_t));
     memcpy(_calib_table->m_Data, scanner->calib_table.m_Data, _calib_table->m_DataSize * sizeof (uint8_t));
 
@@ -3411,16 +3697,17 @@ rf627_smart_calib_table_t* rf627_smart_get_calibration_table(rf627_smart_t* scan
 
 rfBool rf627_smart_set_calibration_table(rf627_smart_t* scanner, rf627_smart_calib_table_t* table)
 {
-    scanner->calib_table.m_CRC16 = table->m_CRC16;
-    scanner->calib_table.m_Height = table->m_Height;
-    scanner->calib_table.m_HeightStep = table->m_HeightStep;
-    scanner->calib_table.m_Serial = table->m_Serial;
-    scanner->calib_table.m_TimeStamp = table->m_TimeStamp;
     scanner->calib_table.m_Type = table->m_Type;
+    scanner->calib_table.m_CRC16 = table->m_CRC16;
+    scanner->calib_table.m_Serial = table->m_Serial;
+    scanner->calib_table.m_DataRowLength = table->m_DataRowLength;
     scanner->calib_table.m_Width = table->m_Width;
-    scanner->calib_table.m_WidthStep = table->m_WidthStep;
-    scanner->calib_table.m_DataSize = table->m_DataSize;
+    scanner->calib_table.m_Height = table->m_Height;
+    scanner->calib_table.m_MultW = table->m_MultW;
+    scanner->calib_table.m_MultH = table->m_MultH;
+    scanner->calib_table.m_TimeStamp = table->m_TimeStamp;
 
+    scanner->calib_table.m_DataSize = table->m_DataSize;
     scanner->calib_table.m_Data = calloc(scanner->calib_table.m_DataSize, sizeof (uint8_t));
     memcpy(scanner->calib_table.m_Data, table->m_Data, scanner->calib_table.m_DataSize * sizeof (uint8_t));
 }

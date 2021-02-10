@@ -90,10 +90,11 @@ public:
     uint16_t getType();
     uint16_t getCRC16();
     uint32_t getSerial();
+    uint32_t getDataRowLength();
     uint32_t getWidth();
     uint32_t getHeight();
-    float getWidthStep();
-    float getHeightStep();
+    uint8_t getMultWidth();
+    uint8_t getMultHeight();
     int getTimeStamp();
 
     std::vector<uint8_t> getData();
@@ -112,10 +113,11 @@ private:
     uint16_t m_Type;
     uint16_t m_CRC16;
     uint32_t m_Serial;
+    uint32_t m_DataRowLength;
     uint32_t m_Width;
     uint32_t m_Height;
-    float m_WidthStep;
-    float m_HeightStep;
+    uint8_t m_MultW;
+    uint8_t m_MultH;
     int m_TimeStamp;
 
     std::vector<uint8_t> m_Data;
