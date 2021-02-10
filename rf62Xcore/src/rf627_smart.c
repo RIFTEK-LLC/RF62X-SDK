@@ -16,8 +16,8 @@
 #include<time.h>
 void delay(unsigned int mseconds)
 {
-    clock_t goal = mseconds + clock();
-    while (goal > clock());
+    clock_t goal = mseconds + clock() * (1000.0 /CLOCKS_PER_SEC);
+    while (goal > clock() * (1000.0 /CLOCKS_PER_SEC));
 }
 
 int answ_count = 0;

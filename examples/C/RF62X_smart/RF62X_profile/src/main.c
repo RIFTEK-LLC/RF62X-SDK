@@ -111,7 +111,7 @@ int main()
 
     // Cleanup resources allocated with core_init()
     FreeAdapterAddresses();
-    WinSockDeinit();
+    //WinSockDeinit();
 }
 
 

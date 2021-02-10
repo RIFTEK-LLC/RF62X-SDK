@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
 
     int count = 30;
-    int timeout = 500;
+    int timeout = 1000;
     if(argc>=3)
     {
         count = atoi(argv[1]);
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     // Create value for scanners vector's type
     std::vector<std::shared_ptr<rf627smart>> list;
     // Search for rf627smart devices over network
-    list = rf627smart::search(500);
+    list = rf627smart::search(timeout);
 
 
     // Print count of discovered rf627smart in network by Service Protocol
