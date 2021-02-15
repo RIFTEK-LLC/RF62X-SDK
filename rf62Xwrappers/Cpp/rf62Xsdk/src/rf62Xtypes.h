@@ -134,6 +134,66 @@ enum class PROFILE_DATA_TYPE{
     PROFILE_INTRP		= 0x13
 };
 
+class version{
+public:
+    uint8_t major;
+    uint8_t minor;
+    uint8_t patch;
+
+    std::string to_string();
+    uint32_t to_uint();
+
+    friend std::ostream& operator<<(std::ostream& out, const version &v);
+    friend bool operator == (const version& v1, const version &v2);
+    friend bool operator != (const version& v1, const version &v2);
+    friend bool operator <= (const version& v1, const version &v2);
+    friend bool operator >= (const version& v1, const version &v2);
+    friend bool operator < (const version& v1, const version &v2);
+    friend bool operator > (const version& v1, const version &v2);
+
+    version();
+    version(uint32_t value);
+    version(std::string value);
+    version(uint32_t* value);
+    ~version();
+private:
+    uint32_t _value;
+};
+
+class hello_info
+{
+public:
+    const std::string& device_name();
+    const uint32_t& serial_number();
+    const std::string& ip_address();
+    const std::string& mac_address();
+    const uint16_t& profile_port();
+    const uint16_t& service_port();
+    const version& firmware_version();
+    const version& hardware_version();
+    const uint32_t& z_smr();
+    const uint32_t& z_mr();
+    const uint32_t& x_smr();
+    const uint32_t& x_emr();
+
+    hello_info(void* base_hello, SCANNER_TYPES type, PROTOCOLS protocol);
+    ~hello_info();
+
+private:
+    std::string _device_name;
+    uint32_t _serial_number;
+    std::string _ip_address;
+    std::string _mac_address;
+    uint16_t _profile_port;
+    uint16_t _service_port;
+    version _firmware_version;
+    version _hardware_version;
+    uint32_t _z_smr;
+    uint32_t _z_mr;
+    uint32_t _x_smr;
+    uint32_t _x_emr;
+};
+
 /*! Structure to store a profile
  */
 class profile2D

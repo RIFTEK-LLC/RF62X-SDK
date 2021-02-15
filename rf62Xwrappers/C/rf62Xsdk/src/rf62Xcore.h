@@ -5,7 +5,7 @@
 
 
 
-#if (defined _WIN32 && defined RF627_LIBRARY)
+#if (defined _WIN32 && defined RF62X_LIBRARY)
 #define API_EXPORT __declspec(dllexport)
 #else
 #define API_EXPORT

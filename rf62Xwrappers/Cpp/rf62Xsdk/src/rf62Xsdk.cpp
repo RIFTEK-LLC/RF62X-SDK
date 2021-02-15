@@ -1458,6 +1458,250 @@ template<> bool param::setValue(std::string value) const
     return true;
 }
 
+
+std::ostream &operator<<(std::ostream &out, version const &v)
+{
+    out << std::to_string(v.major) << "."
+        << std::to_string(v.minor) << "."
+        << std::to_string(v.patch);
+    return out;
+}
+
+bool operator ==(const version &v1, const version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator !=(const version &v1,const  version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator <=(const version &v1, const version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <=
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator >=(const version &v1, const version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >=
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator <(const version &v1, const version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+bool operator >(const version &v1, const version &v2)
+{
+    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >
+            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
+}
+
+std::string version::to_string()
+{
+    std::string s;
+    s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
+    return s;
+}
+
+uint32_t version::to_uint()
+{
+    return _value;
+}
+
+version::version()
+{
+    version((uint32_t)0);
+}
+
+version::version(uint32_t value)
+{
+    major = (((uint8_t*)(void*)(&value))[3]);
+    minor = (((uint8_t*)(void*)(&value))[2]);
+    patch = (((uint8_t*)(void*)(&value))[1]);
+    _value = value;
+}
+
+version::version(std::string value)
+{
+    std::string s = value;
+    std::string delimiter = ".";
+
+    size_t pos = 0;
+    std::string token;
+
+    token = s.substr(0, pos);
+    major =  std::stoi(token);
+    s.erase(0, pos + delimiter.length());
+
+    token = s.substr(0, pos);
+    minor =  std::stoi(token);
+    s.erase(0, pos + delimiter.length());
+
+    token = s.substr(0, pos);
+    patch =  std::stoi(token);
+    s.erase(0, pos + delimiter.length());
+
+    _value = (major << 3) + (minor << 2) + (patch << 1);
+}
+
+version::version(uint32_t *value)
+{
+    major = value[0];
+    minor = value[1];
+    patch = value[2];
+    _value = (major << 3) + (minor << 2) + (patch << 1);
+}
+
+version::~version()
+{
+
+}
+
+const std::string& hello_info::device_name()
+{
+    return _device_name;
+}
+
+const uint32_t& hello_info::serial_number()
+{
+    return _serial_number;
+}
+
+const std::string& hello_info::ip_address()
+{
+    return _ip_address;
+}
+
+const std::string& hello_info::mac_address()
+{
+    return _mac_address;
+}
+
+const uint16_t& hello_info::profile_port()
+{
+    return _profile_port;
+}
+
+const uint16_t& hello_info::service_port()
+{
+    return _service_port;
+}
+
+const version& hello_info::firmware_version()
+{
+    return _firmware_version;
+}
+
+const version& hello_info::hardware_version()
+{
+    return _hardware_version;
+}
+
+const uint32_t& hello_info::z_smr()
+{
+    return _z_smr;
+}
+
+const uint32_t& hello_info::z_mr()
+{
+    return _z_mr;
+}
+
+const uint32_t& hello_info::x_smr()
+{
+    return _x_smr;
+}
+
+const uint32_t& hello_info::x_emr()
+{
+    return _x_emr;
+}
+
+
+hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
+{
+    switch (type) {
+    case SCANNER_TYPES::RF627_OLD:
+    {
+        switch (protocol) {
+        case PROTOCOLS::SERVICE:
+        {
+            _device_name = ((rf627_old_hello_info_by_service_protocol*)info)->device_name;
+            _serial_number = ((rf627_old_hello_info_by_service_protocol*)info)->serial_number;
+
+            in_addr addr = {0};
+            uint32_t ip = ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[0] << 24 |
+                          ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[1] << 16 |
+                          ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[2] << 8 |
+                          ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[3];
+            addr.s_addr = htonl(ip);
+            _ip_address = inet_ntoa(addr);
+            _mac_address = "";
+
+            for (int i = 0; i < 6; i++)
+            {
+                if (i != 0)
+                    _mac_address += ":";
+                _mac_address += convert::to_hex(((rf627_old_hello_info_by_service_protocol*)info)->mac_address[i], 2);
+            }
+
+            _profile_port = ((rf627_old_hello_info_by_service_protocol*)info)->profile_port;
+            _service_port = ((rf627_old_hello_info_by_service_protocol*)info)->service_port;
+
+            _firmware_version = version(((rf627_old_hello_info_by_service_protocol*)info)->firmware_version);
+            _hardware_version = version(((rf627_old_hello_info_by_service_protocol*)info)->hardware_version);
+
+            _z_smr = ((rf627_old_hello_info_by_service_protocol*)info)->z_begin;
+            _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
+            _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
+            _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    case SCANNER_TYPES::RF627_SMART:
+    {
+        switch (protocol) {
+        case PROTOCOLS::SERVICE:
+        {
+            _device_name = ((rf627_smart_hello_info_by_service_protocol*)info)->user_general_deviceName;
+            _serial_number = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_serial;
+            _ip_address = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_ip;
+            _mac_address = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_network_macAddr;
+
+            _profile_port = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_hostPort;
+            _service_port = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_servicePort;
+
+            _firmware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
+            _hardware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
+
+            _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
+            _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
+            _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
+            //_x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr + ;
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+hello_info::~hello_info()
+{
+
+}
+
+
 profile2D::profile2D(void* profile_base)
 {
     m_ProfileBase = profile_base;
@@ -1791,7 +2035,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 
 }
 
-rf627old::hello_info rf627old::get_info(PROTOCOLS protocol)
+hello_info rf627old::get_info(PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -1804,7 +2048,7 @@ rf627old::hello_info rf627old::get_info(PROTOCOLS protocol)
     {
         hello_information info = get_info_about_scanner(((scanner_base_t*)this->scanner_base), kSERVICE);
 
-        hello_info _hello_info = hello_info(info.rf627old.hello_info_service_protocol, PROTOCOLS::SERVICE);
+        hello_info _hello_info = hello_info(info.rf627old.hello_info_service_protocol, SCANNER_TYPES::RF627_OLD, PROTOCOLS::SERVICE);
 
         return _hello_info;
         break;
@@ -1813,7 +2057,7 @@ rf627old::hello_info rf627old::get_info(PROTOCOLS protocol)
         break;
     }
 
-    hello_info _hello_info = hello_info(nullptr, PROTOCOLS::CURRENT);
+    hello_info _hello_info = hello_info(nullptr, SCANNER_TYPES::RF627_OLD, PROTOCOLS::CURRENT);
     return _hello_info;
 }
 
@@ -2248,7 +2492,7 @@ parameter_t* create_parameter_from_type(std::string type)
     return p;
 }
 
-bool rf627old::set_param(std::shared_ptr<param>& param)
+bool rf627old::set_param(std::shared_ptr<param> param)
 {
     parameter_t* p = create_parameter_from_type(param->getType().c_str());
     if (p != NULL)
@@ -2355,246 +2599,27 @@ bool rf627old::set_param(std::shared_ptr<param>& param)
     }
     return false;
 }
-bool rf627old::set_param(const char* param_name, int arg_count, ...)
-{
-    va_list valist;
-    va_start(valist, arg_count);
 
-    bool result = set_parameter_by_name(
-                (scanner_base_t*)this->scanner_base, param_name, arg_count, valist);
 
-    va_end(valist);
-
-    return result;
-}
-bool rf627old::set_param(int param_id, int arg_count, ...)
-{
-    va_list valist;
-    va_start(valist, arg_count);
-
-    bool result = set_parameter_by_name(
-                (scanner_base_t*)this->scanner_base, parameter_names[param_id].c_str(), arg_count, valist);
-
-    va_end(valist);
-
-    return result;
-}
-
-bool rf627old::send_cmd(const char* command_name, int arg_count, ...)
-{
-    va_list valist;
-    va_start(valist, arg_count);
-
-    //int arg1 = va_arg(valist, int);
-    //int arg2 = va_arg(valist, int);
-
-    command_t cmd = {0};
-    cmd.name = command_name;
-    va_copy (cmd.arg_list, valist);
-
-    bool result = send_command((scanner_base_t*)this->scanner_base, &cmd);
-
-    va_end(valist);
-
-    return result;
-}
-
-bool rf627old::send_cmd(const char* command_name,
-                        std::vector<uint8_t>* input, std::vector<uint8_t>* output)
+bool rf627old::send_cmd(std::string command_name,
+                        std::vector<uint8_t> input, std::vector<uint8_t>& output)
 {
 
 
     command2_t cmd = {0};
-    cmd.name = command_name;
-    cmd.input.size = input->size();
-    cmd.input.payload = (rfUint8*)input->data();
+    const char* command_name_c = command_name.c_str();
+    cmd.name = command_name_c;
+    cmd.input.size = input.size();
+    cmd.input.payload = (rfUint8*)input.data();
     bool result = send_command2((scanner_base_t*)this->scanner_base, &cmd);
 
     for (int i = 0; i < cmd.output.size; i++)
-        output->push_back(((uint8_t*)cmd.output.payload)[i]);
+        output.push_back(((uint8_t*)cmd.output.payload)[i]);
 
     free(cmd.output.payload);
 
     return result;
 }
-
-const std::string& rf627old::hello_info::device_name()
-{
-    return _device_name;
-}
-
-const uint32_t& rf627old::hello_info::serial_number()
-{
-    return _serial_number;
-}
-
-const std::string& rf627old::hello_info::ip_address()
-{
-    return _ip_address;
-}
-
-const std::string& rf627old::hello_info::mac_address()
-{
-    return _mac_address;
-}
-
-const uint16_t& rf627old::hello_info::profile_port()
-{
-    return _profile_port;
-}
-
-const uint16_t& rf627old::hello_info::service_port()
-{
-    return _service_port;
-}
-
-const rf627old::hello_info::version& rf627old::hello_info::firmware_version()
-{
-    return _firmware_version;
-}
-
-const rf627old::hello_info::version& rf627old::hello_info::hardware_version()
-{
-    return _hardware_version;
-}
-
-const uint32_t& rf627old::hello_info::z_smr()
-{
-    return _z_smr;
-}
-
-const uint32_t& rf627old::hello_info::z_mr()
-{
-    return _z_mr;
-}
-
-const uint32_t& rf627old::hello_info::x_smr()
-{
-    return _x_smr;
-}
-
-const uint32_t& rf627old::hello_info::x_emr()
-{
-    return _x_emr;
-}
-
-
-rf627old::hello_info::hello_info(void* info, PROTOCOLS protocol)
-{
-    switch (protocol) {
-    case PROTOCOLS::SERVICE:
-    {
-        _device_name = ((rf627_old_hello_info_by_service_protocol*)info)->device_name;
-        _serial_number = ((rf627_old_hello_info_by_service_protocol*)info)->serial_number;
-
-        in_addr addr = {0};
-        uint32_t ip = ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[0] << 24 |
-                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[1] << 16 |
-                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[2] << 8 |
-                      ((rf627_old_hello_info_by_service_protocol*)info)->ip_address[3];
-        addr.s_addr = htonl(ip);
-        _ip_address = inet_ntoa(addr);
-        _mac_address = "";
-
-        for (int i = 0; i < 6; i++)
-        {
-            if (i != 0)
-                _mac_address += ":";
-            _mac_address += convert::to_hex(((rf627_old_hello_info_by_service_protocol*)info)->mac_address[i], 2);
-        }
-
-        _profile_port = ((rf627_old_hello_info_by_service_protocol*)info)->profile_port;
-        _service_port = ((rf627_old_hello_info_by_service_protocol*)info)->service_port;
-
-        _firmware_version = hello_info::version(((rf627_old_hello_info_by_service_protocol*)info)->firmware_version);
-        _hardware_version = hello_info::version(((rf627_old_hello_info_by_service_protocol*)info)->hardware_version);
-
-        _z_smr = ((rf627_old_hello_info_by_service_protocol*)info)->z_begin;
-        _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
-        _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
-        _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
-        break;
-    }
-    default:
-        break;
-    }
-
-}
-
-rf627old::hello_info::~hello_info()
-{
-
-}
-
-std::ostream &operator<<(std::ostream &out, rf627old::hello_info::version const &v)
-{
-    out << std::to_string(v.major) << "."
-        << std::to_string(v.minor) << "."
-        << std::to_string(v.patch);
-    return out;
-}
-
-bool operator ==(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator !=(const rf627old::hello_info::version &v1,const  rf627old::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator <=(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <=
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator >=(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >=
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator <(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator >(const rf627old::hello_info::version &v1, const rf627old::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-
-std::string rf627old::hello_info::version::to_string()
-{
-    std::string s;
-    s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
-    return s;
-}
-
-uint32_t rf627old::hello_info::version::to_uint()
-{
-    return _value;
-}
-
-rf627old::hello_info::version::version()
-{
-    version(0);
-}
-
-rf627old::hello_info::version::version(uint32_t value)
-{
-    major = (((uint8_t*)(void*)(&value))[3]);
-    minor = (((uint8_t*)(void*)(&value))[2]);
-    patch = (((uint8_t*)(void*)(&value))[1]);
-    _value = value;
-}
-
-rf627old::hello_info::version::~version()
-{
-
-}
-
 
 //
 // RF627
@@ -2658,7 +2683,7 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
 
 }
 
-rf627smart::hello_info rf627smart::get_info(PROTOCOLS protocol)
+std::shared_ptr<hello_info> rf627smart::get_info(PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -2671,7 +2696,7 @@ rf627smart::hello_info rf627smart::get_info(PROTOCOLS protocol)
     {
         hello_information info = get_info_about_scanner(((scanner_base_t*)this->scanner_base), kSERVICE);
 
-        hello_info _hello_info = hello_info(info.rf627smart.hello_info_service_protocol, PROTOCOLS::SERVICE);
+        std::shared_ptr<hello_info> _hello_info(new hello_info(info.rf627smart.hello_info_service_protocol, SCANNER_TYPES::RF627_SMART, PROTOCOLS::SERVICE));
 
         return _hello_info;
         break;
@@ -2680,8 +2705,7 @@ rf627smart::hello_info rf627smart::get_info(PROTOCOLS protocol)
         break;
     }
 
-    hello_info _hello_info = hello_info(nullptr, PROTOCOLS::CURRENT);
-    return _hello_info;
+    return nullptr;
 }
 
 rf627smart::rf627smart(void* base)
@@ -3254,63 +3278,19 @@ bool rf627smart::set_param(std::shared_ptr<param> param)
     }
     return false;
 }
-bool rf627smart::set_param(const char* param_name, int arg_count, ...)
+
+bool rf627smart::send_cmd(std::string command_name,
+                          std::vector<uint8_t> input, std::vector<uint8_t>& output)
 {
-    va_list valist;
-    va_start(valist, arg_count);
-
-    bool result = set_parameter_by_name(
-                (scanner_base_t*)this->scanner_base, param_name, arg_count, valist);
-
-    va_end(valist);
-
-    return result;
-}
-bool rf627smart::set_param(int param_id, int arg_count, ...)
-{
-    va_list valist;
-    va_start(valist, arg_count);
-
-    bool result = set_parameter_by_name(
-                (scanner_base_t*)this->scanner_base, parameter_names[param_id].c_str(), arg_count, valist);
-
-    va_end(valist);
-
-    return result;
-}
-
-bool rf627smart::send_cmd(const char* command_name, int arg_count, ...)
-{
-    va_list valist;
-    va_start(valist, arg_count);
-
-    //int arg1 = va_arg(valist, int);
-    //int arg2 = va_arg(valist, int);
-
-    command_t cmd = {0};
-    cmd.name = command_name;
-    va_copy (cmd.arg_list, valist);
-
-    bool result = send_command((scanner_base_t*)this->scanner_base, &cmd);
-
-    va_end(valist);
-
-    return result;
-}
-
-bool rf627smart::send_cmd(const char* command_name,
-                        std::vector<uint8_t>* input, std::vector<uint8_t>* output)
-{
-
-
     command2_t cmd = {0};
-    cmd.name = command_name;
-    cmd.input.size = input->size();
-    cmd.input.payload = (rfUint8*)input->data();
+    const char* command_name_c = command_name.c_str();
+    cmd.name = command_name_c;
+    cmd.input.size = input.size();
+    cmd.input.payload = (rfUint8*)input.data();
     bool result = send_command2((scanner_base_t*)this->scanner_base, &cmd);
 
     for (int i = 0; i < cmd.output.size; i++)
-        output->push_back(((uint8_t*)cmd.output.payload)[i]);
+        output.push_back(((uint8_t*)cmd.output.payload)[i]);
 
     free(cmd.output.payload);
 
@@ -3502,199 +3482,8 @@ bool rf627smart::save_calibration_table(PROTOCOLS protocol)
 }
 
 
-const std::string& rf627smart::hello_info::device_name()
-{
-    return _device_name;
-}
-
-const uint32_t& rf627smart::hello_info::serial_number()
-{
-    return _serial_number;
-}
-
-const std::string& rf627smart::hello_info::ip_address()
-{
-    return _ip_address;
-}
-
-const std::string& rf627smart::hello_info::mac_address()
-{
-    return _mac_address;
-}
-
-const uint16_t& rf627smart::hello_info::profile_port()
-{
-    return _profile_port;
-}
-
-const uint16_t& rf627smart::hello_info::service_port()
-{
-    return _service_port;
-}
-
-const rf627smart::hello_info::version& rf627smart::hello_info::firmware_version()
-{
-    return _firmware_version;
-}
-
-const rf627smart::hello_info::version& rf627smart::hello_info::hardware_version()
-{
-    return _hardware_version;
-}
-
-const uint32_t& rf627smart::hello_info::z_smr()
-{
-    return _z_smr;
-}
-
-const uint32_t& rf627smart::hello_info::z_mr()
-{
-    return _z_mr;
-}
-
-const uint32_t& rf627smart::hello_info::x_smr()
-{
-    return _x_smr;
-}
-
-const uint32_t& rf627smart::hello_info::x_emr()
-{
-    return _x_emr;
-}
 
 
-rf627smart::hello_info::hello_info(void* info, PROTOCOLS protocol)
-{
-    switch (protocol) {
-    case PROTOCOLS::SERVICE:
-    {
-        _device_name = ((rf627_smart_hello_info_by_service_protocol*)info)->user_general_deviceName;
-        _serial_number = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_serial;
-        _ip_address = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_ip;
-        _mac_address = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_network_macAddr;
-
-        _profile_port = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_hostPort;
-        _service_port = ((rf627_smart_hello_info_by_service_protocol*)info)->user_network_servicePort;
-
-        _firmware_version = hello_info::version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
-        _hardware_version = hello_info::version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
-
-        _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
-        _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
-        _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
-        //_x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr + ;
-        break;
-    }
-    default:
-        break;
-    }
-
-}
-
-rf627smart::hello_info::~hello_info()
-{
-
-}
-
-std::ostream &operator<<(std::ostream &out, rf627smart::hello_info::version const &v)
-{
-    out << std::to_string(v.major) << "."
-        << std::to_string(v.minor) << "."
-        << std::to_string(v.patch);
-    return out;
-}
-
-bool operator ==(const rf627smart::hello_info::version &v1, const rf627smart::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator !=(const rf627smart::hello_info::version &v1,const  rf627smart::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) ==
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator <=(const rf627smart::hello_info::version &v1, const rf627smart::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <=
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator >=(const rf627smart::hello_info::version &v1, const rf627smart::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >=
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator <(const rf627smart::hello_info::version &v1, const rf627smart::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) <
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-bool operator >(const rf627smart::hello_info::version &v1, const rf627smart::hello_info::version &v2)
-{
-    return (((v1.major << 24) + (v1.minor << 16) + (v1.patch << 8)) >
-            ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
-}
-
-std::string rf627smart::hello_info::version::to_string()
-{
-    std::string s;
-    s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
-    return s;
-}
-
-uint32_t rf627smart::hello_info::version::to_uint()
-{
-    return _value;
-}
-
-rf627smart::hello_info::version::version()
-{
-    version((uint32_t)0);
-}
-
-rf627smart::hello_info::version::version(uint32_t value)
-{
-    major = (((uint8_t*)(void*)(&value))[3]);
-    minor = (((uint8_t*)(void*)(&value))[2]);
-    patch = (((uint8_t*)(void*)(&value))[1]);
-    _value = value;
-}
-
-rf627smart::hello_info::version::version(std::string value)
-{
-    std::string s = value;
-    std::string delimiter = ".";
-
-    size_t pos = 0;
-    std::string token;
-
-    token = s.substr(0, pos);
-    major =  std::stoi(token);
-    s.erase(0, pos + delimiter.length());
-
-    token = s.substr(0, pos);
-    minor =  std::stoi(token);
-    s.erase(0, pos + delimiter.length());
-
-    token = s.substr(0, pos);
-    patch =  std::stoi(token);
-    s.erase(0, pos + delimiter.length());
-
-    _value = (major << 3) + (minor << 2) + (patch << 1);
-}
-
-rf627smart::hello_info::version::version(uint32_t *value)
-{
-    major = value[0];
-    minor = value[1];
-    patch = value[2];
-    _value = (major << 3) + (minor << 2) + (patch << 1);
-}
-
-rf627smart::hello_info::version::~version()
-{
-
-}
 
 
 
