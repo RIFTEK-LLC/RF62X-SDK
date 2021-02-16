@@ -2035,7 +2035,7 @@ std::vector<rf627old*> rf627old::search(PROTOCOLS protocol)
 
 }
 
-hello_info rf627old::get_info(PROTOCOLS protocol)
+std::shared_ptr<hello_info> rf627old::get_info(PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -2048,7 +2048,7 @@ hello_info rf627old::get_info(PROTOCOLS protocol)
     {
         hello_information info = get_info_about_scanner(((scanner_base_t*)this->scanner_base), kSERVICE);
 
-        hello_info _hello_info = hello_info(info.rf627old.hello_info_service_protocol, SCANNER_TYPES::RF627_OLD, PROTOCOLS::SERVICE);
+        std::shared_ptr<hello_info> _hello_info(new hello_info(info.rf627old.hello_info_service_protocol, SCANNER_TYPES::RF627_OLD, PROTOCOLS::SERVICE));
 
         return _hello_info;
         break;
@@ -2057,8 +2057,7 @@ hello_info rf627old::get_info(PROTOCOLS protocol)
         break;
     }
 
-    hello_info _hello_info = hello_info(nullptr, SCANNER_TYPES::RF627_OLD, PROTOCOLS::CURRENT);
-    return _hello_info;
+    return nullptr;
 }
 
 rf627old::rf627old(void* base)

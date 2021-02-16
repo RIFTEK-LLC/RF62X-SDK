@@ -242,7 +242,7 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return hello_info on success
      */
-    hello_info get_info(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<hello_info> get_info(PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
      * @brief connect - Establish connection to the RF627old device
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
