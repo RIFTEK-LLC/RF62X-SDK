@@ -1,50 +1,51 @@
 from ctypes import *
 from struct import unpack
 from socket import inet_aton
+from enum import IntEnum
 
 _profile_max_len=1296
 
 
-rfInt16 = c_int16# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 13
-rfInt32 = c_int32# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 14
-rfUint8 = c_uint8# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 16
-rfUint16 = c_uint16# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 17
-rfUint32 = c_uint32# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 18
-rfChar = c_char# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 20
-rfBool = c_uint8# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 22
-rfInt = c_int# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 26
-rfFloat = c_float# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 27
-rfDouble = c_double# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 28
-rfInt64 = c_int64# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 32
-rfUint64 = c_uint64# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 33
-rfSize = c_size_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 25
-rfInt8 = c_int8# C:\\dev\\work\\627_python_wrapper_2\\generate\\platform_types.h: 12
+rfInt16 = c_int16# platform_types.h: 13
+rfInt32 = c_int32# platform_types.h: 14
+rfUint8 = c_uint8# platform_types.h: 16
+rfUint16 = c_uint16# platform_types.h: 17
+rfUint32 = c_uint32# platform_types.h: 18
+rfChar = c_char# platform_types.h: 20
+rfBool = c_uint8# platform_types.h: 22
+rfInt = c_int# platform_types.h: 26
+rfFloat = c_float# platform_types.h: 27
+rfDouble = c_double# platform_types.h: 28
+rfInt64 = c_int64# platform_types.h: 32
+rfUint64 = c_uint64# platform_types.h: 33
+rfSize = c_size_t# platform_types.h: 25
+rfInt8 = c_int8# platform_types.h: 12
 #network
-WINBOOL = c_int# c:\\dev\\mingw\\include\\windef.h: 246
-BOOL = WINBOOL# c:\\dev\\mingw\\include\\windef.h: 250
-u_long = c_ulong# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 62
+WINBOOL = c_int# windef.h: 246
+BOOL = WINBOOL# windef.h: 250
+u_long = c_ulong# bsdtypes.h: 62
 #device
-u_char = c_ubyte# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 59
-u_short = c_ushort# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 60
-u_int = c_uint# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 61
-u_long = c_ulong# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 62
-SOCKET = u_int# c:\\dev\\mingw\\include\\winsock.h: 130
+u_char = c_ubyte# bsdtypes.h: 59
+u_short = c_ushort# bsdtypes.h: 60
+u_int = c_uint# bsdtypes.h: 61
+u_long = c_ulong# bsdtypes.h: 62
+SOCKET = u_int# winsock.h: 130
 
 
 
 
-kRF627_OLD = 1# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1237
-kRF627_SMART = 2# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1237
-kSERVICE = 1# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1243
-kETHERNET_IP = 2# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1243
-kMODBUS_TCP = 3# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1243
-kSTEP = 1# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1249
-kMEASURE = 2# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1249
-kPACKET = 3# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1249
-DTY_PixelsNormal = 16# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 424
-DTY_ProfileNormal = 17# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 424
-DTY_PixelsInterpolated = 18# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 424
-DTY_ProfileInterpolated = 19# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 424
+kRF627_OLD = 1# rf62X_types.h: 1237
+kRF627_SMART = 2# rf62X_types.h: 1237
+kSERVICE = 1# rf62X_types.h: 1243
+kETHERNET_IP = 2# rf62X_types.h: 1243
+kMODBUS_TCP = 3# rf62X_types.h: 1243
+kSTEP = 1# rf62X_types.h: 1249
+kMEASURE = 2# rf62X_types.h: 1249
+kPACKET = 3# rf62X_types.h: 1249
+DTY_PixelsNormal = 16# rf62X_types.h: 424
+DTY_ProfileNormal = 17# rf62X_types.h: 424
+DTY_PixelsInterpolated = 18# rf62X_types.h: 424
+DTY_ProfileInterpolated = 19# rf62X_types.h: 424
 
 ###preamble begin
 
@@ -450,7 +451,7 @@ def UNCHECKED(type):
 
 #sdk
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 10
+# custom_vector.h: 10
 class struct_vector_(Structure):
     pass
 
@@ -465,9 +466,9 @@ struct_vector_._fields_ = [
     ('count', rfSize),
 ]
 
-vector_t = struct_vector_# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 10
+vector_t = struct_vector_# custom_vector.h: 10
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 15
+# rf62X_types.h: 15
 class struct_anon_1(Structure):
     pass
 
@@ -484,9 +485,9 @@ struct_anon_1._fields_ = [
     ('reserved', rfUint8),
 ]
 
-config_options_t = struct_anon_1# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 15
+config_options_t = struct_anon_1# rf62X_types.h: 15
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 20
+# rf62X_types.h: 20
 class struct_anon_2(Structure):
     pass
 
@@ -541,7 +542,7 @@ struct_anon_2._fields_ = [
     ('reserved', rfUint8 * int(76)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 66
+# rf62X_types.h: 66
 class struct_anon_3(Structure):
     pass
 
@@ -554,7 +555,7 @@ struct_anon_3._fields_ = [
     ('value', rfUint16),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 47
+# rf62X_types.h: 47
 class struct_anon_4(Structure):
     pass
 
@@ -599,7 +600,7 @@ struct_anon_4._fields_ = [
     ('init_regs', struct_anon_3 * int(64)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 73
+# rf62X_types.h: 73
 class struct_anon_5(Structure):
     pass
 
@@ -618,7 +619,7 @@ struct_anon_5._fields_ = [
     ('reserved', rfUint8 * int(31)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 82
+# rf62X_types.h: 82
 class struct_anon_6(Structure):
     pass
 
@@ -641,7 +642,7 @@ struct_anon_6._fields_ = [
     ('reserved', rfUint8 * int(31)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 93
+# rf62X_types.h: 93
 class struct_anon_7(Structure):
     pass
 
@@ -660,7 +661,7 @@ struct_anon_7._fields_ = [
     ('reserved', rfUint8 * int(62)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 102
+# rf62X_types.h: 102
 class struct_anon_8(Structure):
     pass
 
@@ -687,7 +688,7 @@ struct_anon_8._fields_ = [
     ('reserved', rfUint8 * int(32)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 115
+# rf62X_types.h: 115
 class struct_anon_9(Structure):
     pass
 
@@ -700,7 +701,7 @@ struct_anon_9._fields_ = [
     ('reserved', rfUint8 * int(60)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 128
+# rf62X_types.h: 128
 class struct_anon_10(Structure):
     pass
 
@@ -713,7 +714,7 @@ struct_anon_10._fields_ = [
     ('minor_rev', rfUint8),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 123
+# rf62X_types.h: 123
 class struct_anon_11(Structure):
     pass
 
@@ -730,7 +731,7 @@ struct_anon_11._fields_ = [
     ('revision', struct_anon_10),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 137
+# rf62X_types.h: 137
 class struct_anon_12(Structure):
     pass
 
@@ -747,7 +748,7 @@ struct_anon_12._fields_ = [
     ('attribute_number', rfUint16),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 134
+# rf62X_types.h: 134
 class struct_anon_13(Structure):
     pass
 
@@ -760,7 +761,7 @@ struct_anon_13._fields_ = [
     ('phyLinkObject', struct_anon_12),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 149
+# rf62X_types.h: 149
 class struct_anon_14(Structure):
     pass
 
@@ -773,7 +774,7 @@ struct_anon_14._fields_ = [
     ('duplex', rfUint8),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 146
+# rf62X_types.h: 146
 class struct_anon_15(Structure):
     pass
 
@@ -788,7 +789,7 @@ struct_anon_15._fields_ = [
     ('speedDuplex', struct_anon_14 * int(4)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 121
+# rf62X_types.h: 121
 class struct_anon_16(Structure):
     pass
 
@@ -807,7 +808,7 @@ struct_anon_16._fields_ = [
     ('reserved', rfUint8 * int(44)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 161
+# rf62X_types.h: 161
 class struct_anon_17(Structure):
     pass
 
@@ -834,9 +835,9 @@ struct_anon_17._fields_ = [
     ('reserved', rfUint8 * int(167)),
 ]
 
-rf627_old_factory_params_t = struct_anon_17# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 161
+rf627_old_factory_params_t = struct_anon_17# rf62X_types.h: 161
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 231
+# rf62X_types.h: 231
 class struct_anon_26(Structure):
     pass
 
@@ -851,7 +852,7 @@ struct_anon_26._fields_ = [
     ('reserved', rfUint8 * int(127)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 238
+# rf62X_types.h: 238
 class struct_anon_27(Structure):
     pass
 
@@ -890,7 +891,7 @@ struct_anon_27._fields_ = [
     ('reserved', rfUint8 * int(55)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 257
+# rf62X_types.h: 257
 class struct_anon_28(Structure):
     pass
 
@@ -905,7 +906,7 @@ struct_anon_28._fields_ = [
     ('reserved', rfUint8 * int(32)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 264
+# rf62X_types.h: 264
 class struct_anon_29(Structure):
     pass
 
@@ -940,7 +941,7 @@ struct_anon_29._fields_ = [
     ('reserved_1', rfUint8 * int(59)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 281
+# rf62X_types.h: 281
 class struct_anon_30(Structure):
     pass
 
@@ -965,7 +966,7 @@ struct_anon_30._fields_ = [
     ('reserved', rfUint8 * int(80)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 293
+# rf62X_types.h: 293
 class struct_anon_31(Structure):
     pass
 
@@ -994,7 +995,7 @@ struct_anon_31._fields_ = [
     ('reserved', rfUint8 * int(68)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 309
+# rf62X_types.h: 309
 class struct_anon_32(Structure):
     pass
 
@@ -1013,7 +1014,7 @@ struct_anon_32._fields_ = [
     ('reserved', rfUint8 * int(31)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 318
+# rf62X_types.h: 318
 class struct_anon_33(Structure):
     pass
 
@@ -1042,7 +1043,7 @@ struct_anon_33._fields_ = [
     ('reserved', rfUint8 * int(56)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 332
+# rf62X_types.h: 332
 class struct_anon_34(Structure):
     pass
 
@@ -1059,7 +1060,7 @@ struct_anon_34._fields_ = [
     ('reserved', rfUint8 * int(32)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 343
+# rf62X_types.h: 343
 class struct_anon_35(Structure):
     pass
 
@@ -1090,7 +1091,7 @@ struct_anon_35._fields_ = [
     ('reserved', rfUint8 * int(12)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 340
+# rf62X_types.h: 340
 class struct_anon_36(Structure):
     pass
 
@@ -1105,7 +1106,7 @@ struct_anon_36._fields_ = [
     ('reserved', rfUint8 * int(32)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 360
+# rf62X_types.h: 360
 class struct_anon_37(Structure):
     pass
 
@@ -1136,7 +1137,7 @@ struct_anon_37._fields_ = [
     ('reserved', rfUint8 * int(32)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 376
+# rf62X_types.h: 376
 class struct_anon_38(Structure):
     pass
 
@@ -1169,9 +1170,9 @@ struct_anon_38._fields_ = [
     ('reserved', rfUint8 * int(283)),
 ]
 
-rf627_old_user_params_t = struct_anon_38# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 376
+rf627_old_user_params_t = struct_anon_38# rf62X_types.h: 376
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 405
+# rf62X_types.h: 405
 class struct_anon_39(Structure):
     pass
 
@@ -1222,9 +1223,9 @@ struct_anon_39._fields_ = [
     ('bytes_per_point', rfUint8),
 ]
 
-rf627_old_profile_header_t = struct_anon_39# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 405
+rf627_old_profile_header_t = struct_anon_39# rf62X_types.h: 405
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 432
+# rf62X_types.h: 432
 class struct_anon_43(Structure):
     pass
 
@@ -1237,9 +1238,9 @@ struct_anon_43._fields_ = [
     ('z', rfFloat),
 ]
 
-rf627_old_point2D_t = struct_anon_43# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 432
+rf627_old_point2D_t = struct_anon_43# rf62X_types.h: 432
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 441
+# rf62X_types.h: 441
 class struct_anon_44(Structure):
     pass
 
@@ -1254,9 +1255,9 @@ struct_anon_44._fields_ = [
     ('z', rfFloat),
 ]
 
-rf627_old_point3D_t = struct_anon_44# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 441
+rf627_old_point3D_t = struct_anon_44# rf62X_types.h: 441
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 449
+# rf62X_types.h: 449
 class struct_anon_45(Structure):
     pass
 
@@ -1269,7 +1270,7 @@ struct_anon_45._fields_ = [
     ('pixels_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 453
+# rf62X_types.h: 453
 class struct_anon_46(Structure):
     pass
 
@@ -1282,7 +1283,7 @@ struct_anon_46._fields_ = [
     ('points_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 448
+# rf62X_types.h: 448
 class union_anon_47(Union):
     pass
 
@@ -1295,7 +1296,7 @@ union_anon_47._fields_ = [
     ('profile_format', struct_anon_46),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 460
+# rf62X_types.h: 460
 class struct_anon_48(Structure):
     pass
 
@@ -1315,9 +1316,9 @@ struct_anon_48._fields_ = [
     ('intensity_count', rfUint32),
 ]
 
-rf627_old_profile2D_t = struct_anon_48# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 460
+rf627_old_profile2D_t = struct_anon_48# rf62X_types.h: 460
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 468
+# rf62X_types.h: 468
 class struct_anon_49(Structure):
     pass
 
@@ -1330,7 +1331,7 @@ struct_anon_49._fields_ = [
     ('pixels_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 472
+# rf62X_types.h: 472
 class struct_anon_50(Structure):
     pass
 
@@ -1343,7 +1344,7 @@ struct_anon_50._fields_ = [
     ('points_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 467
+# rf62X_types.h: 467
 class union_anon_51(Union):
     pass
 
@@ -1356,7 +1357,7 @@ union_anon_51._fields_ = [
     ('profile_format', struct_anon_50),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 479
+# rf62X_types.h: 479
 class struct_anon_52(Structure):
     pass
 
@@ -1376,9 +1377,9 @@ struct_anon_52._fields_ = [
     ('intensity_count', rfUint32),
 ]
 
-rf627_old_profile3D_t = struct_anon_52# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 479
+rf627_old_profile3D_t = struct_anon_52# rf62X_types.h: 479
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 494
+# rf62X_types.h: 494
 class struct_anon_53(Structure):
     pass
 
@@ -1394,7 +1395,7 @@ struct_anon_53.__slots__ = [
     'user_roi_size',
 ]
 struct_anon_53._fields_ = [
-    ('data', POINTER(rfChar)),
+    ('data', c_char_p),
     ('data_size', rfUint32),
     ('pixel_size', rfUint8),
     ('width', rfUint32),
@@ -1405,9 +1406,9 @@ struct_anon_53._fields_ = [
     ('user_roi_size', rfUint32),
 ]
 
-rf627_old_frame_t = struct_anon_53# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 494
+rf627_old_frame_t = struct_anon_53# rf62X_types.h: 494
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 499
+# rf62X_types.h: 499
 class struct_anon_54(Structure):
     pass
 
@@ -1415,12 +1416,12 @@ struct_anon_54.__slots__ = [
     'data',
 ]
 struct_anon_54._fields_ = [
-    ('data', POINTER(rfChar)),
+    ('data', c_char_p),
 ]
 
-rf627_old_calib_table_t = struct_anon_54# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 499
+rf627_old_calib_table_t = struct_anon_54# rf62X_types.h: 499
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 507
+# rf62X_types.h: 507
 class struct_anon_55(Structure):
     pass
 
@@ -1433,7 +1434,7 @@ struct_anon_55._fields_ = [
     ('pixels_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 511
+# rf62X_types.h: 511
 class struct_anon_56(Structure):
     pass
 
@@ -1446,7 +1447,7 @@ struct_anon_56._fields_ = [
     ('points_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 506
+# rf62X_types.h: 506
 class union_anon_57(Union):
     pass
 
@@ -1459,7 +1460,7 @@ union_anon_57._fields_ = [
     ('profile_format', struct_anon_56),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 518
+# rf62X_types.h: 518
 class struct_anon_58(Structure):
     pass
 
@@ -1479,9 +1480,9 @@ struct_anon_58._fields_ = [
     ('intensity_count', rfUint32),
 ]
 
-rf627_smart_profile2D_t = struct_anon_58# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 518
+rf627_smart_profile2D_t = struct_anon_58# rf62X_types.h: 518
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 526
+# rf62X_types.h: 526
 class struct_anon_59(Structure):
     pass
 
@@ -1494,7 +1495,7 @@ struct_anon_59._fields_ = [
     ('pixels_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 530
+# rf62X_types.h: 530
 class struct_anon_60(Structure):
     pass
 
@@ -1507,7 +1508,7 @@ struct_anon_60._fields_ = [
     ('points_count', rfUint32),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 525
+# rf62X_types.h: 525
 class union_anon_61(Union):
     pass
 
@@ -1520,7 +1521,7 @@ union_anon_61._fields_ = [
     ('profile_format', struct_anon_60),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 537
+# rf62X_types.h: 537
 class struct_anon_62(Structure):
     pass
 
@@ -1540,9 +1541,9 @@ struct_anon_62._fields_ = [
     ('intensity_count', rfUint32),
 ]
 
-rf627_smart_profile3D_t = struct_anon_62# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 537
+rf627_smart_profile3D_t = struct_anon_62# rf62X_types.h: 537
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 551
+# rf62X_types.h: 551
 class struct_anon_63(Structure):
     pass
 
@@ -1558,7 +1559,7 @@ struct_anon_63.__slots__ = [
     'user_roi_size',
 ]
 struct_anon_63._fields_ = [
-    ('data', POINTER(rfChar)),
+    ('data', c_char_p),
     ('data_size', rfUint32),
     ('pixel_size', rfUint8),
     ('width', rfUint32),
@@ -1569,9 +1570,9 @@ struct_anon_63._fields_ = [
     ('user_roi_size', rfUint32),
 ]
 
-rf627_smart_frame_t = struct_anon_63# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 551
+rf627_smart_frame_t = struct_anon_63# rf62X_types.h: 551
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 566
+# rf62X_types.h: 566
 class struct_anon_64(Structure):
     pass
 
@@ -1600,9 +1601,9 @@ struct_anon_64._fields_ = [
     ('m_DataSize', rfUint32),
 ]
 
-rf627_smart_calib_table_t = struct_anon_64# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 566
+rf627_smart_calib_table_t = struct_anon_64# rf62X_types.h: 566
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 582
+# rf62X_types.h: 582
 class struct_anon_65(Structure):
     pass
 
@@ -1621,7 +1622,7 @@ struct_anon_65.__slots__ = [
     'x_end',
 ]
 struct_anon_65._fields_ = [
-    ('device_name', POINTER(rfChar)),
+    ('device_name', c_char_p),
     ('serial_number', rfUint32),
     ('ip_address', rfUint8 * int(4)),
     ('mac_address', rfUint8 * int(6)),
@@ -1635,9 +1636,9 @@ struct_anon_65._fields_ = [
     ('x_end', rfUint32),
 ]
 
-rf627_old_hello_info_by_service_protocol = struct_anon_65# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 582
+rf627_old_hello_info_by_service_protocol = struct_anon_65# rf62X_types.h: 582
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 615
+# rf62X_types.h: 615
 class struct_anon_66(Structure):
     pass
 
@@ -1688,9 +1689,9 @@ struct_anon_66._fields_ = [
     ('user_streams_format', c_uint32),
 ]
 
-rf627_smart_hello_info_by_service_protocol = struct_anon_66# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 615
+rf627_smart_hello_info_by_service_protocol = struct_anon_66# rf62X_types.h: 615
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1029
+# rf62X_types.h: 1029
 class struct_anon_71(Structure):
     pass
 
@@ -1701,13 +1702,13 @@ struct_anon_71.__slots__ = [
 ]
 struct_anon_71._fields_ = [
     ('value', rfInt32),
-    ('label', POINTER(rfChar)),
-    ('key', POINTER(rfChar)),
+    ('label', c_char_p),
+    ('key', c_char_p),
 ]
 
-enumRec_t = struct_anon_71# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1029
+enumRec_t = struct_anon_71# rf62X_types.h: 1029
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1035
+# rf62X_types.h: 1035
 class struct_anon_72(Structure):
     pass
 
@@ -1720,9 +1721,9 @@ struct_anon_72._fields_ = [
     ('rec', POINTER(enumRec_t)),
 ]
 
-valuesEnum_t = struct_anon_72# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1035
+valuesEnum_t = struct_anon_72# rf62X_types.h: 1035
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1046
+# rf62X_types.h: 1046
 class struct_anon_73(Structure):
     pass
 
@@ -1736,18 +1737,18 @@ struct_anon_73.__slots__ = [
     'units',
 ]
 struct_anon_73._fields_ = [
-    ('name', POINTER(rfChar)),
-    ('type', POINTER(rfChar)),
-    ('access', POINTER(rfChar)),
+    ('name', c_char_p),
+    ('type', c_char_p),
+    ('access', c_char_p),
     ('index', rfUint16),
     ('offset', rfUint32),
     ('size', rfUint32),
-    ('units', POINTER(rfChar)),
+    ('units', c_char_p),
 ]
 
-value_base_t = struct_anon_73# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1046
+value_base_t = struct_anon_73# rf62X_types.h: 1046
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1057
+# rf62X_types.h: 1057
 class struct_value_uint32_t(Structure):
     pass
 
@@ -1768,9 +1769,9 @@ struct_value_uint32_t._fields_ = [
     ('value', rfUint32),
 ]
 
-value_uint32_t = struct_value_uint32_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1057
+value_uint32_t = struct_value_uint32_t# rf62X_types.h: 1057
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1067
+# rf62X_types.h: 1067
 class struct_value_uint64_t(Structure):
     pass
 
@@ -1791,9 +1792,9 @@ struct_value_uint64_t._fields_ = [
     ('value', rfUint64),
 ]
 
-value_uint64_t = struct_value_uint64_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1067
+value_uint64_t = struct_value_uint64_t# rf62X_types.h: 1067
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1077
+# rf62X_types.h: 1077
 class struct_value_int32_t(Structure):
     pass
 
@@ -1814,9 +1815,9 @@ struct_value_int32_t._fields_ = [
     ('value', rfInt32),
 ]
 
-value_int32_t = struct_value_int32_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1077
+value_int32_t = struct_value_int32_t# rf62X_types.h: 1077
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1087
+# rf62X_types.h: 1087
 class struct_value_int64_t(Structure):
     pass
 
@@ -1837,9 +1838,9 @@ struct_value_int64_t._fields_ = [
     ('value', rfInt64),
 ]
 
-value_int64_t = struct_value_int64_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1087
+value_int64_t = struct_value_int64_t# rf62X_types.h: 1087
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1096
+# rf62X_types.h: 1096
 class struct_value_flt_t(Structure):
     pass
 
@@ -1858,9 +1859,9 @@ struct_value_flt_t._fields_ = [
     ('value', rfFloat),
 ]
 
-value_flt_t = struct_value_flt_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1096
+value_flt_t = struct_value_flt_t# rf62X_types.h: 1096
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1105
+# rf62X_types.h: 1105
 class struct_value_dbl_t(Structure):
     pass
 
@@ -1879,9 +1880,9 @@ struct_value_dbl_t._fields_ = [
     ('value', rfDouble),
 ]
 
-value_dbl_t = struct_value_dbl_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1105
+value_dbl_t = struct_value_dbl_t# rf62X_types.h: 1105
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1117
+# rf62X_types.h: 1117
 class struct_array_uint32_t(Structure):
     pass
 
@@ -1906,9 +1907,9 @@ struct_array_uint32_t._fields_ = [
     ('value', POINTER(rfUint32)),
 ]
 
-array_uint32_t = struct_array_uint32_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1117
+array_uint32_t = struct_array_uint32_t# rf62X_types.h: 1117
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1129
+# rf62X_types.h: 1129
 class struct_array_uint64_t(Structure):
     pass
 
@@ -1933,9 +1934,9 @@ struct_array_uint64_t._fields_ = [
     ('value', POINTER(rfUint64)),
 ]
 
-array_uint64_t = struct_array_uint64_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1129
+array_uint64_t = struct_array_uint64_t# rf62X_types.h: 1129
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1141
+# rf62X_types.h: 1141
 class struct_array_int32_t(Structure):
     pass
 
@@ -1960,9 +1961,9 @@ struct_array_int32_t._fields_ = [
     ('value', POINTER(rfInt32)),
 ]
 
-array_int32_t = struct_array_int32_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1141
+array_int32_t = struct_array_int32_t# rf62X_types.h: 1141
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1153
+# rf62X_types.h: 1153
 class struct_array_int64_t(Structure):
     pass
 
@@ -1987,9 +1988,9 @@ struct_array_int64_t._fields_ = [
     ('value', POINTER(rfInt64)),
 ]
 
-array_int64_t = struct_array_int64_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1153
+array_int64_t = struct_array_int64_t# rf62X_types.h: 1153
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1165
+# rf62X_types.h: 1165
 class struct_array_flt_t(Structure):
     pass
 
@@ -2014,9 +2015,9 @@ struct_array_flt_t._fields_ = [
     ('value', POINTER(rfFloat)),
 ]
 
-array_flt_t = struct_array_flt_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1165
+array_flt_t = struct_array_flt_t# rf62X_types.h: 1165
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1177
+# rf62X_types.h: 1177
 class struct_array_dbl_t(Structure):
     pass
 
@@ -2041,9 +2042,9 @@ struct_array_dbl_t._fields_ = [
     ('value', POINTER(rfDouble)),
 ]
 
-array_dbl_t = struct_array_dbl_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1177
+array_dbl_t = struct_array_dbl_t# rf62X_types.h: 1177
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1184
+# rf62X_types.h: 1184
 class struct_value_str_t(Structure):
     pass
 
@@ -2054,13 +2055,13 @@ struct_value_str_t.__slots__ = [
 ]
 struct_value_str_t._fields_ = [
     ('maxLen', rfUint16),
-    ('defValue', POINTER(rfChar)),
-    ('value', POINTER(rfChar)),
+    ('defValue', c_char_p),
+    ('value', c_char_p),
 ]
 
-value_str_t = struct_value_str_t# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1184
+value_str_t = struct_value_str_t# rf62X_types.h: 1184
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1190
+# rf62X_types.h: 1190
 class union_anon_74(Union):
     pass
 
@@ -2097,7 +2098,7 @@ union_anon_74._fields_ = [
     ('val_str', POINTER(value_str_t)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1208
+# rf62X_types.h: 1208
 class struct_anon_75(Structure):
     pass
 
@@ -2115,9 +2116,9 @@ struct_anon_75._fields_ = [
     ('is_changed', c_uint8),
 ]
 
-parameter_t = struct_anon_75# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1208
+parameter_t = struct_anon_75# rf62X_types.h: 1208
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1216
+# rf62X_types.h: 1216
 class struct_anon_76(Structure):
     pass
 
@@ -2126,13 +2127,13 @@ struct_anon_76.__slots__ = [
     'arg_list',
 ]
 struct_anon_76._fields_ = [
-    ('name', POINTER(rfChar)),
+    ('name', c_char_p),
     ('arg_list', c_void_p),
 ]
 
-command_t = struct_anon_76# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1216
+command_t = struct_anon_76# rf62X_types.h: 1216
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1221
+# rf62X_types.h: 1221
 class struct_input_t(Structure):
     pass
 
@@ -2145,7 +2146,7 @@ struct_input_t._fields_ = [
     ('payload', POINTER(rfUint8)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1225
+# rf62X_types.h: 1225
 class struct_output_t(Structure):
     pass
 
@@ -2158,7 +2159,7 @@ struct_output_t._fields_ = [
     ('payload', POINTER(rfUint8)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1229
+# rf62X_types.h: 1229
 class struct_anon_77(Structure):
     pass
 
@@ -2168,26 +2169,26 @@ struct_anon_77.__slots__ = [
     'output',
 ]
 struct_anon_77._fields_ = [
-    ('name', POINTER(rfChar)),
+    ('name', c_char_p),
     ('input', struct_input_t),
     ('output', struct_output_t),
 ]
 
-command2_t = struct_anon_77# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1229
+command2_t = struct_anon_77# rf62X_types.h: 1229
 
-enum_anon_78 = c_int# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1237
+enum_anon_78 = c_int# rf62X_types.h: 1237
 
-scanner_types_t = enum_anon_78# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1237
+scanner_types_t = enum_anon_78# rf62X_types.h: 1237
 
-enum_anon_79 = c_int# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1243
+enum_anon_79 = c_int# rf62X_types.h: 1243
 
-protocol_types_t = enum_anon_79# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1243
+protocol_types_t = enum_anon_79# rf62X_types.h: 1243
 
-enum_anon_80 = c_int# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1249
+enum_anon_80 = c_int# rf62X_types.h: 1249
 
-count_types_t = enum_anon_80# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1249
+count_types_t = enum_anon_80# rf62X_types.h: 1249
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1256
+# rf62X_types.h: 1256
 class union_anon_81(Union):
     pass
 
@@ -2200,7 +2201,7 @@ union_anon_81._fields_ = [
     ('rf627smart_profile2D', POINTER(rf627_smart_profile2D_t)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1260
+# rf62X_types.h: 1260
 class struct_anon_82(Structure):
     pass
 
@@ -2216,9 +2217,9 @@ struct_anon_82._fields_ = [
     ('unnamed_1', union_anon_81),
 ]
 
-rf627_profile2D_t = struct_anon_82# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1260
+rf627_profile2D_t = struct_anon_82# rf62X_types.h: 1260
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1265
+# rf62X_types.h: 1265
 class union_anon_83(Union):
     pass
 
@@ -2231,7 +2232,7 @@ union_anon_83._fields_ = [
     ('rf627smart_frame', POINTER(rf627_smart_frame_t)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1269
+# rf62X_types.h: 1269
 class struct_anon_84(Structure):
     pass
 
@@ -2247,9 +2248,9 @@ struct_anon_84._fields_ = [
     ('unnamed_1', union_anon_83),
 ]
 
-rf627_frame_t = struct_anon_84# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1269
+rf627_frame_t = struct_anon_84# rf62X_types.h: 1269
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1274
+# rf62X_types.h: 1274
 class union_anon_85(Union):
     pass
 
@@ -2262,7 +2263,7 @@ union_anon_85._fields_ = [
     ('rf627smart_calib_table', POINTER(rf627_smart_calib_table_t)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1278
+# rf62X_types.h: 1278
 class struct_anon_86(Structure):
     pass
 
@@ -2278,9 +2279,9 @@ struct_anon_86._fields_ = [
     ('unnamed_1', union_anon_85),
 ]
 
-rf627_calib_table_t = struct_anon_86# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1278
+rf627_calib_table_t = struct_anon_86# rf62X_types.h: 1278
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1285
+# rf62X_types.h: 1285
 class union_anon_87(Union):
     pass
 
@@ -2293,7 +2294,7 @@ union_anon_87._fields_ = [
     ('rf627smart_profile3D', POINTER(rf627_smart_profile3D_t)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1289
+# rf62X_types.h: 1289
 class struct_anon_88(Structure):
     pass
 
@@ -2309,9 +2310,9 @@ struct_anon_88._fields_ = [
     ('unnamed_1', union_anon_87),
 ]
 
-rf627_profile3D_t = struct_anon_88# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1289
+rf627_profile3D_t = struct_anon_88# rf62X_types.h: 1289
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1298
+# rf62X_types.h: 1298
 class union_anon_89(Union):
     pass
 
@@ -2322,7 +2323,7 @@ union_anon_89._fields_ = [
     ('hello_info_service_protocol', POINTER(rf627_old_hello_info_by_service_protocol)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1301
+# rf62X_types.h: 1301
 class union_anon_90(Union):
     pass
 
@@ -2333,7 +2334,7 @@ union_anon_90._fields_ = [
     ('hello_info_service_protocol', POINTER(rf627_smart_hello_info_by_service_protocol)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1297
+# rf62X_types.h: 1297
 class union_anon_91(Union):
     pass
 
@@ -2346,7 +2347,7 @@ union_anon_91._fields_ = [
     ('rf627smart', union_anon_90),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1305
+# rf62X_types.h: 1305
 class struct_anon_92(Structure):
     pass
 
@@ -2364,15 +2365,15 @@ struct_anon_92._fields_ = [
     ('unnamed_1', union_anon_91),
 ]
 
-hello_information = struct_anon_92# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_types.h: 1305
+hello_information = struct_anon_92# rf62X_types.h: 1305
 
-smart_answ_callback = CFUNCTYPE(UNCHECKED(c_int8), String, c_uint32, c_uint32, POINTER(None))# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartmsg.h: 7
+smart_answ_callback = CFUNCTYPE(UNCHECKED(c_int8), String, c_uint32, c_uint32, POINTER(None))# smartmsg.h: 7
 
-smart_timeout_callback = CFUNCTYPE(UNCHECKED(c_int8), POINTER(None))# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartmsg.h: 8
+smart_timeout_callback = CFUNCTYPE(UNCHECKED(c_int8), POINTER(None))# smartmsg.h: 8
 
-smart_free_callback = CFUNCTYPE(UNCHECKED(c_int8), POINTER(None))# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartmsg.h: 9
+smart_free_callback = CFUNCTYPE(UNCHECKED(c_int8), POINTER(None))# smartmsg.h: 9
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartmsg.h: 38
+# smartmsg.h: 38
 class struct_anon_93(Structure):
     pass
 
@@ -2419,11 +2420,11 @@ struct_anon_93._fields_ = [
     ('result', POINTER(None)),
 ]
 
-smart_msg_t = struct_anon_93# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartmsg.h: 38
+smart_msg_t = struct_anon_93# smartmsg.h: 38
 
-pthread_t = c_ulong# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 60
+pthread_t = c_ulong# bits/pthreadtypes.h: 60
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 81
+# bits/pthreadtypes.h: 81
 class struct___pthread_internal_slist(Structure):
     pass
 
@@ -2434,9 +2435,9 @@ struct___pthread_internal_slist._fields_ = [
     ('__next', POINTER(struct___pthread_internal_slist)),
 ]
 
-__pthread_slist_t = struct___pthread_internal_slist# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 84
+__pthread_slist_t = struct___pthread_internal_slist# bits/pthreadtypes.h: 84
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 114
+# bits/pthreadtypes.h: 114
 class struct_anon_96(Structure):
     pass
 
@@ -2449,7 +2450,7 @@ struct_anon_96._fields_ = [
     ('__elision', c_short),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 112
+# bits/pthreadtypes.h: 112
 class union_anon_97(Union):
     pass
 
@@ -2462,7 +2463,7 @@ union_anon_97._fields_ = [
     ('__list', __pthread_slist_t),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 92
+# bits/pthreadtypes.h: 92
 class struct___pthread_mutex_s(Structure):
     pass
 
@@ -2486,7 +2487,7 @@ struct___pthread_mutex_s._fields_ = [
     ('unnamed_1', union_anon_97),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 128
+# bits/pthreadtypes.h: 128
 class union_anon_98(Union):
     pass
 
@@ -2501,9 +2502,9 @@ union_anon_98._fields_ = [
     ('__align', c_long),
 ]
 
-pthread_mutex_t = union_anon_98# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 128
+pthread_mutex_t = union_anon_98# bits/pthreadtypes.h: 128
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 141
+# bits/pthreadtypes.h: 141
 class struct_anon_100(Structure):
     pass
 
@@ -2528,7 +2529,7 @@ struct_anon_100._fields_ = [
     ('__broadcast_seq', c_uint),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 154
+# bits/pthreadtypes.h: 154
 class union_anon_101(Union):
     pass
 
@@ -2543,9 +2544,9 @@ union_anon_101._fields_ = [
     ('__align', c_longlong),
 ]
 
-pthread_cond_t = union_anon_101# C:\\dev\\work\\627_python_wrapper_2\\generate\\bits/pthreadtypes.h: 154
+pthread_cond_t = union_anon_101# bits/pthreadtypes.h: 154
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 66
+# smartparser.h: 66
 class struct_anon_113(Structure):
     pass
 
@@ -2558,9 +2559,9 @@ struct_anon_113._fields_ = [
     ('data_pos', c_uint32),
 ]
 
-smart_parser_output_msg_t = struct_anon_113# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 66
+smart_parser_output_msg_t = struct_anon_113# smartparser.h: 66
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 76
+# smartparser.h: 76
 class struct_anon_114(Structure):
     pass
 
@@ -2577,9 +2578,9 @@ struct_anon_114._fields_ = [
     ('data_pos', c_uint32),
 ]
 
-smart_parser_input_msg_t = struct_anon_114# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 76
+smart_parser_input_msg_t = struct_anon_114# smartparser.h: 76
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 87
+# smartparser.h: 87
 class struct_anon_115(Structure):
     pass
 
@@ -2598,9 +2599,9 @@ struct_anon_115._fields_ = [
     ('is_data_confirmed', c_uint8),
 ]
 
-smart_parser_output_data_t = struct_anon_115# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 87
+smart_parser_output_data_t = struct_anon_115# smartparser.h: 87
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 99
+# smartparser.h: 99
 class struct_anon_116(Structure):
     pass
 
@@ -2625,9 +2626,9 @@ struct_anon_116._fields_ = [
     ('cmd_name', String),
 ]
 
-smart_parser_input_data = struct_anon_116# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 99
+smart_parser_input_data = struct_anon_116# smartparser.h: 99
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 177
+# smartparser.h: 177
 class struct_anon_117(Structure):
     pass
 
@@ -2704,19 +2705,19 @@ struct_anon_117._fields_ = [
     ('logic_port_name_list', POINTER(c_char) * int(256)),
 ]
 
-smart_parser_t = struct_anon_117# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartparser.h: 177
+smart_parser_t = struct_anon_117# smartparser.h: 177
 
-u_char = c_ubyte# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 59
+u_char = c_ubyte# bsdtypes.h: 59
 
-u_short = c_ushort# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 60
+u_short = c_ushort# bsdtypes.h: 60
 
-u_int = c_uint# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 61
+u_int = c_uint# bsdtypes.h: 61
 
-u_long = c_ulong# c:\\dev\\mingw\\include\\sys\\bsdtypes.h: 62
+u_long = c_ulong# bsdtypes.h: 62
 
-SOCKET = u_int# c:\\dev\\mingw\\include\\winsock.h: 130
+SOCKET = u_int# winsock.h: 130
 
-# c:\\dev\\mingw\\include\\winsock.h: 349
+# winsock.h: 349
 class struct_anon_380(Structure):
     pass
 
@@ -2733,7 +2734,7 @@ struct_anon_380._fields_ = [
     ('s_b4', u_char),
 ]
 
-# c:\\dev\\mingw\\include\\winsock.h: 350
+# winsock.h: 350
 class struct_anon_381(Structure):
     pass
 
@@ -2746,7 +2747,7 @@ struct_anon_381._fields_ = [
     ('s_w2', u_short),
 ]
 
-# c:\\dev\\mingw\\include\\winsock.h: 348
+# winsock.h: 348
 class union_anon_382(Union):
     pass
 
@@ -2761,7 +2762,7 @@ union_anon_382._fields_ = [
     ('S_addr', u_long),
 ]
 
-# c:\\dev\\mingw\\include\\winsock.h: 341
+# winsock.h: 341
 class struct_in_addr(Structure):
     pass
 
@@ -2772,7 +2773,7 @@ struct_in_addr._fields_ = [
     ('S_un', union_anon_382),
 ]
 
-# c:\\dev\\mingw\\include\\winsock.h: 374
+# winsock.h: 374
 class struct_sockaddr_in(Structure):
     pass
 
@@ -2789,7 +2790,7 @@ struct_sockaddr_in._fields_ = [
     ('sin_zero', c_char * int(8)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\udpport.h: 32
+# udpport.h: 32
 class struct_anon_384(Structure):
     pass
 
@@ -2808,9 +2809,9 @@ struct_anon_384._fields_ = [
     ('sock', SOCKET),
 ]
 
-udp_port_t = struct_anon_384# C:\\dev\\work\\627_python_wrapper_2\\generate\\udpport.h: 32
+udp_port_t = struct_anon_384# udpport.h: 32
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartchannel.h: 39
+# smartchannel.h: 39
 class struct_anon_385(Structure):
     pass
 
@@ -2851,9 +2852,9 @@ struct_anon_385._fields_ = [
     ('max_data_size', c_uint32),
 ]
 
-smart_channel = struct_anon_385# C:\\dev\\work\\627_python_wrapper_2\\generate\\smartchannel.h: 39
+smart_channel = struct_anon_385# smartchannel.h: 39
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 29
+# rf62X_devices.h: 29
 class struct_anon_387(Structure):
     pass
 
@@ -2880,9 +2881,9 @@ struct_anon_387._fields_ = [
     ('info_by_service_protocol', rf627_old_hello_info_by_service_protocol),
 ]
 
-rf627_old_t = struct_anon_387# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 29
+rf627_old_t = struct_anon_387# rf62X_devices.h: 29
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 181
+# rf62X_devices.h: 181
 class struct_anon_388(Structure):
     pass
 
@@ -2901,9 +2902,9 @@ struct_anon_388._fields_ = [
     ('calib_table', rf627_smart_calib_table_t),
 ]
 
-rf627_smart_t = struct_anon_388# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 181
+rf627_smart_t = struct_anon_388# rf62X_devices.h: 181
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 424
+# rf62X_devices.h: 424
 class union_anon_389(Union):
     pass
 
@@ -2916,7 +2917,7 @@ union_anon_389._fields_ = [
     ('rf627_smart', POINTER(rf627_smart_t)),
 ]
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 428
+# rf62X_devices.h: 428
 class struct_anon_390(Structure):
     pass
 
@@ -2932,7 +2933,7 @@ struct_anon_390._fields_ = [
     ('unnamed_1', union_anon_389),
 ]
 
-scanner_base_t = struct_anon_390# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 428
+scanner_base_t = struct_anon_390# rf62X_devices.h: 428
 
 ######################################################################################################################
 
@@ -2941,11 +2942,11 @@ lib = cdll.LoadLibrary("./librf62Xsdk.dll")
 
 ############### CORE ####################
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 17
+# rf62Xcore.h: 17
 lib.core_init.argtypes = []
 lib.core_init.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 23
+# rf62Xcore.h: 23
 lib.sdk_version.argtypes = []
 if sizeof(c_int) == sizeof(c_void_p):
     lib.sdk_version.restype = ReturnString
@@ -2953,153 +2954,153 @@ else:
     lib.sdk_version.restype = String
     lib.sdk_version.errcheck = ReturnString
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 33
+# rf62Xcore.h: 33
 lib.platform_calloc.argtypes = [rfSize, rfSize]
 lib.platform_calloc.restype = POINTER(c_ubyte)
 lib.platform_calloc.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 44
+# rf62Xcore.h: 44
 lib.platform_malloc.argtypes = [rfSize]
 lib.platform_malloc.restype = POINTER(c_ubyte)
 lib.platform_malloc.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 55
+# rf62Xcore.h: 55
 lib.platform_realloc.argtypes = [POINTER(None), rfSize]
 lib.platform_realloc.restype = POINTER(c_ubyte)
 lib.platform_realloc.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 61
+# rf62Xcore.h: 61
 lib.platform_free.argtypes = [POINTER(None)]
 lib.platform_free.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 73
+# rf62Xcore.h: 73
 lib.platform_memset.argtypes = [POINTER(None), rfInt, rfSize]
 lib.platform_memset.restype = POINTER(c_ubyte)
 lib.platform_memset.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 86
+# rf62Xcore.h: 86
 lib.platform_memcpy.argtypes = [POINTER(None), POINTER(None), rfSize]
 lib.platform_memcpy.restype = POINTER(c_ubyte)
 lib.platform_memcpy.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 102
+# rf62Xcore.h: 102
 lib.platform_memcmp.argtypes = [POINTER(None), POINTER(None), c_size_t]
 lib.platform_memcmp.restype = rfInt
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 106
+# rf62Xcore.h: 106
 # for _lib in _libs.values():
 #     if _lib.has("platform_printf", "cdecl"):
 #         _func = _lib.get("platform_printf", "cdecl")
 #         _restype = rfInt
 #         _errcheck = None
-#         _argtypes = [POINTER(rfChar)]
+#         _argtypes = [c_char_p]
 #         platform_printf = _variadic_function(_func,_restype,_argtypes,_errcheck)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 115
+# rf62Xcore.h: 115
 lib.platform_htonl.argtypes = [rfUint32]
 lib.platform_htonl.restype = rfUint32
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 123
+# rf62Xcore.h: 123
 lib.platform_ntohl.argtypes = [rfUint32]
 lib.platform_ntohl.restype = rfUint32
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 130
+# rf62Xcore.h: 130
 lib.platform_htons.argtypes = [rfUint16]
 lib.platform_htons.restype = rfUint16
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 137
+# rf62Xcore.h: 137
 lib.platform_ntohs.argtypes = [rfUint16]
 lib.platform_ntohs.restype = rfUint16
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 148
+# rf62Xcore.h: 148
 lib.platform_create_udp_socket.argtypes = []
 lib.platform_create_udp_socket.restype = POINTER(c_ubyte)
 lib.platform_create_udp_socket.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 161
+# rf62Xcore.h: 161
 lib.platform_set_broadcast_socket_option.argtypes = [POINTER(None)]
 lib.platform_set_broadcast_socket_option.restype = rfInt8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 174
+# rf62Xcore.h: 174
 lib.platform_set_reuseaddr_socket_option.argtypes = [POINTER(None)]
 lib.platform_set_reuseaddr_socket_option.restype = rfInt8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 187
-lib.platform_set_socket_option.argtypes = [POINTER(None), rfInt32, rfInt32, POINTER(rfChar), rfInt32]
+# rf62Xcore.h: 187
+lib.platform_set_socket_option.argtypes = [POINTER(None), rfInt32, rfInt32, c_char_p, rfInt32]
 lib.platform_set_socket_option.restype = rfInt8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 199
+# rf62Xcore.h: 199
 lib.platform_set_socket_recv_timeout.argtypes = [POINTER(None), rfInt32]
 lib.platform_set_socket_recv_timeout.restype = rfInt8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 210
+# rf62Xcore.h: 210
 lib.platform_socket_connect.argtypes = [POINTER(None), rfUint32, rfUint16]
 lib.platform_socket_connect.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 222
+# rf62Xcore.h: 222
 lib.platform_socket_bind.argtypes = [POINTER(None), rfUint32, rfUint16]
 lib.platform_socket_bind.restype = rfInt
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 233
+# rf62Xcore.h: 233
 lib.platform_socket_listen.argtypes = [POINTER(None), rfInt32]
 lib.platform_socket_listen.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 252
+# rf62Xcore.h: 252
 lib.platform_socket_accept.argtypes = [POINTER(None), POINTER(rfUint32), POINTER(rfUint16)]
 lib.platform_socket_accept.restype = POINTER(c_ubyte)
 lib.platform_socket_accept.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 262
+# rf62Xcore.h: 262
 lib.platform_close_socket.argtypes = [POINTER(None)]
 lib.platform_close_socket.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 274
+# rf62Xcore.h: 274
 lib.platform_send_tcp_data.argtypes = [POINTER(None), POINTER(None), rfSize]
 lib.platform_send_tcp_data.restype = rfInt
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 288
+# rf62Xcore.h: 288
 lib.platform_send_udp_data.argtypes = [POINTER(None), POINTER(None), rfSize, rfUint32, rfUint16]
 lib.platform_send_udp_data.restype = rfInt
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 301
+# rf62Xcore.h: 301
 lib.platform_recv_from.argtypes = [POINTER(None), POINTER(None), rfSize, POINTER(rfUint32), POINTER(rfUint16)]
 lib.platform_recv_from.restype = rfInt
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62Xcore.h: 312
+# rf62Xcore.h: 312
 lib.platform_recv.argtypes = [POINTER(None), POINTER(None), rfSize]
 lib.platform_recv.restype = rfInt
 
 ###############NETWORK###################
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 38
+# network.h: 38
 lib.GetAdaptersCount.argtypes = []
 lib.GetAdaptersCount.restype = c_int
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 40
+# network.h: 40
 lib.GetAdapterAddress.argtypes = [c_int]
 lib.GetAdapterAddress.restype = c_char_p
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 43
+# network.h: 43
 lib.WinSockInit.argtypes = []
 lib.WinSockInit.restype = BOOL
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 45
+# network.h: 45
 lib.WinSockDeinit.argtypes = []
 lib.WinSockDeinit.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 47
+# network.h: 47
 lib.EnumAdapterAddresses.argtypes = []
 lib.EnumAdapterAddresses.restype = BOOL
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 52
+# network.h: 52
 lib.FreeAdapterAddresses.argtypes = []
 lib.FreeAdapterAddresses.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 54
+# network.h: 54
 lib.MatchIP.argtypes = [String, String, String]
 lib.MatchIP.restype = BOOL
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 66
+# network.h: 66
 lib.GetCompatibleInterface.argtypes = [String, String]
 if sizeof(c_int) == sizeof(c_void_p):
     lib.GetCompatibleInterface.restype = ReturnString
@@ -3107,307 +3108,535 @@ else:
     lib.GetCompatibleInterface.restype = String
     lib.GetCompatibleInterface.errcheck = ReturnString
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 81
+# network.h: 81
 lib.MatchUDP.argtypes = [u_long, u_long]
 lib.MatchUDP.restype = BOOL
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 83
+# network.h: 83
 lib.GetUDPCompatibleInterface.argtypes = [u_long]
 lib.GetUDPCompatibleInterface.restype = u_long
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\network.h: 85
+# network.h: 85
 lib.DumpInterfaces.argtypes = []
 lib.DumpInterfaces.restype = None
 
 ################DEVICES##################
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 38
+# rf62X_devices.h: 38
 lib.rf627_old_search_by_service_protocol.argtypes = [POINTER(vector_t), rfUint32]
 lib.rf627_old_search_by_service_protocol.restype = c_uint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 47
+# rf62X_devices.h: 47
 lib.rf627_old_create_from_hello_msg.argtypes = [POINTER(None), rfUint16]
 lib.rf627_old_create_from_hello_msg.restype = POINTER(rf627_old_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 56
+# rf62X_devices.h: 56
 lib.rf627_old_get_info_about_scanner_by_service_protocol.argtypes = [POINTER(rf627_old_t)]
 lib.rf627_old_get_info_about_scanner_by_service_protocol.restype = POINTER(rf627_old_hello_info_by_service_protocol)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 63
+# rf62X_devices.h: 63
 lib.rf627_old_connect.argtypes = [POINTER(rf627_old_t)]
 lib.rf627_old_connect.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 69
+# rf62X_devices.h: 69
 lib.rf627_old_disconnect.argtypes = [POINTER(rf627_old_t)]
 lib.rf627_old_disconnect.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 77
+# rf62X_devices.h: 77
 lib.rf627_old_get_profile2D.argtypes = [POINTER(rf627_old_t), rfBool]
 lib.rf627_old_get_profile2D.restype = POINTER(rf627_old_profile2D_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 85
+# rf62X_devices.h: 85
 lib.rf627_old_get_profile3D.argtypes = [POINTER(rf627_old_t), rfFloat, rfFloat, count_types_t, rfBool, protocol_types_t]
 lib.rf627_old_get_profile3D.restype = POINTER(rf627_old_profile3D_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 97
+# rf62X_devices.h: 97
 lib.rf627_old_read_user_params_from_scanner.argtypes = [POINTER(rf627_old_t)]
 lib.rf627_old_read_user_params_from_scanner.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 105
+# rf62X_devices.h: 105
 lib.rf627_old_read_factory_params_from_scanner.argtypes = [POINTER(rf627_old_t)]
 lib.rf627_old_read_factory_params_from_scanner.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 112
+# rf62X_devices.h: 112
 lib.rf627_old_write_params_to_scanner.argtypes = [POINTER(rf627_old_t)]
 lib.rf627_old_write_params_to_scanner.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 120
-lib.rf627_old_get_parameter.argtypes = [POINTER(rf627_old_t), POINTER(rfChar)]
+# rf62X_devices.h: 120
+lib.rf627_old_get_parameter.argtypes = [POINTER(rf627_old_t), c_char_p]
 lib.rf627_old_get_parameter.restype = POINTER(parameter_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 129
+# rf62X_devices.h: 129
 lib.rf627_old_set_parameter.argtypes = [POINTER(rf627_old_t), POINTER(parameter_t)]
 lib.rf627_old_set_parameter.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 139
-lib.rf627_old_set_parameter_by_name.argtypes = [POINTER(rf627_old_t), POINTER(rfChar), rfUint32, c_void_p]
+# rf62X_devices.h: 139
+lib.rf627_old_set_parameter_by_name.argtypes = [POINTER(rf627_old_t), c_char_p, rfUint32, c_void_p]
 lib.rf627_old_set_parameter_by_name.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 149
+# rf62X_devices.h: 149
 lib.rf627_old_command_set_counters.argtypes = [POINTER(rf627_old_t), rfUint32, rfUint32]
 lib.rf627_old_command_set_counters.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 159
+# rf62X_devices.h: 159
 lib.rf627_old_command_periphery_send.argtypes = [POINTER(rf627_old_t), rfUint16, POINTER(None), POINTER(rfUint16), POINTER(POINTER(None))]
 lib.rf627_old_command_periphery_send.restype = rfUint8
 
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 194
+# rf62X_devices.h: 194
 lib.rf627_smart_search_by_service_protocol.argtypes = [POINTER(vector_t), rfUint32, rfUint32]
 lib.rf627_smart_search_by_service_protocol.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 206
+# rf62X_devices.h: 206
 lib.rf627_smart_get_scanner_info_by_service_protocol.argtypes = [POINTER(rf627_smart_t)]
 lib.rf627_smart_get_scanner_info_by_service_protocol.restype = POINTER(rf627_smart_hello_info_by_service_protocol)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 215
+# rf62X_devices.h: 215
 lib.rf627_smart_free.argtypes = [POINTER(rf627_smart_t)]
 lib.rf627_smart_free.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 225
+# rf62X_devices.h: 225
 lib.rf627_smart_connect.argtypes = [POINTER(rf627_smart_t)]
 lib.rf627_smart_connect.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 237
+# rf62X_devices.h: 237
 lib.rf627_smart_check_connection_by_service_protocol.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_check_connection_by_service_protocol.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 248
+# rf62X_devices.h: 248
 lib.rf627_smart_disconnect.argtypes = [POINTER(rf627_smart_t)]
 lib.rf627_smart_disconnect.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 259
+# rf62X_devices.h: 259
 lib.rf627_smart_get_profile2D.argtypes = [POINTER(rf627_smart_t), rfBool]
 lib.rf627_smart_get_profile2D.restype = POINTER(rf627_smart_profile2D_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 273
+# rf62X_devices.h: 273
 lib.rf627_smart_read_params_from_scanner.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_read_params_from_scanner.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 285
-lib.rf627_smart_get_parameter.argtypes = [POINTER(rf627_smart_t), POINTER(rfChar)]
+# rf62X_devices.h: 285
+lib.rf627_smart_get_parameter.argtypes = [POINTER(rf627_smart_t), c_char_p]
 lib.rf627_smart_get_parameter.restype = POINTER(parameter_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 299
+# rf62X_devices.h: 299
 lib.rf627_smart_set_parameter.argtypes = [POINTER(rf627_smart_t), POINTER(parameter_t)]
 lib.rf627_smart_set_parameter.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 312
+# rf62X_devices.h: 312
 lib.rf627_smart_write_params_to_scanner.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_write_params_to_scanner.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 324
+# rf62X_devices.h: 324
 lib.rf627_smart_get_frame.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_get_frame.restype = POINTER(rf627_smart_frame_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 339
+# rf62X_devices.h: 339
 lib.rf627_smart_get_authorization_token_by_service_protocol.argtypes = [POINTER(rf627_smart_t), POINTER(POINTER(c_char)), POINTER(rfUint32), rfUint32]
 lib.rf627_smart_get_authorization_token_by_service_protocol.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 354
+# rf62X_devices.h: 354
 lib.rf627_smart_set_authorization_key_by_service_protocol.argtypes = [POINTER(rf627_smart_t), String, rfUint32, rfUint32]
 lib.rf627_smart_set_authorization_key_by_service_protocol.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 367
+# rf62X_devices.h: 367
 lib.rf627_smart_read_calibration_table_by_service_protocol.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_read_calibration_table_by_service_protocol.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 380
+# rf62X_devices.h: 380
 lib.rf627_smart_write_calibration_data_by_service_protocol.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_write_calibration_data_by_service_protocol.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 393
+# rf62X_devices.h: 393
 lib.rf627_smart_save_calibration_data_by_service_protocol.argtypes = [POINTER(rf627_smart_t), rfUint32]
 lib.rf627_smart_save_calibration_data_by_service_protocol.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 405
+# rf62X_devices.h: 405
 lib.rf627_smart_get_calibration_table.argtypes = [POINTER(rf627_smart_t)]
 lib.rf627_smart_get_calibration_table.restype = POINTER(rf627_smart_calib_table_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_devices.h: 418
+# rf62X_devices.h: 418
 lib.rf627_smart_set_calibration_table.argtypes = [POINTER(rf627_smart_t), POINTER(rf627_smart_calib_table_t)]
 lib.rf627_smart_set_calibration_table.restype = rfBool
 
 
 ##################SDK####################
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 34
+# rf62X_sdk.h: 34
 lib.set_platform_adapter_settings.argtypes = [rfUint32, rfUint32]
 lib.set_platform_adapter_settings.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 49
+# rf62X_sdk.h: 49
 lib.search_scanners.argtypes = [POINTER(vector_t), scanner_types_t, c_uint32, protocol_types_t]
 lib.search_scanners.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 60
+# rf62X_sdk.h: 60
 lib.get_info_about_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
 lib.get_info_about_scanner.restype = hello_information
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 71
+# rf62X_sdk.h: 71
 lib.connect_to_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
 lib.connect_to_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 83
+# rf62X_sdk.h: 83
 lib.check_connection_to_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.check_connection_to_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 95
+# rf62X_sdk.h: 95
 lib.disconnect_from_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
 lib.disconnect_from_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 105
+# rf62X_sdk.h: 105
 lib.get_profile2D_from_scanner.argtypes = [POINTER(scanner_base_t), rfBool, protocol_types_t]
 lib.get_profile2D_from_scanner.restype = POINTER(rf627_profile2D_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 109
+
+# rf62X_sdk.h: 109
 lib.get_profile3D_from_scanner.argtypes = [POINTER(scanner_base_t), rfFloat, rfFloat, count_types_t, rfBool, protocol_types_t]
 lib.get_profile3D_from_scanner.restype = POINTER(rf627_profile3D_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 115
+# rf62X_sdk.h: 115
 lib.get_frame_from_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
 lib.get_frame_from_scanner.restype = POINTER(rf627_frame_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 125
+# rf62X_sdk.h: 125
 lib.read_params_from_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.read_params_from_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 134
+# rf62X_sdk.h: 134
 lib.write_params_to_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.write_params_to_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 143
-lib.get_parameter.argtypes = [POINTER(scanner_base_t), POINTER(rfChar)]
+# rf62X_sdk.h: 143
+# lib.get_parameter.argtypes = [POINTER(scanner_base_t), c_char_p]
+lib.get_parameter.argtypes = [POINTER(scanner_base_t), c_char_p]
 lib.get_parameter.restype = POINTER(parameter_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 152
+# rf62X_sdk.h: 152
 lib.set_parameter.argtypes = [POINTER(scanner_base_t), POINTER(parameter_t)]
 lib.set_parameter.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 160
+# rf62X_sdk.h: 160
 lib.free_parameter.argtypes = [POINTER(parameter_t), scanner_types_t]
 lib.free_parameter.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 169
+# rf62X_sdk.h: 169
 lib.set_parameter_by_name.argtypes = [POINTER(scanner_base_t), String, rfUint32, c_void_p]
 lib.set_parameter_by_name.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 178
+# rf62X_sdk.h: 178
 lib.send_command.argtypes = [POINTER(scanner_base_t), POINTER(command_t)]
 lib.send_command.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 187
+# rf62X_sdk.h: 187
 lib.send_command2.argtypes = [POINTER(scanner_base_t), POINTER(command2_t)]
 lib.send_command2.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 190
+# rf62X_sdk.h: 190
 lib.get_authorization_token_from_scanner.argtypes = [POINTER(scanner_base_t), POINTER(POINTER(c_char)), POINTER(c_uint32), c_uint32, protocol_types_t]
 lib.get_authorization_token_from_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 193
+# rf62X_sdk.h: 193
 lib.set_authorization_key_to_scanner.argtypes = [POINTER(scanner_base_t), String, c_uint32, c_uint32, protocol_types_t]
 lib.set_authorization_key_to_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 196
+# rf62X_sdk.h: 196
 lib.read_calibration_table_from_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.read_calibration_table_from_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 198
+# rf62X_sdk.h: 198
 lib.convert_calibration_table_from_bytes.argtypes = [String, c_uint32]
 lib.convert_calibration_table_from_bytes.restype = POINTER(rf627_calib_table_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 199
+# rf62X_sdk.h: 199
 lib.convert_calibration_table_to_bytes.argtypes = [POINTER(rf627_calib_table_t), POINTER(POINTER(c_char)), POINTER(c_uint32)]
 lib.convert_calibration_table_to_bytes.restype = rfBool
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 200
+# rf62X_sdk.h: 200
 lib.write_calibration_table_to_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.write_calibration_table_to_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 203
+# rf62X_sdk.h: 203
 lib.get_calibration_table_from_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.get_calibration_table_from_scanner.restype = POINTER(rf627_calib_table_t)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 205
+# rf62X_sdk.h: 205
 lib.set_calibration_table_to_scanner.argtypes = [POINTER(scanner_base_t), POINTER(rf627_calib_table_t), c_uint32, protocol_types_t]
 lib.set_calibration_table_to_scanner.restype = rfUint8
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\rf62X_sdk.h: 208
+# rf62X_sdk.h: 208
 lib.save_calibration_table_to_scanner.argtypes = [POINTER(scanner_base_t), c_uint32, protocol_types_t]
 lib.save_calibration_table_to_scanner.restype = rfUint8
 
 ######CUSTOM VECTOR############
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 15
-lib.vector_init.argtypes = [POINTER(POINTER(vector_t))]
+# custom_vector.h: 15
+# lib.vector_init.argtypes = [POINTER(POINTER(vector_t))]
+lib.vector_init.argtypes = [POINTER(vector_t)]
 lib.vector_init.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 20
+# custom_vector.h: 20
 lib.vector_count.argtypes = [POINTER(vector_t)]
 lib.vector_count.restype = rfSize
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 28
+# custom_vector.h: 28
 lib.vector_add.argtypes = [POINTER(vector_t), POINTER(None)]
 lib.vector_add.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 37
+# custom_vector.h: 37
 lib.vector_set.argtypes = [POINTER(vector_t), rfSize, POINTER(None)]
 lib.vector_set.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 45
+# custom_vector.h: 45
 lib.vector_get.argtypes = [POINTER(vector_t), rfSize]
 lib.vector_get.restype = POINTER(c_ubyte)
 lib.vector_get.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 52
+# custom_vector.h: 52
 lib.vector_empty.argtypes = [POINTER(vector_t)]
 lib.vector_empty.restype = rfSize
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 60
+# custom_vector.h: 60
 lib.vector_delete.argtypes = [POINTER(vector_t), rfSize]
 lib.vector_delete.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 67
+# custom_vector.h: 67
 lib.vector_free.argtypes = [POINTER(vector_t)]
 lib.vector_free.restype = None
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 74
+# custom_vector.h: 74
 lib.vector_begin.argtypes = [POINTER(vector_t)]
 lib.vector_begin.restype = POINTER(c_ubyte)
 lib.vector_begin.errcheck = lambda v,*a : cast(v, c_void_p)
 
-# C:\\dev\\work\\627_python_wrapper_2\\generate\\custom_vector.h: 81
+# custom_vector.h: 81
 lib.vector_end.argtypes = [POINTER(vector_t)]
 lib.vector_end.restype = POINTER(c_ubyte)
 lib.vector_end.errcheck = lambda v,*a : cast(v, c_void_p)
+
+
+#####py_get_profile2D_from_scanner####
+_profile_max_len = 1296
+_buffer_tmp=(c_char*_profile_max_len*sizeof(rf627_smart_profile2D_t))() #buffer for profile
+
+def py_get_profile2D_from_scanner(p,dummy1,dummy2):
+    ret=None
+    if (p.contents.rf627smart_profile2D):
+        ret={}
+        ret['header'] = getdict(p.contents.rf627smart_profile2D.contents.header)
+        
+        datatype = ret['header']['data_type']
+        
+        if (datatype == DTY_PixelsNormal) or (datatype == DTY_PixelsInterpolated):
+            # pixels_format
+            c=p.contents.rf627smart_profile2D.contents.pixels_format.pixels_count
+            v=p.contents.rf627smart_profile2D.contents.pixels_format.pixels
+            ret['pixels_count']=c
+            memmove(_buffer_tmp, v, c*sizeof(rfUint16)) #copy ctypes object to buffer
+            ret['pixels']=(c*rfUint16).from_buffer_copy(_buffer_tmp)
+            lib.platform_free(v) #free ctypes object 
+
+        if (datatype == DTY_ProfileNormal) or (datatype == DTY_ProfileInterpolated):
+            # profile_format
+            c = p.contents.rf627smart_profile2D.contents.profile_format.points_count
+            v=p.contents.rf627smart_profile2D.contents.profile_format.points
+            ret['points_count']=c
+            memmove(_buffer_tmp, v, c*sizeof(rf627_old_point2D_t))
+            ret['points']=(c*rf627_old_point2D_t).from_buffer_copy(_buffer_tmp)
+            lib.platform_free(v)#free ctypes object 
+
+        if (p.contents.rf627smart_profile2D.contents.intensity_count>0):
+            #intensity
+            c=p.contents.rf627smart_profile2D.contents.intensity_count
+            v=p.contents.rf627smart_profile2D.contents.intensity
+            ret['intensity_count']=c
+            memmove(_buffer_tmp, v, c*sizeof(rfUint8)) 
+            ret['intensity']=(c*rfUint8).from_buffer_copy(_buffer_tmp)
+            lib.platform_free(v)#free ctypes object 
+
+        lib.platform_free(p.contents.rf627smart_profile2D)  # free ctypes object
+        lib.platform_free(p)#free ctypes object 
+    
+    return ret
+
+
+
+CONST_pvtKey=[
+      "unkn_t",
+    "uint32_t",
+    "uint64_t",
+    "int32_t",
+    "int64_t",
+    "float_t",
+    "double_t",
+    "u32_arr_t",
+    "u64_arr_t",
+    "i32_arr_t",
+    "i64_arr_t",
+    "flt_array_t",
+    "dbl_array_t",
+    "string_t"
+    ]
+
+class CONST_paramValueType_t(IntEnum):
+        PVT_UNKN        =0
+        PVT_UINT        =1
+        PVT_UINT64      =2
+        PVT_INT =3
+        PVT_INT64       =4
+        PVT_FLOAT       =5
+        PVT_DOUBLE      =6
+        PVT_ARRAY_UINT32        =7
+        PVT_ARRAY_UINT64        =8
+        PVT_ARRAY_INT32 =9
+        PVT_ARRAY_INT64 =10
+        PVT_ARRAY_FLT   =11
+        PVT_ARRAY_DBL   =12
+        PVT_STRING      =13
+
+def get_base_by_type(p, type):
+    struct_type=None
+    base=None
+    arr_el_type=None
+
+    #   "unkn_t",
+    # "uint32_t",
+    if (type==CONST_pvtKey[CONST_paramValueType_t.PVT_UINT]):
+        struct_type=struct_value_uint32_t
+        base=p.contents.val_uint32
+
+    # "uint64_t",
+    elif  (type==CONST_pvtKey[CONST_paramValueType_t.PVT_UINT64]):
+        struct_type=struct_value_uint64_t
+        base=p.contents.val_uint64
+    # "int32_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_INT]):
+        struct_type=struct_value_int32_t
+        base=p.contents.val_int32
+    # "int64_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_INT64]):
+        struct_type=struct_value_int64_t
+        base=p.contents.val_int64
+    # "float_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_FLOAT]):
+        struct_type=struct_value_flt_t
+        base=p.contents.val_flt
+    # "double_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_FLOAT]):
+        struct_type=struct_value_flt_t
+        base=p.contents.val_flt
+    # "u32_arr_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_ARRAY_UINT32]):
+        struct_type=struct_array_uint32_t
+        base=p.contents.arr_uint32
+        arr_el_type=c_uint32
+    # "u64_arr_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_ARRAY_UINT64]):
+        struct_type=struct_array_uint64_t
+        base=p.contents.arr_uint64
+        arr_el_type=c_uint64
+    # "i32_arr_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_ARRAY_INT32]):
+        struct_type=struct_array_int32_t
+        base=p.contents.arr_int32
+        arr_el_type=c_int32
+    # "i64_arr_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_ARRAY_INT64]):
+        struct_type=struct_array_int64_t
+        base=p.contents.arr_int64
+        arr_el_type=c_int64
+    # "flt_array_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_ARRAY_FLT]):
+        struct_type=struct_array_flt_t
+        base=p.contents.arr_flt
+        arr_el_type=c_float
+    # "dbl_array_t",
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_ARRAY_DBL]):
+        struct_type=struct_array_dbl_t
+        base=p.contents.arr_dbl
+        arr_el_type=c_double
+    # "string_t"
+    elif (type==CONST_pvtKey[CONST_paramValueType_t.PVT_STRING]):
+         struct_type=struct_value_str_t
+         base=p.contents.val_str 
+
+    if struct_type:
+        return struct_type, base, arr_el_type
+    else:
+        return None
+
+def py_get_parameter(p, dummy1, dummy2):
+    if p:
+        ret=getdict(p.contents.base)
+        struct_type, base,arr_el_type=get_base_by_type(p, ret['type'])
+        if struct_type:
+            base=base.contents
+            ret.update(getdict(base))   #the rest of rest keys-values
+            ret['ctypes']= (c_char *  sizeof(parameter_t) )()
+            memmove(ret['ctypes'], p, sizeof(parameter_t)) #copy ctypes object 
+            ret['ctypes']=cast(ret['ctypes'], POINTER(parameter_t))
+            
+            #parse value
+            if ('_arr_' in ret['type']): #arrays
+                val= ret['value']
+                val= cast(val, POINTER(ret['count']*arr_el_type)).contents 
+                ret['value']=[val[i] for i in range(len(val))]
+            #parse default values of ctypes array
+            for key, value in ret.items():
+                if ('ctypes.' in str(value)):
+                    val= cast(value, POINTER(ret['defCount']*arr_el_type)).contents 
+                    ret[key]=[val[i] for i in range(len(val))]
+            # enumValues
+            if 'enumValues' in ret:
+                if ret['enumValues']:
+                    c=ret['enumValues'].contents.recCount
+                    r=ret['enumValues'].contents.rec
+                    #only the first value
+                    if c>0:
+                        ret['enumValues'] = r.contents.key.decode('utf-8')+'='+str(r.contents.value)+', ...'
+                    else:
+                        ret['enumValues']=None
+                else:
+                    ret['enumValues']=None
+            
+            return ret
+
+    return None
+
+def set_parameter_value(p):
+    # p['value'] is a new value
+    type=p['type']
+    struct_type, base,arr_el_type=get_base_by_type(cast(p['ctypes'], POINTER(parameter_t))  , type)
+ 
+    if struct_type:
+        if ('string' in type): #string
+            base.contents.value=p['value'].encode('utf-8')
+            p['size']=len(p['value'])+1
+            p['ctypes'].contents.base.size=p['size']
+        elif ('arr_' in type): #arrays
+            base.contents.value = (arr_el_type* len(p['value']) )(*p['value'])
+            p['size']=sizeof(arr_el_type) * len(p['value'])
+            p['ctypes'].contents.base.size=p['size']
+        else:
+            base.contents.value=p['value']
+        return p
+    else:
+        return None
+
+
+def parse_py_get_info_about_scanner(p, dummy1, dummy2):
+    ret={}
+    ret = getdict(p.rf627smart.hello_info_service_protocol.contents)
+    ret['scanner_type']=p.scanner_type
+    ret['protocol_type']=p.protocol_type
+    # ret['ip_address'] = num_to_ip(ret['user_network_ip'])
+    # ret['mac_address']=num_to_mac(ret['mac_address'])
+    # ret['firmware_version']=parse_version(ret['firmware_version'])
+    # ret['hardware_version']=parse_version(ret['hardware_version'])
+    return ret
+
+lib.get_profile2D_from_scanner.errcheck = py_get_profile2D_from_scanner
+lib.get_parameter.errcheck = py_get_parameter
+lib.get_info_about_scanner.errcheck = parse_py_get_info_about_scanner
 
 ######################################
 # helper functions
@@ -3433,36 +3662,39 @@ def getdict(struct):
     ret={}
     for field, type in struct._fields_:
         ret [field]= getattr(struct, field)
+        # print("---->", str(type))
         if ("_Array_") in str(type):
             val= ret [field]
             ret [field]=[val[i] for i in range(len(val))]
         elif ("c_char_p") in str(type):
             ret[field]=ret[field].decode('utf-8')
-    return ret
+        elif ("String") in str(type):
+            ret[field]=ret[field].data.decode('utf-8')
+    return ret 
 
+    
 def parse_py_get_info_about_scanner(p):
     ret={}
     ret=getdict(p.rf627old.hello_info_service_protocol.contents)
     ret['scanner_type']=p.scanner_type
     ret['protocol_type']=p.protocol_type
-    ret['ip_address']=num_to_ip(ret['ip_address'])
-    ret['mac_address']=num_to_mac(ret['mac_address'])
-    ret['firmware_version']=parse_version(ret['firmware_version'])
-    ret['hardware_version']=parse_version(ret['hardware_version'])
+    # ret['ip_address']=num_to_ip(ret['ip_address'])
+    # ret['mac_address']=num_to_mac(ret['mac_address'])
+    # ret['firmware_version']=parse_version(ret['firmware_version'])
+    # ret['hardware_version']=parse_version(ret['hardware_version'])
     return ret
 
-if __name__ == '__main__':
-    lib.core_init()
-    print('sdk version', lib.sdk_version()) # Print sdk version
-    scanners=vector_t()
-    # lib.vector_init(scanners);
-    for i in range(lib.GetAdaptersCount()):
-        host_ip_addr = inet_addr(lib.GetAdapterAddress(i).decode("utf-8") )
-        host_mask= inet_addr("255.255.255.0")
-        lib.set_platform_adapter_settings(host_mask, host_ip_addr)
-        lib.search_scanners(scanners, kRF627_SMART, 500, kSERVICE);
-        print('Discovered: ', lib.vector_count(scanners), ' rf627-smart')
 
-    print("done") 
+def get_parameter_by_name(scanner, str_parameter_name):
+    return lib.get_parameter(scanner, str_parameter_name.encode('utf-8'))
+
+
+def change_parameter(scanner, parameter_t_with_new_value):
+    parameter_t_with_new_value = set_parameter_value(parameter_t_with_new_value)  # updated (parameter_t) object according to new value
+    lib.set_parameter(scanner, parameter_t_with_new_value['ctypes'])
+    return lib.write_params_to_scanner(scanner, 500, kSERVICE)
+
+
+
 
 
