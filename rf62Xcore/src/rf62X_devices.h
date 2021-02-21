@@ -69,6 +69,13 @@ rfBool rf627_old_connect(rf627_old_t* scanner);
 void rf627_old_disconnect(rf627_old_t* scanner);
 
 /**
+ * @brief rf627_old_free - free memory allocated for rf627-smart scanner type
+ *
+ * @param rf627_old_t - prt to scanner struct
+ */
+void rf627_old_free(rf627_old_t* scanner);
+
+/**
  * @brief rf627_old_get_profile - Get measurement from scanner's data stream
  * @param scanner - ptr to device
  * @param zero_points - include zero points in return profile2D

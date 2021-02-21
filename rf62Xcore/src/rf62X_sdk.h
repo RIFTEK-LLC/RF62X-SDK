@@ -95,15 +95,24 @@ API_EXPORT rfUint8 check_connection_to_scanner(
 API_EXPORT rfUint8 disconnect_from_scanner(
         scanner_base_t *device, protocol_types_t protocol);
 
+
+/**
+ * @brief free_scanner - Cleanup resources allocated by device
+ *
+ * @param[in] device Prt to scanner
+ */
+API_EXPORT void free_scanner(scanner_base_t *device);
+
 /**
  * @brief get_profile - Get measurement from scanner's data stream
  * @param device - ptr to scanner
- * @param zero_points - include zero points in return profile2D
- * @param protocol - protocol's type (Service, ENIP, Modbus-TCP)
+ * @param zero_points Enable zero points in return profile2D
+ * @param realtime Enable getting profile in real time (buffering is disabled)
+ * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
  * @return ptr to rf627_profile_t structure
  */
 API_EXPORT rf627_profile2D_t* get_profile2D_from_scanner(
-        scanner_base_t *device, rfBool zero_points, protocol_types_t protocol);
+        scanner_base_t *device, rfBool zero_points, rfBool realtime, protocol_types_t protocol);
 
 
 API_EXPORT rf627_profile3D_t* get_profile3D_from_scanner(

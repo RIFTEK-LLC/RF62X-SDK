@@ -483,9 +483,9 @@ typedef struct
 {
     rfChar* data;
     rfUint32 data_size;
-    rfUint8 pixel_size;
     rfUint32 width;
     rfUint32 height;
+    rfUint8 pixel_size;
 
     rfBool user_roi_active;
     rfBool user_roi_enabled;
@@ -540,9 +540,9 @@ typedef struct
 {
     rfChar* data;
     rfUint32 data_size;
-    rfUint8 pixel_size;
     rfUint32 width;
     rfUint32 height;
+    rfUint8 pixel_size;
 
     rfBool user_roi_active;
     rfBool user_roi_enabled;

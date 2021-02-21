@@ -215,8 +215,10 @@ rfUint8 disconnect_from_scanner(scanner_base_t *device, protocol_types_t protoco
     return 0;
 }
 
+extern uint8_t ip_string_to_uint32 (const char*  ip_string, uint32_t* ip_addr);
+
 rf627_profile2D_t* get_profile2D_from_scanner(
-        scanner_base_t *device, rfBool zero_points,  protocol_types_t protocol)
+        scanner_base_t *device, rfBool zero_points, rfBool realtime, protocol_types_t protocol)
 {
     rf627_profile2D_t* profile =
             memory_platform.rf_calloc(1 ,sizeof(rf627_profile2D_t));
@@ -225,6 +227,49 @@ rf627_profile2D_t* get_profile2D_from_scanner(
         profile->type = kRF627_OLD;
         switch (protocol) {
         case kSERVICE:
+            if (realtime)
+            {
+                if (((scanner_base_t*)device)->rf627_old->m_data_sock != NULL)
+                {
+                    if ((SOCKET)((scanner_base_t*)device)->rf627_old->m_data_sock != INVALID_SOCKET)
+                    {
+                        network_platform.network_methods.close_socket(
+                                    ((scanner_base_t*)device)->rf627_old->m_data_sock);
+                    }
+                    ((scanner_base_t*)device)->rf627_old->m_data_sock = NULL;
+                }
+
+                rfUint32 recv_ip_addr;
+                rfUint16 recv_port;
+                rfInt nret;
+
+
+                ((scanner_base_t*)device)->rf627_old->m_data_sock =
+                        network_platform.network_methods.create_udp_socket();
+                if (((scanner_base_t*)device)->rf627_old->m_data_sock != (void*)INVALID_SOCKET)
+                {
+                    nret = 1;
+                    network_platform.network_methods.set_reuseaddr_socket_option(
+                                ((scanner_base_t*)device)->rf627_old->m_data_sock);
+
+                    network_platform.network_methods.set_socket_recv_timeout(
+                                ((scanner_base_t*)device)->rf627_old->m_data_sock, 100);
+                    //recv_addr.sin_family = RF_AF_INET;
+                    recv_port = ((scanner_base_t*)device)->rf627_old->info_by_service_protocol.profile_port;
+
+                    //recv_addr.sin_addr = RF_INADDR_ANY;
+                    recv_ip_addr = ((scanner_base_t*)device)->rf627_old->host_ip;
+
+                    nret = network_platform.network_methods.socket_bind(
+                                ((scanner_base_t*)device)->rf627_old->m_data_sock, recv_ip_addr, recv_port);
+                    if (nret == RF_SOCKET_ERROR)
+                    {
+                        network_platform.network_methods.close_socket(((scanner_base_t*)device)->rf627_old->m_data_sock);
+                        ((scanner_base_t*)device)->rf627_old->m_data_sock = NULL;
+                        return NULL;
+                    }
+                }
+            }
             profile->rf627old_profile2D = rf627_old_get_profile2D(device->rf627_old, zero_points);
             return profile;
             break;
@@ -241,6 +286,50 @@ rf627_profile2D_t* get_profile2D_from_scanner(
         profile->type = kRF627_SMART;
         switch (protocol) {
         case kSERVICE:
+            if (realtime)
+            {
+                if (((scanner_base_t*)device)->rf627_smart->m_data_sock != NULL)
+                {
+                    if ((SOCKET)((scanner_base_t*)device)->rf627_smart->m_data_sock != INVALID_SOCKET)
+                    {
+                        network_platform.network_methods.close_socket(
+                                    ((scanner_base_t*)device)->rf627_smart->m_data_sock);
+                    }
+                    ((scanner_base_t*)device)->rf627_smart->m_data_sock = NULL;
+                }
+
+                rfUint32 recv_ip_addr;
+                rfUint16 recv_port;
+                rfInt nret;
+
+
+                ((scanner_base_t*)device)->rf627_smart->m_data_sock =
+                        network_platform.network_methods.create_udp_socket();
+                if (((scanner_base_t*)device)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
+                {
+                    nret = 1;
+                    network_platform.network_methods.set_reuseaddr_socket_option(
+                                ((scanner_base_t*)device)->rf627_smart->m_data_sock);
+
+                    network_platform.network_methods.set_socket_recv_timeout(
+                                ((scanner_base_t*)device)->rf627_smart->m_data_sock, 100);
+                    //recv_addr.sin_family = RF_AF_INET;
+                    recv_port = ((scanner_base_t*)device)->rf627_smart->info_by_service_protocol.user_network_hostPort;
+
+                    //recv_addr.sin_addr = RF_INADDR_ANY;
+                    ip_string_to_uint32(((scanner_base_t*)device)->rf627_smart->
+                                        info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
+
+                    nret = network_platform.network_methods.socket_bind(
+                                ((scanner_base_t*)device)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
+                    if (nret == RF_SOCKET_ERROR)
+                    {
+                        network_platform.network_methods.close_socket(((scanner_base_t*)device)->rf627_smart->m_data_sock);
+                        ((scanner_base_t*)device)->rf627_smart->m_data_sock = NULL;
+                        return NULL;
+                    }
+                }
+            }
             profile->rf627smart_profile2D = rf627_smart_get_profile2D(device->rf627_smart, zero_points);
             return profile;
             break;
@@ -1241,4 +1330,23 @@ rf627_calib_table_t *convert_calibration_table_from_bytes(char *bytes, uint32_t 
                 _table->rf627smart_calib_table->m_DataSize);
 
     return _table;
+}
+
+void free_scanner(scanner_base_t *device)
+{
+    switch (device->type)
+    {
+    case kRF627_OLD:
+    {
+        rf627_old_free(device->rf627_old);
+        break;
+    }
+    case kRF627_SMART:
+    {
+        rf627_smart_free(device->rf627_smart);
+        break;
+    }
+    default:
+        break;
+    }
 }

@@ -611,31 +611,22 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
 
-    // Get params
-//    mpack_tree_t tree;
-//    mpack_tree_init_data(&tree, (const char*)data, data_size);
-//    mpack_tree_parse(&tree);
-//    if (mpack_tree_error(&tree) != mpack_ok)
-//    {
-//        status = SMART_PARSER_RETURN_STATUS_DATA_ERROR;
-//        mpack_tree_destroy(&tree);
-//        return status;
-//    }
-
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
     {
         if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
         {
             uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
             if (serial == device_id)
+            {
                 existing = TRUE;
+            }
         }
     }
 
-//    mpack_tree_destroy(&tree);
-
     if (!existing)
     {
+        printf("Found scanner %d\n", device_id);
+
         scanner_base_t* rf627 =
                 memory_platform.rf_calloc(1, sizeof(scanner_base_t));
 
@@ -871,22 +862,25 @@ rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t
            ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
+    rfBool existing = FALSE;
 
     int index = -1;
     for (rfUint32 i = 0; i < vector_count(search_result); i++)
     {
-        scanner_base_t* scanner = (scanner_base_t*)vector_get(search_result, i);
-        if(scanner->type == kRF627_SMART)
+        if(((scanner_base_t*)vector_get(search_result, i))->type == kRF627_SMART)
         {
-            if (((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial == device_id)
+            uint32_t serial = ((scanner_base_t*)vector_get(search_result, i))->rf627_smart->info_by_service_protocol.fact_general_serial;
+            if (serial == device_id)
             {
+                existing = TRUE;
                 index = i;
                 break;
             }
         }
     }
 
-    if (index != -1)
+
+    if (existing)
     {
         // Get params
         mpack_tree_t tree;

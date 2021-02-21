@@ -581,6 +581,31 @@ void rf627_old_disconnect(rf627_old_t* scanner)
     }
 }
 
+void rf627_old_free(rf627_old_t* scanner)
+{
+    network_platform.network_methods.close_socket(scanner->m_data_sock);
+    network_platform.network_methods.close_socket(scanner->m_svc_sock);
+
+    while (vector_count(scanner->params_list) > 0)
+    {
+        parameter_t* p = vector_get(scanner->params_list, vector_count(scanner->params_list)-1);
+        free_parameter(p, kRF627_OLD);
+
+        vector_delete(scanner->params_list, vector_count(scanner->params_list)-1);
+    }
+
+    if (scanner->info_by_service_protocol.device_name != NULL)
+    {
+        free (scanner->info_by_service_protocol.device_name);
+        scanner->info_by_service_protocol.device_name = NULL;
+    }
+
+    if (scanner != NULL)
+    {
+        free (scanner);
+        scanner = NULL;
+    }
+}
 rf627_old_profile2D_t* rf627_old_get_profile2D(rf627_old_t* scanner, rfBool zero_points)
 {
 
