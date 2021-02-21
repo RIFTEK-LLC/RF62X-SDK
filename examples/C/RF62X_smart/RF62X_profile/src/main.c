@@ -58,12 +58,15 @@ int main()
 
         uint8_t is_connected = connect_to_scanner(scanner, kSERVICE);
 
+        uint8_t is_read = read_params_from_scanner(scanner, 3000, kSERVICE);
+
         if (is_connected)
         {
             uint8_t zero_points = TRUE;
+            uint8_t realtime = TRUE;
             // Get profile from scanner's data stream by Service Protocol.
             rf627_profile2D_t* result = get_profile2D_from_scanner(
-                        scanner, zero_points, kSERVICE);
+                        scanner, zero_points, realtime, kSERVICE);
             rf627_smart_profile2D_t* profile2D = result->rf627smart_profile2D;
             if (profile2D != NULL)
             {

@@ -52,19 +52,19 @@ int main()
             {
                 std::cout << "Profile information: "                    << std::endl;
                 switch (profile->getHeader().data_type) {
-                case (int)PROFILE_DATA_TYPE::PIXELS:
+                case (int)PROFILE_DATA_TYPES::PIXELS:
                     std::cout << "* DataType\t: "<< "PIXELS"            << std::endl;
                     std::cout << "* Count\t: " << profile->getPixels().size()<< std::endl;
                     break;
-                case (int)PROFILE_DATA_TYPE::PIXELS_INTRP:
+                case (int)PROFILE_DATA_TYPES::PIXELS_INTRP:
                     std::cout << "* DataType\t: "<< "PIXELS_INTRP"      << std::endl;
                     std::cout << "* Count\t: " << profile->getPixels().size()<< std::endl;
                     break;
-                case (int)PROFILE_DATA_TYPE::PROFILE:
+                case (int)PROFILE_DATA_TYPES::PROFILE:
                     std::cout << "* DataType\t: "<< "PROFILE"           << std::endl;
                     std::cout << "* Size\t: "  << profile->getPoints().size()<< std::endl;
                     break;
-                case (int)PROFILE_DATA_TYPE::PROFILE_INTRP:
+                case (int)PROFILE_DATA_TYPES::PROFILE_INTRP:
                     std::cout << "* DataType\t: "<< "PROFILE_INTRP"     << std::endl;
                     std::cout << "* Size\t: "  << profile->getPoints().size()<< std::endl;
                     break;
