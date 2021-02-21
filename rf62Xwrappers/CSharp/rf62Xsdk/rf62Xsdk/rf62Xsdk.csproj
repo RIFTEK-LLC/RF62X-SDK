@@ -78,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RF62Xcore.cs" />
+    <Compile Include="RF62Xtypes.cs" />
     <Compile Include="RF62Xsdk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
