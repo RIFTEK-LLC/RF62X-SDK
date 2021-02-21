@@ -268,11 +268,12 @@ public:
     /**
      * @brief get_profile2D  - Get 2D measurement from scanner's data stream
      * @param zero_points - include zero points in return profile2D
+     * @param realtime Enable getting profile in real time (buffering is disabled)
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return ptr to profile2D_t structure if success, else - null
      */
     std::shared_ptr<profile2D> get_profile2D(
-            bool zero_points = true,
+            bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
@@ -347,6 +348,8 @@ private:
     void* scanner_base = NULL;
     bool is_connected;
     PROTOCOLS current_protocol;
+    std::mutex param_mutex;
+    std::mutex profile_mutex;
 };
 
 

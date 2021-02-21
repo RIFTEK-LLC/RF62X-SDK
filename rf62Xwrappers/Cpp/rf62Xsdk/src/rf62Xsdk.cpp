@@ -1752,6 +1752,10 @@ profile2D::profile2D(void* profile_base)
                         profile_from_scanner->rf627old_profile2D->header.step_count;
                 m_Header.dir =
                         profile_from_scanner->rf627old_profile2D->header.dir;
+                m_Header.payload_size =
+                        profile_from_scanner->rf627old_profile2D->header.payload_size;
+                m_Header.bytes_per_point =
+                        profile_from_scanner->rf627old_profile2D->header.bytes_per_point;
 
                 switch (m_Header.data_type) {
                 case DTY_PixelsNormal:
@@ -1850,6 +1854,10 @@ profile2D::profile2D(void* profile_base)
                         profile_from_scanner->rf627smart_profile2D->header.step_count;
                 m_Header.dir =
                         profile_from_scanner->rf627smart_profile2D->header.dir;
+                m_Header.payload_size =
+                        profile_from_scanner->rf627smart_profile2D->header.payload_size;
+                m_Header.bytes_per_point =
+                        profile_from_scanner->rf627smart_profile2D->header.bytes_per_point;
 
                 switch (m_Header.data_type) {
                 case DTY_PixelsNormal:
@@ -2068,7 +2076,7 @@ rf627old::rf627old(void* base)
 
 rf627old::~rf627old()
 {
-
+    free_scanner(((scanner_base_t*)this->scanner_base));
 }
 
 bool rf627old::connect(PROTOCOLS protocol)
@@ -2176,9 +2184,11 @@ bool rf627old::disconnect(PROTOCOLS protocol)
 }
 
 std::shared_ptr<profile2D> rf627old::get_profile2D(
-        bool zero_points,
+        bool zero_points, bool realtime,
         PROTOCOLS protocol)
 {
+
+    profile_mutex.lock();
 
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -2186,28 +2196,30 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Get profile from scanner's data stream by Service Protocol.
-        rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
-                    (scanner_base_t*)scanner_base, zero_points, kSERVICE);
-
-        if (profile_from_scanner != nullptr)
+        switch (p) {
+        case PROTOCOLS::SERVICE:
         {
-            if (profile_from_scanner->rf627old_profile2D != nullptr)
+            // Get profile from scanner's data stream by Service Protocol.
+            rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
+                        (scanner_base_t*)scanner_base, zero_points, realtime, kSERVICE);
+
+            if (profile_from_scanner != nullptr)
             {
                 std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                profile_mutex.unlock();
                 return result;
             }
             free(profile_from_scanner);
+            break;
+        }
+        default:
+            break;
         }
     }
-    default:
-        break;
-    }
-
-    return NULL;
+    profile_mutex.unlock();
+    return nullptr;
 
 }
 
@@ -2715,7 +2727,7 @@ rf627smart::rf627smart(void* base)
 
 rf627smart::~rf627smart()
 {
-    rf627_smart_free(((scanner_base_t*)this->scanner_base)->rf627_smart);
+    free_scanner(((scanner_base_t*)this->scanner_base));
 }
 
 bool rf627smart::connect(PROTOCOLS protocol)
@@ -2836,72 +2848,69 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
 
     if (is_connected)
     {
-        if (realtime)
-        {
-            if ( ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != NULL)
-            {
-                std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-                if (s != INVALID_SOCKET)
-                {
-#ifdef _WIN32
-                    closesocket(s);
-#else
-                    close(s);
-#endif
-                }
-                ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
-            }
+//        if (realtime)
+//        {
+//            if ( ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != NULL)
+//            {
+//                std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+//                if (s != INVALID_SOCKET)
+//                {
+//#ifdef _WIN32
+//                    closesocket(s);
+//#else
+//                    close(s);
+//#endif
+//                }
+//                ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
+//            }
 
-            rfUint32 recv_ip_addr;
-            rfUint16 recv_port;
-            rfInt nret;
+//            rfUint32 recv_ip_addr;
+//            rfUint16 recv_port;
+//            rfInt nret;
 
 
-            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock =
-                    network_platform.network_methods.create_udp_socket();
-            if (((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
-            {
-                nret = 1;
-                network_platform.network_methods.set_reuseaddr_socket_option(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+//            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock =
+//                    network_platform.network_methods.create_udp_socket();
+//            if (((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
+//            {
+//                nret = 1;
+//                network_platform.network_methods.set_reuseaddr_socket_option(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
 
-                network_platform.network_methods.set_socket_recv_timeout(
-                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, 100);
-                //recv_addr.sin_family = RF_AF_INET;
-                recv_port = ((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostPort;
+//                network_platform.network_methods.set_socket_recv_timeout(
+//                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, 100);
+//                //recv_addr.sin_family = RF_AF_INET;
+//                recv_port = ((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostPort;
 
-                //recv_addr.sin_addr = RF_INADDR_ANY;
-                ip_string_to_uint32(((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
+//                //recv_addr.sin_addr = RF_INADDR_ANY;
+//                ip_string_to_uint32(((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
 
-                nret = network_platform.network_methods.socket_bind(
-                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
-                if (nret == RF_SOCKET_ERROR)
-                {
-                    network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-                    ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
-                    profile_mutex.unlock();
-                    return FALSE;
-                }
-            }
-        }
+//                nret = network_platform.network_methods.socket_bind(
+//                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
+//                if (nret == RF_SOCKET_ERROR)
+//                {
+//                    network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
+//                    ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
+//                    profile_mutex.unlock();
+//                    return FALSE;
+//                }
+//            }
+//        }
 
         switch (p) {
         case PROTOCOLS::SERVICE:
         {
             // Get profile from scanner's data stream by Service Protocol.
             rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
-                        (scanner_base_t*)scanner_base, zero_points, kSERVICE);
+                        (scanner_base_t*)scanner_base, zero_points, realtime, kSERVICE);
 
             if (profile_from_scanner != nullptr)
             {
-                if (profile_from_scanner->rf627smart_profile2D != nullptr)
-                {
-                    std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
-                    profile_mutex.unlock();
-                    return result;
-                }
-                free(profile_from_scanner);
+                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                profile_mutex.unlock();
+                return result;
             }
-
+            free(profile_from_scanner);
+            break;
         }
         default:
             break;
@@ -3159,12 +3168,13 @@ std::shared_ptr<param> rf627smart::get_param(std::string param_name)
     param_mutex.lock();
     parameter_t* p = get_parameter(
                 (scanner_base_t*)this->scanner_base, param_name.c_str());
-    param_mutex.unlock();
     if (p != nullptr)
     {
         std::shared_ptr<param> result = std::make_shared<param>(p);
+        param_mutex.unlock();
         return result;
     }
+    param_mutex.unlock();
     return nullptr;
 }
 

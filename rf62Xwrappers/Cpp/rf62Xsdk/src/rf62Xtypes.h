@@ -20,11 +20,19 @@ enum class PROTOCOLS {
     MODBUS_TCP = 3
 };
 
+enum class PROFILE_DATA_TYPES{
+    PIXELS				= 0x10,
+    PROFILE				= 0x11,
+    PIXELS_INTRP		= 0x12,
+    PROFILE_INTRP		= 0x13
+};
+
 enum class COUNT_TYPES {
     STEP = 1,
     MEASURE = 2,
     PACKET = 3
 };
+
 
 /*! Structure to store a 2D-point of profile
  */
@@ -126,13 +134,7 @@ private:
     std::vector<int16_t> m_Xd;
 };
 
-//Формат представления профиля
-enum class PROFILE_DATA_TYPE{
-    PIXELS				= 0x10,
-    PROFILE				= 0x11,
-    PIXELS_INTRP		= 0x12,
-    PROFILE_INTRP		= 0x13
-};
+
 
 class version{
 public:
@@ -225,6 +227,8 @@ public:
         uint32_t    laser_value;
         uint32_t    step_count;
         uint8_t     dir;
+        uint16_t    payload_size;
+        uint8_t     bytes_per_point;
     }header;
 
     header getHeader();
