@@ -7,6 +7,16 @@
 
 #include <mpack/mpack.h>
 
+#ifndef _WIN32
+typedef int BOOL;
+typedef int SOCKET;
+
+#define INVALID_SOCKET          (-1)
+#define SOCKET_ERROR            (-1)
+#define TRUE 1
+#define FALSE 0
+#endif
+
 void set_platform_adapter_settings(rfUint32 host_mask, rfUint32 host_ip_addr)
 {
     set_adapter_settings(host_mask, host_ip_addr);
