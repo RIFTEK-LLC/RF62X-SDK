@@ -45,7 +45,7 @@ class API_EXPORT rf627smart
 public:
     /**
      * @brief search - Search for RF627smart devices over network
-     * @param timeout Search timeout
+     * @param timeout Search timeout for each Ethernet interface
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return vector of rf627smart devices
      */

@@ -18,7 +18,7 @@ namespace RF62X {
 
 /**
  * @brief version - Return info about CORE version
- * @return SDK version
+ * @return CORE version
  */
 API_EXPORT std::string version();
 
