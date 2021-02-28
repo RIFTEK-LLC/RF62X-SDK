@@ -605,8 +605,8 @@ rfUint8 rf627_smart_set_parameter(rf627_smart_t* scanner, parameter_t* param)
 rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+          ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -625,7 +625,7 @@ rfInt8 rf627_smart_get_hello_callback(char* data, uint32_t data_size, uint32_t d
 
     if (!existing)
     {
-        printf("Found scanner %d\n", device_id);
+        TRACE(TRACE_LEVEL_DEBUG, "Found scanner %d\n", device_id);
 
         scanner_base_t* rf627 =
                 memory_platform.rf_calloc(1, sizeof(scanner_base_t));
@@ -652,8 +652,8 @@ rfInt8 rf627_smart_get_hello_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -661,8 +661,8 @@ rfInt8 rf627_smart_get_hello_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -703,52 +703,63 @@ uint8_t rf627_smart_search_by_service_protocol(vector_t *scanner_list, rfUint32 
             bytes[3], bytes[2], bytes[1], bytes[0]);
 
     smart_channel channel;
-    rfBool res = smart_channel_init(&channel, config);
+    rfBool is_inited = smart_channel_init(&channel, config);
 
-    char* cmd_name                      = "GET_HELLO";
-    char* data                          = NULL;
-    uint32_t data_size                  = 0;
-    char* data_type                     = "blob";
-    uint8_t is_check_crc                = FALSE;
-    uint8_t is_confirmation             = FALSE;
-    uint8_t is_one_answ                 = FALSE;
-    uint32_t waiting_time               = timeout;
-    smart_answ_callback answ_clb        = rf627_smart_get_hello_callback;
-    smart_timeout_callback timeout_clb  = rf627_smart_get_hello_timeout_callback;
-    smart_free_callback free_clb        = rf627_smart_get_hello_free_result_callback;
-
-    smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
-                                             is_check_crc, is_confirmation, is_one_answ,
-                                             waiting_time,
-                                             answ_clb, timeout_clb, free_clb);
-
-    // Send test msg
-    if (!smart_channel_send_msg(&channel, msg))
-        printf("No data has been sent.\n");
-    else
-        printf("Requests were sent.\n");
-
-    uint8_t scanner_count = 0;
-    void* result = smart_get_result_to_rqst_msg(&channel, msg, waiting_time);
-    if (result != NULL)
+    if (is_inited == TRUE)
     {
-        scanner_count = *(uint8_t*)result;
+        char* cmd_name                      = "GET_HELLO";
+        char* data                          = NULL;
+        uint32_t data_size                  = 0;
+        char* data_type                     = "blob";
+        uint8_t is_check_crc                = FALSE;
+        uint8_t is_confirmation             = FALSE;
+        uint8_t is_one_answ                 = FALSE;
+        uint32_t waiting_time               = timeout;
+        smart_answ_callback answ_clb        = rf627_smart_get_hello_callback;
+        smart_timeout_callback timeout_clb  = rf627_smart_get_hello_timeout_callback;
+        smart_free_callback free_clb        = rf627_smart_get_hello_free_result_callback;
+
+        smart_msg_t* msg = smart_create_rqst_msg(cmd_name, data, data_size, data_type,
+                                                 is_check_crc, is_confirmation, is_one_answ,
+                                                 waiting_time,
+                                                 answ_clb, timeout_clb, free_clb);
+
+        // Send test msg
+        if (!smart_channel_send_msg(&channel, msg))
+        {
+            TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+        }
+        else
+        {
+            TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+        }
+
+        uint8_t scanner_count = 0;
+        void* result = smart_get_result_to_rqst_msg(&channel, msg, waiting_time);
+        if (result != NULL)
+        {
+            scanner_count = *(uint8_t*)result;
+        }
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+        smart_channel_cleanup(&channel);
+        return scanner_count;
+    }else
+    {
+        TRACE(TRACE_LEVEL_WARNING, "%s - smart channel not initialized", config);
+        smart_channel_cleanup(&channel);
     }
-
-    // Cleanup test msg
-    smart_cleanup_msg(msg);
-    free(msg); msg = NULL;
-    smart_channel_cleanup(&channel);
-
-    return scanner_count;
+    return 0;
 
 }
 
 rfInt8 rf627_smart_check_connection_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -793,8 +804,8 @@ rfInt8 rf627_smart_check_connection_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -802,8 +813,8 @@ rfInt8 rf627_smart_check_connection_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -834,9 +845,13 @@ rfBool rf627_smart_check_connection_by_service_protocol(rf627_smart_t* scanner, 
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
 
     uint32_t is_connected = 0;
@@ -858,8 +873,8 @@ rfBool rf627_smart_check_connection_by_service_protocol(rf627_smart_t* scanner, 
 rfInt8 rf627_smart_read_params_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -2324,8 +2339,8 @@ rfInt8 rf627_smart_read_params_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -2333,8 +2348,8 @@ rfInt8 rf627_smart_read_params_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -2366,9 +2381,13 @@ rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner, rfUint32 tim
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
 
     uint8_t is_read = 0;
@@ -2390,8 +2409,8 @@ rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner, rfUint32 tim
 rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     return TRUE;
 }
@@ -2399,8 +2418,8 @@ rfInt8 rf627_smart_write_params_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -2408,8 +2427,8 @@ rfInt8 rf627_smart_write_params_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -2545,9 +2564,13 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner, rfUint32 time
 
         // Send test msg
         if (!smart_channel_send_msg(&scanner->channel, msg))
-            printf("No data has been sent.\n");
+        {
+            TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+        }
         else
-            printf("Requests were sent.\n");
+        {
+            TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+        }
 
         // Cleanup test msg
         smart_cleanup_msg(msg);
@@ -2563,8 +2586,8 @@ rfBool rf627_smart_write_params_to_scanner(rf627_smart_t* scanner, rfUint32 time
 rfInt8 rf627_smart_get_frame_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
 
@@ -2641,8 +2664,8 @@ rfInt8 rf627_smart_get_frame_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -2650,8 +2673,8 @@ rfInt8 rf627_smart_get_frame_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -2689,9 +2712,13 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner, rfUint32 time
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
 
     rf627_smart_frame_t* frame = NULL;
@@ -2720,8 +2747,8 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner, rfUint32 time
 rfInt8 rf627_smart_get_authorization_token_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -2779,8 +2806,8 @@ rfInt8 rf627_smart_get_authorization_token_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -2788,8 +2815,8 @@ rfInt8 rf627_smart_get_authorization_token_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -2827,9 +2854,13 @@ rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* sc
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
     void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
     if (result != NULL)
@@ -2856,8 +2887,8 @@ rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* sc
 rfInt8 rf627_smart_set_authorization_key_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -2916,8 +2947,8 @@ rfInt8 rf627_smart_set_authorization_key_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -2925,8 +2956,8 @@ rfInt8 rf627_smart_set_authorization_key_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -2986,9 +3017,13 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
     void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
     if (result != NULL)
@@ -2998,8 +3033,6 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
             char* result;
             uint32_t status;
         }answer;
-
-        answer* test = (answer*)result;
 
         if (rf_strcmp(((answer*)result)->result, "RF_OK") == 0 &&
                 ((answer*)result)->status != 0)
@@ -3022,8 +3055,8 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
 rfInt8 rf627_smart_read_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -3130,8 +3163,8 @@ rfInt8 rf627_smart_read_calibration_data_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -3139,8 +3172,8 @@ rfInt8 rf627_smart_read_calibration_data_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -3215,9 +3248,13 @@ rfBool rf627_smart_read_calibration_table_by_service_protocol(rf627_smart_t* sca
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
     void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
     if (result != NULL)
@@ -3348,8 +3385,8 @@ uint16_t gen_crc16(const uint8_t *data, uint32_t len)
 rfInt8 rf627_smart_write_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -3405,8 +3442,8 @@ rfInt8 rf627_smart_write_calibration_data_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -3414,8 +3451,8 @@ rfInt8 rf627_smart_write_calibration_data_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -3501,9 +3538,13 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
     void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
     if (result != NULL)
@@ -3534,8 +3575,8 @@ rfBool rf627_smart_write_calibration_data_by_service_protocol(rf627_smart_t* sca
 rfInt8 rf627_smart_save_calibration_data_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
 {
     answ_count++;
-    printf("+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
-           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_msg_uid, data_size);
+    TRACE(TRACE_LEVEL_DEBUG, "+ Get answer to %s command, rqst-id: %" PRIu64 ", payload size: %d\n",
+           ((smart_msg_t*)rqst_msg)->cmd_name, ((smart_msg_t*)rqst_msg)->_uid, data_size);
 
     int32_t status = SMART_PARSER_RETURN_STATUS_NO_DATA;
     rfBool existing = FALSE;
@@ -3591,8 +3632,8 @@ rfInt8 rf627_smart_save_calibration_data_timeout_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Get timeout to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     return TRUE;
 }
@@ -3600,8 +3641,8 @@ rfInt8 rf627_smart_save_calibration_data_free_result_callback(void* rqst_msg)
 {
     smart_msg_t* msg = rqst_msg;
 
-    printf("- Free result to %s command, rqst-id: %" PRIu64 ".\n",
-           msg->cmd_name, msg->_msg_uid);
+    TRACE(TRACE_LEVEL_DEBUG, "- Free result to %s command, rqst-id: %" PRIu64 ".\n",
+           msg->cmd_name, msg->_uid);
 
     if (msg->result != NULL)
     {
@@ -3638,9 +3679,13 @@ rfBool rf627_smart_save_calibration_data_by_service_protocol(rf627_smart_t* scan
 
     // Send test msg
     if (!smart_channel_send_msg(&scanner->channel, msg))
-        printf("No data has been sent.\n");
+    {
+        TRACE(TRACE_LEVEL_ERROR, "%s", "No data has been sent.\n");
+    }
     else
-        printf("Requests were sent.\n");
+    {
+        TRACE(TRACE_LEVEL_DEBUG, "%s", "Requests were sent.\n");
+    }
 
     void* result = smart_get_result_to_rqst_msg(&scanner->channel, msg, waiting_time);
     if (result != NULL)
@@ -3704,4 +3749,6 @@ rfBool rf627_smart_set_calibration_table(rf627_smart_t* scanner, rf627_smart_cal
     scanner->calib_table.m_DataSize = table->m_DataSize;
     scanner->calib_table.m_Data = calloc(scanner->calib_table.m_DataSize, sizeof (uint8_t));
     memcpy(scanner->calib_table.m_Data, table->m_Data, scanner->calib_table.m_DataSize * sizeof (uint8_t));
+
+    return TRUE;
 }
