@@ -6,8 +6,14 @@
 
 using namespace SDK::SCANNERS::RF62X;
 
+
 int main()
 {
+    std::cout << "#########################################"  << std::endl;
+    std::cout << "#                                       #"  << std::endl;
+    std::cout << "#         Search Example v2.x.x         #"  << std::endl;
+    std::cout << "#                                       #"  << std::endl;
+    std::cout << "#########################################\n"<< std::endl;
 
     // Initialize sdk library
     sdk_init();
@@ -49,7 +55,6 @@ int main()
         std::cout << "* Firmware\t: " << info->firmware_version() << std::endl;
         std::cout << "* Hardware\t: " << info->hardware_version() << std::endl;
         std::cout << "-----------------------------------------"  << std::endl;
-
     }
 
     // Cleanup resources allocated with sdk_init()
