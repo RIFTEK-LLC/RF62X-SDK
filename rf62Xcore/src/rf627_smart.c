@@ -2395,15 +2395,29 @@ rfBool rf627_smart_read_params_from_scanner(rf627_smart_t* scanner, rfUint32 tim
     if (result != NULL)
     {
         is_read = *(uint8_t*)result;
+
+        // Cleanup test msg
+        smart_cleanup_msg(msg);
+        free(msg); msg = NULL;
+
+        if (is_read)
+            return TRUE;
+        else
+        {
+            TRACE(TRACE_LEVEL_ERROR, "%s", "Parameters parsing error.\n");
+            return FALSE;
+        }
+    }else
+    {
+        TRACE(TRACE_LEVEL_WARNING, "%s", "No response to GET_PARAMS_DESCRIPTION request!\n");
     }
 
     // Cleanup test msg
     smart_cleanup_msg(msg);
     free(msg); msg = NULL;
+    return FALSE;
 
-    if (is_read)
-        return TRUE;
-    else return FALSE;
+
 }
 
 rfInt8 rf627_smart_write_params_callback(char* data, uint32_t data_size, uint32_t device_id, void* rqst_msg)
@@ -2697,9 +2711,9 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner, rfUint32 time
     uint32_t data_size                  = 0;
     char* data_type                     = "blob";
     uint8_t is_check_crc                = FALSE;
-    uint8_t is_confirmation             = FALSE;
+    uint8_t is_confirmation             = TRUE;
     uint8_t is_one_answ                 = TRUE;
-    uint32_t waiting_time               = timeout;
+    uint32_t waiting_time               = 3000;
     smart_answ_callback answ_clb        = rf627_smart_get_frame_callback;
     smart_timeout_callback timeout_clb  = rf627_smart_get_frame_timeout_callback;
     smart_free_callback free_clb        = rf627_smart_get_frame_free_result_callback;
@@ -2735,6 +2749,9 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner, rfUint32 time
         frame->user_roi_enabled = result->user_roi_enabled;
         frame->user_roi_pos = result->user_roi_pos;
         frame->user_roi_size = result->user_roi_size;
+    }else
+    {
+        TRACE(TRACE_LEVEL_WARNING, "%s", "No response to GET_FRAME request!\n");
     }
 
     // Cleanup test msg
@@ -2879,6 +2896,9 @@ rfBool rf627_smart_get_authorization_token_by_service_protocol(rf627_smart_t* sc
         smart_cleanup_msg(msg);
         free(msg); msg = NULL;
         return TRUE;
+    }else
+    {
+        TRACE(TRACE_LEVEL_WARNING, "%s", "No response to GET_AUTHORIZATION_TOKEN request!\n");
     }
 
     return FALSE;
@@ -3041,12 +3061,19 @@ rfBool rf627_smart_set_authorization_key_by_service_protocol(rf627_smart_t* scan
             smart_cleanup_msg(msg);
             free(msg); msg = NULL;
             return TRUE;
+        }else
+        {
+            TRACE(TRACE_LEVEL_ERROR, "%s - %s", "Authorization key not setted\n",
+                  ((answer*)result)->result);
         }
 
         // Cleanup test msg
         smart_cleanup_msg(msg);
         free(msg); msg = NULL;
         return FALSE;
+    }else
+    {
+        TRACE(TRACE_LEVEL_WARNING, "%s", "No response to SET_AUTHORIZATION_KEY request!\n");
     }
 
     return FALSE;
