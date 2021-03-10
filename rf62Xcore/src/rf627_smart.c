@@ -2711,9 +2711,9 @@ rf627_smart_frame_t* rf627_smart_get_frame(rf627_smart_t* scanner, rfUint32 time
     uint32_t data_size                  = 0;
     char* data_type                     = "blob";
     uint8_t is_check_crc                = FALSE;
-    uint8_t is_confirmation             = TRUE;
+    uint8_t is_confirmation             = FALSE;
     uint8_t is_one_answ                 = TRUE;
-    uint32_t waiting_time               = 3000;
+    uint32_t waiting_time               = 300;
     smart_answ_callback answ_clb        = rf627_smart_get_frame_callback;
     smart_timeout_callback timeout_clb  = rf627_smart_get_frame_timeout_callback;
     smart_free_callback free_clb        = rf627_smart_get_frame_free_result_callback;
