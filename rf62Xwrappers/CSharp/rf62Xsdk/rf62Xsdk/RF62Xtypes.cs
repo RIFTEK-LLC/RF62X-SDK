@@ -1419,8 +1419,6 @@ namespace SDK
                     list.Add(User.Processing.threshold);
 
                     list.Add(User.Laser.enabled);
-                    list.Add(User.Laser.params_mask);
-                    list.Add(User.Laser.preset);
                     list.Add(User.Laser.value);
 
                     list.Add(User.Trigger.Counter.maxValue);
