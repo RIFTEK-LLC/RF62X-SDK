@@ -26,7 +26,7 @@ int main()
     // Create value for scanners vector's type
     std::vector<std::shared_ptr<rf627smart>> list;
     // Search for rf627smart devices over network
-    list = rf627smart::search();
+    list = rf627smart::search(500);
 
 
     // Print count of discovered rf627smart in network by Service Protocol

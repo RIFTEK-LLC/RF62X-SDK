@@ -818,7 +818,6 @@ typedef enum {
     USER_SENSOR_EDRCOLUMNDIVIDER,
     USER_STREAMS_POINTSCOUNT,
     USER_ROI_SIZE
-
 }parameter_name_keys_t;
 
 const static rfChar* parameter_names[]	=
@@ -987,7 +986,6 @@ const static rfChar* parameter_names[]	=
     "user_sensor_edrColumnDivider",
     "user_streams_pointsCount",
     "user_roi_size"
-
 };
 
 const static rfChar* parameter_value_types[]	=

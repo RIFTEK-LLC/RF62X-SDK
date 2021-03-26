@@ -1047,16 +1047,6 @@ namespace SDK
                             Key = "user_laser_value",
                             Type = "uint32_t"
                         };
-                        public static Description preset { get; } = new Description()
-                        {
-                            Key = "user_inputs_preset",
-                            Type = "uint32_t"
-                        };
-                        public static Description params_mask { get; } = new Description()
-                        {
-                            Key = "user_inputs_params_mask",
-                            Type = "uint32_t"
-                        };
                     }
 
                     public static class Trigger

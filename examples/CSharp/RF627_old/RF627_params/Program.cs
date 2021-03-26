@@ -11,6 +11,10 @@ namespace RF627_params
             // Start initialization of the library core
             RF62X.SdkInit();
 
+            // Print return rf62X SDK version
+            Console.WriteLine("SDK version: {0}", RF62X.SdkVersion());
+            Console.WriteLine("-----------------------------------------");
+
             // Search for RF627old devices over network
             Console.WriteLine("- Start searching device");
             List<RF62X.RF627old> Scanners = RF62X.RF627old.Search();
@@ -73,6 +77,33 @@ namespace RF627_params
 
 
                     Scanners[i].SetParam(laserEnabled);
+                }
+
+                // Get parameter of preset index
+                RF62X.Param<uint> preset_index = Scanners[i].GetParam(RF62X.Params.User.Trigger.Sync.source);
+                if (preset_index != null)
+                {
+                    uint value = preset_index.GetValue();
+                    Console.WriteLine("Current Preset Index\t: {0}", value);
+
+                    // Change the current preset index to 5 (2-ph. encoder + "Z")
+                    // 0 - Internal clock
+                    // 1 - External trigger
+                    // 2 - 1-ph. encoder
+                    // 3 - 1-ph. encoder + "Z"
+                    // 4 - 1-ph. encoder
+                    // 5 - 2-ph. encoder + "Z"
+                    // 6 - Step/Dir
+                    // 7 - Ext.trigger/Int.clock
+                    // 8 - Software request
+                    uint new_value = 5;
+                    preset_index.SetValue(new_value);
+                    
+                    Console.WriteLine("New Preset Index\t\t: {0}", new_value);
+                    Console.WriteLine("-----------------------------------------");
+
+
+                    Scanners[i].SetParam(preset_index);
                 }
 
                 //  Write changes parameters to the device's memory

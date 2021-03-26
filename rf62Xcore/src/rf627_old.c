@@ -3062,20 +3062,20 @@ rfBool rf627_old_read_user_params_from_scanner(rf627_old_t* scanner)
 
 
                 //inputs
-//                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
-//                p->base.name = parameter_names[USER_INPUTS_PRESET];
-//                p->base.access = patKey[PAT_WRITE];
-//                p->base.index = index++;
-//                p->base.offset = 718;
-//                p->base.size = sizeof(scanner->user_params.inputs.preset_index);
-//                p->base.units = "";
+                p = create_parameter_from_type(parameter_value_types[PVT_UINT]);
+                p->base.name = parameter_names[USER_TRIGGER_SYNC_SOURCE];
+                p->base.access = patKey[PAT_WRITE];
+                p->base.index = index++;
+                p->base.offset = 718;
+                p->base.size = sizeof(scanner->user_params.inputs.preset_index);
+                p->base.units = "";
 
-//                p->val_uint32->value = scanner->user_params.inputs.preset_index;
-//                p->val_uint32->min = 0;
-//                p->val_uint32->max = 11;
-//                p->val_uint32->step = 0;
-//                p->val_uint32->defValue = 0;
-//                vector_add(scanner->params_list, p);
+                p->val_uint32->value = scanner->user_params.inputs.preset_index;
+                p->val_uint32->min = 0;
+                p->val_uint32->max = 11;
+                p->val_uint32->step = 0;
+                p->val_uint32->defValue = 0;
+                vector_add(scanner->params_list, p);
 
 
 
