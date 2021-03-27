@@ -38,7 +38,19 @@ file (GLOB_RECURSE CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 set  (SOURCES ${CPP_FILES} ${H_FILES})
 # create lib from src
 if (NOT TARGET ${PROJECT_NAME})
-    add_library(${PROJECT_NAME} STATIC ${SOURCES})
+    SET(TARGET_OBJECTS_LIST
+        $<TARGET_OBJECTS:rf62Xcore>
+        $<TARGET_OBJECTS:smart-protocol>
+        $<TARGET_OBJECTS:mpack>
+        $<TARGET_OBJECTS:rf627protocol>
+        $<TARGET_OBJECTS:custom_string>
+        $<TARGET_OBJECTS:custom_vector>
+        $<TARGET_OBJECTS:endian_conv>
+        $<TARGET_OBJECTS:platform_methods>)
+    if (MSVC)
+        SET(TARGET_OBJECTS_LIST ${TARGET_OBJECTS_LIST} $<TARGET_OBJECTS:pthreads-c>)
+    endif()
+    add_library(${PROJECT_NAME} STATIC ${SOURCES} ${TARGET_OBJECTS_LIST})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -49,10 +61,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 ## linking all dependencies
 ###############################################################################
 find_package (Threads)
-target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries (${PROJECT_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE rf62Xcore)
 if(MINGW)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ws2_32)
-    target_link_libraries(${PROJECT_NAME} PRIVATE iphlpapi)
+    target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
+    target_link_libraries(${PROJECT_NAME} PUBLIC iphlpapi)
 endif(MINGW)

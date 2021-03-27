@@ -51,7 +51,9 @@ find_package (Threads)
 target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(${PROJECT_NAME} smart-protocol)
 target_link_libraries(${PROJECT_NAME} rf627protocol)
-target_link_libraries(${PROJECT_NAME} custom_string)
-target_link_libraries(${PROJECT_NAME} custom_vector)
-target_link_libraries(${PROJECT_NAME} endian_conv)
+
 target_link_libraries(${PROJECT_NAME} platform_methods)
+target_link_libraries(${PROJECT_NAME} endian_conv)
+target_link_libraries(${PROJECT_NAME} custom_vector)
+target_link_libraries(${PROJECT_NAME} custom_string)
+
