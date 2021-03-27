@@ -44,14 +44,15 @@ SET(CUSTOM_VECTOR "utils/custom_vector/")
 SET(ENDIAN_CONV "utils/endian_conv/")
 SET(PLATFORM_METHODS "utils/platform_methods/")
 
+add_subdirectory(${PLATFORM_METHODS} platform_methods)
+add_subdirectory(${ENDIAN_CONV} endian_conv)
+add_subdirectory(${CUSTOM_VECTOR} custom_vector)
+add_subdirectory(${CUSTOM_STRING} custom_string)
+
 if(${PARENT}_SMART_PROTOCOL)
     SET(PROTOCOL_SMART "protocols/smart-protocol/")
     add_subdirectory(${PROTOCOL_SMART} smart-protocol)
 endif()
 
 add_subdirectory(${PROTOCOL_OLD} rf627protocol)
-add_subdirectory(${CUSTOM_STRING} custom_string)
-add_subdirectory(${CUSTOM_VECTOR} custom_vector)
-add_subdirectory(${ENDIAN_CONV} endian_conv)
-add_subdirectory(${PLATFORM_METHODS} platform_methods)
 
