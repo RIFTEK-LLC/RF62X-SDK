@@ -33,38 +33,43 @@ namespace RF627_profile
                 // Establish connection to the RF627 device by Service Protocol.
                 Scanners[i].Connect();
 
+
                 // Get profile from scanner's data stream by Service Protocol.
-                RF62X.Profile2D profile = Scanners[i].GetProfile();
-                if (profile.header != null)
+                while (true)
                 {
-                    Console.WriteLine("Profile information: ");
-                    switch (profile.header.data_type)
+                    RF62X.Profile2D profile = Scanners[i].GetProfile();
+                    if (profile.header != null)
                     {
-                        case RF62X.PROFILE_DATA_TYPES.PIXELS:
-                            Console.WriteLine("* DataType\t: PIXELS");
-                            Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
-                            break;
-                        case RF62X.PROFILE_DATA_TYPES.PROFILE:
-                            Console.WriteLine("* DataType\t: PROFILE");
-                            Console.WriteLine("* Size\t: {0}", profile.points.Count);
-                            break;
-                        case RF62X.PROFILE_DATA_TYPES.PIXELS_INTRP:
-                            Console.WriteLine("* DataType\t: PIXELS");
-                            Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
-                            break;
-                        case RF62X.PROFILE_DATA_TYPES.PROFILE_INTRP:
-                            Console.WriteLine("* DataType\t: PROFILE");
-                            Console.WriteLine("* Size\t: {0}", profile.points.Count);
-                            break;
-                        default:
-                            break;
+                        Console.WriteLine("Profile information: ");
+                        switch (profile.header.data_type)
+                        {
+                            case RF62X.PROFILE_DATA_TYPES.PIXELS:
+                                Console.WriteLine("* DataType\t: PIXELS");
+                                Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
+                                break;
+                            case RF62X.PROFILE_DATA_TYPES.PROFILE:
+                                Console.WriteLine("* DataType\t: PROFILE");
+                                Console.WriteLine("* Size\t: {0}", profile.points.Count);
+                                break;
+                            case RF62X.PROFILE_DATA_TYPES.PIXELS_INTRP:
+                                Console.WriteLine("* DataType\t: PIXELS");
+                                Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
+                                break;
+                            case RF62X.PROFILE_DATA_TYPES.PROFILE_INTRP:
+                                Console.WriteLine("* DataType\t: PROFILE");
+                                Console.WriteLine("* Size\t: {0}", profile.points.Count);
+                                break;
+                            default:
+                                break;
+                        }
+                        Console.WriteLine("Profile was successfully received!");
+                        Console.WriteLine("-----------------------------------------");
                     }
-                    Console.WriteLine("Profile was successfully received!");
-                    Console.WriteLine("-----------------------------------------");
-                }else
-                {
-                    Console.WriteLine("Profile was not received!");
-                    Console.WriteLine("-----------------------------------------");
+                    else
+                    {
+                        Console.WriteLine("Profile was not received!");
+                        Console.WriteLine("-----------------------------------------");
+                    }
                 }
 
                 // Disconnect from scanner.

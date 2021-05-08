@@ -15,6 +15,6 @@ project(3rdparty LANGUAGES CXX)
 ## Adding subdirectories according to the 3rd-party configuration
 ###############################################################################
 # set rf627sdk path variable
-set(RF62XSDK_DIR "../../../../../rf62Xwrappers/Cpp/rf62Xsdk")
+set(RF62XSDK_DIR "../../../../../RF62X-Wrappers/Cpp")
 # add subdirectory of rf627sdk lib
-add_subdirectory(${RF62XSDK_DIR} rf62Xsdk)
+add_subdirectory(${RF62XSDK_DIR} RF62X-SDK)

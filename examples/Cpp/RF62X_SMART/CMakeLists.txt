@@ -17,13 +17,13 @@ project(RF62X_SMART_EXAMPLES LANGUAGES CXX)
 
 ## CONSOLE APPLICATIONS
 # Search scanners and get hello-info
-SET(RF62X_SMART_SEARCH_EXAMPLE                          ON CACHE BOOL "" FORCE)
+SET(RF62X_SMART_SEARCH_EXAMPLE                          ON  CACHE BOOL "" FORCE)
 # Get profiles and write to file
-SET(RF62X_SMART_PROFILE_EXAMPLE                         ON CACHE BOOL "" FORCE)
+SET(RF62X_SMART_PROFILE_EXAMPLE                         ON  CACHE BOOL "" FORCE)
 # Get frames and write to bmp
-SET(RF62X_SMART_FRAME_EXAMPLE                           ON CACHE BOOL "" FORCE)
+SET(RF62X_SMART_FRAME_EXAMPLE                           ON  CACHE BOOL "" FORCE)
 # Get/Set scanner's parameters
-SET(RF62X_SMART_PARAMETER_EXAMPLE                       ON CACHE BOOL "" FORCE)
+SET(RF62X_SMART_PARAMETER_EXAMPLE                       ON  CACHE BOOL "" FORCE)
 
 ## WIDGETS APPLICATIONS
 # Getting profiles and displaying in profile-widget

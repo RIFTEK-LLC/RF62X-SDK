@@ -38,9 +38,19 @@ file (GLOB_RECURSE C_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 set  (SOURCES ${C_FILES} ${H_FILES})
 # create lib from src
 if (NOT TARGET ${PROJECT_NAME})
-    add_library(
-        ${PROJECT_NAME} SHARED ${SOURCES}
-        $<TARGET_OBJECTS:rf62Xcore>)
+    SET(TARGET_OBJECTS_LIST
+        $<TARGET_OBJECTS:rf62Xcore>
+        $<TARGET_OBJECTS:smart-protocol>
+        $<TARGET_OBJECTS:mpack>
+        $<TARGET_OBJECTS:rf627protocol>
+        $<TARGET_OBJECTS:custom_string>
+        $<TARGET_OBJECTS:custom_vector>
+        $<TARGET_OBJECTS:endian_conv>
+        $<TARGET_OBJECTS:platform_methods>)
+    if (MSVC)
+        SET(TARGET_OBJECTS_LIST ${TARGET_OBJECTS_LIST} $<TARGET_OBJECTS:pthreads-c>)
+    endif()
+    add_library(${PROJECT_NAME} STATIC ${SOURCES} ${TARGET_OBJECTS_LIST})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
 

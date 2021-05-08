@@ -42,5 +42,5 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 ## LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-target_link_libraries(${PROJECT_NAME} rf62Xsdk)
+target_link_libraries(${PROJECT_NAME} RF62X-SDK)
 

@@ -303,7 +303,7 @@ enum class PARAM_VALUE_TYPE
     STRING_PARAM_TYPE       = 13
 };
 
-const static std::string param_value_types[]	=
+static std::string param_value_types[]	=
 {
     "unkn_t",
     "uint32_t",

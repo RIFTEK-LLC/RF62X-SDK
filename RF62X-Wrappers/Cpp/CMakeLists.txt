@@ -3,18 +3,19 @@ cmake_minimum_required(VERSION 3.13)
 
 
 ###############################################################################
-## 3RD-PARTY
-## dependencies for the project
+## PROJECT
+## name and version
 ###############################################################################
-project(3rdparty LANGUAGES CXX)
+project(RF62X-SDK LANGUAGES CXX)
 
 
 
 ###############################################################################
 ## INCLUDING SUBDIRECTORIES
-## Adding subdirectories according to the 3rd-party configuration
+## Adding subdirectories according to the configuration
 ###############################################################################
-# set rf627core path variable
-set(RF62XCORE_DIR "../../../../rf62Xcore")
-# add subdirectory of rf627core lib
-add_subdirectory(${RF62XCORE_DIR} rf62Xcore)
+# 3rdparty
+add_subdirectory(3rdparty)
+# src
+add_subdirectory(src)
+

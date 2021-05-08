@@ -13,7 +13,7 @@
 extern "C"{
 #include <rf62X_sdk.h>
 #include <netwok_platform.h>
-#include <smartutils.h>
+#include <utils.h>
 }
 
 
@@ -2438,67 +2438,67 @@ parameter_t* create_parameter_from_type(std::string type)
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_uint32 = (value_uint32_t*)calloc(1, sizeof (value_uint32_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT_PARAM_TYPE].c_str();
     }else if (type == parameter_value_types[PVT_UINT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_uint64 = (value_uint64_t*)calloc(1, sizeof (value_uint64_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_INT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_int32 = (value_int32_t*)calloc(1, sizeof (value_int32_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_INT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_int64 = (value_int64_t*)calloc(1, sizeof (value_int64_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_FLOAT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_flt = (value_flt_t*)calloc(1, sizeof (value_flt_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLOAT_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLOAT_PARAM_TYPE].c_str();
     }else if(type ==  parameter_value_types[PVT_DOUBLE])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_dbl = (value_dbl_t*)calloc(1, sizeof (value_dbl_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::DOUBLE_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::DOUBLE_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_ARRAY_UINT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_uint32 = (array_uint32_t*)calloc(1, sizeof (array_uint32_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_ARRAY_UINT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_uint64 = (array_uint64_t*)calloc(1, sizeof (array_uint64_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::UINT64_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_ARRAY_INT32])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_int32 = (array_int32_t*)calloc(1, sizeof (array_int32_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT32_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT32_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_ARRAY_INT64])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_int64 = (array_int64_t*)calloc(1, sizeof (array_int64_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::INT64_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_ARRAY_FLT])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_flt = (array_flt_t*)calloc(1, sizeof (array_flt_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLT_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::FLT_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_ARRAY_DBL])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->arr_dbl = (array_dbl_t*)calloc(1, sizeof (array_dbl_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::DBL_ARRAY_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::DBL_ARRAY_PARAM_TYPE].c_str();
     }else if (type ==  parameter_value_types[PVT_STRING])
     {
         p = (parameter_t*)calloc(1, sizeof (parameter_t));
         p->val_str = (value_str_t*)calloc(1, sizeof (value_str_t));
-        p->base.type = param_value_types[(uint8_t)PARAM_VALUE_TYPE::STRING_PARAM_TYPE].c_str();
+        p->base.type = (char*)param_value_types[(uint8_t)PARAM_VALUE_TYPE::STRING_PARAM_TYPE].c_str();
     }
     return p;
 }
@@ -2903,7 +2903,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
             rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
                         (scanner_base_t*)scanner_base, zero_points, realtime, kSERVICE);
 
-            if (profile_from_scanner != nullptr)
+            if (profile_from_scanner->rf627smart_profile2D != nullptr)
             {
                 std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
                 profile_mutex.unlock();
