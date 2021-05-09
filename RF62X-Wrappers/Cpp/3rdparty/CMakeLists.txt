@@ -15,6 +15,6 @@ project(3rdparty LANGUAGES CXX)
 ## Adding subdirectories according to the 3rd-party configuration
 ###############################################################################
 # set rf627core path variable
-set(RF62XCORE_DIR "../../../RF62X-CORE")
+set(RF62XCORE_DIR "../../../RF62X-Core")
 # add subdirectory of rf627core lib
 add_subdirectory(${RF62XCORE_DIR} RF62X-Core)
