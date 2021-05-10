@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## PROJECT
 ## name and version
 ###############################################################################
-project(RF62X_profile LANGUAGES C)
+project(RF62XSmartProfileExample LANGUAGES C)
 
 
 

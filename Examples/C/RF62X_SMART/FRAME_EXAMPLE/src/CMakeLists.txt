@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## EXECUTABLE-PROJECT
 ## name and version
 ###############################################################################
-project(RF62X_profile LANGUAGES C)
+project(RF62XSmartFrameExample LANGUAGES C)
 
 
 
@@ -41,5 +41,5 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 ## LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-target_link_libraries(${PROJECT_NAME} rf62Xsdk)
+target_link_libraries(${PROJECT_NAME} RF62X-SDK)
 
