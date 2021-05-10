@@ -11,7 +11,7 @@ namespace SDK
     {
         public unsafe partial class RF62X
         {
-    
+
             /// <summary>
             /// SdkVersion - Return info about SDK version
             /// </summary>
@@ -806,12 +806,12 @@ namespace SDK
                                                     Array.Reverse(IPBytes);
                                                 }
 
-                                                uint IPv4Mask = BitConverter.ToUInt32(MaskBytes, 0);                                                
+                                                uint IPv4Mask = BitConverter.ToUInt32(MaskBytes, 0);
                                                 uint IPv4Address = BitConverter.ToUInt32(IPBytes, 0);
                                                 set_platform_adapter_settings(IPv4Mask, IPv4Address);
 
                                                 search_scanners(scanners, SCANNER_TYPES.RF62X_SMART, 1000, PROTOCOL_TYPES.SERVICE);
-                                                
+
                                                 Console.WriteLine("Send hello packet from {0} IP Address", ip.Address.ToString());
                                             }
                                         }
@@ -888,6 +888,8 @@ namespace SDK
                                     result = connect_to_scanner(
                                             ((scanner_base_t*)scannerBase), PROTOCOL_TYPES.SERVICE);
                                     isConnected = result == 1 ? true : false;
+                                    if (isConnected)
+                                        read_params_from_scanner(((scanner_base_t*)scannerBase), 3000, PROTOCOL_TYPES.SERVICE);
                                     return isConnected;
                                 }
                                 else
@@ -978,7 +980,7 @@ namespace SDK
                 /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
                 /// <returns>Profile</returns>
                 public Profile2D GetProfile(
-                    bool zero_points = true, bool realtime = true, 
+                    bool zero_points = true, bool realtime = true,
                     PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
                     this.profileMutex.WaitOne();

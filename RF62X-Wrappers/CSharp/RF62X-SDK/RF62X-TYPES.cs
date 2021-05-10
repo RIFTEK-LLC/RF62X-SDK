@@ -510,73 +510,73 @@ namespace SDK
             #region dll-methods
 
             // rf62Xcore.h
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte core_init();
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte* sdk_version();
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void platform_free(void* data);
 
 
             // rf62X_sdk.h
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void set_platform_adapter_settings(uint subnet_mask, uint host_ip_addr);
 
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte search_scanners(vector_t* list, SCANNER_TYPES model, uint timeout, PROTOCOL_TYPES protocol);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern hello_information get_info_about_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte connect_to_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte check_connection_to_scanner(scanner_base_t* device, uint timeout, PROTOCOL_TYPES protocol);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte disconnect_from_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void free_scanner(scanner_base_t* device);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern rf627_profile2D_t* get_profile2D_from_scanner(scanner_base_t* device, bool zero_points, bool realtime, PROTOCOL_TYPES protocol);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern rf627_frame_t* get_frame_from_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte read_params_from_scanner(scanner_base_t* device, uint timeout, PROTOCOL_TYPES protocol);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte write_params_to_scanner(scanner_base_t* device, uint timeout, PROTOCOL_TYPES protocol);
 
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern parameter_t* get_parameter(scanner_base_t* device, byte* param_name);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte set_parameter(scanner_base_t* device, parameter_t* param);
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void free_parameter(parameter_t* param, SCANNER_TYPES type);
 
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void vector_init(vector_t** vec);
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern UIntPtr vector_count(vector_t* vec);
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void* vector_get(vector_t* vec, UIntPtr index);
 
 
-            [DllImport("librf62Xsdk.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern parameter_t* create_parameter_from_type(byte* type);
 
 
@@ -1621,6 +1621,7 @@ namespace SDK
                                 }
                             case SCANNER_TYPES.RF62X_SMART:
                                 {
+                                    rf627_smart_profile2D_t* a = (rf627_smart_profile2D_t*)profile2D;
                                     data_type = (PROFILE_DATA_TYPES)((rf627_smart_profile2D_t*)profile2D)->header.data_type;
 
                                     data_offset = ((rf627_smart_profile2D_t*)profile2D)->header.data_offset;
@@ -1718,7 +1719,7 @@ namespace SDK
                                 {
                                     if (profile_from_scanner->rf627smart_profile2D != null)
                                     {
-                                        header = new Header(profile_from_scanner->rf627smart_profile2D, SCANNER_TYPES.RF627_OLD);
+                                        header = new Header(profile_from_scanner->rf627smart_profile2D, SCANNER_TYPES.RF62X_SMART);
                                         switch (header.data_type)
                                         {
                                             case PROFILE_DATA_TYPES.PIXELS:
