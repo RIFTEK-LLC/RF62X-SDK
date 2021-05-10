@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## LIBRARY-PROJECT
 ## name and version
 ###############################################################################
-project(rf62Xsdk VERSION 2.6.0 LANGUAGES C)
+project(RF62X-SDK VERSION 2.7.3 LANGUAGES C)
 
 
 
@@ -39,18 +39,20 @@ set  (SOURCES ${C_FILES} ${H_FILES})
 # create lib from src
 if (NOT TARGET ${PROJECT_NAME})
     SET(TARGET_OBJECTS_LIST
-        $<TARGET_OBJECTS:rf62Xcore>
-        $<TARGET_OBJECTS:smart-protocol>
+        $<TARGET_OBJECTS:RF62X-Core>
+        $<TARGET_OBJECTS:RF62X-Protocol>
         $<TARGET_OBJECTS:mpack>
-        $<TARGET_OBJECTS:rf627protocol>
+        $<TARGET_OBJECTS:RF627-Protocol>
         $<TARGET_OBJECTS:custom_string>
         $<TARGET_OBJECTS:custom_vector>
         $<TARGET_OBJECTS:endian_conv>
         $<TARGET_OBJECTS:platform_methods>)
     if (MSVC)
-        SET(TARGET_OBJECTS_LIST ${TARGET_OBJECTS_LIST} $<TARGET_OBJECTS:pthreads-c>)
+        SET(TARGET_OBJECTS_LIST ${TARGET_OBJECTS_LIST}
+            $<TARGET_OBJECTS:libpthreads4w>
+            $<TARGET_OBJECTS:getopt>)
     endif()
-    add_library(${PROJECT_NAME} STATIC ${SOURCES} ${TARGET_OBJECTS_LIST})
+    add_library(${PROJECT_NAME} SHARED ${SOURCES} ${TARGET_OBJECTS_LIST})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
 
@@ -60,7 +62,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
 ## LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-target_link_libraries(${PROJECT_NAME} rf62Xcore)
+target_link_libraries(${PROJECT_NAME} PUBLIC RF62X-Core)
+
+if(MINGW)
+    target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
+    target_link_libraries(${PROJECT_NAME} PUBLIC iphlpapi)
+endif(MINGW)
 
 find_package (Threads)
 target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
