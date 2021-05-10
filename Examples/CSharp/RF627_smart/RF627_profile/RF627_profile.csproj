@@ -81,9 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\rf62Xwrappers\CSharp\rf62Xsdk\rf62Xsdk\rf62Xsdk.csproj">
-      <Project>{5f966733-8e45-4844-8d56-5397a76f3edd}</Project>
-      <Name>rf62Xsdk</Name>
+    <ProjectReference Include="..\..\..\..\RF62X-Wrappers\CSharp\RF62X-SDK\RF62X-SDK.csproj">
+      <Project>{9a650742-3d98-4edb-880d-c6cbef7f11c6}</Project>
+      <Name>RF62X-SDK</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
