@@ -29,7 +29,7 @@ endif()
 ## CONFIGURATION
 ## project configuration
 ###############################################################################
-# Select a wrapper programming language (C99, C++, C#, Python)
+# Select a wrapper programming language (C, C++, C#, Python)
 SET(${PARENT}_WRAPPER_LANGUAGE     "C++"       CACHE STRING "" ${REWRITE_FORCE})
 
 # Enable sdk examples
@@ -42,8 +42,12 @@ SET(${PARENT}_RF62X_SDK_EXAMPLES    ON         CACHE BOOL   "" ${REWRITE_FORCE})
 ## Adding subdirectories according to the configuration
 ###############################################################################
 # Add sdk-library
-if(${${PARENT}_WRAPPER_LANGUAGE} STREQUAL "C99")
+if(${${PARENT}_WRAPPER_LANGUAGE} STREQUAL "C")
     add_subdirectory(RF62X-Wrappers/C)
+    # Examples
+    if (${PARENT}_RF62X_SDK_EXAMPLES)
+        add_subdirectory(Examples/C)
+    endif()
 endif()
 if(${${PARENT}_WRAPPER_LANGUAGE} STREQUAL "C++")
     add_subdirectory(RF62X-Wrappers/Cpp)
