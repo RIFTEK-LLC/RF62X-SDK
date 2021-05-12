@@ -38,6 +38,7 @@ int _ifs_cnt;
 int GetAdaptersCount();
 
 const char* GetAdapterAddress(int index);
+const char* GetAdapterMasks(int index);
 
 #if (defined _WIN32)
 BOOL WinSockInit();
