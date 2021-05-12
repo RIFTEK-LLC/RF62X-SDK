@@ -62,12 +62,13 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
 ## LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-target_link_libraries(${PROJECT_NAME} PUBLIC RF62X-Core)
+find_package (Threads)
+target_link_libraries (${PROJECT_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
+target_link_libraries(${PROJECT_NAME} PUBLIC RF62X-Core)
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
     target_link_libraries(${PROJECT_NAME} PUBLIC iphlpapi)
 endif(MINGW)
 
-find_package (Threads)
-target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+
