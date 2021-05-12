@@ -67,6 +67,12 @@ public:
      */
     bool connect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
+     * @brief disconnect_from_scanner - Close connection to the device
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool disconnect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    /**
      * @brief check_connection - Сheck the connection with the RF627smart device
      * @param timeout Connection check timeout
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -74,12 +80,6 @@ public:
      */
     bool check_connection(
             uint32_t timeout = 3000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
-    /**
-     * @brief disconnect_from_scanner - Close connection to the device
-     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return true on success, else - false
-     */
-    bool disconnect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
 
@@ -150,14 +150,38 @@ public:
 
 
     /**
-     * @brief send_cmd - Send command to parameter
-     * @param command_name Name of command
-     * @param[in] input Data to send in command payload
-     * @param[out] output Data to receive from command payload
-     * @return true on success, else - false
+     * @brief start_dump_recording - enabling profile recording to the internal
+     * memory of the device - generating a dump.
+     * @details Recording will stop when the number of recorded profiles exceeds
+     * the maximum allowed dump size, or when the count_of_profiles number is
+     * exceeded, or when the stop_dump_recording method is called
+     * @param count_of_profiles The number of profiles to record the dump:
+     *      count_of_profiles == 0 - Recording will continue until the maximum
+     * dump size is reached, or until recording is stopped by calling
+     * the stop_dump_recording method;
+     *      count_of_profiles > 0  - Recording will continue until the number
+     * of recorded profiles exceeds the specified number.
+     * @return true if recording started successfully, else - false
      */
-    bool send_cmd(std::string command_name,
-                  std::vector<uint8_t> input, std::vector<uint8_t>& output);
+    bool start_dump_recording(uint32_t count_of_profiles = 0);
+
+    /**
+     * @brief stop_dump_recording - disabling profile recording to the internal
+     * memory of the device.
+     * @param count_of_profiles The number of recorded profiles
+     * @return true if recording was stopped successfully, else - false
+     */
+    bool stop_dump_recording(uint32_t& count_of_profiles);
+
+    /**
+     * @brief get_dumps_profiles - getting the content of the profile dump
+     * @param index Start number of the requested profile from memory
+     * @param count The count of requested profiles
+     * @param proto Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return Vector profiles
+     */
+    std::vector<std::shared_ptr<profile2D>> get_dumps_profiles(
+            uint32_t index,uint32_t count,PROTOCOLS proto = PROTOCOLS::CURRENT);
 
 
 
@@ -209,7 +233,14 @@ public:
     bool set_calibration_table(std::shared_ptr<calib_table> table);
 
 
+    /**
+     * @brief rf627smart - Class constructor.
+     * @param scanner_base Passing a ptr to a basic scanner (cannot be nullptr)
+     */
     rf627smart(void* scanner_base);
+    /**
+    * @brief ~rf627smart - Class destructor.
+    */
     ~rf627smart();
 
 private:

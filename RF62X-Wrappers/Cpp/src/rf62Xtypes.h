@@ -665,6 +665,33 @@ const static std::string parameter_names[]	=
     "user_roi_size"
 };
 
+template <typename T>
+class ValueEnum
+{
+public:
+    ValueEnum(std::vector <std::tuple<T, std::string, std::string>> enum_base);
+    ~ValueEnum();
+
+    T getValue(std::string key) const;
+    T getValue(uint32_t index) const;
+
+    std::string getLabel(std::string key) const;
+    std::string getLabel(uint32_t index) const;
+
+    std::string getKey(uint32_t index) const;
+
+    std::vector<T> getValueList() const;
+    std::vector<std::string> getKeyList() const;
+    std::vector<std::string> getLabelList() const;
+
+    std::tuple<T, std::string, std::string> getItem(uint32_t index) const;
+    std::vector<std::tuple<T, std::string, std::string>> getItemList() const;
+
+private:
+    std::vector <std::tuple<T, std::string, std::string>> _enum_base;
+};
+
+
 class param
 {
 public:
@@ -695,6 +722,9 @@ public:
     T getDefValue() const;
     template <typename T>
     T getValuesEnum() const;
+
+    template <typename T>
+    ValueEnum<T> getEnum() const;
 private:
     void* param_base;
 

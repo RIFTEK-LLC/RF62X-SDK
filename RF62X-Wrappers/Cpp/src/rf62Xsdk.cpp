@@ -844,7 +844,136 @@ param_t* create_param_from_type(std::string type)
     return p;
 }
 
-param::param(void* init_param)
+
+template<typename T>
+ValueEnum<T>::ValueEnum(std::vector<std::tuple<T, std::string, std::string>> enum_base)
+{
+    _enum_base = enum_base;
+}
+
+template <typename T>
+ValueEnum<T>::~ValueEnum()
+{
+
+}
+
+template <typename T>
+T ValueEnum<T>::getValue(std::string key) const
+{
+    auto it = std::find_if(_enum_base.begin(), _enum_base.end(), [key](const std::tuple<T, std::string, std::string>& e) {return std::get<1>(e) == key;});
+    if (it != _enum_base.end())
+    {
+        return std::get<0>(*it);
+    }else
+    {
+        throw "No enum item for the specified key";
+        return 0;
+    }
+}
+
+template <typename T>
+T ValueEnum<T>::getValue(uint32_t index) const
+{
+    if (_enum_base.size() < index)
+    {
+        return std::get<0>(_enum_base[index]);
+    }else
+    {
+        throw "No enum item at the specified index";
+        return 0;
+    }
+}
+
+template <typename T>
+std::string ValueEnum<T>::getLabel(std::string key) const
+{
+    auto it = std::find_if(_enum_base.begin(), _enum_base.end(), [key](const std::tuple<T, std::string, std::string>& e) {return std::get<1>(e) == key;});
+    if (it != _enum_base.end())
+    {
+        return std::get<2>(*it);
+    }else
+    {
+        throw "No enum item for the specified key";
+        return 0;
+    }
+}
+
+template <typename T>
+std::string ValueEnum<T>::getLabel(uint32_t index) const
+{
+    if (_enum_base.size() < index)
+    {
+        return std::get<2>(_enum_base[index]);
+    }else
+    {
+        throw "No enum item at the specified index";
+        return nullptr;
+    }
+}
+
+template <typename T>
+std::string ValueEnum<T>::getKey(uint32_t index) const
+{
+    if (_enum_base.size() < index)
+    {
+        return std::get<1>(_enum_base[index]);
+    }else
+    {
+        throw "No enum item at the specified index";
+        return nullptr;
+    }
+}
+
+template <typename T>
+std::vector<T> ValueEnum<T>::getValueList() const
+{
+    std::vector<T> result;
+    for (auto &item : _enum_base)
+        result.push_back(std::get<0>(item));
+    return result;
+}
+
+template <typename T>
+std::vector<std::string> ValueEnum<T>::getKeyList() const
+{
+    std::vector<std::string> result;
+    for (auto &item : _enum_base)
+        result.push_back(std::get<1>(item));
+    return result;
+}
+
+template <typename T>
+std::vector<std::string> ValueEnum<T>::getLabelList() const
+{
+    std::vector<std::string> result;
+    for (auto &item : _enum_base)
+        result.push_back(std::get<2>(item));
+    return result;
+}
+
+template <typename T>
+std::tuple<T, std::string, std::string> ValueEnum<T>::getItem(uint32_t index) const
+{
+    if (_enum_base.size() < index)
+    {
+        return _enum_base[index];
+    }else
+    {
+        throw "No enum item at the specified index";
+        return nullptr;
+    }
+}
+
+template <typename T>
+std::vector<std::tuple<T, std::string, std::string>> ValueEnum<T>::getItemList() const
+{
+    return _enum_base;
+}
+
+
+
+param::param(void* init_param) : 
+    param_base(nullptr)
 {
     parameter_t* p = (parameter_t*)init_param;
 
@@ -1148,7 +1277,58 @@ param::param(void* init_param)
 
 param::~param()
 {
-
+        if (((param_t*)param_base)->type == parameter_value_types[PVT_UINT])
+        {
+            delete ((value_uint32*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_UINT64])
+        {
+            delete ((value_uint64*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_INT])
+        {
+            delete ((value_int32*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_INT64])
+        {
+            delete ((value_int64*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_FLOAT])
+        {
+            delete ((value_flt*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_DOUBLE])
+        {
+            delete ((value_dbl*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_ARRAY_UINT32])
+        {
+            delete ((array_uint32*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_ARRAY_UINT64])
+        {
+            delete ((array_uint64*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_ARRAY_INT32])
+        {
+            delete ((array_int32*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_ARRAY_INT64])
+        {
+            delete ((array_int64*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_ARRAY_FLT])
+        {
+            delete ((array_flt*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_ARRAY_DBL])
+        {
+            delete ((array_dbl*)param_base);
+        }
+        else if (((param_t*)param_base)->type == parameter_value_types[PVT_STRING])
+        {
+            delete ((value_str*)param_base);
+        }
 }
 
 std::string param::getName()
@@ -1193,6 +1373,10 @@ template<> std::vector <std::tuple<uint32_t, std::string, std::string>> param::g
 {
     return ((value_uint32*)param_base)->valuesEnum;
 }
+template<> ValueEnum<uint32_t> param::getEnum<uint32_t>() const
+{
+    return ValueEnum<uint32_t>(((value_uint32*)param_base)->valuesEnum);
+}
 template<> bool param::setValue(uint32_t value) const
 {
     ((value_uint32*)param_base)->value = value;
@@ -1223,6 +1407,10 @@ template<> uint64_t param::getDefValue<uint64_t>() const
 template<> std::vector <std::tuple<uint64_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<uint64_t, std::string, std::string>>>() const
 {
     return ((value_uint64*)param_base)->valuesEnum;
+}
+template<> ValueEnum<uint64_t> param::getEnum<uint64_t>() const
+{
+    return ValueEnum<uint64_t>(((value_uint64*)param_base)->valuesEnum);
 }
 template<> bool param::setValue(uint64_t value) const
 {
@@ -1255,6 +1443,10 @@ template<> std::vector <std::tuple<int32_t, std::string, std::string>> param::ge
 {
     return ((value_int32*)param_base)->valuesEnum;
 }
+template<> ValueEnum<int32_t> param::getEnum<int32_t>() const
+{
+    return ValueEnum<int32_t>(((value_int32*)param_base)->valuesEnum);
+}
 template<> bool param::setValue(int32_t value) const
 {
     ((value_int32*)param_base)->value = value;
@@ -1285,6 +1477,10 @@ template<> int64_t param::getDefValue<int64_t>() const
 template<> std::vector <std::tuple<int64_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<int64_t, std::string, std::string>>>() const
 {
     return ((value_int64*)param_base)->valuesEnum;
+}
+template<> ValueEnum<int64_t> param::getEnum<int64_t>() const
+{
+    return ValueEnum<int64_t>(((value_int64*)param_base)->valuesEnum);
 }
 template<> bool param::setValue(int64_t value) const
 {
@@ -2850,54 +3046,6 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
 
     if (is_connected)
     {
-//        if (realtime)
-//        {
-//            if ( ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != NULL)
-//            {
-//                std::size_t s = reinterpret_cast<std::size_t>(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-//                if (s != INVALID_SOCKET)
-//                {
-//#ifdef _WIN32
-//                    closesocket(s);
-//#else
-//                    close(s);
-//#endif
-//                }
-//                ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
-//            }
-
-//            rfUint32 recv_ip_addr;
-//            rfUint16 recv_port;
-//            rfInt nret;
-
-
-//            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock =
-//                    network_platform.network_methods.create_udp_socket();
-//            if (((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock != (void*)INVALID_SOCKET)
-//            {
-//                nret = 1;
-//                network_platform.network_methods.set_reuseaddr_socket_option(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-
-//                network_platform.network_methods.set_socket_recv_timeout(
-//                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, 100);
-//                //recv_addr.sin_family = RF_AF_INET;
-//                recv_port = ((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostPort;
-
-//                //recv_addr.sin_addr = RF_INADDR_ANY;
-//                ip_string_to_uint32(((scanner_base_t*)scanner_base)->rf627_smart->info_by_service_protocol.user_network_hostIP, &recv_ip_addr);
-
-//                nret = network_platform.network_methods.socket_bind(
-//                            ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock, recv_ip_addr, recv_port);
-//                if (nret == RF_SOCKET_ERROR)
-//                {
-//                    network_platform.network_methods.close_socket(((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock);
-//                    ((scanner_base_t*)scanner_base)->rf627_smart->m_data_sock = NULL;
-//                    profile_mutex.unlock();
-//                    return FALSE;
-//                }
-//            }
-//        }
-
         switch (p) {
         case PROTOCOLS::SERVICE:
         {
@@ -3290,20 +3438,119 @@ bool rf627smart::set_param(std::shared_ptr<param> param)
     return false;
 }
 
-bool rf627smart::send_cmd(std::string command_name,
-                          std::vector<uint8_t> input, std::vector<uint8_t>& output)
+bool rf627smart::start_dump_recording(uint32_t count_of_profiles)
 {
-    command2_t cmd = {0};
-    const char* command_name_c = command_name.c_str();
-    cmd.name = command_name_c;
-    cmd.input.size = input.size();
-    cmd.input.payload = (rfUint8*)input.data();
-    bool result = send_command2((scanner_base_t*)this->scanner_base, &cmd);
+    // Get parameter of user_dump_capacity
+    std::shared_ptr<param> user_dump_capacity = get_param("user_dump_capacity");
+    if (user_dump_capacity !=nullptr && user_dump_capacity->getType()=="uint32_t")
+    {
+        user_dump_capacity->setValue<uint32_t>(count_of_profiles);
+        set_param(user_dump_capacity);
+    }else
+    {
+        return false;
+    }
 
-    for (int i = 0; i < cmd.output.size; i++)
-        output.push_back(((uint8_t*)cmd.output.payload)[i]);
+    // Get parameter of user_dump_enabled
+    std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
+    if (user_dump_enabled !=nullptr && user_dump_enabled->getType()=="uint32_t")
+    {
+        user_dump_enabled->setValue<uint32_t>(
+                    user_dump_enabled->getEnum<uint32_t>().getValue("TRUE"));
+        set_param(user_dump_enabled);
+    }else
+    {
+        return false;
+    }
 
-    free(cmd.output.payload);
+    // Write changes parameters to the device's memory
+    if(write_params())
+        return true;
+    else
+        return false;
+}
+
+bool rf627smart::stop_dump_recording(uint32_t &count_of_profiles)
+{
+    // Get parameter of user_dump_enabled
+    std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
+    if (user_dump_enabled !=nullptr && user_dump_enabled->getType()=="uint32_t")
+    {
+        user_dump_enabled->setValue<uint32_t>(
+                    user_dump_enabled->getEnum<uint32_t>().getValue("FALSE"));
+        set_param(user_dump_enabled);
+    }else
+    {
+        return false;
+    }
+
+    // Write changes parameters to the device's memory
+    if(!write_params())
+        return false;
+
+    // Get parameter of user_dump_size
+    std::shared_ptr<param> user_dump_size = get_param("user_dump_size");
+    if (user_dump_size !=nullptr && user_dump_enabled->getType()=="uint32_t")
+    {
+        count_of_profiles = user_dump_enabled->getValue<uint32_t>();
+    }else
+    {
+        return false;
+    }
+
+    return true;
+}
+
+std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
+        uint32_t index, uint32_t count, PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    std::vector<std::shared_ptr<profile2D>> result;
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Get parameter of user_dump_enabled
+        std::shared_ptr<param> fact_dump_unitSize = get_param("fact_dump_unitSize");
+        if (fact_dump_unitSize !=nullptr && fact_dump_unitSize->getType()=="uint32_t")
+        {
+            rf627_profile2D_t* dumps = NULL;
+            uint32_t dump_size = 0;
+            uint8_t status = get_dumps_profiles_from_scanner(
+                        (scanner_base_t*)scanner_base, index, count, 1000, kSERVICE,
+                        &dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
+            if (status)
+            {
+                for(uint32_t i = 0; i < dump_size; i++)
+                {
+                    if (dumps[i].rf627smart_profile2D != nullptr)
+                    {
+                        rf627_profile2D_t* profile = (rf627_profile2D_t*)calloc(1, sizeof(rf627_profile2D_t));
+                        profile->type = dumps[i].type;
+                        profile->rf627smart_profile2D = dumps[i].rf627smart_profile2D;
+                        result.push_back(std::make_shared<profile2D>(profile));
+                    }else
+                    {
+                        throw ("get_dumps_profiles dump_size exception");
+                    }
+                }
+                free(dumps);
+            }
+            return result;
+        }else
+        {
+            return result;
+        }
+
+        break;
+    }
+    default:
+        break;
+    }
 
     return result;
 }
