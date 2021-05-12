@@ -11,7 +11,7 @@ int main()
 {
     std::cout << "#########################################"  << std::endl;
     std::cout << "#                                       #"  << std::endl;
-    std::cout << "#          Frame Example v2.x.x         #"  << std::endl;
+    std::cout << "#          Dump Example v2.x.x          #"  << std::endl;
     std::cout << "#                                       #"  << std::endl;
     std::cout << "#########################################\n"<< std::endl;
 
@@ -50,19 +50,27 @@ int main()
         // Establish connection to the RF627 device by Service Protocol.
         bool is_connected = list[i]->connect();
 
-        std::shared_ptr<frame> frame = nullptr;
-        if (is_connected && ((frame = list[i]->get_frame()) != nullptr))
+        if (is_connected)
         {
-            std::cout << "Frame information: "                          << std::endl;
-            std::cout << "* Data Size\t: " << frame->getDataSize()      << std::endl;
-            std::cout << "* Frame Height\t: " << frame->getFrameHeight()<< std::endl;
-            std::cout << "* Frame Width\t: " << frame->getFrameWidth()  << std::endl;
-            std::cout << "Frame was successfully received!"             << std::endl;
-            std::cout << "-----------------------------------------"    << std::endl;
+            uint32_t count_of_profiles = 1000;
+            list[i]->start_dump_recording(count_of_profiles);
+
+            uint32_t size = 0;
+            do {
+                list[i]->read_params();
+                size = list[i]->get_param("user_dump_size")->getValue<uint32_t>();
+                std::cout << "Current profiles in the dump: " << size << std::endl;
+            }while(size < count_of_profiles);
+
+            std::vector<std::shared_ptr<profile2D>> dump =
+                    list[i]->get_dumps_profiles(0, count_of_profiles);
+
+            std::cout << dump.size() << " Profiles were received!  "   << std::endl;
+            std::cout << "-----------------------------------------"   << std::endl;
         }else
         {
-            std::cout << "Frame was not received!"                      << std::endl;
-            std::cout << "-----------------------------------------"    << std::endl;
+            std::cout << "Dump was not received!"                      << std::endl;
+            std::cout << "-----------------------------------------"   << std::endl;
         }
 
         // Disconnect from scanner.
