@@ -2830,11 +2830,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
         uint32_t count = 0;
         for (int i=0; i<GetAdaptersCount(); i++)
         {
-            // Get another IP Addr and set this changes in adapter settings.
-            printf("Search scanners from:\n "
-                   "* IP Address\t: %s\n "
-                   "* Netmask\t: %s\n",
-                   GetAdapterAddress(i), GetAdapterMasks(i));
             uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
             uint32_t host_mask = ntohl(inet_addr(GetAdapterMasks(i)));
             // call the function to change adapter settings inside the library.
@@ -2842,12 +2837,19 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
 
             // Search for RF627-Smart devices over network by Service Protocol.
             if (host_ip_addr != 0)
+            {
+                // Get another IP Addr and set this changes in adapter settings.
+                printf("Search scanners from:\n "
+                       "* IP Address\t: %s\n "
+                       "* Netmask\t: %s\n",
+                       GetAdapterAddress(i), GetAdapterMasks(i));
                 search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-            // Print count of discovered rf627-smart in network by Service Protocol
-            printf("Discovered: %d RF627-Smart\n",(int)vector_count(scanners)-count);
-            printf("-----------------------------------------\n");
-            count = (int)vector_count(scanners);
+                // Print count of discovered rf627-smart in network by Service Protocol
+                printf("Discovered\t: %d RF627-Smart\n",(int)vector_count(scanners)-count);
+                printf("-----------------------------------------\n");
+                count = (int)vector_count(scanners);
+            }
         }
 
         std::vector<std::shared_ptr<rf627smart>> result;
@@ -2859,7 +2861,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
             result[i]->current_protocol = PROTOCOLS::SERVICE;
         }
 
-        printf("\n");
         return result;
         break;
     }

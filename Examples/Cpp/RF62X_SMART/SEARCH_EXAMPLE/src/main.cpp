@@ -28,9 +28,9 @@ int main()
     // Search for rf627smart devices over network
     list = rf627smart::search(500);
 
-
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Total found: " << list.size() << " RF627-Smart" << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "========================================="     << std::endl;
 
 
     for (size_t i = 0; i < list.size(); i++)

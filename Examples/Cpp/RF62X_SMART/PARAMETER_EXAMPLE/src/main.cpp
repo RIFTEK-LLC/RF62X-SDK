@@ -28,9 +28,9 @@ int main()
     // Search for rf627smart devices over network
     list = rf627smart::search();
 
-
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Total found: " << list.size() << " RF627-Smart" << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "========================================="     << std::endl;
 
 
     // Iterate over all discovered scanners in network, connect to each of them,
@@ -86,7 +86,7 @@ int main()
                 // Change the current state to the opposite
                 isEnabled = !isEnabled;
                 laser_enabled->setValue<uint32_t>(isEnabled);
-                std::cout<<"New Laser State\t: " << (isEnabled?"ON\n":"OFF\n");
+                std::cout<<"New Laser State  \t: " << (isEnabled?"ON\n":"OFF\n");
                 std::cout << "-------------------------------------"<< std::endl;
 
                 list[i]->set_param(laser_enabled);
@@ -109,7 +109,7 @@ int main()
                 // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
                 ip[3]++;
                 ip_addr->setValue<std::vector<uint32_t>>(ip);
-                std::cout << "New Device IP\t: ";
+                std::cout << "New Device IP    \t: ";
                 for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
                 std::cout << "-------------------------------------"       <<std::endl;
 
@@ -169,18 +169,19 @@ int main()
                 list[i]->set_param(streams_format);
             }
 
-            std::string answer = "n";
             // Apply changed parameters to the device
-            std::cout << "Apply changed params to the device? (y/n)"<< std::endl;
+            std::string answer = "n";
+            std::cout << "Apply changed params to the device? (y/n): ";
             std::cin >> answer;
-            if (answer == "y" && answer == "Y")
+            if (answer == "y" || answer == "Y")
+            {
                 list[i]->write_params();
-
-            // Save changes to the device's memory
-            std::cout << "Save changes to the device's memory? (y/n)"<<std::endl;
-            std::cin >> answer;
-            if (answer == "y" && answer == "Y")
-                list[i]->save_params();
+                // Save changes to the device's memory
+                std::cout<<std::endl<<"Save changes to device's memory? (y/n): ";
+                std::cin >> answer;
+                if (answer == "y" || answer == "Y")
+                    list[i]->save_params();
+            }
 
             // Disconnect from scanner.
             list[i]->disconnect();
