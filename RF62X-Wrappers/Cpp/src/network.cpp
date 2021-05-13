@@ -33,17 +33,33 @@ typedef struct sockaddr SOCKADDR;
 /**************************************************
  */
 char* _ifs[64];
-int _ifs_cnt;
+int _ifs_cnt = 0;
+char* _mfs[64];
+int _mfs_cnt = 0;
+
 
 int GetAdaptersCount()
 {
     return _ifs_cnt;
 }
 
+int GetAdaptersMasksCount()
+{
+    return _mfs_cnt;
+}
+
 const char* GetAdapterAddress(int index)
 {
     if (index >= 0 && index < _ifs_cnt) {
         return _ifs[index];
+    }
+    return NULL;
+}
+
+const char* GetAdapterMasks(int index)
+{
+    if (index >= 0 && index < _mfs_cnt) {
+        return _mfs[index];
     }
     return NULL;
 }
@@ -65,42 +81,141 @@ void WinSockDeinit()
     WSACleanup();
 }
 
+void print_adapter(PIP_ADAPTER_ADDRESSES aa)
+{
+    char buf[BUFSIZ];
+    memset(buf, 0, BUFSIZ);
+    WideCharToMultiByte(CP_ACP, 0, aa->FriendlyName, wcslen(aa->FriendlyName), buf, BUFSIZ, NULL, NULL);
+    printf("adapter_name:%s\n", buf);
+}
+
+void print_addr(PIP_ADAPTER_UNICAST_ADDRESS ua)
+{
+    char buf[BUFSIZ];
+
+    int family = ua->Address.lpSockaddr->sa_family;
+    printf("\t%s ",  family == AF_INET ? "IPv4":"IPv6");
+
+    memset(buf, 0, BUFSIZ);
+    getnameinfo(ua->Address.lpSockaddr, ua->Address.iSockaddrLength, buf, sizeof(buf), NULL, 0,NI_NUMERICHOST);
+    printf("%s\n", buf);
+}
+
+void print_prefix(PIP_ADAPTER_PREFIX_XP ua)
+{
+    char buf[BUFSIZ];
+
+    int family = ua->Address.lpSockaddr->sa_family;
+    printf("\t%s ",  family == AF_INET ? "IPv4":"IPv6");
+
+    memset(buf, 0, BUFSIZ);
+    getnameinfo(ua->Address.lpSockaddr, ua->Address.iSockaddrLength, buf, sizeof(buf), NULL, 0,NI_NUMERICHOST);
+    printf("%s\n", buf);
+}
+
 BOOL EnumAdapterAddresses()
 {
-    PIP_ADAPTER_ADDRESSES adapter_addresses, aa;
-    PIP_ADAPTER_UNICAST_ADDRESS ua;
-    DWORD rv, size;
 
-    _ifs_cnt = 0;
-    memset(_ifs, 0, sizeof(_ifs));
+    PIP_ADAPTER_INFO pAdapterInfo;
+    PIP_ADAPTER_INFO pAdapter = NULL;
+    int dwRetVal = 0;
+    int i;
 
-    rv = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, NULL, &size);
-    if (rv != ERROR_BUFFER_OVERFLOW) {
-        return FALSE;
-    }
-    adapter_addresses = (PIP_ADAPTER_ADDRESSES)malloc(size);
-
-    rv = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, adapter_addresses, &size);
-    if (rv != ERROR_SUCCESS) {
-        free(adapter_addresses);
-        return FALSE;
+    ULONG ulOutBufLen = sizeof (IP_ADAPTER_INFO);
+    pAdapterInfo = (IP_ADAPTER_INFO *)malloc(sizeof (IP_ADAPTER_INFO));
+    if (pAdapterInfo == NULL) {
+        printf("Error allocating memory needed to call GetAdaptersinfo\n");
+        return 1;
     }
 
-    for (aa = adapter_addresses; aa != NULL; aa = aa->Next) {
-        if (aa->OperStatus != IfOperStatusUp) continue;
-        for (ua = aa->FirstUnicastAddress; ua != NULL; ua = ua->Next) {
-            if (ua->Address.lpSockaddr->sa_family != AF_INET) continue;
-            _ifs[_ifs_cnt] = (char*)malloc(64);
-            memset(_ifs[_ifs_cnt], 0, 64);
-            sprintf(_ifs[_ifs_cnt++], "%u.%u.%u.%u",
-                    (BYTE)(ua->Address.lpSockaddr->sa_data[2]),
-                    (BYTE)(ua->Address.lpSockaddr->sa_data[3]),
-                    (BYTE)(ua->Address.lpSockaddr->sa_data[4]),
-                    (BYTE)(ua->Address.lpSockaddr->sa_data[5]));
+    if (GetAdaptersInfo(pAdapterInfo, &ulOutBufLen) == ERROR_BUFFER_OVERFLOW) {
+        free(pAdapterInfo);
+        pAdapterInfo = (IP_ADAPTER_INFO *)malloc(ulOutBufLen);
+        if (pAdapterInfo == NULL) {
+            printf("Error allocating memory needed to call GetAdaptersinfo\n");
+            return 1;
         }
     }
 
-    free(adapter_addresses);
+    if ((dwRetVal = GetAdaptersInfo(pAdapterInfo, &ulOutBufLen)) == NO_ERROR) {
+        pAdapter = pAdapterInfo;
+        while (pAdapter) {
+//            printf("\tComboIndex: \t%d\n", pAdapter->ComboIndex);
+//            printf("\tAdapter Name: \t%s\n", pAdapter->AdapterName);
+//            printf("\tAdapter Desc: \t%s\n", pAdapter->Description);
+//            printf("\tAdapter Addr: \t");
+//            for (i = 0; i < pAdapter->AddressLength; i++) {
+//                if (i == (pAdapter->AddressLength - 1))
+//                    printf("%.2X\n", (int) pAdapter->Address[i]);
+//                else
+//                    printf("%.2X-", (int) pAdapter->Address[i]);
+//            }
+//            printf("\tIndex: \t%d\n", pAdapter->Index);
+//            printf("\tType: \t");
+//            switch (pAdapter->Type) {
+//            case MIB_IF_TYPE_OTHER:
+//                printf("Other\n");
+//                break;
+//            case MIB_IF_TYPE_ETHERNET:
+//                printf("Ethernet\n");
+//                break;
+//            case MIB_IF_TYPE_TOKENRING:
+//                printf("Token Ring\n");
+//                break;
+//            case MIB_IF_TYPE_FDDI:
+//                printf("FDDI\n");
+//                break;
+//            case MIB_IF_TYPE_PPP:
+//                printf("PPP\n");
+//                break;
+//            case MIB_IF_TYPE_LOOPBACK:
+//                printf("Lookback\n");
+//                break;
+//            case MIB_IF_TYPE_SLIP:
+//                printf("Slip\n");
+//                break;
+//            default:
+//                printf("Unknown type %ld\n", pAdapter->Type);
+//                break;
+//            }
+
+            _ifs[_ifs_cnt] = (char*)malloc(64);
+            memset(_ifs[_ifs_cnt], 0, 64);
+            sprintf(_ifs[_ifs_cnt++], "%s",pAdapter->IpAddressList.IpAddress.String);
+//            printf("\tIP Address: \t%s\n", pAdapter->IpAddressList.IpAddress.String);
+            _mfs[_mfs_cnt] = (char*)malloc(64);
+            memset(_mfs[_mfs_cnt], 0, 64);
+            sprintf(_mfs[_mfs_cnt++], "%s",pAdapter->IpAddressList.IpMask.String);
+//            printf("\tIP Mask: \t%s\n", pAdapter->IpAddressList.IpMask.String);
+
+//            printf("\tGateway: \t%s\n", pAdapter->GatewayList.IpAddress.String);
+//            printf("\t***\n");
+
+//            if (pAdapter->DhcpEnabled) {
+//                printf("\tDHCP Enabled: Yes\n");
+//                printf("\t  DHCP Server: \t%s\n",
+//                       pAdapter->DhcpServer.IpAddress.String);
+//            } else
+//                printf("\tDHCP Enabled: No\n");
+
+//            if (pAdapter->HaveWins) {
+//                printf("\tHave Wins: Yes\n");
+//                printf("\t  Primary Wins Server:    %s\n",
+//                       pAdapter->PrimaryWinsServer.IpAddress.String);
+//                printf("\t  Secondary Wins Server:  %s\n",
+//                       pAdapter->SecondaryWinsServer.IpAddress.String);
+//            } else
+//                printf("\tHave Wins: No\n");
+            pAdapter = pAdapter->Next;
+//            printf("\n");
+        }
+    } else {
+        printf("GetAdaptersInfo failed with error: %d\n", dwRetVal);
+    }
+
+    if (pAdapterInfo)
+            free(pAdapterInfo);
+
     return TRUE;
 }
 #else
@@ -117,7 +232,19 @@ BOOL EnumAdapterAddresses()
         {
             _ifs[_ifs_cnt] = (char*)malloc(64);
             memset(_ifs[_ifs_cnt], 0, 64);
-            sprintf(_ifs[_ifs_cnt++], "%u.%u.%u.%u", (BYTE)(tmp->ifa_addr->sa_data[2]), (BYTE)(tmp->ifa_addr->sa_data[3]), (BYTE)(tmp->ifa_addr->sa_data[4]), (BYTE)(tmp->ifa_addr->sa_data[5]));
+            sprintf(_ifs[_ifs_cnt++], "%u.%u.%u.%u",
+                    (BYTE)(tmp->ifa_addr->sa_data[2]),
+                    (BYTE)(tmp->ifa_addr->sa_data[3]),
+                    (BYTE)(tmp->ifa_addr->sa_data[4]),
+                    (BYTE)(tmp->ifa_addr->sa_data[5]));
+
+            _mfs[_mfs_cnt] = (char*)malloc(64);
+            memset(_mfs[_mfs_cnt], 0, 64);
+            sprintf(_mfs[_mfs_cnt++], "%u.%u.%u.%u",
+                    (BYTE)(tmp->ifa_netmask->sa_data[2]),
+                    (BYTE)(tmp->ifa_netmask->sa_data[3]),
+                    (BYTE)(tmp->ifa_netmask->sa_data[4]),
+                    (BYTE)(tmp->ifa_netmask->sa_data[5]));
         }
         tmp = tmp->ifa_next;
     }
@@ -136,6 +263,14 @@ void FreeAdapterAddresses()
         }
     }
     _ifs_cnt = 0;
+
+    for(int i=0; i<_mfs_cnt; i++) {
+        if (_mfs[i]) {
+            free(_mfs[i]);
+            _mfs[i] = NULL;
+        }
+    }
+    _mfs_cnt = 0;
 }
 
 BOOL MatchIP(const char* ip1, const char* ip2, const char* mask)
@@ -152,15 +287,15 @@ BOOL MatchIP(const char* ip1, const char* ip2, const char* mask)
         return FALSE;
 }
 
-BOOL MatchIP(u_long ip1, u_long ip2, u_long mask)
-{
-    ip1&=mask;
-    ip2&=mask;
-    if (ip1 == ip2)
-        return TRUE;
-    else
-        return FALSE;
-}
+//BOOL MatchIP(u_long ip1, u_long ip2, u_long mask)
+//{
+//    ip1&=mask;
+//    ip2&=mask;
+//    if (ip1 == ip2)
+//        return TRUE;
+//    else
+//        return FALSE;
+//}
 
 char* GetCompatibleInterface(const char* RemoteIP, const char* SubnetMask)
 {
@@ -172,18 +307,18 @@ char* GetCompatibleInterface(const char* RemoteIP, const char* SubnetMask)
     return NULL;
 }
 
-u_long GetCompatibleInterface(u_long RemoteIP, u_long SubnetMask)
-{
-    if (RemoteIP)
-    {
-        for (int i=0; i<_ifs_cnt; i++)
-        {
-            if (MatchIP(inet_addr(_ifs[i]), RemoteIP, SubnetMask))
-                return inet_addr(_ifs[i]);
-        }
-    }
-    return htonl(INADDR_ANY);
-}
+//u_long GetCompatibleInterface(u_long RemoteIP, u_long SubnetMask)
+//{
+//    if (RemoteIP)
+//    {
+//        for (int i=0; i<_ifs_cnt; i++)
+//        {
+//            if (MatchIP(inet_addr(_ifs[i]), RemoteIP, SubnetMask))
+//                return inet_addr(_ifs[i]);
+//        }
+//    }
+//    return htonl(INADDR_ANY);
+//}
 
 BOOL MatchUDP(u_long testIP, u_long hostIP)
 {
@@ -212,17 +347,17 @@ void DumpInterfaces()
     }
 }
 
-BOOL BindToCompatibleInterface(SOCKET s, in_addr* addr, u_long netMask)
-{
-    u_long local_ip = INADDR_ANY;
-    u_long net_mask = netMask;
-    sockaddr_in sin_loc;
-    memset(&sin_loc, 0, sizeof(sockaddr_in));
-    sin_loc.sin_family = PF_INET;
-    local_ip = GetCompatibleInterface(addr->s_addr, net_mask);
-    sin_loc.sin_addr.s_addr = local_ip;
-    return (bind(s, reinterpret_cast<SOCKADDR*>(&sin_loc), sizeof(sin_loc)) != SOCKET_ERROR);
-}
+//BOOL BindToCompatibleInterface(SOCKET s, in_addr* addr, u_long netMask)
+//{
+//    u_long local_ip = INADDR_ANY;
+//    u_long net_mask = netMask;
+//    sockaddr_in sin_loc;
+//    memset(&sin_loc, 0, sizeof(sockaddr_in));
+//    sin_loc.sin_family = PF_INET;
+//    local_ip = GetCompatibleInterface(addr->s_addr, net_mask);
+//    sin_loc.sin_addr.s_addr = local_ip;
+//    return (bind(s, reinterpret_cast<SOCKADDR*>(&sin_loc), sizeof(sin_loc)) != SOCKET_ERROR);
+//}
 
 /**************************************************
  */

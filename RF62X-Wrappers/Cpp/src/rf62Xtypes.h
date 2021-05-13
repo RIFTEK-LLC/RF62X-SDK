@@ -3,6 +3,13 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <string>
+
+#if (defined _WIN32 && defined RF62X_LIBRARY)
+#define API_EXPORT __declspec(dllexport)
+#else
+#define API_EXPORT
+#endif
 
 namespace SDK {
 namespace SCANNERS {
@@ -692,7 +699,7 @@ private:
 };
 
 
-class param
+class API_EXPORT param
 {
 public:
     param(void* param_base);

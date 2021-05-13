@@ -6,12 +6,6 @@
 
 #include "rf62Xtypes.h"
 
-#if (defined _WIN32 && defined RF62X_LIBRARY)
-#define API_EXPORT __declspec(dllexport)
-#else
-#define API_EXPORT
-#endif
-
 namespace SDK {
 namespace SCANNERS {
 namespace RF62X {
@@ -126,11 +120,17 @@ public:
      */
     bool read_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
-     * @brief write_params - Write current parameters to device's memory
+     * @brief write_params - Send current parameters to device
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success, else - false
      */
     bool write_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    /**
+     * @brief save_params - Save changes to device's memory
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool save_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief get_param - Get parameter by his name

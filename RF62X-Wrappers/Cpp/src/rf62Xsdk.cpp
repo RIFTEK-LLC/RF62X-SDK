@@ -37,6 +37,7 @@ extern BOOL EnumAdapterAddresses();
 extern void FreeAdapterAddresses();
 extern int GetAdaptersCount();
 extern const char* GetAdapterAddress(int index);
+extern const char* GetAdapterMasks(int index);
 /* windows sockets tweaks */
 extern BOOL WinSockInit();
 extern void WinSockDeinit();
@@ -845,6 +846,22 @@ param_t* create_param_from_type(std::string type)
 }
 
 
+template class ValueEnum<uint32_t>;
+template class ValueEnum<uint64_t>;
+template class ValueEnum<int32_t>;
+template class ValueEnum<int64_t>;
+template class ValueEnum<float>;
+template class ValueEnum<double>;
+
+template class ValueEnum<std::vector<uint32_t>>;
+template class ValueEnum<std::vector<uint64_t>>;
+template class ValueEnum<std::vector<int32_t>>;
+template class ValueEnum<std::vector<int64_t>>;
+template class ValueEnum<std::vector<float>>;
+template class ValueEnum<std::vector<double>>;
+
+template class ValueEnum<std::string>;
+
 template<typename T>
 ValueEnum<T>::ValueEnum(std::vector<std::tuple<T, std::string, std::string>> enum_base)
 {
@@ -867,7 +884,6 @@ T ValueEnum<T>::getValue(std::string key) const
     }else
     {
         throw "No enum item for the specified key";
-        return 0;
     }
 }
 
@@ -880,7 +896,6 @@ T ValueEnum<T>::getValue(uint32_t index) const
     }else
     {
         throw "No enum item at the specified index";
-        return 0;
     }
 }
 
@@ -894,7 +909,6 @@ std::string ValueEnum<T>::getLabel(std::string key) const
     }else
     {
         throw "No enum item for the specified key";
-        return 0;
     }
 }
 
@@ -907,7 +921,6 @@ std::string ValueEnum<T>::getLabel(uint32_t index) const
     }else
     {
         throw "No enum item at the specified index";
-        return nullptr;
     }
 }
 
@@ -920,7 +933,6 @@ std::string ValueEnum<T>::getKey(uint32_t index) const
     }else
     {
         throw "No enum item at the specified index";
-        return nullptr;
     }
 }
 
@@ -960,7 +972,6 @@ std::tuple<T, std::string, std::string> ValueEnum<T>::getItem(uint32_t index) co
     }else
     {
         throw "No enum item at the specified index";
-        return nullptr;
     }
 }
 
@@ -2116,38 +2127,7 @@ profile2D::profile2D(void* profile_base)
 profile2D::~profile2D()
 {
     rf627_profile2D_t* _profile = (rf627_profile2D_t*)m_ProfileBase;
-    if (_profile != nullptr)
-    {
-        switch (_profile->type) {
-        case kRF627_OLD:
-        {
-            if(_profile->rf627old_profile2D != NULL)
-            {
-                free(_profile->rf627old_profile2D->intensity);
-                _profile->rf627old_profile2D->intensity = NULL;
-                free(_profile->rf627old_profile2D->pixels_format.pixels);
-                _profile->rf627old_profile2D->pixels_format.pixels = NULL;
-                free(_profile->rf627old_profile2D);
-                _profile->rf627old_profile2D = NULL;
-            }
-            break;
-        }
-        case kRF627_SMART:
-        {
-            if(_profile->rf627smart_profile2D != NULL)
-            {
-                free(_profile->rf627smart_profile2D->intensity);
-                _profile->rf627smart_profile2D->intensity = NULL;
-                free(_profile->rf627smart_profile2D->pixels_format.pixels);
-                _profile->rf627smart_profile2D->pixels_format.pixels = NULL;
-                free(_profile->rf627smart_profile2D);
-                _profile->rf627smart_profile2D = NULL;
-            }
-            break;
-        }
-        }
-        free(_profile);
-    }
+    free_profile2D(_profile);
 }
 
 profile2D::header profile2D::getHeader()
@@ -2833,56 +2813,59 @@ bool rf627old::send_cmd(std::string command_name,
 // smart version (v2.x.x)
 //
 
-
 std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PROTOCOLS protocol)
 {
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        /*
-         * Create value for scanners vector's type
-         */
+        //Create value for scanners vector's type
         vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
-        /*
-         * Initialization vector
-         */
+
+        //Initialization vector
         vector_init(&scanners);
 
 
-        /*
-         * Iterate over all available network adapters in the current operating
-         * system to send "Hello" requests.
-         */
+        // Iterate over all available network adapters in the current operating
+        // system to send "Hello" requests.
+        uint32_t count = 0;
         for (int i=0; i<GetAdaptersCount(); i++)
         {
-            // get another IP Addr and set this changes in network adapter settings.
+            // Get another IP Addr and set this changes in adapter settings.
+            printf("Search scanners from:\n "
+                   "* IP Address\t: %s\n "
+                   "* Netmask\t: %s\n",
+                   GetAdapterAddress(i), GetAdapterMasks(i));
             uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
-            uint32_t host_mask = ntohl(inet_addr("255.255.255.0"));
+            uint32_t host_mask = ntohl(inet_addr(GetAdapterMasks(i)));
             // call the function to change adapter settings inside the library.
             set_platform_adapter_settings(host_mask, host_ip_addr);
 
-            // Search for RF627-old devices over network by Service Protocol.
-            search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+            // Search for RF627-Smart devices over network by Service Protocol.
+            if (host_ip_addr != 0)
+                search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+
+            // Print count of discovered rf627-smart in network by Service Protocol
+            printf("Discovered: %d RF627-Smart\n",(int)vector_count(scanners)-count);
+            printf("-----------------------------------------\n");
+            count = (int)vector_count(scanners);
         }
 
         std::vector<std::shared_ptr<rf627smart>> result;
 
-        /*
-         * Iterate over all discovered rf627-old in network and push into list.
-         */
+        //Iterate over all discovered rf627-smart in network and push into list.
         for(size_t i = 0; i < vector_count(scanners); i++)
         {
             result.push_back(std::shared_ptr<rf627smart>(std::make_shared<rf627smart>((void*)vector_get(scanners,i))));
             result[i]->current_protocol = PROTOCOLS::SERVICE;
         }
 
-
+        printf("\n");
         return result;
         break;
     }
     default:
     {
-        static std::vector<std::shared_ptr<rf627smart>> result;
+        std::vector<std::shared_ptr<rf627smart>> result;
         return result;
         break;
     }
@@ -3308,6 +3291,33 @@ bool rf627smart::write_params(PROTOCOLS protocol)
     return false;
 }
 
+bool rf627smart::save_params(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Establish connection to the RF627 device by Service Protocol.
+        bool result = false;
+        param_mutex.lock();
+        result = write_params_to_scanner(
+                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+        param_mutex.unlock();
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
 std::shared_ptr<param> rf627smart::get_param(PARAM_NAME_KEY param_name)
 {
     return get_param(parameter_names[(uint8_t)param_name]);
@@ -3457,6 +3467,7 @@ bool rf627smart::start_dump_recording(uint32_t count_of_profiles)
     {
         user_dump_enabled->setValue<uint32_t>(
                     user_dump_enabled->getEnum<uint32_t>().getValue("TRUE"));
+//        std::string s = user_dump_enabled->getEnum<uint32_t>().getLabel("TRUE");
         set_param(user_dump_enabled);
     }else
     {
@@ -3518,21 +3529,19 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
         std::shared_ptr<param> fact_dump_unitSize = get_param("fact_dump_unitSize");
         if (fact_dump_unitSize !=nullptr && fact_dump_unitSize->getType()=="uint32_t")
         {
-            rf627_profile2D_t* dumps = NULL;
+            rf627_profile2D_t** dumps =
+                    (rf627_profile2D_t**)calloc(count, sizeof (rf627_profile2D_t*));
             uint32_t dump_size = 0;
             uint8_t status = get_dumps_profiles_from_scanner(
                         (scanner_base_t*)scanner_base, index, count, 1000, kSERVICE,
-                        &dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
+                        dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
             if (status)
             {
                 for(uint32_t i = 0; i < dump_size; i++)
                 {
-                    if (dumps[i].rf627smart_profile2D != nullptr)
+                    if (dumps[i]->rf627smart_profile2D != nullptr)
                     {
-                        rf627_profile2D_t* profile = (rf627_profile2D_t*)calloc(1, sizeof(rf627_profile2D_t));
-                        profile->type = dumps[i].type;
-                        profile->rf627smart_profile2D = dumps[i].rf627smart_profile2D;
-                        result.push_back(std::make_shared<profile2D>(profile));
+                        result.push_back(std::make_shared<profile2D>(dumps[i]));
                     }else
                     {
                         throw ("get_dumps_profiles dump_size exception");
