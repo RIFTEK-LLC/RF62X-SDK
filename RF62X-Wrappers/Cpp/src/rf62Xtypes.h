@@ -338,16 +338,17 @@ enum class PARAM_ACCESS_TYPE
 };
 
 enum class PARAM_NAME_KEY {
-    FACT_GENERAL_PROTOCOLREV = 0,
-    FACT_GENERAL_DEVICETYPE,
+    //
+    // FACT
+    // GENERAL
+    FACT_GENERAL_FIRMWAREVER = 0,
+    FACT_GENERAL_HARDWAREVER,
+    FACT_GENERAL_PRODUCTCODE,
     FACT_GENERAL_SERIAL,
     FACT_GENERAL_PCBSERIAL,
     FACT_GENERAL_LIFETIME,
     FACT_GENERAL_WORKTIME,
     FACT_GENERAL_STARTSCOUNT,
-    FACT_GENERAL_FIRMWAREREV,
-    FACT_GENERAL_HARDWAREREV,
-    FACT_GENERAL_FSBLREV,
     FACT_GENERAL_CUSTOMERID,
     FACT_GENERAL_FPGAFREQ,
     FACT_GENERAL_SMR,
@@ -358,6 +359,7 @@ enum class PARAM_NAME_KEY {
     FACT_GENERAL_PROFDIVIDER,
     FACT_GENERAL_OEMDEVNAME,
     FACT_GENERAL_AUTHSTATUS,
+    // SENSOR
     FACT_SENSOR_NAME,
     FACT_SENSOR_WIDTH,
     FACT_SENSOR_HEIGHT,
@@ -368,42 +370,36 @@ enum class PARAM_NAME_KEY {
     FACT_SENSOR_MINEXPOSURE,
     FACT_SENSOR_MAXEXPOSURE,
     FACT_SENSOR_IMGFLIP,
+    FACT_SENSOR_ANALOGGAIN,
+    FACT_SENSOR_DIGITALGAIN,
+    FACT_SENSOR_BLACKODD,
+    FACT_SENSOR_BLACKEVEN,
+    FACT_SENSOR_EDRPIECEWISEDIV1,
+    FACT_SENSOR_EDRPIECEWISEDIV2,
+    FACT_SENSOR_INITREGS,
+    // NETWORK
     FACT_NETWORK_MACADDR,
     FACT_NETWORK_FORCEAUTONEGTIME,
     FACT_NETWORK_WEBSOCKSERVICEPORT,
     FACT_NETWORK_WEBSOCKDATAPORT,
     FACT_NETWORK_WEBSOCKMATHPORT,
+    // LASER
     FACT_LASER_WAVELENGTH,
-    FACT_LASER_KOEFF1,
-    FACT_LASER_KOEFF2,
     FACT_LASER_MINVALUE,
     FACT_LASER_MAXVALUE,
-    FACT_PROFILES_MAXDUMPSIZE,
-    FACT_EIP_IDENTITY_VENDORID,
-    FACT_EIP_IDENTITY_DEVICETYPE,
-    FACT_EIP_IDENTITY_PRODUCTCODE,
-    FACT_EIP_IDENTITY_REV,
-    FACT_EIP_TCPINTRF_CAPABILITY,
-    FACT_EIP_TCPINTRF_PHY_PATHSIZE,
-    FACT_EIP_TCPINTRF_PHY_CLASSID,
-    FACT_EIP_TCPINTRF_PHY_INSTNUMBER,
-    FACT_EIP_TCPINTRF_PHY_ATTRNUMBER,
-    FACT_EIP_INTRFTYPE,
-    FACT_EIP_INTRFCAPABILITY_BITS,
-    FACT_EIP_INTRFCAPABILITY_SPEEDDUPCOUNT,
-    FACT_EIP_INTRFCAPABILITY_SPEEDDUPLEX_SPEED,
-    FACT_EIP_INTRFCAPABILITY_SPEEDDUPLEX_DUPLEX,
-    FACT_SENSOR_ANALOGGAIN,
-    FACT_SENSOR_DIGITALGAIN,
-    FACT_SENSOR_BLACKODD,
-    FACT_SENSOR_BLACKEVEN,
-    FACT_SENSOR_HDRPIECEWISEDIV1,
-    FACT_SENSOR_HDRPIECEWISEDIV2,
-    FACT_SENSOR_INITREGS,
+    // DUMP
+    FACT_DUMP_UNITSIZE,
+    // SMART (In Work)
+    // ...
 
+    //
+    // USER
+    // GENERAL
     USER_GENERAL_DEVICESTATE,
     USER_GENERAL_DEVICENAME,
-    USER_GENERAL_SAVELOG,
+    USER_GENERAL_LOGSAVEENABLED,
+    USER_GENERAL_LOGSIZE,
+    // SYSMON
     USER_SYSMON_FPGATEMP,
     USER_SYSMON_PARAMSCHANGED,
     USER_SYSMON_TEMPSENS00,
@@ -418,6 +414,7 @@ enum class PARAM_NAME_KEY {
     USER_SYSMON_TEMPSENS11,
     USER_SYSMON_TEMPSENS11MAX,
     USER_SYSMON_TEMPSENS11MIN,
+    // SENSOR
     USER_SENSOR_SYNCSOURCE,
     USER_SENSOR_FRAMERATE,
     USER_SENSOR_MAXFRAMERATE,
@@ -425,14 +422,22 @@ enum class PARAM_NAME_KEY {
     USER_SENSOR_EXPOSURE1,
     USER_SENSOR_EXPOSURE2,
     USER_SENSOR_EXPOSURE3,
-    USER_SENSOR_EXPOSURE4,
     USER_SENSOR_MAXEXPOSURE,
+    USER_SENSOR_DEFECTIVEPIXELES,
+    USER_SENSOR_DOUBLESPEEDENABLED,
+    USER_SENSOR_EDRTYPE,
+    USER_SENSOR_EDRCOLUMNDIVIDER,
+    // ROI
     USER_ROI_ENABLED,
     USER_ROI_ACTIVE,
     USER_ROI_POSMODE,
     USER_ROI_POS,
     USER_ROI_MAXPOS,
+    USER_ROI_SIZE,
     USER_ROI_REQPROFSIZE,
+    USER_ROI_ZSMR,
+    USER_ROI_ZEMR,
+    // NETWORK
     USER_NETWORK_SPEED,
     USER_NETWORK_REQUIREDSPEED,
     USER_NETWORK_AUTONEG,
@@ -443,27 +448,37 @@ enum class PARAM_NAME_KEY {
     USER_NETWORK_HOSTPORT,
     USER_NETWORK_WEBPORT,
     USER_NETWORK_SERVICEPORT,
+    // STREAMS
     USER_STREAMS_UDPENABLED,
     USER_STREAMS_FORMAT,
+    USER_STREAMS_POINTSCOUNT,
     USER_STREAMS_INCLUDEINTENSITY,
+    USER_STREAMS_UDPPACKETSCOUNTER,
+    // PROCESSING
     USER_PROCESSING_THRESHOLD,
     USER_PROCESSING_PROFPERSEC,
     USER_PROCESSING_MEDIANMODE,
     USER_PROCESSING_BILATERALMODE,
     USER_PROCESSING_PEAKMODE,
     USER_PROCESSING_FLIP,
+    // LASER
     USER_LASER_ENABLED,
     USER_LASER_VALUE,
+    // TRIGGER SYNC
     USER_TRIGGER_SYNC_SOURCE,
     USER_TRIGGER_SYNC_STRICTENABLED,
     USER_TRIGGER_SYNC_DIVIDER,
     USER_TRIGGER_SYNC_DELAY,
+    USER_TRIGGER_SYNC_VALUE,
+    // TRIGGER COUNTER
     USER_TRIGGER_COUNTER_TYPE,
-    USER_TRIGGER_COUNTER_MAXVALUEENABLED,
     USER_TRIGGER_COUNTER_MAXVALUE,
     USER_TRIGGER_COUNTER_RESETTIMERENABLED,
     USER_TRIGGER_COUNTER_RESETTIMERVALUE,
     USER_TRIGGER_COUNTER_VALUE,
+    USER_TRIGGER_COUNTER_DIR,
+    // INPUTS
+    USER_INPUTS_PHYSICALTYPE,
     USER_INPUT1_ENABLED,
     USER_INPUT1_MODE,
     USER_INPUT2_ENABLED,
@@ -473,12 +488,15 @@ enum class PARAM_NAME_KEY {
     USER_INPUT1_SAMPLES,
     USER_INPUT2_SAMPLES,
     USER_INPUT3_SAMPLES,
+    // OUTPUTS
+    USER_OUTPUTS_PHYSICALTYPE,
     USER_OUTPUT1_ENABLED,
     USER_OUTPUT1_MODE,
     USER_OUTPUT1_PULSEWIDTH,
     USER_OUTPUT2_ENABLED,
     USER_OUTPUT2_MODE,
     USER_OUTPUT2_PULSEWIDTH,
+    // DUMP
     USER_DUMP_ENABLED,
     USER_DUMP_CAPACITY,
     USER_DUMP_SIZE,
@@ -488,34 +506,38 @@ enum class PARAM_NAME_KEY {
     USER_DUMP_VIEW3D_YSTEP,
     USER_DUMP_VIEW3D_PAINTMODE,
     USER_DUMP_VIEW3D_DECIMATION,
+    // ETHERNET/IP
     USER_EIP_TCPPORT,
     USER_EIP_UDPPORT,
-    USER_EIP_TCP_TTL,
-    USER_EIP_TCP_TIMEOUT,
-    USER_EIP_TCP_MULTICAST_ALLOC,
-    USER_EIP_TCP_MULTICAST_NUM,
-    USER_EIP_TCP_MULTICAST_ADDR,
+    // SMART (In Work)
+    // ...
+
+    // Deprecated parameter list (for rf627old)
+    FACT_GENERAL_FSBLREV,
+
     USER_COMPATIBILITY_RF625ENABLED,
     USER_COMPATIBILITY_RF625TCPPORT,
-    USER_SENSOR_DOUBLESPEEDENABLED,
-    USER_SENSOR_EDRTYPE,
-    USER_SENSOR_EDRCOLUMNDIVIDER,
-    USER_STREAMS_POINTSCOUNT,
-    USER_ROI_SIZE
+
+    FACT_EIP_IDENTITY_VENDORID,
+    FACT_EIP_IDENTITY_DEVICETYPE,
+
+    FACT_LASER_KOEFF1,
+    FACT_LASER_KOEFF2
 };
 
 const static std::string parameter_names[]	=
 {
-    "fact_general_protocolRev",
-    "fact_general_deviceType",
+    //
+    // FACT
+    // GENERAL
+    "fact_general_firmwareVer",
+    "fact_general_hardWareVer",
+    "fact_general_productCode",
     "fact_general_serial",
     "fact_general_pcbSerial",
     "fact_general_lifeTime",
     "fact_general_workTime",
     "fact_general_startsCount",
-    "fact_general_firmWareRev",
-    "fact_general_hardWareRev",
-    "fact_general_fsblRev",
     "fact_general_customerID",
     "fact_general_fpgaFreq",
     "fact_general_smr",
@@ -526,6 +548,7 @@ const static std::string parameter_names[]	=
     "fact_general_profDivider",
     "fact_general_oemDevName",
     "fact_general_authStatus",
+    // SENSOR
     "fact_sensor_name",
     "fact_sensor_width",
     "fact_sensor_height",
@@ -536,42 +559,36 @@ const static std::string parameter_names[]	=
     "fact_sensor_minExposure",
     "fact_sensor_maxExposure",
     "fact_sensor_imgFlip",
+    "fact_sensor_analogGain",
+    "fact_sensor_digitalGain",
+    "fact_sensor_blackOdd",
+    "fact_sensor_blackEven",
+    "fact_sensor_edrPiecewiseDiv1",
+    "fact_sensor_edrPiecewiseDiv2",
+    "fact_sensor_initRegs",
+    // NETWORK
     "fact_network_macAddr",
     "fact_network_forceAutoNegTime",
     "fact_network_webSockServicePort",
     "fact_network_webSockDataPort",
     "fact_network_webSockMathPort",
+    // LASER
     "fact_laser_waveLength",
-    "fact_laser_koeff1",
-    "fact_laser_koeff2",
     "fact_laser_minValue",
     "fact_laser_maxValue",
-    "fact_profiles_maxDumpSize",
-    "fact_eip_identity_vendorID",
-    "fact_eip_identity_deviceType",
-    "fact_eip_identity_productCode",
-    "fact_eip_identity_rev",
-    "fact_eip_tcpIntrf_capability",
-    "fact_eip_tcpIntrf_phy_pathSize",
-    "fact_eip_tcpIntrf_phy_classId",
-    "fact_eip_tcpIntrf_phy_instNumber",
-    "fact_eip_tcpIntrf_phy_attrNumber",
-    "fact_eip_intrfType",
-    "fact_eip_intrfCapability_bits",
-    "fact_eip_intrfCapability_speedDupCount",
-    "fact_eip_intrfCapability_speedDuplex_speed",
-    "fact_eip_intrfCapability_speedDuplex_duplex",
-    "fact_sensor_analogGain",
-    "fact_sensor_digitalGain",
-    "fact_sensor_blackOdd",
-    "fact_sensor_blackEven",
-    "fact_sensor_hdrPiecewiseDiv1",
-    "fact_sensor_hdrPiecewiseDiv2",
-    "fact_sensor_initRegs",
+    // DUMP
+    "fact_dump_unitSize",
+    // SMART (In Work)
+    // ...
 
+    //
+    // USER
+    // GENERAL
     "user_general_deviceState",
     "user_general_deviceName",
-    "user_general_saveLog",
+    "user_general_logSaveEnabled",
+    "user_general_logSize",
+    // SYSMON
     "user_sysMon_fpgaTemp",
     "user_sysMon_paramsChanged",
     "user_sysMon_tempSens00",
@@ -586,6 +603,7 @@ const static std::string parameter_names[]	=
     "user_sysMon_tempSens11",
     "user_sysMon_tempSens11Max",
     "user_sysMon_tempSens11Min",
+    // SENSOR
     "user_sensor_syncSource",
     "user_sensor_framerate",
     "user_sensor_maxFramerate",
@@ -593,14 +611,22 @@ const static std::string parameter_names[]	=
     "user_sensor_exposure1",
     "user_sensor_exposure2",
     "user_sensor_exposure3",
-    "user_sensor_exposure4",
     "user_sensor_maxExposure",
+    "user_sensor_defectivePixels",
+    "user_sensor_doubleSpeedEnabled",
+    "user_sensor_edrType",
+    "user_sensor_edrColumnDivider",
+    // ROI
     "user_roi_enabled",
     "user_roi_active",
     "user_roi_posMode",
     "user_roi_pos",
     "user_roi_maxPos",
+    "user_roi_size",
     "user_roi_reqProfSize",
+    "user_roi_zsmr",
+    "user_roi_zemr",
+    // NETWORK
     "user_network_speed",
     "user_network_requiredSpeed",
     "user_network_autoNeg",
@@ -611,27 +637,37 @@ const static std::string parameter_names[]	=
     "user_network_hostPort",
     "user_network_webPort",
     "user_network_servicePort",
+    // STREAMS
     "user_streams_udpEnabled",
     "user_streams_format",
+    "user_streams_pointsCount",
     "user_streams_includeIntensity",
+    "user_streams_udpPacketsCounter",
+    // PROCESSING
     "user_processing_threshold",
     "user_processing_profPerSec",
     "user_processing_medianMode",
     "user_processing_bilateralMode",
     "user_processing_peakMode",
     "user_processing_flip",
+    // LASER
     "user_laser_enabled",
     "user_laser_value",
+    // TRIGGER SYNC
     "user_trigger_sync_source",
     "user_trigger_sync_strictEnabled",
     "user_trigger_sync_divider",
     "user_trigger_sync_delay",
+    "user_trigger_sync_value",
+    // TRIGGER COUNTER
     "user_trigger_counter_type",
-    "user_trigger_counter_maxValueEnabled",
     "user_trigger_counter_maxValue",
     "user_trigger_counter_resetTimerEnabled",
     "user_trigger_counter_resetTimerValue",
     "user_trigger_counter_value",
+    "user_trigger_counter_dir",
+    // INPUTS
+    "user_inputs_physicalType",
     "user_input1_enabled",
     "user_input1_mode",
     "user_input2_enabled",
@@ -641,12 +677,15 @@ const static std::string parameter_names[]	=
     "user_input1_samples",
     "user_input2_samples",
     "user_input3_samples",
+    // OUTPUTS
+    "user_outputs_physicalType",
     "user_output1_enabled",
     "user_output1_mode",
     "user_output1_pulseWidth",
     "user_output2_enabled",
     "user_output2_mode",
     "user_output2_pulseWidth",
+    // DUMP
     "user_dump_enabled",
     "user_dump_capacity",
     "user_dump_size",
@@ -656,20 +695,25 @@ const static std::string parameter_names[]	=
     "user_dump_view3d_yStep",
     "user_dump_view3d_paintMode",
     "user_dump_view3d_decimation",
+    // ETHERNET/IP
     "user_eip_tcpPort",
     "user_eip_udpPort",
-    "user_eip_tcp_ttl",
-    "user_eip_tcp_timeout",
-    "user_eip_tcp_multiCast_alloc",
-    "user_eip_tcp_multiCast_num",
-    "user_eip_tcp_multiCast_addr",
-    "user_compatibility_rf625Enabled",
-    "user_compatibility_rf625TCPPort",
-    "user_sensor_doubleSpeedEnabled",
-    "user_sensor_edrType",
-    "user_sensor_edrColumnDivider",
-    "user_streams_pointsCount",
-    "user_roi_size"
+    // SMART (In Work)
+    // ...
+
+
+    // Deprecated parameter list (for rf627old)
+    "FACT_GENERAL_FSBLREV",
+
+    "USER_COMPATIBILITY_RF625ENABLED",
+    "USER_COMPATIBILITY_RF625TCPPORT",
+
+    "FACT_EIP_IDENTITY_VENDORID",
+    "FACT_EIP_IDENTITY_DEVICETYPE",
+
+    "FACT_LASER_KOEFF1",
+    "FACT_LASER_KOEFF2"
+
 };
 
 template <typename T>
@@ -727,8 +771,6 @@ public:
 
     template <typename T>
     T getDefValue() const;
-    template <typename T>
-    T getValuesEnum() const;
 
     template <typename T>
     ValueEnum<T> getEnum() const;

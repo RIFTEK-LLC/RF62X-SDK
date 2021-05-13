@@ -78,12 +78,6 @@ public:
 
 
     /**
-     * @brief get_frame - Get RAW frame from scanner
-     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return frame if success, else - null
-     */
-    std::shared_ptr<frame> get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
-    /**
      * @brief get_profile2D - Get 2D measurement from scanner's data stream
      * @param zero_points Enable zero points in return profile2D
      * @param realtime Enable getting profile in real time (buffering is disabled)
@@ -94,22 +88,11 @@ public:
             bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
-     * @brief get_profile3D - Get 3D measurement from scanner's data stream
-     * where y is calculated based on the next equation: y = k * x + b
-     * where b - y-intercept of the line, calculates by the next equation:
-     * b = step_size * count_value
-     * @param step_size - step size in real units (mm, sm, etc.)
-     * @param k - slope or gradient of the line , where
-     * @param count_type - type of counter (STEP, MEASURE, PACKET)
-     * @param zero_points - include zero points in return profile2D
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return ptr to profile3D_t structure if success, else - null
+     * @brief get_frame - Get RAW frame from scanner
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return frame if success, else - null
      */
-    profile3D_t* get_profile3D(
-            float step_size, float k = 0,
-            COUNT_TYPES count_type = COUNT_TYPES::MEASURE,
-            bool zero_points = true,
-            PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<frame> get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
 
@@ -188,6 +171,21 @@ public:
 
 
     /**
+     * @brief start_profile_capturing - Command to start profiles measuring.
+     * @details This command is used only in the "software measurement" mode:
+     * when parameter "user_sensor_syncSource" == "SYNC_SOFTWARE"
+     * or "SYNC_SOFTWARE_EXT". Device starts a measurement cycle immediately
+     * after receiving this command.
+     * ! In "software measurement" mode the get_profile2D method must be used
+     * with the realtime == false argument to avoid loss of requested profiles.
+     * @param count_of_profiles The count of measurements
+     * @return true if measuring was started successfully, else - false
+     */
+    bool start_profile_capturing(uint32_t count_of_profiles = 0);
+
+
+
+    /**
      * @brief get_authorization_token - Get authorization token from scanner
      * @param[out] token Return value.
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -233,6 +231,14 @@ public:
      * @return true on success, else - false
      */
     bool set_calibration_table(std::shared_ptr<calib_table> table);
+
+
+    /**
+     * @brief reboot_device - The scanner will restart
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
     /**

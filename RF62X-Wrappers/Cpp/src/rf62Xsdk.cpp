@@ -1380,10 +1380,6 @@ template<> uint32_t param::getDefValue<uint32_t>() const
 {
     return ((value_uint32*)param_base)->defaultValue;
 }
-template<> std::vector <std::tuple<uint32_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<uint32_t, std::string, std::string>>>() const
-{
-    return ((value_uint32*)param_base)->valuesEnum;
-}
 template<> ValueEnum<uint32_t> param::getEnum<uint32_t>() const
 {
     return ValueEnum<uint32_t>(((value_uint32*)param_base)->valuesEnum);
@@ -1414,10 +1410,6 @@ template<> uint64_t param::getValue<uint64_t>() const
 template<> uint64_t param::getDefValue<uint64_t>() const
 {
     return ((value_uint64*)param_base)->defaultValue;
-}
-template<> std::vector <std::tuple<uint64_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<uint64_t, std::string, std::string>>>() const
-{
-    return ((value_uint64*)param_base)->valuesEnum;
 }
 template<> ValueEnum<uint64_t> param::getEnum<uint64_t>() const
 {
@@ -1450,10 +1442,6 @@ template<> int32_t param::getDefValue<int32_t>() const
 {
     return ((value_int32*)param_base)->defaultValue;
 }
-template<> std::vector <std::tuple<int32_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<int32_t, std::string, std::string>>>() const
-{
-    return ((value_int32*)param_base)->valuesEnum;
-}
 template<> ValueEnum<int32_t> param::getEnum<int32_t>() const
 {
     return ValueEnum<int32_t>(((value_int32*)param_base)->valuesEnum);
@@ -1484,10 +1472,6 @@ template<> int64_t param::getValue<int64_t>() const
 template<> int64_t param::getDefValue<int64_t>() const
 {
     return ((value_int64*)param_base)->defaultValue;
-}
-template<> std::vector <std::tuple<int64_t, std::string, std::string>> param::getValuesEnum<std::vector <std::tuple<int64_t, std::string, std::string>>>() const
-{
-    return ((value_int64*)param_base)->valuesEnum;
 }
 template<> ValueEnum<int64_t> param::getEnum<int64_t>() const
 {
@@ -3035,16 +3019,19 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
         {
             // Get profile from scanner's data stream by Service Protocol.
             rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
-                        (scanner_base_t*)scanner_base, zero_points, realtime, kSERVICE);
+                            (scanner_base_t*)scanner_base, zero_points, realtime, kSERVICE);
 
             if (profile_from_scanner->rf627smart_profile2D != nullptr)
             {
                 std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
                 profile_mutex.unlock();
                 return result;
+            }else
+            {
+                free_profile2D(profile_from_scanner);
             }
-            free(profile_from_scanner);
             break;
+
         }
         default:
             break;
@@ -3052,140 +3039,6 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
     }
     profile_mutex.unlock();
     return nullptr;
-
-}
-
-profile3D_t* rf627smart::get_profile3D(float step_size, float k,
-                                     COUNT_TYPES count_type,
-                                     bool zero_points,
-                                     PROTOCOLS protocol)
-{
-    PROTOCOLS p;
-    if (protocol == PROTOCOLS::CURRENT)
-        p = this->current_protocol;
-    else
-        p = protocol;
-
-//    switch (p) {
-//    case PROTOCOLS::SERVICE:
-//    {
-//        // Get profile from scanner's data stream by Service Protocol.
-//        rf627_profile3D_t* profile_from_scanner = get_profile3D_from_scanner(
-//                    (scanner_base_t*)scanner_base, step_size, k, (count_types_t)count_type, zero_points, kSERVICE);
-
-//        profile3D_t* result = new profile3D_t;
-
-//        if(profile_from_scanner->rf627_profile3D != NULL)
-//        {
-//            result->header.data_type =
-//                    profile_from_scanner->rf627_profile3D->header.data_type;
-//            result->header.flags =
-//                    profile_from_scanner->rf627_profile3D->header.flags;
-//            result->header.device_type =
-//                    profile_from_scanner->rf627_profile3D->header.device_type;
-//            result->header.serial_number =
-//                    profile_from_scanner->rf627_profile3D->header.serial_number;
-//            result->header.system_time =
-//                    profile_from_scanner->rf627_profile3D->header.system_time;
-
-//            result->header.proto_version_major =
-//                    profile_from_scanner->rf627_profile3D->header.proto_version_major;
-//            result->header.proto_version_minor =
-//                    profile_from_scanner->rf627_profile3D->header.proto_version_minor;
-//            result->header.hardware_params_offset =
-//                    profile_from_scanner->rf627_profile3D->header.hardware_params_offset;
-//            result->header.data_offset =
-//                    profile_from_scanner->rf627_profile3D->header.data_offset;
-//            result->header.packet_count =
-//                    profile_from_scanner->rf627_profile3D->header.packet_count;
-//            result->header.measure_count =
-//                    profile_from_scanner->rf627_profile3D->header.measure_count;
-
-//            result->header.zmr =
-//                    profile_from_scanner->rf627_profile3D->header.zmr;
-//            result->header.xemr =
-//                    profile_from_scanner->rf627_profile3D->header.xemr;
-//            result->header.discrete_value =
-//                    profile_from_scanner->rf627_profile3D->header.discrete_value;
-
-//            result->header.exposure_time =
-//                    profile_from_scanner->rf627_profile3D->header.exposure_time;
-//            result->header.laser_value =
-//                    profile_from_scanner->rf627_profile3D->header.laser_value;
-//            result->header.step_count =
-//                    profile_from_scanner->rf627_profile3D->header.step_count;
-//            result->header.dir =
-//                    profile_from_scanner->rf627_profile3D->header.dir;
-
-//            switch (result->header.data_type) {
-//            case DTY_PixelsNormal:
-//            case DTY_PixelsInterpolated:
-//            {
-//                result->pixels.resize(profile_from_scanner->
-//                                      rf627_profile3D->pixels_format.pixels_count);
-
-//                for(size_t i = 0; i < result->pixels.size(); i++)
-//                {
-//                    result->pixels[i] = profile_from_scanner->
-//                            rf627_profile3D->pixels_format.pixels[i];
-//                }
-
-//                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
-//                {
-//                    result->intensity.resize(
-//                                profile_from_scanner->rf627_profile3D->intensity_count);
-//                    for (size_t i = 0; i < result->intensity.size(); i++)
-//                        result->intensity[i] =
-//                                profile_from_scanner->rf627_profile3D->intensity[i];
-//                }
-
-//                break;
-//            }
-//            case DTY_ProfileNormal:
-//            case DTY_ProfileInterpolated:
-//            {
-//                result->points.resize(profile_from_scanner->
-//                                      rf627_profile3D->profile_format.points_count);
-
-//                for(size_t i = 0; i < result->points.size(); i++)
-//                {
-//                    result->points[i].x = profile_from_scanner->rf627_profile3D->
-//                            profile_format.points[i].x;
-//                    result->points[i].y = profile_from_scanner->rf627_profile3D->
-//                            profile_format.points[i].y;
-//                    result->points[i].z = profile_from_scanner->rf627_profile3D->
-//                            profile_format.points[i].z;
-//                }
-
-//                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
-//                {
-//                    result->intensity.resize(
-//                                profile_from_scanner->rf627_profile3D->intensity_count);
-//                    for (size_t i = 0; i < result->intensity.size(); i++)
-//                        result->intensity[i] =
-//                                profile_from_scanner->rf627_profile3D->intensity[i];
-//                }
-//                break;
-//            }
-//            default:
-//                break;
-//            }
-//            free(profile_from_scanner->rf627_profile3D->intensity);
-//            free(profile_from_scanner->rf627_profile3D->pixels_format.pixels);
-//            free(profile_from_scanner->rf627_profile3D);
-//            free(profile_from_scanner);
-//            return result;
-//        }
-
-//        free(profile_from_scanner->rf627_profile3D);
-//        free(profile_from_scanner);
-//        delete result;
-//    }
-//    default:
-//        break;
-//    }
-
-    return NULL;
 
 }
 
@@ -3565,6 +3418,12 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
     return result;
 }
 
+bool rf627smart::start_profile_capturing(uint32_t count_of_profiles)
+{
+    return send_profile2D_request_to_scanner(
+                (scanner_base_t*)scanner_base, count_of_profiles, kSERVICE);
+}
+
 bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -3672,6 +3531,31 @@ bool rf627smart::set_calibration_table(std::shared_ptr<calib_table> table)
     free(_table);
 
     return result;
+}
+
+bool rf627smart::reboot_device(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        bool result = false;
+        result = send_reboot_device_request_to_scanner(
+                    (scanner_base_t*)scanner_base, kSERVICE);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
 }
 
 bool rf627smart::read_calibration_table(PROTOCOLS protocol)
