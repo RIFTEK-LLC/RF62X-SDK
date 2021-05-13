@@ -49,14 +49,13 @@ int main()
 
         // Establish connection to the RF627 device by Service Protocol.
         bool is_connected = list[i]->connect();
-        if (is_connected)
-            list[i]->read_params();
 
         // Get profile from scanner's data stream by Service Protocol.
         std::shared_ptr<profile2D> profile = nullptr;
         bool zero_points = true;
         bool realtime = true;
 
+        int count = 0;
         while(true)
         if (is_connected && (profile=list[i]->get_profile2D(zero_points,realtime)))
         {
@@ -80,7 +79,8 @@ int main()
                 std::cout<<"* Size\t: "<<profile->getPoints().size() <<std::endl;
                 break;
             }
-            std::cout << "Profile was successfully received!"        <<std::endl;
+            count++;
+            std::cout << "Profile was successfully received: "<<count<<std::endl;
             std::cout << "-----------------------------------------" <<std::endl;
         }else
         {
