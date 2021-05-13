@@ -127,6 +127,8 @@ public:
     bool write_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
      * @brief save_params - Save changes to device's memory
+     * @details The saved parameters will also be used if the device
+     * is restarted or even if the firmware is updated.
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success, else - false
      */

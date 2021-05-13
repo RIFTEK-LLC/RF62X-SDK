@@ -3306,7 +3306,7 @@ bool rf627smart::save_params(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         param_mutex.lock();
-        result = write_params_to_scanner(
+        result = save_params_to_scanner(
                     (scanner_base_t*)scanner_base, 3000, kSERVICE);
         param_mutex.unlock();
         return result;
