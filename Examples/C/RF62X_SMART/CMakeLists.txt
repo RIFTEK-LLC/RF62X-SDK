@@ -24,6 +24,8 @@ SET(RF62X_SMART_PROFILE_EXAMPLE                         ON  CACHE BOOL "" FORCE)
 SET(RF62X_SMART_FRAME_EXAMPLE                           ON  CACHE BOOL "" FORCE)
 # Get/Set scanner's parameters
 SET(RF62X_SMART_PARAMETER_EXAMPLE                       ON  CACHE BOOL "" FORCE)
+# Get dump profiles
+SET(RF62X_SMART_DUMP_EXAMPLE                            ON  CACHE BOOL "" FORCE)
 
 ## WIDGETS APPLICATIONS
 # Getting profiles and displaying in profile-widget
@@ -56,6 +58,10 @@ endif()
 # Get/Set scanner's parameters
 if (RF62X_SMART_PARAMETER_EXAMPLE)
     add_subdirectory(PARAMETER_EXAMPLE)
+endif()
+# Get dump profiles
+if (RF62X_SMART_DUMP_EXAMPLE)
+    add_subdirectory(DUMP_EXAMPLE)
 endif()
 
 ## WIDGETS APPLICATIONS

@@ -8,6 +8,11 @@
 
 int main()
 {
+    printf("#########################################\n");
+    printf("#                                       #\n");
+    printf("#         Search Example v2.x.x         #\n");
+    printf("#                                       #\n");
+    printf("#########################################\n");
 
     // Initialize sdk library
     core_init();
@@ -27,17 +32,23 @@ int main()
     for (int i=0; i<GetAdaptersCount(); i++)
     {
         // Get another IP Addr and set this changes in adapter settings.
+        printf("Search scanners from:\n "
+               "* IP Address\t: %s\n "
+               "* Netmask\t: %s\n",
+               GetAdapterAddress(i), GetAdapterMasks(i));
         uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
-        uint32_t host_mask = ntohl(inet_addr("255.255.255.0"));
+        uint32_t host_mask = ntohl(inet_addr(GetAdapterMasks(i)));
         // call the function to change adapter settings inside the library.
         set_platform_adapter_settings(host_mask, host_ip_addr);
 
         // Search for RF627-old devices over network by Service Protocol.
         search_scanners(scanners, kRF627_SMART, 500, kSERVICE);
+
+        // Print count of discovered rf627-smart in network by Service Protocol
+        printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
+        printf("-----------------------------------------\n");
     }
 
-    // Print count of discovered rf627-smart in network by Service Protocol
-    printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
     for (int i = 0; i < (int)vector_count(scanners); i++)
     {
@@ -47,7 +58,7 @@ int main()
         rf627_smart_hello_info_by_service_protocol* info =
                 result.rf627smart.hello_info_service_protocol;
 
-        printf("\n\n\nID scanner's list: %d\n", i);
+        printf("\n\nID scanner's list: %d\n", i);
         printf("-----------------------------------------\n");
         printf("Device information: \n");
         printf("* Name\t: %s\n", info->user_general_deviceName);
@@ -72,7 +83,9 @@ int main()
 
     // Cleanup resources allocated with core_init()
     FreeAdapterAddresses();
+#ifdef _WIN32
     WinSockDeinit();
+#endif
 }
 
 
