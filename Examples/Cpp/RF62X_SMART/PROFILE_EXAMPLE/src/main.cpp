@@ -30,7 +30,7 @@ int main()
 
 
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
+    std::cout << "Total found: " << list.size() << " rf627-smart" << std::endl;
 
 
     // Iterate over all discovered scanners in network, connect to each of them,
@@ -40,10 +40,10 @@ int main()
         std::shared_ptr<hello_info> info = list[i]->get_info();
 
         // Print information about the scanner to which the profile belongs.
-        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
+        std::cout << "\n\nID scanner's list: " << i              << std::endl;
         std::cout << "-----------------------------------------" << std::endl;
         std::cout << "Device information: "                      << std::endl;
-        std::cout << "* Name\t: "     << info->device_name()     << std::endl;
+        std::cout << "* Name  \t: "   << info->device_name()     << std::endl;
         std::cout << "* Serial\t: "   << info->serial_number()   << std::endl;
         std::cout << "* IP Addr\t: "  << info->ip_address()      << std::endl;
 

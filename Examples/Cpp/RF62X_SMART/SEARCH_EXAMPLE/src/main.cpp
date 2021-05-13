@@ -30,17 +30,17 @@ int main()
 
 
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
+    std::cout << "Total found: " << list.size() << " RF627-Smart" << std::endl;
 
 
     for (size_t i = 0; i < list.size(); i++)
     {
         std::shared_ptr<hello_info> info = list[i]->get_info();
 
-        std::cout << "\n\n\nID scanner's list: " << i             << std::endl;
+        std::cout << "\n\nID scanner's list: " << i               << std::endl;
         std::cout << "-----------------------------------------"  << std::endl;
         std::cout << "Device information: "                       << std::endl;
-        std::cout << "* Name\t: "     << info->device_name()      << std::endl;
+        std::cout << "* Name  \t: "   << info->device_name()      << std::endl;
         std::cout << "* Serial\t: "   << info->serial_number()    << std::endl;
         std::cout << "* IP Addr\t: "  << info->ip_address()       << std::endl;
         std::cout << "* MAC Addr\t: " << info->mac_address()      << std::endl;

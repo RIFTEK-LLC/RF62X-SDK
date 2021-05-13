@@ -30,7 +30,7 @@ int main()
 
 
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
+    std::cout << "Total found: " << list.size() << " RF627-Smart" << std::endl;
 
 
     // Iterate over all discovered scanners in network, connect to each of them,
@@ -39,7 +39,7 @@ int main()
     {
         std::shared_ptr<hello_info> info = list[i]->get_info();
 
-        std::cout << "\n\n\nID scanner's list: " << i               << std::endl;
+        std::cout << "\n\nID scanner's list: " << i                 << std::endl;
         std::cout << "-----------------------------------------"    << std::endl;
 
         // Establish connection to the RF627 device by Service Protocol.
@@ -50,6 +50,10 @@ int main()
 
         if (is_connected && is_read)
         {
+            //
+            // Example of working with the parameter type:
+            // std::string
+            //
             // Get parameter of Device Name (first way to get parameter by string name)
             std::shared_ptr<param> name = list[i]->get_param("user_general_deviceName");
             if (name->getType() == "string_t")
@@ -66,6 +70,32 @@ int main()
                 list[i]->set_param(name);
             }
 
+            //
+            // Example of working with the parameter type:
+            // uint32_t
+            //
+            // Get parameter of Laser Enabled
+            std::shared_ptr<param> laser_enabled =
+                    list[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
+            if (laser_enabled->getType() ==
+                    param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+            {
+                bool isEnabled = laser_enabled->getValue<uint32_t>();
+                std::cout<<"Current Laser State\t: "<<(isEnabled?"ON\n":"OFF\n");
+
+                // Change the current state to the opposite
+                isEnabled = !isEnabled;
+                laser_enabled->setValue<uint32_t>(isEnabled);
+                std::cout<<"New Laser State\t: " << (isEnabled?"ON\n":"OFF\n");
+                std::cout << "-------------------------------------"<< std::endl;
+
+                list[i]->set_param(laser_enabled);
+            }
+
+            //
+            // Example of working with the parameter type:
+            // std::vector<uint32_t>
+            //
             // Get parameter of Device IP Addr (second way to get a parameter by keys)
             PARAM_NAME_KEY ip_addr_name_key = PARAM_NAME_KEY::USER_NETWORK_IP;
             PARAM_VALUE_TYPE ip_addr_type = PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE;
@@ -86,26 +116,71 @@ int main()
                 list[i]->set_param(ip_addr);
             }
 
-            // Get parameter of Laser Enabled
-            std::shared_ptr<param> laser_enabled =
-                    list[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
-            if (laser_enabled->getType() ==
+            //
+            // Example of working with parameters using an Enum
+            //
+            // Get parameter of Streams Format
+            std::shared_ptr<param> streams_format =
+                    list[i]->get_param(PARAM_NAME_KEY::USER_STREAMS_FORMAT);
+            if (streams_format != nullptr && streams_format->getType() ==
                     param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
             {
-                bool isEnabled = laser_enabled->getValue<uint32_t>();
-                std::cout<<"Current Laser State\t: "<<(isEnabled?"ON\n":"OFF\n");
+                uint32_t current_format = streams_format->getValue<uint32_t>();
 
-                // Change the current state to the opposite
-                isEnabled = !isEnabled;
-                laser_enabled->setValue<uint32_t>(isEnabled);
-                std::cout<<"New Laser State\t: " << (isEnabled?"ON\n":"OFF\n");
+                if (current_format == streams_format->
+                        getEnum<uint32_t>().getValue("DATA_FORMAT_RAW_PROFILE"))
+                {
+                    std::string current_format_name = streams_format->
+                            getEnum<uint32_t>().getLabel("DATA_FORMAT_RAW_PROFILE");
+                    std::cout << "Current Streams Format\t: "
+                              << current_format_name << std::endl;
+
+                    // Change the current format to the opposite
+                    streams_format->setValue<uint32_t>(
+                                streams_format->getEnum<uint32_t>().
+                                getValue("DATA_FORMAT_PROFILE"));
+
+                    std::string new_format_name = streams_format->
+                            getEnum<uint32_t>().getLabel("DATA_FORMAT_PROFILE");
+                    std::cout <<"New Streams Format\t: "
+                              << new_format_name << std::endl;
+                }
+                else if (current_format == streams_format->
+                          getEnum<uint32_t>().getValue("DATA_FORMAT_PROFILE"))
+                {
+                    std::string current_format_name = streams_format->
+                            getEnum<uint32_t>().getLabel("DATA_FORMAT_PROFILE");
+                    std::cout << "Current Streams Format\t: "
+                              << current_format_name << std::endl;
+
+                    // Change the current format to the opposite
+                    streams_format->setValue<uint32_t>(
+                                streams_format->getEnum<uint32_t>().
+                                getValue("DATA_FORMAT_RAW_PROFILE"));
+
+
+                    std::string new_format_name = streams_format->
+                            getEnum<uint32_t>().getLabel("DATA_FORMAT_RAW_PROFILE");
+                    std::cout <<"New Streams Format\t: "
+                              << new_format_name << std::endl;
+                }
+
                 std::cout << "-------------------------------------"<< std::endl;
-
-                list[i]->set_param(laser_enabled);
+                list[i]->set_param(streams_format);
             }
 
-            // Write changes parameters to the device's memory
-            list[i]->write_params();
+            std::string answer = "n";
+            // Apply changed parameters to the device
+            std::cout << "Apply changed params to the device? (y/n)"<< std::endl;
+            std::cin >> answer;
+            if (answer == "y" && answer == "Y")
+                list[i]->write_params();
+
+            // Save changes to the device's memory
+            std::cout << "Save changes to the device's memory? (y/n)"<<std::endl;
+            std::cin >> answer;
+            if (answer == "y" && answer == "Y")
+                list[i]->save_params();
 
             // Disconnect from scanner.
             list[i]->disconnect();
