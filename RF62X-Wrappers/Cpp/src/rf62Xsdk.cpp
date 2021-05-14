@@ -3597,7 +3597,7 @@ bool rf627smart::write_calibration_table(PROTOCOLS protocol)
         // Set authorization key to the RF627 device by Service Protocol.
         bool result = false;
         result = write_calibration_table_to_scanner(
-                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+                    (scanner_base_t*)scanner_base, 1000, kSERVICE);
         return result;
         break;
     }
