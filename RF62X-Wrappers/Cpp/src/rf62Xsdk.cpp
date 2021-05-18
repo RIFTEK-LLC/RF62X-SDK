@@ -2802,6 +2802,11 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
+        // Cleaning detected network adapter.
+        FreeAdapterAddresses();
+        // Retrieving addresses associated with adapters on the local computer.
+        EnumAdapterAddresses();
+
         //Create value for scanners vector's type
         vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
 
