@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../../../RF62X-Wrappers/Python/")
 from PYSDK_SMART import *
 
 
