@@ -395,3 +395,13 @@ MigrationBackup/
 
 # Ignored docs files
 *.mp4
+
+# Ignored zip files
+*.zip
+*.rar
+
+# Ignored libraries
+*.lib
+*.dll
+*.so
+*.a
