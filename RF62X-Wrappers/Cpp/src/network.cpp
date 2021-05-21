@@ -179,14 +179,20 @@ BOOL EnumAdapterAddresses()
 //                break;
 //            }
 
+            PIP_ADDR_STRING IpList = &pAdapter->IpAddressList;
+            while (IpList) {
+
+
             _ifs[_ifs_cnt] = (char*)malloc(64);
             memset(_ifs[_ifs_cnt], 0, 64);
-            sprintf(_ifs[_ifs_cnt++], "%s",pAdapter->IpAddressList.IpAddress.String);
-//            printf("\tIP Address: \t%s\n", pAdapter->IpAddressList.IpAddress.String);
+            sprintf(_ifs[_ifs_cnt++], "%s",IpList->IpAddress.String);
+//            printf("\tIP Address: \t%s\n", IpList->IpAddress.String);
             _mfs[_mfs_cnt] = (char*)malloc(64);
             memset(_mfs[_mfs_cnt], 0, 64);
-            sprintf(_mfs[_mfs_cnt++], "%s",pAdapter->IpAddressList.IpMask.String);
-//            printf("\tIP Mask: \t%s\n", pAdapter->IpAddressList.IpMask.String);
+            sprintf(_mfs[_mfs_cnt++], "%s",IpList->IpMask.String);
+//            printf("\tIP Mask: \t%s\n", IpList->IpMask.String);
+            IpList = IpList->Next;
+            }
 
 //            printf("\tGateway: \t%s\n", pAdapter->GatewayList.IpAddress.String);
 //            printf("\t***\n");
