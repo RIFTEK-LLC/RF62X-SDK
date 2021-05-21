@@ -116,6 +116,13 @@ public:
      * @return true on success, else - false
      */
     bool save_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    /**
+     * @brief load_recovery_params - Loading parameters from recovery area
+     * @details The device will automatically reboot.
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool load_recovery_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief get_param - Get parameter by his name

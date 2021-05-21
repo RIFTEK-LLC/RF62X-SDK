@@ -2536,7 +2536,7 @@ bool rf627old::read_params(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = read_params_from_scanner(
-                    (scanner_base_t*)scanner_base, 0, kSERVICE);
+                    (scanner_base_t*)scanner_base, 300, kSERVICE);
         return result;
         break;
     }
@@ -2952,7 +2952,7 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
             // Establish connection to the RF627 device by Service Protocol.
             result = check_connection_to_scanner(
                         ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
-            is_connected = result;
+//            is_connected = result;
         }else
         {
             result = is_connected;
@@ -3111,7 +3111,7 @@ bool rf627smart::read_params(PROTOCOLS protocol)
         bool result = false;
         param_mutex.lock();
         result = read_params_from_scanner(
-                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+                    (scanner_base_t*)scanner_base, 300, kSERVICE);
         param_mutex.unlock();
         return result;
         break;
@@ -3138,7 +3138,7 @@ bool rf627smart::write_params(PROTOCOLS protocol)
         bool result = false;
         param_mutex.lock();
         result = write_params_to_scanner(
-                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+                    (scanner_base_t*)scanner_base, 300, kSERVICE);
         param_mutex.unlock();
         return result;
         break;
@@ -3163,10 +3163,32 @@ bool rf627smart::save_params(PROTOCOLS protocol)
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
-        param_mutex.lock();
         result = save_params_to_scanner(
-                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
-        param_mutex.unlock();
+                    (scanner_base_t*)scanner_base, 300, kSERVICE);
+        return result;
+        break;
+    }
+    default:
+        break;
+    }
+
+    return false;
+}
+
+bool rf627smart::load_recovery_params(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    switch (p) {
+    case PROTOCOLS::SERVICE:
+    {
+        bool result = false;
+        result = load_recovery_params_from_scanner(
+                    (scanner_base_t*)scanner_base, 300, kSERVICE);
         return result;
         break;
     }
