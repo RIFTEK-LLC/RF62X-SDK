@@ -30,7 +30,7 @@ endif()
 ## project configuration
 ###############################################################################
 # Select a wrapper programming language (C, C++, C#, Python)
-SET(${PARENT}_WRAPPER_LANGUAGE     "C++"       CACHE STRING "" ${REWRITE_FORCE})
+SET(${PARENT}_WRAPPER_LANGUAGE     "C"       CACHE STRING "" ${REWRITE_FORCE})
 
 # Enable sdk examples
 SET(${PARENT}_RF62X_SDK_EXAMPLES    ON         CACHE BOOL   "" ${REWRITE_FORCE})
