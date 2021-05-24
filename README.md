@@ -1,5 +1,5 @@
 ***
-![RF62X_SDK](Docs/source_ru/_static/RF62X_SDK.png)
+![RF62X_SDK](Docs/source_ru/_static/RF62X_SDK(v2).png)
 ***
 
 # CONTENTS
