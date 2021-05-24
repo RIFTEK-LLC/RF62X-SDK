@@ -22,8 +22,7 @@
 
 # OVERVIEW
 
-**RF62X-SDK** a Software Development Kit for work with laser scanners series RF62X (RF627 v20.X.X.X, RF627 v2.X.X, RF629 v2.X.X)  
-manufactured by RIFTEK LLC.
+**RF62X-SDK** a Software Development Kit for work with laser scanners series RF62X (RF627 v20.X.X.X, RF627 v2.X.X, RF629 v2.X.X) manufactured by RIFTEK LLC.
 
 The RF62X-SDK consists of two parts:
 * **RF62X-Core** - a «Core» library with a basic functions and types for working
