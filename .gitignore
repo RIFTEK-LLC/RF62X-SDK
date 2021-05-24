@@ -399,6 +399,7 @@ MigrationBackup/
 # Ignored zip files
 *.zip
 *.rar
+*.psd
 
 # Ignored libraries
 *.lib
