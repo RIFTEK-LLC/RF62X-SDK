@@ -553,60 +553,58 @@ if __name__ == '__main__':
 ### CMake
 To build the C wrapper:
 ```bash
-cd rf62Xsdk/C/rf62Xsdk
-mkdir build
-cd build
-cmake ..
+cd RF62X-SDK
+mkdir build && cd build
+cmake .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
 cmake --build . 
 ```
 
 ### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file from the **rf62Xsdk/C/rf62Xsdk** folder via 
+*  Load the `CMakeLists.txt` file from the `RF62X-SDK` folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Select a wrapper programming language (`SET(${PARENT}_WRAPPER_LANGUAGE "C" CACHE STRING "" ${REWRITE_FORCE})`)
 *  Compile project
 
 ### Visual Studio
 To build the code:
 ```bash
-cd rf62Xsdk/C/rf62Xsdk
-mkdir build
-cd build
-cmake ..
+cd RF62X-SDK
+mkdir build && cd build
+cmake .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
 ```
-*  Open rf62Xsdk.sln with Visual Studio
+*  Open RF62X-SDK.sln with Visual Studio
 *  Compile
 
 ## C++ WRAPPER
 > for more information about project downloading steps, see an [Download project](#download-project)
 
 ### CMake
-To build the С++ wrapper:
+To build the C wrapper:
 ```bash
-cd rf62Xsdk/Cpp/rf62Xsdk
-mkdir build
-cd build
-cmake ..
+cd RF62X-SDK
+mkdir build && cd build
+cmake .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
 cmake --build . 
 ```
 
 ### Qt Creator
 To build the code:
-*  Load the CMakeLists.txt file from the **rf62Xsdk/Cpp/rf62Xsdk** folder via 
+*  Load the `CMakeLists.txt` file from the `RF62X-SDK` folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
+*  Select a wrapper programming language (`SET(${PARENT}_WRAPPER_LANGUAGE "C++" CACHE STRING "" ${REWRITE_FORCE})`)
 *  Compile project
 
 ### Visual Studio
 To build the code:
 ```bash
-cd rf62Xsdk/Cpp/rf62Xsdk
-mkdir build
-cd build
-cmake ..
+cd RF62X-SDK
+mkdir build && cd build
+cmake .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
 ```
-*  Open rf62Xsdk.sln with Visual Studio
+*  Open RF62X-SDK.sln with Visual Studio
 *  Compile
 
 ## .NET WRAPPER
@@ -614,13 +612,14 @@ cmake ..
 
 ### Visual Studio
 To build the code:
-
-*  Open rf62Xsdk.sln from the **rf62Xsdk/CSharp/RF627_old** folder with Visual Studio
+*  Download or build the libRF62X-SDK dll-s for C wrapper (you should use one of the previously described 
+methods - see [compilation C WRAPPER](#c-wrapper))
+*  Open `RF62X-SDK.sln` from the `RF62X-Wrappers/CSharp/` folder with Visual Studio
 *  Compile
 
 ## PYTHON WRAPPER
 > for more information about project downloading steps, see an [Download project](#download-project)
 
-*  To build the rf62Xsdk.dll (C wrapper) you should use one of the previously described 
-methods (see [compilation C WRAPPER](#c-wrapper))
-*  Copy the resulting rf62Xsdk.dll library, PYSDK.py and PYSDK_functions.py to your own project folder
+*  Download or build the libRF62X-SDK dll-s for C wrapper (you should use one of the previously described 
+methods - see [compilation C WRAPPER](#c-wrapper))
+*  Copy RF62X-SDK dll-s, PYSDK_SMART.py to your own project folder
