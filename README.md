@@ -143,14 +143,17 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 ## FIND PACKEGE AND LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-SET(RF62XSDK_LIBRARY_TYPE "STATIC")
+SET(RF62X_SDK_LIBRARY_TYPE "STATIC")
 if (MSVC)
-    find_package(rf62Xsdk PATHS "../rf62Xsdk_cpp/MSVC2019_64bit/CMake")
+    find_package(RF62X-SDK PATHS "../RF62X-SDK_cpp/MSVC2019_64bit/CMake")
 elseif(MINGW)
-    find_package(rf62Xsdk PATHS "../rf62Xsdk_cpp/MinGW_64bit/CMake")
+    find_package(RF62X-SDK PATHS "../RF62X-SDK_cpp/MinGW_64bit/CMake")
 else()
-  find_package(rf62Xsdk PATHS "../rf62Xsdk_cpp/GCC_64bit/CMake")
+  find_package(RF62X-SDK PATHS "../RF62X-SDK_cpp/GCC_64bit/CMake")
 endif()
+target_link_directories(${PROJECT_NAME} PUBLIC ${RF62X_SDK_LIBRARY_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${RF62X_SDK_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${RF62X_SDK_INCLUDE_DIRS})
 ```
 *  Modify your `main.cpp` file according to the example below:
 
@@ -184,19 +187,19 @@ int main()
     // Search for rf627smart devices over network
     list = rf627smart::search(500);
 
-
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "========================================="     << std::endl;
 
 
     for (size_t i = 0; i < list.size(); i++)
     {
         std::shared_ptr<hello_info> info = list[i]->get_info();
 
-        std::cout << "\n\n\nID scanner's list: " << i             << std::endl;
+        std::cout << "\n\nID scanner's list: " << i               << std::endl;
         std::cout << "-----------------------------------------"  << std::endl;
         std::cout << "Device information: "                       << std::endl;
-        std::cout << "* Name\t: "     << info->device_name()      << std::endl;
+        std::cout << "* Name  \t: "   << info->device_name()      << std::endl;
         std::cout << "* Serial\t: "   << info->serial_number()    << std::endl;
         std::cout << "* IP Addr\t: "  << info->ip_address()       << std::endl;
         std::cout << "* MAC Addr\t: " << info->mac_address()      << std::endl;
@@ -217,7 +220,7 @@ int main()
     sdk_cleanup();
 }
 ```
->  If `SET(RF62XSDK_LIBRARY_TYPE "SHARED")` copy **RF62X-SDK.dll** into the path of the project executable (PROJECT_BINARY_DIR)
+>  If `SET(RF62X_SDK_LIBRARY_TYPE "SHARED")` copy **RF62X-SDK.dll** into the path of the project executable (PROJECT_BINARY_DIR)
 *  Select **Debug** or **Release** build type, Run CMake and Run project 
 
 
@@ -272,7 +275,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 ###############################################################################
 # set RF62XSDK path variable
 set(RF62XSDK_DIR "../RF62X-Wrappers/Cpp")
-# add subdirectory of rf627sdk lib
+# add subdirectory of RF62X-SDK lib
 add_subdirectory(${RF62XSDK_DIR} RF62X-SDK)
 target_link_libraries(${PROJECT_NAME} RF62X-SDK)
 ```
@@ -308,19 +311,19 @@ int main()
     // Search for rf627smart devices over network
     list = rf627smart::search(500);
 
-
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-smart"   << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "========================================="     << std::endl;
 
 
     for (size_t i = 0; i < list.size(); i++)
     {
         std::shared_ptr<hello_info> info = list[i]->get_info();
 
-        std::cout << "\n\n\nID scanner's list: " << i             << std::endl;
+        std::cout << "\n\nID scanner's list: " << i               << std::endl;
         std::cout << "-----------------------------------------"  << std::endl;
         std::cout << "Device information: "                       << std::endl;
-        std::cout << "* Name\t: "     << info->device_name()      << std::endl;
+        std::cout << "* Name  \t: "   << info->device_name()      << std::endl;
         std::cout << "* Serial\t: "   << info->serial_number()    << std::endl;
         std::cout << "* IP Addr\t: "  << info->ip_address()       << std::endl;
         std::cout << "* MAC Addr\t: " << info->mac_address()      << std::endl;
@@ -348,57 +351,63 @@ int main()
 *  Enter project name, Browse project location and click **Next** button
 *  Add `main.cpp` file to project and modify it according to the example below:
 ```c++
-#include "rf62Xsdk.h"
-#include "rf62Xtypes.h"
 #include <string>
 #include <iostream>
 
+#include "rf62Xsdk.h"
+#include "rf62Xtypes.h"
+
 using namespace SDK::SCANNERS::RF62X;
+
 
 int main()
 {
+    std::cout << "#########################################"  << std::endl;
+    std::cout << "#                                       #"  << std::endl;
+    std::cout << "#         Search Example v2.x.x         #"  << std::endl;
+    std::cout << "#                                       #"  << std::endl;
+    std::cout << "#########################################\n"<< std::endl;
 
     // Initialize sdk library
     sdk_init();
 
-    // Print return rf627 sdk version
+    // Print return rf62X sdk version
     std::cout << "SDK version: " << sdk_version()                << std::endl;
     std::cout << "========================================="     << std::endl;
 
 
     // Create value for scanners vector's type
-    std::vector<rf627old*> list;
-    // Search for RF627old devices over network
-    list = rf627old::search(PROTOCOLS::SERVICE);
+    std::vector<std::shared_ptr<rf627smart>> list;
+    // Search for rf627smart devices over network
+    list = rf627smart::search(500);
 
-
-    // Print count of discovered rf627-old in network by Service Protocol
-    std::cout << "Discovered: " << list.size() << " rf627-old"   << std::endl;
+    // Print count of discovered rf627smart in network by Service Protocol
+    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "========================================="     << std::endl;
 
 
     for (size_t i = 0; i < list.size(); i++)
     {
-        rf627old::hello_info info = list[i]->get_info();
+        std::shared_ptr<hello_info> info = list[i]->get_info();
 
-        std::cout << "\n\n\nID scanner's list: " << i            << std::endl;
-        std::cout << "-----------------------------------------" << std::endl;
-        std::cout << "Device information: "                      << std::endl;
-        std::cout << "* Name\t: "     << info.device_name()      << std::endl;
-        std::cout << "* Serial\t: "   << info.serial_number()    << std::endl;
-        std::cout << "* IP Addr\t: "  << info.ip_address()       << std::endl;
-        std::cout << "* MAC Addr\t: " << info.mac_address()      << std::endl;
+        std::cout << "\n\nID scanner's list: " << i               << std::endl;
+        std::cout << "-----------------------------------------"  << std::endl;
+        std::cout << "Device information: "                       << std::endl;
+        std::cout << "* Name  \t: "   << info->device_name()      << std::endl;
+        std::cout << "* Serial\t: "   << info->serial_number()    << std::endl;
+        std::cout << "* IP Addr\t: "  << info->ip_address()       << std::endl;
+        std::cout << "* MAC Addr\t: " << info->mac_address()      << std::endl;
 
-        std::cout << "\nWorking ranges: "                        << std::endl;
-        std::cout << "* Zsmr, mm\t: " << info.z_smr()            << std::endl;
-        std::cout << "* Zmr , mm\t: " << info.z_mr()             << std::endl;
-        std::cout << "* Xsmr, mm\t: " << info.x_smr()            << std::endl;
-        std::cout << "* Xemr, mm\t: " << info.x_emr()            << std::endl;
+        std::cout << "\nWorking ranges: "                         << std::endl;
+        std::cout << "* Zsmr, mm\t: " << info->z_smr()            << std::endl;
+        std::cout << "* Zmr , mm\t: " << info->z_mr()             << std::endl;
+        std::cout << "* Xsmr, mm\t: " << info->x_smr()            << std::endl;
+        std::cout << "* Xemr, mm\t: " << info->x_emr()            << std::endl;
 
-        std::cout << "\nVersions: "                              << std::endl;
-        std::cout << "* Firmware\t: " << info.firmware_version() << std::endl;
-        std::cout << "* Hardware\t: " << info.hardware_version() << std::endl;
-        std::cout << "-----------------------------------------" << std::endl;
-
+        std::cout << "\nVersions: "                               << std::endl;
+        std::cout << "* Firmware\t: " << info->firmware_version() << std::endl;
+        std::cout << "* Hardware\t: " << info->hardware_version() << std::endl;
+        std::cout << "-----------------------------------------"  << std::endl;
     }
 
     // Cleanup resources allocated with sdk_init()
