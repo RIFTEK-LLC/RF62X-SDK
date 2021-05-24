@@ -42,6 +42,8 @@ if (NOT TARGET ${PROJECT_NAME})
         $<TARGET_OBJECTS:RF62X-Core>
         $<TARGET_OBJECTS:RF62X-Protocol>
         $<TARGET_OBJECTS:mpack>
+        $<TARGET_OBJECTS:sandbox>
+        $<TARGET_OBJECTS:udpport>
         $<TARGET_OBJECTS:RF627-Protocol>
         $<TARGET_OBJECTS:custom_string>
         $<TARGET_OBJECTS:custom_vector>
@@ -52,7 +54,7 @@ if (NOT TARGET ${PROJECT_NAME})
             $<TARGET_OBJECTS:libpthreads4w>
             $<TARGET_OBJECTS:getopt>)
     endif()
-    add_library(${PROJECT_NAME} STATIC ${SOURCES} ${TARGET_OBJECTS_LIST})
+    add_library(${PROJECT_NAME} SHARED ${SOURCES} ${TARGET_OBJECTS_LIST})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
