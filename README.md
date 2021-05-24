@@ -94,7 +94,7 @@ cmake ..
 ### 3) Running a Python example
 #### Open and compile examples project in **Visual Studio Code**:  
 *  Open one of the examples (RF627_SMART, RF627_OLD) from the `RF62X-SDK/Examples/Python` folder by Visual Studio Code
-*  Copy all **libRF62X-SDK** dll-s from archive for Python (see [RF62X-SDK releases](#https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the path of the project executable
+*  Copy all **libRF62X-SDK** dll-s from archive for Python (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the path of the project executable
 *  Run example
 
 # CREATING PROJECT
@@ -104,7 +104,7 @@ cmake ..
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
 *  Select one of 64bit compilers (MinGW, MSVC, Clang, etc..), click **Next** button and finish project setup.
-*  Download **RF62X-SDK** archive for C++ (see [RF62X-SDK releases](#https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link)
+*  Download **RF62X-SDK** archive for C++ (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link)
 *  Modify your `CMakeLists.txt` file according to the example below:
 ```cmake
 cmake_minimum_required(VERSION 3.14)
@@ -406,7 +406,7 @@ int main()
 }
 ```
 *  Select **x64** or **x86** and **Debug** or **Release** target platform
-*  Download `RF62X-SDK` dll-s from archive for C++ wrapper (see [RF62X-SDK releases](#https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) and copy `include` folder into the project directory.
+*  Download `RF62X-SDK` dll-s from archive for C++ wrapper (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) and copy `include` folder into the project directory.
 *  Open **Project > Properties**, choose **Configuration Properties > VC++ Directories** and add paths of downloaded header files and libraries to **Include Directories** and **Library Directories**.
 *  Compile project
 *  Copy the **RF62X-SDK** libs into the path of the project executable (`../bin/x64/Debug/` or `../bin/x64/Release/`)
@@ -474,7 +474,7 @@ namespace RF627_search
 }
 ```
 *  Select **x64** or **x86** and **Debug** or **Release** target platform
-*  Download `RF62X-SDK` dll-s from archive for C# wrapper (see [RF62X-SDK releases](#https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link).
+*  Download `RF62X-SDK` dll-s from archive for C# wrapper (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link).
 *  Open **Project > Add References**, click **Browse...** button and add downloaded `RF62X-SDK.dll` library.
 *  Compile project
 *  Copy the **libRF62X-SDK.dll** into the path of the project executable (`../bin/x64/Debug/` or `../bin/x64/Release/`)
@@ -483,7 +483,7 @@ namespace RF627_search
 ## Creating a Python project 
 ### Create a new project in **Visual Studio Code** with using SDK-libraries
 *  Create a project directory and add new **py-file** (e.g demo.py) in this project directory 
-*  Download `RF62X-SDK` dll-s from archive for Python wrapper (see [RF62X-SDK releases](#https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the project directory.
+*  Download `RF62X-SDK` dll-s from archive for Python wrapper (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the project directory.
 *  Modify your **py-file** (e.g demo.py) according to the example below:
 ```python
 from PYSDK_SMART import *
