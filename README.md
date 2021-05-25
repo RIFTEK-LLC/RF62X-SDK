@@ -14,7 +14,7 @@
   - [COMPILING CORE LIBRARY](#compiling-core-library)
   - [COMPILING WRAPPER LIBRARIES](compiling-wrapper-libraries)
     - [C WRAPPER](#c-wrapper)
-    - [C++ WRAPPER](#cc-wrapper)
+    - [C++ WRAPPER](#c-wrapper-1)
     - [.NET WRAPPER](#net-wrapper)
     - [PYTHON WRAPPER](#python-wrapper)
 
