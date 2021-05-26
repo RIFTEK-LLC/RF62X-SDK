@@ -29,6 +29,7 @@ int main()
 
     // Iterate over all available network adapters in the current operating
     // system to send "Hello" requests.
+    uint32_t count = 0;
     for (int i=0; i<GetAdaptersCount(); i++)
     {
         // Get another IP Addr and set this changes in adapter settings.
@@ -45,8 +46,9 @@ int main()
         search_scanners(scanners, kRF627_SMART, 500, kSERVICE);
 
         // Print count of discovered rf627-smart in network by Service Protocol
-        printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
+        printf("Discovered: %d RF627-Smart\n",(int)vector_count(scanners)-count);
         printf("-----------------------------------------\n");
+        count = (int)vector_count(scanners);
     }
 
 
