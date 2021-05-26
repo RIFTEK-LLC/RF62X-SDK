@@ -8,6 +8,11 @@
 
 int main()
 {
+    printf("#########################################\n");
+    printf("#                                       #\n");
+    printf("#         Frame Example v2.x.x          #\n");
+    printf("#                                       #\n");
+    printf("#########################################\n");
 
     // Initialize sdk library
     core_init();
@@ -24,6 +29,7 @@ int main()
 
     // Iterate over all available network adapters in the current operating
     // system to send "Hello" requests.
+    uint32_t count = 0;
     for (int i=0; i<GetAdaptersCount(); i++)
     {
         // Get another IP Addr and set this changes in adapter settings.
@@ -40,15 +46,17 @@ int main()
         search_scanners(scanners, kRF627_SMART, 500, kSERVICE);
 
         // Print count of discovered rf627-smart in network by Service Protocol
-        printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
+        printf("Discovered: %d RF627-Smart\n",(int)vector_count(scanners)-count);
         printf("-----------------------------------------\n");
+        count = (int)vector_count(scanners);
     }
 
 
     for (int i = 0; i < (int)vector_count(scanners); i++)
     {
-        hello_information result =
-                get_info_about_scanner(vector_get(scanners,i), kSERVICE);
+        scanner_base_t* scanner = vector_get(scanners,i);
+
+        hello_information result = get_info_about_scanner(scanner, kSERVICE);
 
         rf627_smart_hello_info_by_service_protocol* info =
                 result.rf627smart.hello_info_service_protocol;
@@ -56,24 +64,53 @@ int main()
         printf("\n\nID scanner's list: %d\n", i);
         printf("-----------------------------------------\n");
         printf("Device information: \n");
-        printf("* Name\t: %s\n", info->user_general_deviceName);
+        printf("* Name\t\t: %s\n", info->user_general_deviceName);
         printf("* Serial\t: %d\n", info->fact_general_serial);
         printf("* IP Addr\t: %s\n", info->user_network_ip);
-        printf("* MAC Addr\t: %s\n", info->fact_network_macAddr);
 
-        printf("\nWorking ranges: \n");
-        printf("* Zsmr, mm\t: %d\n", info->fact_general_smr);
-        printf("* Zmr , mm\t: %d\n", info->fact_general_mr);
-        printf("* Xsmr, mm\t: %d\n", info->fact_general_xsmr);
-        // printf("* Xemr, mm\t: %d\n", info->fact_general_xemr);
+        uint8_t is_connected = connect_to_scanner(scanner, kSERVICE);
 
-        printf("\nVersions: \n");
-        printf("* Firmware\t: %d.%d.%d\n",
-               info->fact_general_firmwareVer[0],
-               info->fact_general_firmwareVer[1],
-               info->fact_general_firmwareVer[2]);
-        printf("* Hardware\t: %d\n", info->fact_general_hardwareVer);
-        printf("-----------------------------------------\n");
+        uint8_t is_read = read_params_from_scanner(scanner, 3000, kSERVICE);
+
+        if (is_connected && is_read)
+        {
+            rf627_frame_t* _frame = get_frame_from_scanner(scanner, kSERVICE);
+            if (_frame != NULL && _frame->rf627smart_frame != NULL)
+            {
+                // Get parameter of user_dump_enabled
+                parameter_t* width = get_parameter(scanner,"fact_sensor_width");
+                if (width != NULL && strcmp(width->base.type,"uint32_t")== 0)
+                {
+                    _frame->rf627smart_frame->width = width->val_uint32->value;
+                }
+
+                // Get parameter of user_dump_enabled
+                parameter_t* height = get_parameter(scanner,"fact_sensor_height");
+                if (height != NULL && strcmp(height->base.type,"uint32_t")== 0)
+                {
+                    _frame->rf627smart_frame->height = height->val_uint32->value;
+                }
+
+                uint32_t data_size = width->val_uint32->value * height->val_uint32->value;
+                if (_frame->rf627smart_frame->data_size == data_size)
+                {
+                    _frame->rf627smart_frame->pixel_size = 1;
+                }
+
+
+                printf("Frame information: \n");
+                printf("* Data Size\t: %d\n", data_size);
+                printf("* Frame Height\t: %d\n", _frame->rf627smart_frame->height);
+                printf("* Frame Width\t: %d\n", _frame->rf627smart_frame->width);
+                printf("Frame was successfully received!\n");
+                printf("-----------------------------------------\n");
+
+                if(_frame->rf627smart_frame->data != NULL)
+                    free(_frame->rf627smart_frame->data);
+                free(_frame);
+            }
+        }
+
     }
 
     // Cleanup resources allocated with core_init()
