@@ -10,7 +10,7 @@ int main()
 {
     printf("#########################################\n");
     printf("#                                       #\n");
-    printf("#          Frame Example v2.x.x         #\n");
+    printf("#       Parameter Example v2.x.x        #\n");
     printf("#                                       #\n");
     printf("#########################################\n");
 
@@ -29,6 +29,7 @@ int main()
 
     // Iterate over all available network adapters in the current operating
     // system to send "Hello" requests.
+    uint32_t count = 0;
     for (int i=0; i<GetAdaptersCount(); i++)
     {
         // Get another IP Addr and set this changes in adapter settings.
@@ -45,40 +46,93 @@ int main()
         search_scanners(scanners, kRF627_SMART, 500, kSERVICE);
 
         // Print count of discovered rf627-smart in network by Service Protocol
-        printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
+        printf("Discovered: %d RF627-Smart\n",(int)vector_count(scanners)-count);
         printf("-----------------------------------------\n");
+        count = (int)vector_count(scanners);
     }
 
 
     for (int i = 0; i < (int)vector_count(scanners); i++)
     {
-        hello_information result =
-                get_info_about_scanner(vector_get(scanners,i), kSERVICE);
-
-        rf627_smart_hello_info_by_service_protocol* info =
-                result.rf627smart.hello_info_service_protocol;
-
+        scanner_base_t* scanner = vector_get(scanners,i);
         printf("\n\nID scanner's list: %d\n", i);
         printf("-----------------------------------------\n");
-        printf("Device information: \n");
-        printf("* Name\t: %s\n", info->user_general_deviceName);
-        printf("* Serial\t: %d\n", info->fact_general_serial);
-        printf("* IP Addr\t: %s\n", info->user_network_ip);
-        printf("* MAC Addr\t: %s\n", info->fact_network_macAddr);
 
-        printf("\nWorking ranges: \n");
-        printf("* Zsmr, mm\t: %d\n", info->fact_general_smr);
-        printf("* Zmr , mm\t: %d\n", info->fact_general_mr);
-        printf("* Xsmr, mm\t: %d\n", info->fact_general_xsmr);
-        // printf("* Xemr, mm\t: %d\n", info->fact_general_xemr);
+        uint8_t is_connected = connect_to_scanner(scanner, kSERVICE);
 
-        printf("\nVersions: \n");
-        printf("* Firmware\t: %d.%d.%d\n",
-               info->fact_general_firmwareVer[0],
-               info->fact_general_firmwareVer[1],
-               info->fact_general_firmwareVer[2]);
-        printf("* Hardware\t: %d\n", info->fact_general_hardwareVer);
-        printf("-----------------------------------------\n");
+        uint8_t is_read = read_params_from_scanner(scanner, 3000, kSERVICE);
+
+        if (is_connected && is_read)
+        {
+            //
+            // Example of working with the parameter type:
+            // std::string
+            //
+            // Get parameter of Device Name (first way to get parameter by string name)
+            parameter_t* name = get_parameter(scanner,"user_general_deviceName");
+            if (name != NULL && strcmp(name->base.type, "string_t")== 0)
+            {
+                char* value = name->val_str->value;
+                printf("Current Device Name\t: %s\n", value);
+
+                parameter_t* temp_param = create_parameter_from_type(name->base.type);
+
+                char* name_param = name->base.name;
+                uint32_t name_param_size = strlen(name_param) + 1;
+                temp_param->base.name = platform_calloc(name_param_size, sizeof (char));
+                platform_memcpy(temp_param->base.name, name_param, name_param_size);
+
+                char* new_value = "TEST NAME";
+                printf("New Device Name\t: %s\n", new_value);
+                uint32_t new_value_size = strlen(new_value) + 1;
+                temp_param->val_str->value = platform_calloc(new_value_size, sizeof (char));
+                platform_memcpy(temp_param->val_str->value, new_value, new_value_size);
+                temp_param->base.size = new_value_size;
+                printf("-------------------------------------\n");
+
+                set_parameter(scanner, temp_param);
+                free_parameter(temp_param, scanner->type);
+
+            }
+
+
+            //
+            // Example of working with the parameter type:
+            // uint32_t
+            //
+            // Get parameter of Laser Enabled
+            parameter_t* laser_enabled = get_parameter(
+                        scanner,parameter_names[USER_LASER_ENABLED]);
+            if (laser_enabled != NULL && strcmp(
+                        laser_enabled->base.type, parameter_value_types[PVT_UINT])== 0)
+            {
+                uint32_t isEnabled = laser_enabled->val_uint32->value;
+                printf("Current Laser State\t: %s\n", (isEnabled?"ON":"OFF"));
+
+                // Change the current state to the opposite
+                isEnabled = !isEnabled;
+                laser_enabled->val_uint32->value = isEnabled;
+                printf("New Laser State\t: %s\n", (isEnabled?"ON":"OFF"));
+                printf("-------------------------------------\n");
+
+                set_parameter(scanner, laser_enabled);
+            }
+        }
+
+        // Apply changed parameters to the device
+        char answer = 'n';
+        printf("Apply changed params to the device? (y/n): ");
+        scanf("%c", &answer);
+        if (answer == 'y' || answer == 'Y')
+        {
+            write_params_to_scanner(scanner, 3000, kSERVICE);
+            // Save changes to the device's memory
+            printf("\nSave changes to device's memory? (y/n): ");
+            scanf("%c", &answer);
+            if (answer == 'y' || answer == 'Y')
+                save_params_to_scanner(scanner, 3000, kSERVICE);
+        }
+
     }
 
     // Cleanup resources allocated with core_init()
