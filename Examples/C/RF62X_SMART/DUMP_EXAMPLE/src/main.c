@@ -82,28 +82,6 @@ int main()
 
             uint32_t count_of_profiles = 1000;
             // Get parameter of user_dump_capacity
-
-            parameter_t* name = get_parameter(scanner,"user_general_deviceName");
-            if (name != NULL && strcmp(name->base.type, "string_t")== 0)
-            {
-                parameter_t* temp_param = create_parameter_from_type(name->base.type);
-
-                char* name_param = name->base.name;
-                uint32_t name_param_size = strlen(name_param) + 1;
-                temp_param->base.name = platform_calloc(name_param_size, sizeof (char));
-                platform_memcpy(temp_param->base.name, name_param, name_param_size);
-
-                char* new_value = "TEST NAME";
-                uint32_t new_value_size = strlen(new_value) + 1;
-                temp_param->val_str->value = platform_calloc(new_value_size, sizeof (char));
-                platform_memcpy(temp_param->val_str->value, new_value, new_value_size);
-                temp_param->base.size = new_value_size;
-
-                set_parameter(scanner, temp_param);
-                free_parameter(temp_param, scanner->type);
-                write_params_to_scanner(scanner, 3000, kSERVICE);
-            }
-
             parameter_t* capacity = get_parameter(scanner,"user_dump_capacity");
             if (capacity != NULL && strcmp(capacity->base.type, "uint32_t")== 0)
             {
