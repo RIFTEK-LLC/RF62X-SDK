@@ -1910,6 +1910,7 @@ struct_anon_67._fields_ = [
     ('user_network_autoNeg', c_uint8),
     ('user_streams_udpEnabled', c_uint32),
     ('user_streams_format', c_uint32),
+    ('fact_general_xemr', c_uint32),
 ]
 
 rf627_smart_hello_info_by_service_protocol = struct_anon_67#	rf62X_types.h: 616
