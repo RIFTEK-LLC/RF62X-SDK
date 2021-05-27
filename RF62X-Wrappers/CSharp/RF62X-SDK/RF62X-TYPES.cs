@@ -42,7 +42,7 @@ namespace SDK
             private struct valuesEnum_t
             {
                 public int recCount;
-                public enumRec_t rec;
+                public enumRec_t* rec;
             };
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
@@ -423,6 +423,8 @@ namespace SDK
 
                 public uint user_streams_udpEnabled;
                 public uint user_streams_format;
+
+                public uint fact_general_xemr;
             };
 
             [StructLayout(LayoutKind.Explicit, Pack = _pack)]
@@ -509,6 +511,23 @@ namespace SDK
 
             #region dll-methods
 
+            // network.h
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte WinSockInit();
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern void WinSockDeinit();
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte EnumAdapterAddresses();
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern void FreeAdapterAddresses();
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte* GetAdapterAddress(int index);
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte* GetAdapterMasks(int index);
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern int GetAdaptersCount();
+
             // rf62Xcore.h
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte core_init();
@@ -518,6 +537,9 @@ namespace SDK
 
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void platform_free(void* data);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern void* platform_calloc(UIntPtr num, UIntPtr size);
 
 
             // rf62X_sdk.h
@@ -548,6 +570,12 @@ namespace SDK
             private static extern rf627_profile2D_t* get_profile2D_from_scanner(scanner_base_t* device, bool zero_points, bool realtime, PROTOCOL_TYPES protocol);
 
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte send_profile2D_request_to_scanner(scanner_base_t* device, uint count, PROTOCOL_TYPES protocol);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern void free_profile2D(rf627_profile2D_t* profile);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern rf627_frame_t* get_frame_from_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
 
@@ -557,6 +585,11 @@ namespace SDK
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte write_params_to_scanner(scanner_base_t* device, uint timeout, PROTOCOL_TYPES protocol);
 
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte save_params_to_scanner(scanner_base_t* device, uint timeout, PROTOCOL_TYPES protocol);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte load_recovery_params_from_scanner(scanner_base_t* device, uint timeout, PROTOCOL_TYPES protocol);
 
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern parameter_t* get_parameter(scanner_base_t* device, byte* param_name);
@@ -565,7 +598,28 @@ namespace SDK
             private static extern byte set_parameter(scanner_base_t* device, parameter_t* param);
 
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern parameter_t* create_parameter_from_type(byte* type);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void free_parameter(parameter_t* param, SCANNER_TYPES type);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte get_dumps_profiles_from_scanner(
+                scanner_base_t* device, uint index, uint count, uint timeout, 
+                PROTOCOL_TYPES protocol, rf627_profile2D_t** dump, uint* dump_size, uint dump_unit_size);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte get_authorization_token_from_scanner(
+                scanner_base_t* device, byte** token, uint* token_size, uint timeout, PROTOCOL_TYPES protocol);
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte set_authorization_key_to_scanner(
+                scanner_base_t* device, byte* key, uint key_size, uint timeout, PROTOCOL_TYPES protocol);
+
+            // TODO: calibration_table
+
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte send_reboot_device_request_to_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
 
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -574,12 +628,6 @@ namespace SDK
             private static extern UIntPtr vector_count(vector_t* vec);
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void* vector_get(vector_t* vec, UIntPtr index);
-
-
-            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
-            private static extern parameter_t* create_parameter_from_type(byte* type);
-
-
 
 
             #endregion
@@ -1779,7 +1827,8 @@ namespace SDK
                 ~Profile2D()
                 {
                     rf627_profile2D_t* _profile = (rf627_profile2D_t*)m_ProfileBase;
-                    if (_profile != null)
+                    free_profile2D(_profile);
+                    /*if (_profile != null)
                     {
                         switch (_profile->type)
                         {
@@ -1811,7 +1860,7 @@ namespace SDK
                                 }
                         }
                         platform_free(_profile);
-                    }
+                    }*/
                 }
 
                 public Header header { get; private set; }
@@ -1821,6 +1870,90 @@ namespace SDK
 
                 private void* m_ProfileBase;
 
+            }
+
+            public unsafe class Frame
+            {
+                public Frame(void* frame_base)
+                {
+                    m_FrameBase = frame_base;
+                    rf627_frame_t* _frame = (rf627_frame_t*)m_FrameBase;
+                    if (_frame != null)
+                    {
+                        switch (_frame->type)
+                        {
+                            case SCANNER_TYPES.RF627_OLD:
+                                {
+                                    for (int i = 0; i < _frame->rf627old_frame->data_size; i++)
+                                        Data.Add(_frame->rf627old_frame->data[i]);
+                                    DataSize = _frame->rf627old_frame->data_size;
+                                    PixelSize = _frame->rf627old_frame->pixel_size;
+                                    FrameWidth = _frame->rf627old_frame->width;
+                                    FrameHeight = _frame->rf627old_frame->height;
+
+                                    RoiActive = _frame->rf627old_frame->user_roi_active == 1 ? true : false;
+                                    RoiEnabled = _frame->rf627old_frame->user_roi_enabled == 1 ? true : false;
+                                    RoiPos = _frame->rf627old_frame->user_roi_pos;
+                                    RoiSize = _frame->rf627old_frame->user_roi_size;
+                                    break;
+                                }
+                            case SCANNER_TYPES.RF62X_SMART:
+                                {
+                                    for (int i = 0; i < _frame->rf627old_frame->data_size; i++)
+                                        Data.Add(_frame->rf627old_frame->data[i]);
+                                    DataSize = _frame->rf627old_frame->data_size;
+                                    PixelSize = _frame->rf627old_frame->pixel_size;
+                                    FrameWidth = _frame->rf627old_frame->width;
+                                    FrameHeight = _frame->rf627old_frame->height;
+
+                                    RoiActive = _frame->rf627old_frame->user_roi_active == 1 ? true : false;
+                                    RoiEnabled = _frame->rf627old_frame->user_roi_enabled == 1 ? true : false;
+                                    RoiPos = _frame->rf627old_frame->user_roi_pos;
+                                    RoiSize = _frame->rf627old_frame->user_roi_size;
+                                    break;
+                                }
+                        }
+
+                    }
+
+
+                }
+                ~Frame()
+                {
+                    rf627_frame_t* _frame = (rf627_frame_t*)m_FrameBase;
+                    if (_frame != null)
+                    {
+                        switch (_frame->type)
+                        {
+                            case SCANNER_TYPES.RF627_OLD:
+                                {
+                                    if (_frame->rf627old_frame->data != null)
+                                        platform_free(_frame->rf627old_frame->data);
+                                    break;
+                                }
+                            case SCANNER_TYPES.RF62X_SMART:
+                                {
+                                    if (_frame->rf627smart_frame->data != null)
+                                        platform_free(_frame->rf627smart_frame->data);
+                                    break;
+                                }
+                        }
+                        platform_free(_frame);
+                    }
+                }
+
+                public List<byte> Data { get; }
+                public uint DataSize { get; }
+                public uint PixelSize { get; }
+                public uint FrameWidth { get; }
+                public uint FrameHeight { get; }
+
+                public bool RoiActive { get; }
+                public bool RoiEnabled { get; }
+                public uint RoiPos { get; }
+                public uint RoiSize { get; }
+
+                private void* m_FrameBase;
             }
 
             public unsafe class HelloInfo
@@ -1882,16 +2015,16 @@ namespace SDK
                                         profile_port = (ushort)((rf627_smart_hello_info_by_service_protocol*)info)->user_network_hostPort;
                                         service_port = (ushort)((rf627_smart_hello_info_by_service_protocol*)info)->user_network_servicePort;
 
-                                        firmware_version = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer[1] + "."
-                                                            + ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer[2] + "."
-                                                            + ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer[3];
+                                        firmware_version = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer[0] + "."
+                                                            + ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer[1] + "."
+                                                            + ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer[2];
                                         byte[] hardware_arr = BitConverter.GetBytes(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
                                         hardware_version = hardware_arr[3] + "." + hardware_arr[2] + "." + hardware_arr[1];
 
                                         z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
                                         z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
                                         x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
-                                        //x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->x_end;
+                                        x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xemr;
                                         break;
                                     case PROTOCOL_TYPES.ETHERNET_IP:
                                         break;
