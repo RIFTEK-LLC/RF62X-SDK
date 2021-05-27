@@ -1884,6 +1884,7 @@ namespace SDK
                         {
                             case SCANNER_TYPES.RF627_OLD:
                                 {
+                                    Data = new List<byte>();
                                     for (int i = 0; i < _frame->rf627old_frame->data_size; i++)
                                         Data.Add(_frame->rf627old_frame->data[i]);
                                     DataSize = _frame->rf627old_frame->data_size;
@@ -1899,17 +1900,18 @@ namespace SDK
                                 }
                             case SCANNER_TYPES.RF62X_SMART:
                                 {
-                                    for (int i = 0; i < _frame->rf627old_frame->data_size; i++)
-                                        Data.Add(_frame->rf627old_frame->data[i]);
-                                    DataSize = _frame->rf627old_frame->data_size;
-                                    PixelSize = _frame->rf627old_frame->pixel_size;
-                                    FrameWidth = _frame->rf627old_frame->width;
-                                    FrameHeight = _frame->rf627old_frame->height;
+                                    Data = new List<byte>();
+                                    for (int i = 0; i < _frame->rf627smart_frame->data_size; i++)
+                                        Data.Add(_frame->rf627smart_frame->data[i]);
+                                    DataSize = _frame->rf627smart_frame->data_size;
+                                    PixelSize = _frame->rf627smart_frame->pixel_size;
+                                    FrameWidth = _frame->rf627smart_frame->width;
+                                    FrameHeight = _frame->rf627smart_frame->height;
 
-                                    RoiActive = _frame->rf627old_frame->user_roi_active == 1 ? true : false;
-                                    RoiEnabled = _frame->rf627old_frame->user_roi_enabled == 1 ? true : false;
-                                    RoiPos = _frame->rf627old_frame->user_roi_pos;
-                                    RoiSize = _frame->rf627old_frame->user_roi_size;
+                                    RoiActive = _frame->rf627smart_frame->user_roi_active == 1 ? true : false;
+                                    RoiEnabled = _frame->rf627smart_frame->user_roi_enabled == 1 ? true : false;
+                                    RoiPos = _frame->rf627smart_frame->user_roi_pos;
+                                    RoiSize = _frame->rf627smart_frame->user_roi_size;
                                     break;
                                 }
                         }
