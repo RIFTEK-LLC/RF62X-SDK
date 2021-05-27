@@ -406,3 +406,4 @@ MigrationBackup/
 *.dll
 *.so
 *.a
+*.exp
