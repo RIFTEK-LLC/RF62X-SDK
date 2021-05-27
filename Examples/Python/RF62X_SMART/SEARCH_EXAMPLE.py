@@ -41,7 +41,9 @@ if __name__ == '__main__':
 
         print("\nWorking ranges: ")
         print("* Zsmr, mm\t: ", info["fact_general_smr"])
+        print("* Zmr, mm\t: ", info["fact_general_mr"])
         print("* Xsmr, mm\t: ", info["fact_general_xsmr"])
+        print("* Xemr, mm\t: ", info["fact_general_xemr"])
 
         print("\nVersions: " )
         print("* Firmware\t: ", info["firmware_version"])
