@@ -137,6 +137,7 @@ frame::frame(void* frame_base)
             m_RoiEnabled = _frame->rf627old_frame->user_roi_enabled;
             m_RoiPos = _frame->rf627old_frame->user_roi_pos;
             m_RoiSize = _frame->rf627old_frame->user_roi_size;
+            break;
         }
         case kRF627_SMART:
         {
@@ -150,6 +151,7 @@ frame::frame(void* frame_base)
             m_RoiEnabled = _frame->rf627smart_frame->user_roi_enabled;
             m_RoiPos = _frame->rf627smart_frame->user_roi_pos;
             m_RoiSize = _frame->rf627smart_frame->user_roi_size;
+            break;
         }
         }
     }
@@ -1874,7 +1876,7 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
             _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
             _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
             _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
-            //_x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr + ;
+            _x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xemr;
             break;
         }
         default:
@@ -3055,42 +3057,45 @@ std::shared_ptr<frame> rf627smart::get_frame(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Establish connection to the RF627 device by Service Protocol.
-        rf627_frame_t* _frame = get_frame_from_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE);
-        if (_frame != nullptr)
+        switch (p) {
+        case PROTOCOLS::SERVICE:
         {
-            if (_frame->rf627smart_frame != nullptr)
+            // Establish connection to the RF627 device by Service Protocol.
+            rf627_frame_t* _frame = get_frame_from_scanner(
+                        (scanner_base_t*)scanner_base, kSERVICE);
+            if (_frame != nullptr)
             {
-                std::shared_ptr<param> width = get_param("fact_sensor_width");
-                std::shared_ptr<param> height = get_param("fact_sensor_height");
-
-                if (width != NULL)
+                if (_frame->rf627smart_frame != nullptr)
                 {
-                    _frame->rf627smart_frame->width = width->getValue<uint32_t>();
-                }
-                if (height != NULL)
-                {
-                    _frame->rf627smart_frame->height = height->getValue<uint32_t>();
-                }
+                    std::shared_ptr<param> width = get_param("fact_sensor_width");
+                    std::shared_ptr<param> height = get_param("fact_sensor_height");
 
-                if (_frame->rf627smart_frame->data_size == _frame->rf627smart_frame->width * _frame->rf627smart_frame->height * 1)
-                {
-                    _frame->rf627smart_frame->pixel_size = 1;
-                }
+                    if (width != NULL)
+                    {
+                        _frame->rf627smart_frame->width = width->getValue<uint32_t>();
+                    }
+                    if (height != NULL)
+                    {
+                        _frame->rf627smart_frame->height = height->getValue<uint32_t>();
+                    }
 
-                std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
-                return result;
+                    if (_frame->rf627smart_frame->data_size == _frame->rf627smart_frame->width * _frame->rf627smart_frame->height * 1)
+                    {
+                        _frame->rf627smart_frame->pixel_size = 1;
+                    }
+
+                    std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
+                    return result;
+                }
+                free(_frame);
             }
-            free(_frame);
+            break;
         }
-        break;
-    }
-    default:
-        break;
+        default:
+            break;
+        }
     }
 
     return nullptr;
@@ -3104,22 +3109,23 @@ bool rf627smart::read_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Establish connection to the RF627 device by Service Protocol.
-        bool result = false;
-        param_mutex.lock();
-        result = read_params_from_scanner(
-                    (scanner_base_t*)scanner_base, 300, kSERVICE);
-        param_mutex.unlock();
-        return result;
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            bool result = false;
+            param_mutex.lock();
+            result = read_params_from_scanner(
+                        (scanner_base_t*)scanner_base, 300, kSERVICE);
+            param_mutex.unlock();
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
-    default:
-        break;
-    }
-
     return false;
 }
 
@@ -3131,20 +3137,22 @@ bool rf627smart::write_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Establish connection to the RF627 device by Service Protocol.
-        bool result = false;
-        param_mutex.lock();
-        result = write_params_to_scanner(
-                    (scanner_base_t*)scanner_base, 300, kSERVICE);
-        param_mutex.unlock();
-        return result;
-        break;
-    }
-    default:
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            bool result = false;
+            param_mutex.lock();
+            result = write_params_to_scanner(
+                        (scanner_base_t*)scanner_base, 300, kSERVICE);
+            param_mutex.unlock();
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3158,18 +3166,21 @@ bool rf627smart::save_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Establish connection to the RF627 device by Service Protocol.
-        bool result = false;
-        result = save_params_to_scanner(
-                    (scanner_base_t*)scanner_base, 300, kSERVICE);
-        return result;
-        break;
-    }
-    default:
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Establish connection to the RF627 device by Service Protocol.
+            bool result = false;
+            result = save_params_to_scanner(
+                        (scanner_base_t*)scanner_base, 300, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3183,17 +3194,20 @@ bool rf627smart::load_recovery_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        bool result = false;
-        result = load_recovery_params_from_scanner(
-                    (scanner_base_t*)scanner_base, 300, kSERVICE);
-        return result;
-        break;
-    }
-    default:
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            bool result = false;
+            result = load_recovery_params_from_scanner(
+                        (scanner_base_t*)scanner_base, 300, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3331,63 +3345,70 @@ bool rf627smart::set_param(std::shared_ptr<param> param)
 
 bool rf627smart::start_dump_recording(uint32_t count_of_profiles)
 {
-    // Get parameter of user_dump_capacity
-    std::shared_ptr<param> user_dump_capacity = get_param("user_dump_capacity");
-    if (user_dump_capacity !=nullptr && user_dump_capacity->getType()=="uint32_t")
+    if (is_connected)
     {
-        user_dump_capacity->setValue<uint32_t>(count_of_profiles);
-        set_param(user_dump_capacity);
-    }else
-    {
-        return false;
-    }
+        // Get parameter of user_dump_capacity
+        std::shared_ptr<param> user_dump_capacity = get_param("user_dump_capacity");
+        if (user_dump_capacity !=nullptr && user_dump_capacity->getType()=="uint32_t")
+        {
+            user_dump_capacity->setValue<uint32_t>(count_of_profiles);
+            set_param(user_dump_capacity);
+        }else
+        {
+            return false;
+        }
 
-    // Get parameter of user_dump_enabled
-    std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
-    if (user_dump_enabled !=nullptr && user_dump_enabled->getType()=="uint32_t")
-    {
-        user_dump_enabled->setValue<uint32_t>(
-                    user_dump_enabled->getEnum<uint32_t>().getValue("TRUE"));
-//        std::string s = user_dump_enabled->getEnum<uint32_t>().getLabel("TRUE");
-        set_param(user_dump_enabled);
-    }else
-    {
-        return false;
-    }
+        // Get parameter of user_dump_enabled
+        std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
+        if (user_dump_enabled !=nullptr && user_dump_enabled->getType()=="uint32_t")
+        {
+            user_dump_enabled->setValue<uint32_t>(
+                        user_dump_enabled->getEnum<uint32_t>().getValue("TRUE"));
+            //        std::string s = user_dump_enabled->getEnum<uint32_t>().getLabel("TRUE");
+            set_param(user_dump_enabled);
+        }else
+        {
+            return false;
+        }
 
-    // Write changes parameters to the device's memory
-    if(write_params())
-        return true;
-    else
-        return false;
+        // Write changes parameters to the device's memory
+        if(write_params())
+            return true;
+        else
+            return false;
+    }
+    return false;
 }
 
 bool rf627smart::stop_dump_recording(uint32_t &count_of_profiles)
 {
-    // Get parameter of user_dump_enabled
-    std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
-    if (user_dump_enabled !=nullptr && user_dump_enabled->getType()=="uint32_t")
+    if (is_connected)
     {
-        user_dump_enabled->setValue<uint32_t>(
-                    user_dump_enabled->getEnum<uint32_t>().getValue("FALSE"));
-        set_param(user_dump_enabled);
-    }else
-    {
-        return false;
-    }
+        // Get parameter of user_dump_enabled
+        std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
+        if (user_dump_enabled !=nullptr && user_dump_enabled->getType()=="uint32_t")
+        {
+            user_dump_enabled->setValue<uint32_t>(
+                        user_dump_enabled->getEnum<uint32_t>().getValue("FALSE"));
+            set_param(user_dump_enabled);
+        }else
+        {
+            return false;
+        }
 
-    // Write changes parameters to the device's memory
-    if(!write_params())
-        return false;
+        // Write changes parameters to the device's memory
+        if(!write_params())
+            return false;
 
-    // Get parameter of user_dump_size
-    std::shared_ptr<param> user_dump_size = get_param("user_dump_size");
-    if (user_dump_size !=nullptr && user_dump_enabled->getType()=="uint32_t")
-    {
-        count_of_profiles = user_dump_enabled->getValue<uint32_t>();
-    }else
-    {
-        return false;
+        // Get parameter of user_dump_size
+        std::shared_ptr<param> user_dump_size = get_param("user_dump_size");
+        if (user_dump_size !=nullptr && user_dump_enabled->getType()=="uint32_t")
+        {
+            count_of_profiles = user_dump_enabled->getValue<uint32_t>();
+        }else
+        {
+            return false;
+        }
     }
 
     return true;
@@ -3403,43 +3424,46 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
         p = protocol;
 
     std::vector<std::shared_ptr<profile2D>> result;
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Get parameter of user_dump_enabled
-        std::shared_ptr<param> fact_dump_unitSize = get_param("fact_dump_unitSize");
-        if (fact_dump_unitSize !=nullptr && fact_dump_unitSize->getType()=="uint32_t")
+        switch (p) {
+        case PROTOCOLS::SERVICE:
         {
-            rf627_profile2D_t** dumps =
-                    (rf627_profile2D_t**)calloc(count, sizeof (rf627_profile2D_t*));
-            uint32_t dump_size = 0;
-            uint8_t status = get_dumps_profiles_from_scanner(
-                        (scanner_base_t*)scanner_base, index, count, 1000, kSERVICE,
-                        dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
-            if (status)
+            // Get parameter of fact_dump_unitSize
+            std::shared_ptr<param> fact_dump_unitSize = get_param("fact_dump_unitSize");
+            if (fact_dump_unitSize !=nullptr && fact_dump_unitSize->getType()=="uint32_t")
             {
-                for(uint32_t i = 0; i < dump_size; i++)
+                rf627_profile2D_t** dumps =
+                        (rf627_profile2D_t**)calloc(count, sizeof (rf627_profile2D_t*));
+                uint32_t dump_size = 0;
+                uint8_t status = get_dumps_profiles_from_scanner(
+                            (scanner_base_t*)scanner_base, index, count, 1000, kSERVICE,
+                            dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
+                if (status)
                 {
-                    if (dumps[i]->rf627smart_profile2D != nullptr)
+                    for(uint32_t i = 0; i < dump_size; i++)
                     {
-                        result.push_back(std::make_shared<profile2D>(dumps[i]));
-                    }else
-                    {
-                        throw ("get_dumps_profiles dump_size exception");
+                        if (dumps[i]->rf627smart_profile2D != nullptr)
+                        {
+                            result.push_back(std::make_shared<profile2D>(dumps[i]));
+                        }else
+                        {
+                            throw ("get_dumps_profiles dump_size exception");
+                        }
                     }
+                    free(dumps);
                 }
-                free(dumps);
+                return result;
+            }else
+            {
+                return result;
             }
-            return result;
-        }else
-        {
-            return result;
-        }
 
-        break;
-    }
-    default:
-        break;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return result;
@@ -3447,8 +3471,12 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
 
 bool rf627smart::start_profile_capturing(uint32_t count_of_profiles)
 {
-    return send_profile2D_request_to_scanner(
-                (scanner_base_t*)scanner_base, count_of_profiles, kSERVICE);
+    if (is_connected)
+    {
+        return send_profile2D_request_to_scanner(
+                    (scanner_base_t*)scanner_base, count_of_profiles, kSERVICE);
+    }
+    return false;
 }
 
 bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
@@ -3459,26 +3487,29 @@ bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Establish connection to the RF627 device by Service Protocol.
-        bool result = false;
-        char* c_token = nullptr;
-        uint32_t token_size = 0;
-        result = get_authorization_token_from_scanner(
-                    (scanner_base_t*)scanner_base, &c_token, &token_size, 1000, kSERVICE);
-        if (c_token != nullptr)
+        switch (p) {
+        case PROTOCOLS::SERVICE:
         {
-            int size = strlen(c_token);
-            token = c_token;
-            free(c_token); c_token = NULL;
+            // Establish connection to the RF627 device by Service Protocol.
+            bool result = false;
+            char* c_token = nullptr;
+            uint32_t token_size = 0;
+            result = get_authorization_token_from_scanner(
+                        (scanner_base_t*)scanner_base, &c_token, &token_size, 1000, kSERVICE);
+            if (c_token != nullptr)
+            {
+                int size = strlen(c_token);
+                token = c_token;
+                free(c_token); c_token = NULL;
+            }
+            return result;
+            break;
         }
-        return result;
-        break;
-    }
-    default:
-        break;
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3492,20 +3523,23 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Set authorization key to the RF627 device by Service Protocol.
-        bool result = false;
-        char* c_key = (char*)key.c_str();
-        uint32_t size = key.size();
-        result = set_authorization_key_to_scanner(
-                    (scanner_base_t*)scanner_base, c_key, size, 3000, kSERVICE);
-        return result;
-        break;
-    }
-    default:
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result = false;
+            char* c_key = (char*)key.c_str();
+            uint32_t size = key.size();
+            result = set_authorization_key_to_scanner(
+                        (scanner_base_t*)scanner_base, c_key, size, 3000, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3513,51 +3547,61 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
 
 std::shared_ptr<calib_table> rf627smart::get_calibration_table()
 {
-    // Set authorization key to the RF627 device by Service Protocol.
-    rf627_calib_table_t* result;
-    result = get_calibration_table_from_scanner(
-                (scanner_base_t*)scanner_base, 3000, kSERVICE);
-    if (result != nullptr)
+    if (is_connected)
     {
-        std::shared_ptr<calib_table> table = std::make_shared<calib_table>(result);
-        return table;
-    }else
-    {
-        return nullptr;
+        // Set authorization key to the RF627 device by Service Protocol.
+        rf627_calib_table_t* result;
+        result = get_calibration_table_from_scanner(
+                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+        if (result != nullptr)
+        {
+            std::shared_ptr<calib_table> table = std::make_shared<calib_table>(result);
+            return table;
+        }else
+        {
+            return nullptr;
+        }
     }
+
+    return nullptr;
 }
 bool rf627smart::set_calibration_table(std::shared_ptr<calib_table> table)
 {
-    bool result = false;
+    if (is_connected)
+    {
+        bool result = false;
 
-    rf627_calib_table_t* _table = (rf627_calib_table_t*)calloc(1, sizeof (rf627_calib_table_t));
-    _table->type = kRF627_SMART;
+        rf627_calib_table_t* _table = (rf627_calib_table_t*)calloc(1, sizeof (rf627_calib_table_t));
+        _table->type = kRF627_SMART;
 
-    _table->rf627smart_calib_table = (rf627_smart_calib_table_t*)calloc(1, sizeof (rf627_smart_calib_table_t));
+        _table->rf627smart_calib_table = (rf627_smart_calib_table_t*)calloc(1, sizeof (rf627_smart_calib_table_t));
 
-    _table->rf627smart_calib_table->m_Type = table.get()->getType();
-    _table->rf627smart_calib_table->m_CRC16 = table.get()->getCRC16();
-    _table->rf627smart_calib_table->m_Serial = table.get()->getSerial();
-    _table->rf627smart_calib_table->m_DataRowLength = table.get()->getDataRowLength();
-    _table->rf627smart_calib_table->m_Width = table.get()->getWidth();
-    _table->rf627smart_calib_table->m_Height = table.get()->getHeight();
-    _table->rf627smart_calib_table->m_MultW = table.get()->getMultWidth();
-    _table->rf627smart_calib_table->m_MultH = table.get()->getMultHeight();
-    _table->rf627smart_calib_table->m_TimeStamp = table.get()->getTimeStamp();
+        _table->rf627smart_calib_table->m_Type = table.get()->getType();
+        _table->rf627smart_calib_table->m_CRC16 = table.get()->getCRC16();
+        _table->rf627smart_calib_table->m_Serial = table.get()->getSerial();
+        _table->rf627smart_calib_table->m_DataRowLength = table.get()->getDataRowLength();
+        _table->rf627smart_calib_table->m_Width = table.get()->getWidth();
+        _table->rf627smart_calib_table->m_Height = table.get()->getHeight();
+        _table->rf627smart_calib_table->m_MultW = table.get()->getMultWidth();
+        _table->rf627smart_calib_table->m_MultH = table.get()->getMultHeight();
+        _table->rf627smart_calib_table->m_TimeStamp = table.get()->getTimeStamp();
 
-    _table->rf627smart_calib_table->m_DataSize = table.get()->getData().size();
-    _table->rf627smart_calib_table->m_Data = (unsigned char*)calloc(_table->rf627smart_calib_table->m_DataSize, sizeof (uint8_t));
-    memcpy(_table->rf627smart_calib_table->m_Data, table.get()->getData().data(), _table->rf627smart_calib_table->m_DataSize * sizeof (uint8_t));
+        _table->rf627smart_calib_table->m_DataSize = table.get()->getData().size();
+        _table->rf627smart_calib_table->m_Data = (unsigned char*)calloc(_table->rf627smart_calib_table->m_DataSize, sizeof (uint8_t));
+        memcpy(_table->rf627smart_calib_table->m_Data, table.get()->getData().data(), _table->rf627smart_calib_table->m_DataSize * sizeof (uint8_t));
 
-    result = set_calibration_table_to_scanner(
+        result = set_calibration_table_to_scanner(
                     (scanner_base_t*)scanner_base, _table, 3000, kSERVICE);
 
-    if (_table->rf627smart_calib_table->m_DataSize > 0)
-        free(_table->rf627smart_calib_table->m_Data);
-    free (_table->rf627smart_calib_table);
-    free(_table);
+        if (_table->rf627smart_calib_table->m_DataSize > 0)
+            free(_table->rf627smart_calib_table->m_Data);
+        free (_table->rf627smart_calib_table);
+        free(_table);
 
-    return result;
+        return result;
+    }
+
+    return false;
 }
 
 bool rf627smart::reboot_device(PROTOCOLS protocol)
@@ -3568,18 +3612,21 @@ bool rf627smart::reboot_device(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Set authorization key to the RF627 device by Service Protocol.
-        bool result = false;
-        result = send_reboot_device_request_to_scanner(
-                    (scanner_base_t*)scanner_base, kSERVICE);
-        return result;
-        break;
-    }
-    default:
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result = false;
+            result = send_reboot_device_request_to_scanner(
+                        (scanner_base_t*)scanner_base, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3593,20 +3640,22 @@ bool rf627smart::read_calibration_table(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Set authorization key to the RF627 device by Service Protocol.
-        bool result;
-        result = read_calibration_table_from_scanner(
-                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
-        return true;
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result;
+            result = read_calibration_table_from_scanner(
+                        (scanner_base_t*)scanner_base, 3000, kSERVICE);
+            return true;
+            break;
+        }
+        default:
+            break;
+        }
     }
-    default:
-        break;
-    }
-
     return false;
 }
 
@@ -3618,18 +3667,21 @@ bool rf627smart::write_calibration_table(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Set authorization key to the RF627 device by Service Protocol.
-        bool result = false;
-        result = write_calibration_table_to_scanner(
-                    (scanner_base_t*)scanner_base, 1000, kSERVICE);
-        return result;
-        break;
-    }
-    default:
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result = false;
+            result = write_calibration_table_to_scanner(
+                        (scanner_base_t*)scanner_base, 1000, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
 
     return false;
@@ -3643,20 +3695,22 @@ bool rf627smart::save_calibration_table(PROTOCOLS protocol)
     else
         p = protocol;
 
-    switch (p) {
-    case PROTOCOLS::SERVICE:
+    if (is_connected)
     {
-        // Set authorization key to the RF627 device by Service Protocol.
-        bool result = false;
-        result = save_calibration_table_to_scanner(
-                    (scanner_base_t*)scanner_base, 1000 * 120, kSERVICE);
-        return result;
-        break;
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result = false;
+            result = save_calibration_table_to_scanner(
+                        (scanner_base_t*)scanner_base, 1000 * 120, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
     }
-    default:
-        break;
-    }
-
     return false;
 }
 

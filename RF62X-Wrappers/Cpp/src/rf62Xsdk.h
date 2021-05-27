@@ -18,7 +18,7 @@ API_EXPORT std::string sdk_version();
 
 /**
  * @brief sdk_init - Initialize sdk library
- * Must be called once before further calls to any library functions
+ * @details Must be called once before further calls to any library functions
  * @return true if success.
  */
 API_EXPORT bool sdk_init();
