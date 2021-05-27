@@ -70,7 +70,7 @@ int main()
         printf("* Zsmr, mm\t: %d\n", info->fact_general_smr);
         printf("* Zmr , mm\t: %d\n", info->fact_general_mr);
         printf("* Xsmr, mm\t: %d\n", info->fact_general_xsmr);
-        // printf("* Xemr, mm\t: %d\n", info->fact_general_xemr);
+        printf("* Xemr, mm\t: %d\n", info->fact_general_xemr);
 
         printf("\nVersions: \n");
         printf("* Firmware\t: %d.%d.%d\n",
