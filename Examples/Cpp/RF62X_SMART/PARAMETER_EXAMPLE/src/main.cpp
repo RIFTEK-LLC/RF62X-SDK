@@ -54,9 +54,10 @@ int main()
             // Example of working with the parameter type:
             // std::string
             //
-            // Get parameter of Device Name (first way to get parameter by string name)
-            std::shared_ptr<param> name = list[i]->get_param("user_general_deviceName");
-            if (name->getType() == "string_t")
+            // Get parameter of Device Name
+            std::shared_ptr<param> name =
+                    list[i]->get_param("user_general_deviceName");
+            if (name != nullptr && name->getType() == "string_t")
             {
                 std::string str_name = name->getValue<std::string>();
                 std::cout << "Current Device Name \t: " << str_name << std::endl;
@@ -76,9 +77,8 @@ int main()
             //
             // Get parameter of Laser Enabled
             std::shared_ptr<param> laser_enabled =
-                    list[i]->get_param(PARAM_NAME_KEY::USER_LASER_ENABLED);
-            if (laser_enabled->getType() ==
-                    param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+                    list[i]->get_param("user_laser_enabled");
+            if (laser_enabled != nullptr)
             {
                 bool isEnabled = laser_enabled->getValue<uint32_t>();
                 std::cout<<"Current Laser State\t: "<<(isEnabled?"ON\n":"OFF\n");
@@ -97,10 +97,8 @@ int main()
             // std::vector<uint32_t>
             //
             // Get parameter of Device IP Addr (second way to get a parameter by keys)
-            PARAM_NAME_KEY ip_addr_name_key = PARAM_NAME_KEY::USER_NETWORK_IP;
-            PARAM_VALUE_TYPE ip_addr_type = PARAM_VALUE_TYPE::UINT32_ARRAY_PARAM_TYPE;
-            std::shared_ptr<param> ip_addr = list[i]->get_param(ip_addr_name_key);
-            if (ip_addr->getType() == param_value_types[(int)ip_addr_type])
+            std::shared_ptr<param> ip_addr = list[i]->get_param("user_network_ip");
+            if (ip_addr != nullptr)
             {
                 std::vector<uint32_t> ip = ip_addr->getValue<std::vector<uint32_t>>();
                 std::cout << "Current Device IP\t: ";
@@ -121,9 +119,8 @@ int main()
             //
             // Get parameter of Streams Format
             std::shared_ptr<param> streams_format =
-                    list[i]->get_param(PARAM_NAME_KEY::USER_STREAMS_FORMAT);
-            if (streams_format != nullptr && streams_format->getType() ==
-                    param_value_types[(int)PARAM_VALUE_TYPE::UINT_PARAM_TYPE])
+                    list[i]->get_param("user_streams_format");
+            if (streams_format != nullptr)
             {
                 uint32_t current_format = streams_format->getValue<uint32_t>();
 
