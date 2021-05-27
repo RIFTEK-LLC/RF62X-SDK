@@ -68,7 +68,7 @@ int main()
             // Example of working with the parameter type:
             // std::string
             //
-            // Get parameter of Device Name (first way to get parameter by string name)
+            // Get parameter of Device Name
             parameter_t* name = get_parameter(scanner,"user_general_deviceName");
             if (name != NULL && strcmp(name->base.type, "string_t")== 0)
             {
@@ -101,10 +101,9 @@ int main()
             // uint32_t
             //
             // Get parameter of Laser Enabled
-            parameter_t* laser_enabled = get_parameter(
-                        scanner,parameter_names[USER_LASER_ENABLED]);
+            parameter_t* laser_enabled = get_parameter(scanner, "user_laser_enabled");
             if (laser_enabled != NULL && strcmp(
-                        laser_enabled->base.type, parameter_value_types[PVT_UINT])== 0)
+                        laser_enabled->base.type, "uint32_t")== 0)
             {
                 uint32_t isEnabled = laser_enabled->val_uint32->value;
                 printf("Current Laser State\t: %s\n", (isEnabled?"ON":"OFF"));
