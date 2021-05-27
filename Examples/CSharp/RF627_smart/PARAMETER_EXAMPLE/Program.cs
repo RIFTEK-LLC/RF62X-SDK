@@ -70,7 +70,7 @@ namespace PARAMETER_EXAMPLE
                     // uint32_t
                     //
                     // Get parameter of Laser Enabled
-                    RF62X.Parameter<uint> laserEnabled = list[i].GetParam(RF62X.PARAMS.User.Laser.enabled);
+                    RF62X.Parameter<uint> laserEnabled = list[i].GetParam("user_laser_enabled");
                     if (laserEnabled != null && laserEnabled.type == "uint32_t")
                     {
                         bool isEnabled = Convert.ToBoolean(laserEnabled.GetValue());
@@ -93,7 +93,7 @@ namespace PARAMETER_EXAMPLE
                     //
                     // Get parameter of Device IP Addr (second way to get a parameter by keys)
                     RF62X.Parameter<List<uint>> ipAddr = list[i].GetParam("user_network_ip");
-                    if (ipAddr != null && ipAddr.type == RF62X.PARAMS.User.NetWork.ip.Type)
+                    if (ipAddr != null && ipAddr.type == "u32_arr_t")
                     {
                         List<uint> ip = ipAddr.GetValue();
                         Console.WriteLine("Current Device IP Addr\t: {0}.{1}.{2}.{3}", ip[0], ip[1], ip[2], ip[3]);
