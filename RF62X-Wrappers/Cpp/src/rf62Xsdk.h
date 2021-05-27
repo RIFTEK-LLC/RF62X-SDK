@@ -131,7 +131,6 @@ public:
      * @return param on success, else - null
      */
     std::shared_ptr<param> get_param(std::string param_name);
-    std::shared_ptr<param> get_param(PARAM_NAME_KEY param_key);
     /**
      * @brief set_param - Set parameter
      * @param param Parameter to set
@@ -362,13 +361,6 @@ public:
      * @return param on success, else - null
      */
     std::shared_ptr<param> get_param(std::string param_name);
-
-    /**
-     * @brief get_param - Search parameters by his name's key
-     * @param param_name - name's key of parameter
-     * @return param on success, else - null
-     */
-    std::shared_ptr<param> get_param(PARAM_NAME_KEY param_key);
 
     /**
      * @brief set_param - set parameter
