@@ -26,6 +26,8 @@ SET(RF62X_SMART_FRAME_EXAMPLE                           ON  CACHE BOOL "" FORCE)
 SET(RF62X_SMART_PARAMETER_EXAMPLE                       ON  CACHE BOOL "" FORCE)
 # Get dump profiles
 SET(RF62X_SMART_DUMP_EXAMPLE                            ON  CACHE BOOL "" FORCE)
+# Get dump profiles
+SET(RF62X_SMART_MULTITHREAD_EXAMPLE                     ON  CACHE BOOL "" FORCE)
 
 
 ## WIDGETS APPLICATIONS
@@ -63,6 +65,10 @@ endif()
 # Get dump profiles
 if (RF62X_SMART_DUMP_EXAMPLE)
     add_subdirectory(DUMP_EXAMPLE)
+endif()
+# Multithread example
+if (RF62X_SMART_MULTITHREAD_EXAMPLE)
+    add_subdirectory(MULTITHREAD_EXAMPLE)
 endif()
 
 ## WIDGETS APPLICATIONS
