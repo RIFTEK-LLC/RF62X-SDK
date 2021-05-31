@@ -2906,6 +2906,7 @@ bool rf627smart::connect(PROTOCOLS protocol)
     switch (p) {
     case PROTOCOLS::SERVICE:
     {
+        connect_mutex.lock();
         bool result = false;
         if (is_connected == false)
         {
@@ -2919,6 +2920,7 @@ bool rf627smart::connect(PROTOCOLS protocol)
         {
             result = is_connected;
         }
+        connect_mutex.unlock();
 
         return result;
         break;

@@ -261,6 +261,7 @@ private:
     void* scanner_base = NULL;
     bool is_connected;
     PROTOCOLS current_protocol;
+    std::mutex connect_mutex;
     std::mutex param_mutex;
     std::mutex profile_mutex;
 };
