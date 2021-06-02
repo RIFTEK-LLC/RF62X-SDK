@@ -44,7 +44,7 @@ public:
      * @return vector of rf627smart devices
      */
     static std::vector<std::shared_ptr<rf627smart>> search(
-            uint32_t timeout = 1000, PROTOCOLS protocol = PROTOCOLS::SERVICE);
+            uint32_t timeout = 1000, bool only_available_result = true, PROTOCOLS protocol = PROTOCOLS::SERVICE);
     /**
      * @brief get_info - Get information about scanner from hello packet
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -60,6 +60,7 @@ public:
      * @return true on success, else - false
      */
     bool connect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief disconnect_from_scanner - Close connection to the device
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -73,8 +74,7 @@ public:
      * @return true on success, else - false
      */
     bool check_connection(
-            uint32_t timeout = 3000, PROTOCOLS protocol = PROTOCOLS::CURRENT);
-
+            uint32_t timeout = 500, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
     /**
@@ -257,9 +257,12 @@ public:
     */
     ~rf627smart();
 
+    bool is_connected();
+    bool is_available();
 private:
     void* scanner_base = NULL;
-    bool is_connected;
+    bool _is_connected;
+    bool _is_exist;
     PROTOCOLS current_protocol;
     std::mutex connect_mutex;
     std::mutex param_mutex;
@@ -385,7 +388,7 @@ public:
 
 private:
     void* scanner_base = NULL;
-    bool is_connected;
+    bool _is_connected;
     PROTOCOLS current_protocol;
     std::mutex param_mutex;
     std::mutex profile_mutex;

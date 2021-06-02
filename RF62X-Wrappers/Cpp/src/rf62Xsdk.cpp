@@ -2233,7 +2233,7 @@ std::shared_ptr<hello_info> rf627old::get_info(PROTOCOLS protocol)
 rf627old::rf627old(void* base)
 {
     this->scanner_base = base;
-    is_connected = false;
+    _is_connected = false;
 }
 
 rf627old::~rf627old()
@@ -2254,15 +2254,15 @@ bool rf627old::connect(PROTOCOLS protocol)
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
-        if (is_connected == false)
+        if (_is_connected == false)
         {
             // Establish connection to the RF627 device by Service Protocol.
             result = connect_to_scanner(
                         ((scanner_base_t*)this->scanner_base), kSERVICE);
-            is_connected = result;
+            _is_connected = result;
         }else
         {
-            result = is_connected;
+            result = _is_connected;
         }
         return result;
         break;
@@ -2287,7 +2287,7 @@ bool rf627old::check_connection(PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
-        if (is_connected)
+        if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
 //            result = check_connection_to_scanner(
@@ -2321,19 +2321,19 @@ bool rf627old::disconnect(PROTOCOLS protocol)
     {
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
-        if (is_connected)
+        if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
             result = disconnect_from_scanner(
                         (scanner_base_t*)scanner_base, kSERVICE);
             if (result)
-                is_connected = FALSE;
+                _is_connected = FALSE;
             else
-                is_connected = TRUE;
+                _is_connected = TRUE;
         }else
         {
             result = TRUE;
-            is_connected = FALSE;
+            _is_connected = FALSE;
         }
         return result;
         break;
@@ -2358,7 +2358,7 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -2793,11 +2793,13 @@ bool rf627old::send_cmd(std::string command_name,
 // smart version (v2.x.x)
 //
 
-std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PROTOCOLS protocol)
+std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bool only_available_result, PROTOCOLS protocol)
 {
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
+        static std::mutex search_mutex;
+        search_mutex.lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
         // Retrieving addresses associated with adapters on the local computer.
@@ -2837,15 +2839,66 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, PR
             }
         }
 
-        std::vector<std::shared_ptr<rf627smart>> result;
+        static std::vector<std::shared_ptr<rf627smart>> result;
+        if (only_available_result)
+        {
+            auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                return obj->_is_connected == false && obj->_is_exist == false;
+            });
 
+            while (it != std::end(result))
+            {
+                int index = std::distance(result.begin(), it);
+                result[index]->_is_exist = true;
+                result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
+                it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                    return obj->_is_connected == false && obj->_is_exist == false;
+                });
+            }
+        }
+
+        std::vector<std::shared_ptr<rf627smart>> available_result;
+
+        std::vector<int> non_exist_index = std::vector<int>();
+        for (size_t i = 0; i < result.size(); i++)
+        {
+            non_exist_index.push_back(i);
+        }
         //Iterate over all discovered rf627-smart in network and push into list.
         for(size_t i = 0; i < vector_count(scanners); i++)
         {
-            result.push_back(std::shared_ptr<rf627smart>(std::make_shared<rf627smart>((void*)vector_get(scanners,i))));
-            result[i]->current_protocol = PROTOCOLS::SERVICE;
+            scanner_base_t* scanner = (scanner_base_t*)vector_get(scanners,i);
+            auto it = std::find_if(result.begin(), result.end(), [scanner](const std::shared_ptr<rf627smart> obj){
+               return scanner->rf627_smart->info_by_service_protocol.fact_general_serial == obj->get_info()->serial_number();
+            });
+
+            if (it == std::end(result))
+            {
+                result.push_back(std::shared_ptr<rf627smart>(std::make_shared<rf627smart>((void*)vector_get(scanners,i))));
+                result[result.size() - 1]->current_protocol = PROTOCOLS::SERVICE;
+            }else
+            {
+                int index = std::distance(result.begin(), it);
+                result[index]->_is_exist = true;
+                non_exist_index.erase(std::remove(non_exist_index.begin(), non_exist_index.end(), index), non_exist_index.end());
+            }
         }
 
+        for (size_t i = 0; i < non_exist_index.size(); i++)
+        {
+            result[non_exist_index[i]]->_is_exist = false;
+        }
+
+        if (only_available_result)
+        {
+            for (size_t i = 0; i < result.size(); i++)
+                if (result[i]->_is_exist)
+                    available_result.push_back(result[i]);
+            search_mutex.unlock();
+            return available_result;
+        }
+
+        search_mutex.unlock();
         return result;
         break;
     }
@@ -2887,12 +2940,23 @@ std::shared_ptr<hello_info> rf627smart::get_info(PROTOCOLS protocol)
 rf627smart::rf627smart(void* base)
 {
     this->scanner_base = base;
-    is_connected = false;
+    _is_connected = false;
+    _is_exist = true;
 }
 
 rf627smart::~rf627smart()
 {
     free_scanner(((scanner_base_t*)this->scanner_base));
+}
+
+bool rf627smart::is_connected()
+{
+    return _is_connected;
+}
+
+bool rf627smart::is_available()
+{
+    return _is_exist;
 }
 
 bool rf627smart::connect(PROTOCOLS protocol)
@@ -2908,17 +2972,17 @@ bool rf627smart::connect(PROTOCOLS protocol)
     {
         connect_mutex.lock();
         bool result = false;
-        if (is_connected == false)
+        if (_is_connected == false)
         {
             // Establish connection to the RF627 device by Service Protocol.
             result = connect_to_scanner(
                         ((scanner_base_t*)this->scanner_base), kSERVICE);
-            is_connected = result;
-            if (is_connected)
+            _is_connected = result;
+            if (_is_connected)
                 read_params();
         }else
         {
-            result = is_connected;
+            result = _is_connected;
         }
         connect_mutex.unlock();
 
@@ -2945,15 +3009,16 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
-        if (is_connected)
+        if (_is_connected)
         {
-            // Establish connection to the RF627 device by Service Protocol.
+//            // Establish connection to the RF627 device by Service Protocol.
             result = check_connection_to_scanner(
                         ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
-//            is_connected = result;
+            _is_exist = result;
+//            _is_connected = result;
         }else
         {
-            result = is_connected;
+            result = _is_connected;
         }
 
         return result;
@@ -2978,19 +3043,19 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
-        if (is_connected)
+        if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
             result = disconnect_from_scanner(
                         (scanner_base_t*)scanner_base, kSERVICE);
             if (result)
-                is_connected = FALSE;
+                _is_connected = FALSE;
             else
-                is_connected = TRUE;
+                _is_connected = TRUE;
         }else
         {
             result = TRUE;
-            is_connected = FALSE;
+            _is_connected = FALSE;
         }
         return result;
         break;
@@ -3015,7 +3080,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3053,7 +3118,7 @@ std::shared_ptr<frame> rf627smart::get_frame(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3105,7 +3170,7 @@ bool rf627smart::read_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3113,7 +3178,7 @@ bool rf627smart::read_params(PROTOCOLS protocol)
             bool result = false;
             param_mutex.lock();
             result = read_params_from_scanner(
-                        (scanner_base_t*)scanner_base, 300, kSERVICE);
+                        (scanner_base_t*)scanner_base, 3000, kSERVICE);
             param_mutex.unlock();
             return result;
             break;
@@ -3133,7 +3198,7 @@ bool rf627smart::write_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3162,7 +3227,7 @@ bool rf627smart::save_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3190,7 +3255,7 @@ bool rf627smart::load_recovery_params(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3336,7 +3401,7 @@ bool rf627smart::set_param(std::shared_ptr<param> param)
 
 bool rf627smart::start_dump_recording(uint32_t count_of_profiles)
 {
-    if (is_connected)
+    if (_is_connected)
     {
         // Get parameter of user_dump_capacity
         std::shared_ptr<param> user_dump_capacity = get_param("user_dump_capacity");
@@ -3373,7 +3438,7 @@ bool rf627smart::start_dump_recording(uint32_t count_of_profiles)
 
 bool rf627smart::stop_dump_recording(uint32_t &count_of_profiles)
 {
-    if (is_connected)
+    if (_is_connected)
     {
         // Get parameter of user_dump_enabled
         std::shared_ptr<param> user_dump_enabled = get_param("user_dump_enabled");
@@ -3415,7 +3480,7 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
         p = protocol;
 
     std::vector<std::shared_ptr<profile2D>> result;
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3462,7 +3527,7 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
 
 bool rf627smart::start_profile_capturing(uint32_t count_of_profiles)
 {
-    if (is_connected)
+    if (_is_connected)
     {
         return send_profile2D_request_to_scanner(
                     (scanner_base_t*)scanner_base, count_of_profiles, kSERVICE);
@@ -3478,7 +3543,7 @@ bool rf627smart::get_authorization_token(std::string& token, PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3514,7 +3579,7 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3538,7 +3603,7 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
 
 std::shared_ptr<calib_table> rf627smart::get_calibration_table()
 {
-    if (is_connected)
+    if (_is_connected)
     {
         // Set authorization key to the RF627 device by Service Protocol.
         rf627_calib_table_t* result;
@@ -3558,7 +3623,7 @@ std::shared_ptr<calib_table> rf627smart::get_calibration_table()
 }
 bool rf627smart::set_calibration_table(std::shared_ptr<calib_table> table)
 {
-    if (is_connected)
+    if (_is_connected)
     {
         bool result = false;
 
@@ -3603,7 +3668,7 @@ bool rf627smart::reboot_device(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3631,7 +3696,7 @@ bool rf627smart::read_calibration_table(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3658,7 +3723,7 @@ bool rf627smart::write_calibration_table(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
@@ -3686,7 +3751,7 @@ bool rf627smart::save_calibration_table(PROTOCOLS protocol)
     else
         p = protocol;
 
-    if (is_connected)
+    if (_is_connected)
     {
         switch (p) {
         case PROTOCOLS::SERVICE:
