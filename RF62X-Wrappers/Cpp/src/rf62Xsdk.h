@@ -281,10 +281,12 @@ class API_EXPORT rf627old
 public:
     /**
      * @brief search - Search for RF627old devices over network
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return vector of rf627old devices
+     * @param timeout Search timeout for each Ethernet interface
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return vector of rf627smart devices
      */
-    static std::vector<rf627old*> search(PROTOCOLS protocol);
+    static std::vector<std::shared_ptr<rf627old>> search(
+            uint32_t timeout = 1000, bool only_available_result = true, PROTOCOLS protocol = PROTOCOLS::SERVICE);
 
     /**
      * @brief get_info - Get information about scanner from hello packet
@@ -341,6 +343,14 @@ public:
      * @return true on success
      */
     bool write_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    /**
+     * @brief save_params - Save changes to device's memory
+     * @details The saved parameters will also be used if the device
+     * is restarted or even if the firmware is updated.
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool save_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
      * @brief get_param - Search parameters by his name
@@ -372,7 +382,9 @@ public:
 private:
     void* scanner_base = NULL;
     bool _is_connected;
+    bool _is_exist;
     PROTOCOLS current_protocol;
+    std::mutex connect_mutex;
     std::mutex param_mutex;
     std::mutex profile_mutex;
 };
