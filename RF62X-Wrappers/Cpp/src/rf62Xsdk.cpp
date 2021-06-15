@@ -2792,7 +2792,6 @@ bool rf627old::send_cmd(std::string command_name,
 // RF627
 // smart version (v2.x.x)
 //
-
 std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bool only_available_result, PROTOCOLS protocol)
 {
     switch (protocol) {
@@ -2849,7 +2848,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
             while (it != std::end(result))
             {
                 int index = std::distance(result.begin(), it);
-                result[index]->_is_exist = true;
                 result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
                 it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
                     return obj->_is_connected == false && obj->_is_exist == false;
@@ -3178,7 +3176,7 @@ bool rf627smart::read_params(PROTOCOLS protocol)
             bool result = false;
             param_mutex.lock();
             result = read_params_from_scanner(
-                        (scanner_base_t*)scanner_base, 3000, kSERVICE);
+                        (scanner_base_t*)scanner_base, 300, kSERVICE);
             param_mutex.unlock();
             return result;
             break;
