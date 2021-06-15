@@ -92,6 +92,7 @@ private:
     uint32_t m_RoiPos;
     uint32_t m_RoiSize;
 };
+using frame_ptr = std::shared_ptr<SDK::SCANNERS::RF62X::frame>;
 
 class calib_table
 {
@@ -238,11 +239,11 @@ public:
         uint8_t     bytes_per_point;
     }header;
 
-    header getHeader();
+    const header getHeader() const noexcept;
 
-    const std::vector<point2D_t>& getPoints();
-    const std::vector<uint16_t>& getPixels();
-    const std::vector<uint8_t>& getIntensity();
+    const std::vector<point2D_t>& getPoints() const noexcept;
+    const std::vector<uint16_t>& getPixels() const noexcept;
+    const std::vector<uint8_t>& getIntensity() const noexcept;
 
 private:
     void* m_ProfileBase;
@@ -253,6 +254,7 @@ private:
 
     header m_Header;
 };
+using profile_ptr = std::shared_ptr<SDK::SCANNERS::RF62X::profile2D>;
 
 /*! Structure to store a profile
  */

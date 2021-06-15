@@ -325,23 +325,6 @@ public:
             bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
-    /**
-     * @brief get_profile3D - Get 3D measurement from scanner's data stream
-     * where y is calculated based on the next equation: y = k * x + b
-     * where b - y-intercept of the line, calculates by the next equation: b = step_size * count_value
-     * @param step_size - step size in real units (mm, sm, etc.)
-     * @param k - slope or gradient of the line , where
-     * @param count_type - type of counter (STEP, MEASURE, PACKET)
-     * @param zero_points - include zero points in return profile2D
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return ptr to profile3D_t structure if success, else - null
-     */
-    profile3D_t* get_profile3D(
-            float step_size, float k = 0,
-            COUNT_TYPES count_type = COUNT_TYPES::MEASURE,
-            bool zero_points = true,
-            PROTOCOLS protocol = PROTOCOLS::CURRENT);
-
     char* get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**

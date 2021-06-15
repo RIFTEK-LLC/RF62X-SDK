@@ -2116,22 +2116,22 @@ profile2D::~profile2D()
     free_profile2D(_profile);
 }
 
-profile2D::header profile2D::getHeader()
+const profile2D::header profile2D::getHeader()  const noexcept
 {
     return m_Header;
 }
 
-const std::vector<uint8_t>& profile2D::getIntensity()
+const std::vector<uint8_t>& profile2D::getIntensity()  const noexcept
 {
     return m_Intensity;
 }
 
-const std::vector<uint16_t>& profile2D::getPixels()
+const std::vector<uint16_t>& profile2D::getPixels()  const noexcept
 {
     return m_Pixels;
 }
 
-const std::vector<point2D_t>& profile2D::getPoints()
+const std::vector<point2D_t>& profile2D::getPoints()  const noexcept
 {
     return m_Points;
 }
@@ -2385,16 +2385,16 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 
 }
 
-profile3D_t* rf627old::get_profile3D(float step_size, float k,
-                                     COUNT_TYPES count_type,
-                                     bool zero_points,
-                                     PROTOCOLS protocol)
-{
-    PROTOCOLS p;
-    if (protocol == PROTOCOLS::CURRENT)
-        p = this->current_protocol;
-    else
-        p = protocol;
+//profile3D_t* rf627old::get_profile3D(float step_size, float k,
+//                                     COUNT_TYPES count_type,
+//                                     bool zero_points,
+//                                     PROTOCOLS protocol)
+//{
+//    PROTOCOLS p;
+//    if (protocol == PROTOCOLS::CURRENT)
+//        p = this->current_protocol;
+//    else
+//        p = protocol;
 
 //    switch (p) {
 //    case PROTOCOLS::SERVICE:
@@ -2515,9 +2515,9 @@ profile3D_t* rf627old::get_profile3D(float step_size, float k,
 //        break;
 //    }
 
-    return NULL;
+//    return NULL;
 
-}
+//}
 
 char *rf627old::get_frame(PROTOCOLS protocol)
 {
