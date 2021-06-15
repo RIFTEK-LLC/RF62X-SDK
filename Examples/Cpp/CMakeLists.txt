@@ -15,9 +15,9 @@ project(RF62XSDK-EXAMPLES LANGUAGES CXX)
 ## project configuration
 ###############################################################################
 # Enable examples for rf62X scanners v2.x.x
-SET(RF62X_SMART_EXAMPLES                                ON CACHE BOOL "" FORCE)
+SET(RF62X_2XX_EXAMPLES                                  ON CACHE BOOL "" FORCE)
 # Enable examples for rf627 scanners v1.x.x
-SET(RF627_OLD_EXAMPLES                                  OFF CACHE BOOL "" FORCE)
+SET(RF627_1XX_EXAMPLES                                  ON CACHE BOOL "" FORCE)
 
 
 
@@ -25,10 +25,10 @@ SET(RF627_OLD_EXAMPLES                                  OFF CACHE BOOL "" FORCE)
 ## INCLUDING SUBDIRECTORIES
 ## Adding subdirectories according to the configuration
 ###############################################################################
-if (RF62X_SMART_EXAMPLES)
+if (RF62X_2XX_EXAMPLES)
     add_subdirectory(RF62X_SMART)
 endif()
-if (RF627_OLD_EXAMPLES)
+if (RF627_1XX_EXAMPLES)
     add_subdirectory(RF627_OLD)
 endif()
 
