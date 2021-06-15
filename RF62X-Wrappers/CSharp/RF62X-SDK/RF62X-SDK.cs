@@ -481,16 +481,6 @@ namespace SDK
                 }
 
                 /// <summary>
-                /// Search parameters by his info
-                /// </summary>
-                /// <param name="paramInfo">info of parameter</param>
-                /// <returns>param on success, else - null</returns>
-                public dynamic GetParam(PARAMS.Description paramInfo)
-                {
-                    return GetParam(paramInfo.Key);
-                }
-
-                /// <summary>
                 /// Search parameters by his name
                 /// </summary>
                 /// <param name="nameKey">name of parameter</param>
@@ -1433,15 +1423,6 @@ namespace SDK
                     return false;
                 }
 
-                /// <summary>
-                /// Search parameters by his info
-                /// </summary>
-                /// <param name="paramInfo">info of parameter</param>
-                /// <returns>param on success, else - null</returns>
-                public dynamic GetParam(PARAMS.Description paramInfo)
-                {
-                    return GetParam(paramInfo.Key);
-                }
 
                 /// <summary>
                 /// Search parameters by his name
