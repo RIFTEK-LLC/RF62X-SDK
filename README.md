@@ -68,7 +68,8 @@ git submodule update --init --recursive
 Here is a basic example of using the method to find, get profiles/frames, set/get parameters for RF62X devices in different languages by different ways.\
 You can create a new project yourself or you can just open an existing project example and build it.
 
-### 1) Running a C/C++ example
+<details><summary>Running a C/C++ example </summary> 
+  
 #### 1. Open and compile examples project in **Qt Creator**:  
 *  Load the `CMakeLists.txt` file from the `RF62X-SDK/Examples/Cpp` folder via **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC, Clang, etc..) and click **Configure Project**
@@ -81,8 +82,11 @@ cmake ..
 ```
 *  Open the resulting `RF62XSDK-EXAMPLES.sln` solution in `build` folder by Visual Studio
 *  Compile and Run it
+ 
+</details>
 
-### 2) Running a C\# example
+<details><summary>Running a C# example</summary> 
+  
 #### Open and compile examples project in **Visual Studio**:  
 *  Open one of the examples (RF627_smart, RF627_old, RF62X_WinForms) from the `RF62X-SDK/Examples/CSharp` folder by Visual Studio
 *  Select **x64 Debug** or **x64 Release** target platform
@@ -90,15 +94,22 @@ cmake ..
 *  Copy all **libRF62X-SDK** dll-s from archive for C# (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the path of the project executable (`../bin/x64/Debug/` or `../bin/x64/Release/`)
 *  Compile project
 
-### 3) Running a Python example
+</details>
+  
+<details><summary> Running a Python example</summary> 
+  
 #### Open and compile examples project in **Visual Studio Code**:  
 *  Open one of the examples (RF627_SMART, RF627_OLD) from the `RF62X-SDK/Examples/Python` folder by Visual Studio Code
 *  Copy all **libRF62X-SDK** dll-s from archive for Python (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the path of the project executable
 *  Run example
 
+</details>
+  
 # CREATING PROJECT
 ## Creating a C/C++ project 
-### 1) Create a new project in **Qt Creator** by CMake with using shared(static) SDK-library
+
+<details><summary>Create a new project in Qt Creator by CMake with using shared(static) SDK-library</summary> 
+  
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
@@ -222,8 +233,10 @@ int main()
 >  If `SET(RF62X_SDK_LIBRARY_TYPE "SHARED")` copy **RF62X-SDK.dll** into the path of the project executable (PROJECT_BINARY_DIR)
 *  Select **Debug** or **Release** build type, Run CMake and Run project 
 
-
-### 2) Create a new project in **Qt Creator** by CMake with using SDK-sources 
+</details>
+  
+<details><summary>Create a new project in Qt Creator by CMake with using SDK-sources </summary> 
+  
 *  Open **File > New File or Project**, select **Qt Console Application** and click **Choose** button
 *  Enter project name, Browse project location and click **Next** button
 *  Choose **CMake** build system and click **Next** button twice
@@ -345,7 +358,10 @@ int main()
 ```
 *  Select **Debug** or **Release** build type, Run CMake and Run project 
 
-### 3) Create a new project in **Visual Studio 2019** with using shared(static) SDK-library
+</details>
+  
+<details><summary>Create a new project in Visual Studio 2019 with using shared(static) SDK-library</summary> 
+  
 *  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
 *  Enter project name, Browse project location and click **Next** button
 *  Add `main.cpp` file to project and modify it according to the example below:
@@ -420,8 +436,11 @@ int main()
 *  Copy the **RF62X-SDK** libs into the path of the project executable (`../bin/x64/Debug/` or `../bin/x64/Release/`)
 *  Run project
 
+</details>
+  
 ## Creating a C\# project 
-### Create a new project in **Visual Studio 2019** with using SDK-libraries
+<details><summary>Create a new project in Visual Studio 2019 with using SDK-libraries</summary> 
+  
 *  Open Visual Studio and chose **Create a new project**, then select **Empty Project** and click **Next** button
 *  Enter project name (e.g RF627_search), Browse project location and click **Next** button
 *  Modify your `Program.cs` file according to the example below:
@@ -488,8 +507,12 @@ namespace RF627_search
 *  Copy the **libRF62X-SDK.dll** into the path of the project executable (`../bin/x64/Debug/` or `../bin/x64/Release/`)
 *  Run project
 
+</details>
+  
 ## Creating a Python project 
-### Create a new project in **Visual Studio Code** with using SDK-libraries
+
+<details><summary>Create a new project in Visual Studio Code with using SDK-libraries</summary> 
+  
 *  Create a project directory and add new **py-file** (e.g demo.py) in this project directory 
 *  Download `RF62X-SDK` dll-s from archive for Python wrapper (see [RF62X-SDK releases](https://github.com/RIFTEK-LLC/RF62X-SDK/releases) link) into the project directory.
 *  Modify your **py-file** (e.g demo.py) according to the example below:
@@ -545,12 +568,15 @@ if __name__ == '__main__':
     sdk_cleanup()
 ```
 
+</details>
+  
 
 # COMPILING RF62X-SDK
 ## C WRAPPER
 > for more information about project downloading steps, see an [Download project](#download-project)
 
-### CMake
+<details><summary>CMake</summary> 
+  
 To build the C wrapper:
 ```bash
 cd RF62X-SDK
@@ -558,16 +584,22 @@ mkdir build && cd build
 cmake .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
 cmake --build . 
 ```
-
-### Qt Creator
+ 
+</details>
+  
+<details><summary>Qt Creator</summary> 
+  
 To build the code:
 *  Load the `CMakeLists.txt` file from the `RF62X-SDK` folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
 *  Select compiler (MinGW, MSVC2017, Clang, etc..) and click **Configure Project**
 *  Select a wrapper programming language (`SET(${PARENT}_WRAPPER_LANGUAGE "C" CACHE STRING "" ${REWRITE_FORCE})`)
 *  Compile project
-
-### Visual Studio
+  
+</details>
+  
+<details><summary>Visual Studio</summary> 
+  
 To build the code:
 ```bash
 cd RF62X-SDK
@@ -577,10 +609,13 @@ cmake .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
 *  Open RF62X-SDK.sln with Visual Studio
 *  Compile
 
+</details>
+  
 ## C++ WRAPPER
 > for more information about project downloading steps, see an [Download project](#download-project)
 
-### CMake
+<details><summary>CMake</summary> 
+    
 To build the C wrapper:
 ```bash
 cd RF62X-SDK
@@ -589,7 +624,10 @@ cmake .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
 cmake --build . 
 ```
 
-### Qt Creator
+</details>
+  
+<details><summary>Qt Creator</summary> 
+  
 To build the code:
 *  Load the `CMakeLists.txt` file from the `RF62X-SDK` folder via 
 **File > Open File or Project** (Select the CMakeLists.txt file)
@@ -597,7 +635,10 @@ To build the code:
 *  Select a wrapper programming language (`SET(${PARENT}_WRAPPER_LANGUAGE "C++" CACHE STRING "" ${REWRITE_FORCE})`)
 *  Compile project
 
-### Visual Studio
+</details>
+  
+<details><summary>Visual Studio</summary> 
+  
 To build the code:
 ```bash
 cd RF62X-SDK
@@ -606,17 +647,22 @@ cmake .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
 ```
 *  Open RF62X-SDK.sln with Visual Studio
 *  Compile
-
+  
+</details>
+  
 ## .NET WRAPPER
 > for more information about project downloading steps, see an [Download project](#download-project)
 
-### Visual Studio
+<details><summary>Visual Studio</summary> 
+  
 To build the code:
 *  Download or build the libRF62X-SDK dll-s for C wrapper (you should use one of the previously described 
 methods - see [compilation C WRAPPER](#c-wrapper))
 *  Open `RF62X-SDK.sln` from the `RF62X-Wrappers/CSharp/` folder with Visual Studio
 *  Compile
-
+  
+</details>
+  
 ## PYTHON WRAPPER
 > for more information about project downloading steps, see an [Download project](#download-project)
 
