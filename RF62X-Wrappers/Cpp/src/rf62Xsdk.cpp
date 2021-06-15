@@ -2792,7 +2792,6 @@ bool rf627old::send_cmd(std::string command_name,
 // RF627
 // smart version (v2.x.x)
 //
-
 std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bool only_available_result, PROTOCOLS protocol)
 {
     switch (protocol) {
@@ -3177,7 +3176,7 @@ bool rf627smart::read_params(PROTOCOLS protocol)
             bool result = false;
             param_mutex.lock();
             result = read_params_from_scanner(
-                        (scanner_base_t*)scanner_base, 3000, kSERVICE);
+                        (scanner_base_t*)scanner_base, 300, kSERVICE);
             param_mutex.unlock();
             return result;
             break;
