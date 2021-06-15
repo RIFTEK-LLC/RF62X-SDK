@@ -66,6 +66,10 @@ int main()
                     list[i]->get_dumps_profiles(0, count_of_profiles);
 
             std::cout << dump.size() << " Profiles were received!  "   << std::endl;
+            for (size_t j = 0; j < dump.size(); j++)
+            {
+                std::cout <<"#"<< j << " - Point count:" << dump[j]->getPoints().size() << std::endl;
+            }
             std::cout << "-----------------------------------------"   << std::endl;
         }else
         {

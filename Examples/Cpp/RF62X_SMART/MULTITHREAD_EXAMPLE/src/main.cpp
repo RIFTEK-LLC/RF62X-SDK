@@ -2,7 +2,6 @@
 #include <string>
 #include <thread>
 #include <chrono>
-using namespace std::chrono_literals;
 
 #include "rf62Xsdk.h"
 #include "rf62Xtypes.h"
@@ -54,13 +53,13 @@ int main()
 
     std::cout << "\nTEST 1: Get profiles in different threads" << std::endl;
     std::cout << "========================================="     << std::endl;
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     // Iterate over all discovered scanners in network, connect to each of them,
     // get profiles in different threads.
     for (size_t i = 0; i < list.size(); i++)
     {
-        std::thread* profile_thread1 = new std::thread(get_profile_func, list[i]);
-        std::thread* profile_thread2 = new std::thread(get_profile_func, list[i]);
+        std::thread* profile_thread1 = new std::thread(get_profile_func, ref(list[i]));
+        std::thread* profile_thread2 = new std::thread(get_profile_func, ref(list[i]));
 
         thread_list.push_back(profile_thread1);
         thread_list.push_back(profile_thread2);
@@ -74,12 +73,12 @@ int main()
 
     std::cout << "\nTEST 2: Get/Set parameters in different threads" << std::endl;
     std::cout << "========================================="     << std::endl;
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     // Get the Laser Enabled parameter and turn it on in one thread, turn it off in the other
     for (size_t i = 0; i < list.size(); i++)
     {
-        std::thread* param_thread1 = new std::thread(laser_on_func, list[i]);
-        std::thread* param_thread2 = new std::thread(laser_off_func, list[i]);
+        std::thread* param_thread1 = new std::thread(laser_on_func, ref(list[i]));
+        std::thread* param_thread2 = new std::thread(laser_off_func, ref(list[i]));
 
         thread_list.push_back(param_thread1);
         thread_list.push_back(param_thread2);
@@ -121,7 +120,7 @@ void get_profile_func(std::shared_ptr<rf627smart>& scanner)
     {
         profile = scanner->get_profile2D(zero_points,realtime);
         print_profile_info(profile, std::this_thread::get_id(), count);
-        std::this_thread::sleep_for(100ms);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
 
@@ -183,14 +182,14 @@ void laser_on_func(std::shared_ptr<rf627smart>& obj)
                 bool isEnabled = laser_enabled->getValue<uint32_t>();
                 if (isEnabled == false)
                 {
-                    std::this_thread::sleep_for(500ms);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     laser_enabled->setValue<uint32_t>(true);
                     obj->set_param(laser_enabled);
                     obj->write_params();
                     print_laser_info(true, std::this_thread::get_id(), count);
                 }else
                 {
-                    std::this_thread::sleep_for(500ms);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     count++;
                 }
             }
@@ -219,14 +218,14 @@ void laser_off_func(std::shared_ptr<rf627smart>& obj)
                 bool isEnabled = laser_enabled->getValue<uint32_t>();
                 if (isEnabled == true)
                 {
-                    std::this_thread::sleep_for(500ms);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     laser_enabled->setValue<uint32_t>(false);
                     obj->set_param(laser_enabled);
                     obj->write_params();
                     print_laser_info(false, std::this_thread::get_id(), count);
                 }else
                 {
-                    std::this_thread::sleep_for(500ms);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     count++;
                 }
             }
