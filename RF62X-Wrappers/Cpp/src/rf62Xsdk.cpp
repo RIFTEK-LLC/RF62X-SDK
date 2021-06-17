@@ -42,13 +42,14 @@ extern const char* GetAdapterMasks(int index);
 extern BOOL WinSockInit();
 extern void WinSockDeinit();
 
+#define SDK_VERSION "2.13.3"
 
 std::string SDK::SCANNERS::RF62X::sdk_version()
 {
     /*
-     * Get rf627 core version
+     * Get sdk version
      */
-    return SDK::CORES::RF62X::version();
+    return SDK_VERSION;
 }
 
 bool SDK::SCANNERS::RF62X::sdk_init()

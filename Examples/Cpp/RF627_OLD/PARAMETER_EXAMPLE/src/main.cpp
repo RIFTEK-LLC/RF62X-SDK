@@ -46,7 +46,7 @@ int main()
         bool is_connected = list[i]->connect();
 
         // read params from RF627 device by Service Protocol.
-        bool is_read = is_read = list[i]->read_params();
+        bool is_read = list[i]->read_params();
 
         if (is_connected)
         {
@@ -92,6 +92,28 @@ int main()
                 list[i]->set_param(laser_enabled);
             }
 
+
+            //
+            // Example of working with the parameter type:
+            // std::vector<uint32_t>
+            //
+            // Get parameter of Device IP Addr (second way to get a parameter by keys)
+//            std::shared_ptr<param> ip_addr = list[i]->get_param("user_network_ip");
+//            if (ip_addr != nullptr)
+//            {
+//                std::vector<uint32_t> ip = ip_addr->getValue<std::vector<uint32_t>>();
+//                std::cout << "Current Device IP\t: ";
+//                for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
+
+//                // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
+//                ip[3]++;
+//                ip_addr->setValue<std::vector<uint32_t>>(ip);
+//                std::cout << "New Device IP    \t: ";
+//                for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
+//                std::cout << "-------------------------------------"       <<std::endl;
+
+//                list[i]->set_param(ip_addr);
+//            }
 
             //
             // Example of working with parameters using an Enum
