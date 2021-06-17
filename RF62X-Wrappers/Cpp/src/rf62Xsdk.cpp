@@ -2289,6 +2289,7 @@ rf627old::rf627old(void* base)
 {
     this->scanner_base = base;
     _is_connected = false;
+    _is_exist = true;
 }
 
 rf627old::~rf627old()
