@@ -60,7 +60,6 @@ if (RF62X_2XX_FRAME_EXAMPLE)
 endif()
 # Get/Set scanner's parameters
 if (RF62X_2XX_PARAMETER_EXAMPLE)
-    add_subdirectory(LaserTest)
     add_subdirectory(PARAMETER_EXAMPLE)
 endif()
 # Get dump profiles
