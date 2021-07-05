@@ -137,7 +137,12 @@ public:
      * @return true on success, else - false
      */
     bool set_param(std::shared_ptr<param> param);
-
+    template<typename T>
+    bool set_param(std::string name, T value)
+    {
+        auto _param = this->get_param(name); _param->setValue<T>(value);
+        return set_param(_param);
+    };
 
 
     /**

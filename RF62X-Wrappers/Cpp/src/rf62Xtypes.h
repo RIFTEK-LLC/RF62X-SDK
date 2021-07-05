@@ -77,6 +77,8 @@ public:
     bool getRoiEnabled();
     uint32_t getRoiPos();
     uint32_t getRoiSize();
+    uint32_t getSensorWidth();
+    uint32_t getSensorHeight();
 
 private:
     void* m_FrameBase = nullptr;
@@ -91,6 +93,8 @@ private:
     bool m_RoiEnabled;
     uint32_t m_RoiPos;
     uint32_t m_RoiSize;
+    uint32_t m_SensorWidth;
+    uint32_t m_SensorHeight;
 };
 using frame_ptr = std::shared_ptr<SDK::SCANNERS::RF62X::frame>;
 
@@ -230,6 +234,7 @@ public:
         uint16_t    zmr;
         uint16_t    xemr;
         uint16_t    discrete_value;
+        uint32_t    license_hash;
 
         uint32_t    exposure_time;
         uint32_t    laser_value;
