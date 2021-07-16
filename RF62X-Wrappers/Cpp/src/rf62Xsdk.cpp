@@ -2134,7 +2134,7 @@ profile2D::~profile2D()
     free_profile2D(_profile);
 }
 
-const profile2D::header profile2D::getHeader()  const noexcept
+const profile2D::header& profile2D::getHeader()  const noexcept
 {
     return m_Header;
 }
@@ -2897,6 +2897,34 @@ bool rf627old::send_cmd(std::string command_name,
     free(cmd.output.payload);
 
     return result;
+}
+
+bool rf627old::reboot_device(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    if (_is_connected)
+    {
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result = false;
+            result = send_reboot_device_request_to_scanner(
+                        (scanner_base_t*)scanner_base, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+    return false;
 }
 
 //

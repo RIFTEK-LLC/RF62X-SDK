@@ -381,6 +381,13 @@ public:
     bool send_cmd(std::string command_name,
                   std::vector<uint8_t> input, std::vector<uint8_t>& output);
 
+    /**
+     * @brief reboot_device - The scanner will restart
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     rf627old(void* scanner_base);
     ~rf627old();
 

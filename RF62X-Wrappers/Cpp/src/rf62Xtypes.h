@@ -244,7 +244,7 @@ public:
         uint8_t     bytes_per_point;
     }header;
 
-    const header getHeader() const noexcept;
+    const header& getHeader() const noexcept;
 
     const std::vector<point2D_t>& getPoints() const noexcept;
     const std::vector<uint16_t>& getPixels() const noexcept;
