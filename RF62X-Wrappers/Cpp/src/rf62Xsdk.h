@@ -311,7 +311,8 @@ public:
      * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
      * @return true on success
      */
-    bool check_connection(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    bool check_connection(
+            uint32_t timeout = 500, PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
     /**
@@ -370,6 +371,13 @@ public:
      * @return true on success, else - false
      */
     bool set_param(std::shared_ptr<param> param);
+    template<typename T>
+    bool set_param(std::string name, T value)
+    {
+        auto _param = this->get_param(name); _param->setValue<T>(value);
+        return set_param(_param);
+    };
+
 
     /**
      * @brief send_cmd - Send command to parameter

@@ -2353,7 +2353,7 @@ bool rf627old::connect(PROTOCOLS protocol)
 
 }
 
-bool rf627old::check_connection(PROTOCOLS protocol)
+bool rf627old::check_connection(uint32_t timeout, PROTOCOLS protocol)
 {
     PROTOCOLS p;
     if (protocol == PROTOCOLS::CURRENT)
@@ -2368,12 +2368,12 @@ bool rf627old::check_connection(PROTOCOLS protocol)
         if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
-//            result = check_connection_to_scanner(
-//                        ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
-            result = true;
+            result = check_connection_to_scanner(
+                        ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
+            _is_exist = result;
         }else
         {
-            result = false;
+            result = _is_connected;
         }
 
         return result;
