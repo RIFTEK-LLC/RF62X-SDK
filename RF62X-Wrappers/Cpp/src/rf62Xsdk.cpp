@@ -1666,6 +1666,21 @@ template<> bool param::setValue(std::string value) const
     ((value_str*)param_base)->value = value;
     return true;
 }
+template<> bool param::setValue(char const* value) const
+{
+    ((value_str*)param_base)->value = value;
+    return true;
+}
+
+
+template<> const std::string param::getValue<const std::string>() const
+{
+    return ((value_str*)param_base)->value;
+}
+template<> const std::string param::getDefValue<const std::string>() const
+{
+    return ((value_str*)param_base)->defaultValue;
+}
 
 
 std::ostream &operator<<(std::ostream &out, version const &v)

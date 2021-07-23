@@ -28,6 +28,7 @@ int main()
     // Search for rf627old devices over network
     list = rf627old::search(300);
 
+
     // Print count of discovered rf627old in network by Service Protocol
     std::cout << "Was found\t: " << list.size()<< " RF627-Old" << std::endl;
     std::cout << "========================================="     << std::endl;
@@ -48,9 +49,8 @@ int main()
         // read params from RF627 device by Service Protocol.
         bool is_read = list[i]->read_params();
 
-        if (is_connected)
+        if (is_connected && is_read)
         {
-
             //
             // Example of working with the parameter type:
             // std::string

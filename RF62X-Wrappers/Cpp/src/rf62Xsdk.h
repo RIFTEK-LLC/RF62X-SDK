@@ -138,11 +138,15 @@ public:
      */
     bool set_param(std::shared_ptr<param> param);
     template<typename T>
-    bool set_param(std::string name, T value)
-    {
-        auto _param = this->get_param(name); _param->setValue<T>(value);
-        return set_param(_param);
+    bool set_param(std::string name, T value, bool is_enum = false) {
+        auto _param = this->get_param(name);
+        if (!is_enum)
+            _param->setValue(value);
+        else
+            _param->setValue(_param->getEnum<uint32_t>().getValue(value));
+        return set_param(std::move(_param));
     };
+
 
 
     /**
