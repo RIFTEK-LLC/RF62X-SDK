@@ -285,7 +285,7 @@ namespace SDK
                                     rf627_profile2D_t* profile_from_scanner = get_profile2D_from_scanner(
                                                 (scanner_base_t*)scannerBase, zero_points, realtime, PROTOCOL_TYPES.SERVICE);
 
-                                    if (profile_from_scanner != null)
+                                    if (profile_from_scanner->rf627smart_profile2D != null)
                                     {
                                         Profile2D result = new Profile2D(profile_from_scanner);
                                         this.profileMutex.ReleaseMutex();

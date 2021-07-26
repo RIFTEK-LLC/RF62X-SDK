@@ -81,14 +81,14 @@ int main()
                 parameter_t* width = get_parameter(scanner,"fact_sensor_width");
                 if (width != NULL && strcmp(width->base.type,"uint32_t")== 0)
                 {
-                    _frame->rf627smart_frame->width = width->val_uint32->value;
+                    _frame->rf627smart_frame->fact_sensor_width = width->val_uint32->value;
                 }
 
                 // Get parameter of user_dump_enabled
                 parameter_t* height = get_parameter(scanner,"fact_sensor_height");
                 if (height != NULL && strcmp(height->base.type,"uint32_t")== 0)
                 {
-                    _frame->rf627smart_frame->height = height->val_uint32->value;
+                    _frame->rf627smart_frame->fact_sensor_height = height->val_uint32->value;
                 }
 
                 uint32_t data_size = width->val_uint32->value * height->val_uint32->value;
@@ -100,8 +100,8 @@ int main()
 
                 printf("Frame information: \n");
                 printf("* Data Size\t: %d\n", data_size);
-                printf("* Frame Height\t: %d\n", _frame->rf627smart_frame->height);
-                printf("* Frame Width\t: %d\n", _frame->rf627smart_frame->width);
+                printf("* Frame Height\t: %d\n", _frame->rf627smart_frame->fact_sensor_height);
+                printf("* Frame Width\t: %d\n", _frame->rf627smart_frame->fact_sensor_width);
                 printf("Frame was successfully received!\n");
                 printf("-----------------------------------------\n");
 

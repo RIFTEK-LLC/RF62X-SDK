@@ -303,7 +303,8 @@ namespace SDK
                 public ushort zmr;
                 public ushort xemr;
                 public ushort discrete_value;
-                public fixed byte reserved_0[14];
+                public fixed byte reserved_0[10];
+                public uint license_hash;
 
                 public uint exposure_time;
                 public uint laser_value;
