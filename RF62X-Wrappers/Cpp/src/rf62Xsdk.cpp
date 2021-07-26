@@ -1,6 +1,5 @@
 #include "rf62Xsdk.h"
-#include "rf62Xtypes.h"
-#include "rf62Xcore.h"
+
 #include <memory>
 #include <iostream>
 #include <algorithm>
@@ -10,10 +9,14 @@
 #include <iterator>
 #include <algorithm>
 
+#include "rf62Xtypes.h"
+#include "rf62Xcore.h"
+#include "rf62Xversion.h"
+
 extern "C"{
-#include <rf62X_sdk.h>
-#include <netwok_platform.h>
-#include <utils.h>
+#include "rf62X_sdk.h"
+#include "netwok_platform.h"
+#include "utils.h"
 }
 
 
@@ -44,10 +47,7 @@ extern void WinSockDeinit();
 
 std::string SDK::SCANNERS::RF62X::sdk_version()
 {
-    /*
-     * Get sdk version
-     */
-    return SDK::CORES::RF62X::version();
+    return RF62X_SDK_VERSION;
 }
 
 bool SDK::SCANNERS::RF62X::sdk_init()
@@ -3860,6 +3860,34 @@ bool rf627smart::reboot_device(PROTOCOLS protocol)
             // Set authorization key to the RF627 device by Service Protocol.
             bool result = false;
             result = send_reboot_device_request_to_scanner(
+                        (scanner_base_t*)scanner_base, kSERVICE);
+            return result;
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool rf627smart::reboot_sensor(PROTOCOLS protocol)
+{
+    PROTOCOLS p;
+    if (protocol == PROTOCOLS::CURRENT)
+        p = this->current_protocol;
+    else
+        p = protocol;
+
+    if (_is_connected)
+    {
+        switch (p) {
+        case PROTOCOLS::SERVICE:
+        {
+            // Set authorization key to the RF627 device by Service Protocol.
+            bool result = false;
+            result = send_reboot_sensor_request_to_scanner(
                         (scanner_base_t*)scanner_base, kSERVICE);
             return result;
             break;

@@ -254,6 +254,12 @@ public:
      * @return true on success, else - false
      */
     bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    /**
+     * @brief reboot_sensor - Reboot CMOS-sensor
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @return true on success, else - false
+     */
+    bool reboot_sensor(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
     /**
