@@ -101,7 +101,6 @@ namespace PROFILE_EXAMPLE
                         Console.WriteLine("FPS: {0}, Lost: {1}", Program.profile_count, profile_lost);
                         profile_lost = 0;
                         profile_count = 0;
-                        list[index].RebootDevice();
                     }
 
                 }
