@@ -245,11 +245,11 @@ namespace SDK
                                     byte result = disconnect_from_scanner(
                                             ((scanner_base_t*)this.scannerBase), PROTOCOL_TYPES.SERVICE);
                                     isConnected = result == 1 ? false : true;
-                                    return isConnected;
+                                    return !isConnected;
                                 }
                                 else
                                 {
-                                    return isConnected;
+                                    return !isConnected;
                                 }
                             }
                     }
