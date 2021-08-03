@@ -3419,7 +3419,7 @@ bool rf627smart::save_params(PROTOCOLS protocol)
             // Establish connection to the RF627 device by Service Protocol.
             bool result = false;
             result = save_params_to_scanner(
-                        (scanner_base_t*)scanner_base, 300, kSERVICE);
+                        (scanner_base_t*)scanner_base, 2000, kSERVICE);
             return result;
             break;
         }
