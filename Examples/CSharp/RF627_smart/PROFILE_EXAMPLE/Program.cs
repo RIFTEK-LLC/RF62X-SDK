@@ -1,11 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using SDK.SCANNERS;
 
 namespace PROFILE_EXAMPLE
 {
     class Program
     {
+        public static uint profile_count;
+        public static uint profile_lost;
+        public static void receive_profiles(RF62X.RF627smart scanner)
+        {
+            // Get profile from scanner's data stream by Service Protocol.
+            RF62X.Profile2D profile = null;
+            bool zero_points = true;
+            bool realtime = false;
+
+            uint last_index = 0;
+            bool first_profile = true;
+            while (true)
+                if ((profile = scanner.GetProfile(zero_points, realtime)) != null)
+                {
+                    if (first_profile)
+                    {
+                        last_index = profile.header.measure_count;
+                        first_profile = false;
+                    }
+                    else
+                    {
+                        profile_count++;
+                        if (profile.header.measure_count - last_index > 1)
+                            profile_lost += (profile.header.measure_count - last_index);
+                        last_index = profile.header.measure_count;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Profile was not received!");
+                    Console.WriteLine("-----------------------------------------");
+                }
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("#########################################");
@@ -28,12 +63,22 @@ namespace PROFILE_EXAMPLE
             Console.WriteLine("Was found\t: {0} RF627-Smart", list.Count);
             Console.WriteLine("=========================================");
 
-
-            for (int i = 0; i < list.Count; i++)
+            int index = -1;
+            if (list.Count > 1)
             {
-                RF62X.HelloInfo info = list[i].GetInfo();
+                Console.WriteLine("Select scanner for test: ");
+                for (int i = 0; i < list.Count; i++)
+                    Console.WriteLine("{0}. Serial: {1}", i, list[i].GetInfo().serial_number);
+                index = Convert.ToInt32(Console.ReadLine());
+            }
+            else if (list.Count == 1)
+                index = 0;
 
-                Console.WriteLine("\n\nID scanner's list: {0}", i);
+
+            if (index != -1)
+            {
+                RF62X.HelloInfo info = list[index].GetInfo();
+
                 Console.WriteLine("-----------------------------------------");
                 Console.WriteLine("Device information: ");
                 Console.WriteLine("* Name\t: {0}", info.device_name);
@@ -41,56 +86,29 @@ namespace PROFILE_EXAMPLE
                 Console.WriteLine("* IP Addr\t: {0}", info.ip_address);
 
                 // Establish connection to the RF627 device by Service Protocol.
-                bool is_connected = list[i].Connect();
+                bool is_connected = list[index].Connect();
 
-                // Get profile from scanner's data stream by Service Protocol.
-                RF62X.Profile2D profile = null;
-                bool zero_points = true;
-                bool realtime = true;
-                int count = 0;
-                while (true)
+                if (is_connected)
                 {
-                    if (is_connected && (profile = list[i].GetProfile(zero_points, realtime)) != null)
+                    profile_count = 0;
+                    profile_lost = 0;
+                    Thread receiver = new Thread(() => receive_profiles(list[index]));
+                    receiver.Start();
+
+                    while (true)
                     {
-                        Console.WriteLine("Profile information: ");
-                        switch (profile.header.data_type)
-                        {
-                            case RF62X.PROFILE_DATA_TYPES.PIXELS:
-                                Console.WriteLine("* DataType\t: PIXELS");
-                                Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
-                                break;
-                            case RF62X.PROFILE_DATA_TYPES.PROFILE:
-                                Console.WriteLine("* DataType\t: PROFILE");
-                                Console.WriteLine("* Size\t: {0}", profile.points.Count);
-                                break;
-                            case RF62X.PROFILE_DATA_TYPES.PIXELS_INTRP:
-                                Console.WriteLine("* DataType\t: PIXELS_INTRP");
-                                Console.WriteLine("* Count\t: {0}", profile.pixels.Count);
-                                break;
-                            case RF62X.PROFILE_DATA_TYPES.PROFILE_INTRP:
-                                Console.WriteLine("* DataType\t: PROFILE_INTRP");
-                                Console.WriteLine("* Size\t: {0}", profile.points.Count);
-                                break;
-                            default:
-                                break;
-                        }
-                        count++;
-                        Console.WriteLine("Profile was successfully received: {0}", count);
-                        Console.WriteLine("-----------------------------------------");
+                        Thread.Sleep(1000);
+                        Console.WriteLine("FPS: {0}, Lost: {1}", Program.profile_count, profile_lost);
+                        profile_lost = 0;
+                        profile_count = 0;
+                        list[index].RebootDevice();
                     }
-                    else
-                    {
-                        Console.WriteLine("Profile was not received!");
-                        Console.WriteLine("-----------------------------------------");
-                    }
+
                 }
 
-                // Disconnect from scanner.
-                list[i].Disconnect();
+                Console.WriteLine("{0}Press any key to end \"Profile Example\"", Environment.NewLine);
+                Console.ReadKey();
             }
-
-            Console.WriteLine("{0}Press any key to end \"Profile Example\"", Environment.NewLine);
-            Console.ReadKey();
 
             // Cleanup resources allocated with sdk_init()
             RF62X.SdkCleanup();
