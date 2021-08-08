@@ -396,6 +396,8 @@ public:
      */
     bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
+    bool is_connected();
+    bool is_available();
     rf627old(void* scanner_base);
     ~rf627old();
 
