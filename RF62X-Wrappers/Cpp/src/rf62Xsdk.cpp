@@ -2478,139 +2478,6 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 
 }
 
-//profile3D_t* rf627old::get_profile3D(float step_size, float k,
-//                                     COUNT_TYPES count_type,
-//                                     bool zero_points,
-//                                     PROTOCOLS protocol)
-//{
-//    PROTOCOLS p;
-//    if (protocol == PROTOCOLS::CURRENT)
-//        p = this->current_protocol;
-//    else
-//        p = protocol;
-
-//    switch (p) {
-//    case PROTOCOLS::SERVICE:
-//    {
-//        // Get profile from scanner's data stream by Service Protocol.
-//        rf627_profile3D_t* profile_from_scanner = get_profile3D_from_scanner(
-//                    (scanner_base_t*)scanner_base, step_size, k, (count_types_t)count_type, zero_points, kSERVICE);
-
-//        profile3D_t* result = new profile3D_t;
-
-//        if(profile_from_scanner->rf627_profile3D != NULL)
-//        {
-//            result->header.data_type =
-//                    profile_from_scanner->rf627_profile3D->header.data_type;
-//            result->header.flags =
-//                    profile_from_scanner->rf627_profile3D->header.flags;
-//            result->header.device_type =
-//                    profile_from_scanner->rf627_profile3D->header.device_type;
-//            result->header.serial_number =
-//                    profile_from_scanner->rf627_profile3D->header.serial_number;
-//            result->header.system_time =
-//                    profile_from_scanner->rf627_profile3D->header.system_time;
-
-//            result->header.proto_version_major =
-//                    profile_from_scanner->rf627_profile3D->header.proto_version_major;
-//            result->header.proto_version_minor =
-//                    profile_from_scanner->rf627_profile3D->header.proto_version_minor;
-//            result->header.hardware_params_offset =
-//                    profile_from_scanner->rf627_profile3D->header.hardware_params_offset;
-//            result->header.data_offset =
-//                    profile_from_scanner->rf627_profile3D->header.data_offset;
-//            result->header.packet_count =
-//                    profile_from_scanner->rf627_profile3D->header.packet_count;
-//            result->header.measure_count =
-//                    profile_from_scanner->rf627_profile3D->header.measure_count;
-
-//            result->header.zmr =
-//                    profile_from_scanner->rf627_profile3D->header.zmr;
-//            result->header.xemr =
-//                    profile_from_scanner->rf627_profile3D->header.xemr;
-//            result->header.discrete_value =
-//                    profile_from_scanner->rf627_profile3D->header.discrete_value;
-
-//            result->header.exposure_time =
-//                    profile_from_scanner->rf627_profile3D->header.exposure_time;
-//            result->header.laser_value =
-//                    profile_from_scanner->rf627_profile3D->header.laser_value;
-//            result->header.step_count =
-//                    profile_from_scanner->rf627_profile3D->header.step_count;
-//            result->header.dir =
-//                    profile_from_scanner->rf627_profile3D->header.dir;
-
-//            switch (result->header.data_type) {
-//            case DTY_PixelsNormal:
-//            case DTY_PixelsInterpolated:
-//            {
-//                result->pixels.resize(profile_from_scanner->
-//                                      rf627_profile3D->pixels_format.pixels_count);
-
-//                for(size_t i = 0; i < result->pixels.size(); i++)
-//                {
-//                    result->pixels[i] = profile_from_scanner->
-//                            rf627_profile3D->pixels_format.pixels[i];
-//                }
-
-//                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
-//                {
-//                    result->intensity.resize(
-//                                profile_from_scanner->rf627_profile3D->intensity_count);
-//                    for (size_t i = 0; i < result->intensity.size(); i++)
-//                        result->intensity[i] =
-//                                profile_from_scanner->rf627_profile3D->intensity[i];
-//                }
-
-//                break;
-//            }
-//            case DTY_ProfileNormal:
-//            case DTY_ProfileInterpolated:
-//            {
-//                result->points.resize(profile_from_scanner->
-//                                      rf627_profile3D->profile_format.points_count);
-
-//                for(size_t i = 0; i < result->points.size(); i++)
-//                {
-//                    result->points[i].x = profile_from_scanner->rf627_profile3D->
-//                            profile_format.points[i].x;
-//                    result->points[i].y = profile_from_scanner->rf627_profile3D->
-//                            profile_format.points[i].y;
-//                    result->points[i].z = profile_from_scanner->rf627_profile3D->
-//                            profile_format.points[i].z;
-//                }
-
-//                if(profile_from_scanner->rf627_profile3D->intensity_count > 0)
-//                {
-//                    result->intensity.resize(
-//                                profile_from_scanner->rf627_profile3D->intensity_count);
-//                    for (size_t i = 0; i < result->intensity.size(); i++)
-//                        result->intensity[i] =
-//                                profile_from_scanner->rf627_profile3D->intensity[i];
-//                }
-//                break;
-//            }
-//            default:
-//                break;
-//            }
-//            free(profile_from_scanner->rf627_profile3D->intensity);
-//            free(profile_from_scanner->rf627_profile3D->pixels_format.pixels);
-//            free(profile_from_scanner->rf627_profile3D);
-//            free(profile_from_scanner);
-//            return result;
-//        }
-
-//        free(profile_from_scanner->rf627_profile3D);
-//        free(profile_from_scanner);
-//        delete result;
-//    }
-//    default:
-//        break;
-//    }
-
-//    return NULL;
-
-//}
 
 char *rf627old::get_frame(PROTOCOLS protocol)
 {
@@ -2659,7 +2526,7 @@ bool rf627old::write_params(PROTOCOLS protocol)
         // Establish connection to the RF627 device by Service Protocol.
         bool result = false;
         result = write_params_to_scanner(
-                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+                    (scanner_base_t*)scanner_base, 300, kSERVICE);
         return result;
         break;
     }
@@ -2942,6 +2809,16 @@ bool rf627old::reboot_device(PROTOCOLS protocol)
     return false;
 }
 
+bool rf627old::is_connected()
+{
+    return _is_connected;
+}
+
+bool rf627old::is_available()
+{
+    return _is_exist;
+}
+
 //
 // RF627
 // smart version (v2.x.x)
@@ -3163,11 +3040,10 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
         bool result = false;
         if (_is_connected)
         {
-//            // Establish connection to the RF627 device by Service Protocol.
+            // Establish connection to the RF627 device by Service Protocol.
             result = check_connection_to_scanner(
                         ((scanner_base_t*)this->scanner_base), timeout, kSERVICE);
             _is_exist = result;
-//            _is_connected = result;
         }else
         {
             result = _is_connected;
