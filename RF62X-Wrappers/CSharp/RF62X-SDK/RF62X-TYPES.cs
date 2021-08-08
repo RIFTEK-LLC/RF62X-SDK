@@ -860,8 +860,8 @@ namespace SDK
                                             case PROFILE_DATA_TYPES.PIXELS:
                                             case PROFILE_DATA_TYPES.PIXELS_INTRP:
                                                 {
-                                                    pixels = new List<ushort>();
                                                     uint pixels_count = ((rf627_profile2D_t*)_base)->rf627old_profile2D->pixelsFormat.pixels_count;
+                                                    pixels = new List<ushort>((int)pixels_count);
                                                     for (int i = 0; i < pixels_count; i++)
                                                     {
                                                         pixels.Add(((rf627_profile2D_t*)_base)->rf627old_profile2D->pixelsFormat.pixels[i]);
@@ -869,8 +869,8 @@ namespace SDK
 
                                                     if (((rf627_profile2D_t*)_base)->rf627old_profile2D->intensity_count > 0)
                                                     {
-                                                        intensities = new List<byte>();
                                                         uint intensity_count = ((rf627_profile2D_t*)_base)->rf627old_profile2D->intensity_count;
+                                                        intensities = new List<byte>((int)intensity_count);
                                                         for (int i = 0; i < intensity_count; i++)
                                                             intensities.Add(((rf627_profile2D_t*)_base)->rf627old_profile2D->intensity[i]);
                                                     }
@@ -879,8 +879,8 @@ namespace SDK
                                             case PROFILE_DATA_TYPES.PROFILE:
                                             case PROFILE_DATA_TYPES.PROFILE_INTRP:
                                                 {
-                                                    points = new List<Point2D>();
                                                     uint points_count = ((rf627_profile2D_t*)_base)->rf627old_profile2D->profileFormat.points_count;
+                                                    points = new List<Point2D>((int)points_count);
                                                     for (int i = 0; i < points_count; i++)
                                                     {
                                                         Point2D point = new Point2D(
@@ -891,8 +891,8 @@ namespace SDK
 
                                                     if (((rf627_profile2D_t*)_base)->rf627old_profile2D->intensity_count > 0)
                                                     {
-                                                        intensities = new List<byte>();
                                                         uint intensity_count = ((rf627_profile2D_t*)_base)->rf627old_profile2D->intensity_count;
+                                                        intensities = new List<byte>((int)intensity_count);
                                                         for (int i = 0; i < intensity_count; i++)
                                                             intensities.Add(((rf627_profile2D_t*)_base)->rf627old_profile2D->intensity[i]);
                                                     }
@@ -915,8 +915,8 @@ namespace SDK
                                             case PROFILE_DATA_TYPES.PIXELS:
                                             case PROFILE_DATA_TYPES.PIXELS_INTRP:
                                                 {
-                                                    pixels = new List<ushort>();
                                                     uint pixels_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsFormat.pixels_count;
+                                                    pixels = new List<ushort>((int)pixels_count);
                                                     for (int i = 0; i < pixels_count; i++)
                                                     {
                                                         pixels.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsFormat.pixels[i]);
@@ -924,8 +924,8 @@ namespace SDK
 
                                                     if (((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count > 0)
                                                     {
-                                                        intensities = new List<byte>();
                                                         uint intensity_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count;
+                                                        intensities = new List<byte>((int)intensity_count);
                                                         for (int i = 0; i < intensity_count; i++)
                                                             intensities.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity[i]);
                                                     }
@@ -934,8 +934,8 @@ namespace SDK
                                             case PROFILE_DATA_TYPES.PROFILE:
                                             case PROFILE_DATA_TYPES.PROFILE_INTRP:
                                                 {
-                                                    points = new List<Point2D>();
                                                     uint points_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->profileFormat.points_count;
+                                                    points = new List<Point2D>((int)points_count);
                                                     for (int i = 0; i < points_count; i++)
                                                     {
                                                         Point2D point = new Point2D(
@@ -946,8 +946,8 @@ namespace SDK
 
                                                     if (((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count > 0)
                                                     {
-                                                        intensities = new List<byte>();
                                                         uint intensity_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count;
+                                                        intensities = new List<byte>((int)intensity_count);
                                                         for (int i = 0; i < intensity_count; i++)
                                                             intensities.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity[i]);
                                                     }
