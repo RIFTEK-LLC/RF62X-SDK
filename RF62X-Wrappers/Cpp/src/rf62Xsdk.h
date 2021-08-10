@@ -261,6 +261,30 @@ public:
      */
     bool reboot_sensor(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
+    /**
+     * @brief send_to_periphery
+     * @param iface_name
+     * @param in
+     * @param out
+     * @param timeout
+     * @return
+     */
+    bool send_to_periphery(
+            std::string iface_name, std::vector<char> in,
+            std::vector<char>& out, uint32_t timeout);
+
+    /**
+     * @brief receive_from_periphery
+     * @param iface_name
+     * @param count
+     * @param out
+     * @param timeout
+     * @return
+     */
+    bool receive_from_periphery(
+            std::string iface_name, uint32_t count,
+            std::vector<char>& out, uint32_t timeout);
+
 
     /**
      * @brief rf627smart - Class constructor.

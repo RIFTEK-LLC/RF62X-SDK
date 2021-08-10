@@ -3900,6 +3900,42 @@ bool rf627smart::reboot_sensor(PROTOCOLS protocol)
     return false;
 }
 
+bool rf627smart::send_to_periphery(
+        std::string iface_name, std::vector<char> in,
+        std::vector<char> &out, uint32_t timeout)
+{
+    if (_is_connected)
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        bool result = false;
+
+        char* out_data = nullptr;
+        uint32_t out_data_size = 0;
+        result = send_data_to_scanner_periphery(
+                    (scanner_base_t*)scanner_base, iface_name.c_str(), timeout,
+                    in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
+
+        if (out_data_size > 0)
+        {
+            out.resize(out_data_size);
+            for(uint32_t i = 0; i < out_data_size; i++)
+                out.push_back(out_data[i]);
+        }
+
+        return result;
+    }
+
+    return false;
+}
+
+bool rf627smart::receive_from_periphery(
+        std::string iface_name, uint32_t count,
+        std::vector<char> &out, uint32_t timeout)
+{
+    return false;
+}
+
+
 bool rf627smart::read_calibration_table(PROTOCOLS protocol)
 {
     PROTOCOLS p;
