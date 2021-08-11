@@ -906,18 +906,6 @@ T ValueEnum<T>::getValue(std::string key) const
 }
 
 template <typename T>
-T ValueEnum<T>::getValue(uint32_t index) const
-{
-    if (_enum_base.size() < index)
-    {
-        return std::get<0>(_enum_base[index]);
-    }else
-    {
-        throw "No enum item at the specified index";
-    }
-}
-
-template <typename T>
 std::string ValueEnum<T>::getLabel(std::string key) const
 {
     auto it = std::find_if(_enum_base.begin(), _enum_base.end(), [key](const std::tuple<T, std::string, std::string>& e) {return std::get<1>(e) == key;});
@@ -931,23 +919,25 @@ std::string ValueEnum<T>::getLabel(std::string key) const
 }
 
 template <typename T>
-std::string ValueEnum<T>::getLabel(uint32_t index) const
+std::string ValueEnum<T>::findLabel(T value) const
 {
-    if (_enum_base.size() < index)
+    auto it = std::find_if(_enum_base.begin(), _enum_base.end(), [value](const std::tuple<T, std::string, std::string>& e) {return std::get<0>(e) == value;});
+    if (it != _enum_base.end())
     {
-        return std::get<2>(_enum_base[index]);
+        return std::get<2>(*it);
     }else
     {
-        throw "No enum item at the specified index";
+        throw "No enum item at the specified value";
     }
 }
 
 template <typename T>
-std::string ValueEnum<T>::getKey(uint32_t index) const
+std::string ValueEnum<T>::findKey(T value) const
 {
-    if (_enum_base.size() < index)
+    auto it = std::find_if(_enum_base.begin(), _enum_base.end(), [value](const std::tuple<T, std::string, std::string>& e) {return std::get<0>(e) == value;});
+    if (it != _enum_base.end())
     {
-        return std::get<1>(_enum_base[index]);
+        return std::get<1>(*it);
     }else
     {
         throw "No enum item at the specified index";
@@ -3457,6 +3447,13 @@ bool rf627smart::set_param(std::shared_ptr<param> param)
         return true;
     }
     return false;
+}
+
+bool rf627smart::set_param_by_key(std::string name, std::string key)
+{
+    auto _param = this->get_param(name);
+    _param->setValue(_param->getEnum<uint32_t>().getValue(key));
+    return set_param(std::move(_param));
 }
 
 bool rf627smart::start_dump_recording(uint32_t count_of_profiles)

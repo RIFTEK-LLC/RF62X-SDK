@@ -343,12 +343,10 @@ public:
     ~ValueEnum();
 
     T getValue(std::string key) const;
-    T getValue(uint32_t index) const;
-
     std::string getLabel(std::string key) const;
-    std::string getLabel(uint32_t index) const;
 
-    std::string getKey(uint32_t index) const;
+    std::string findLabel(T value) const;
+    std::string findKey(T value) const;
 
     std::vector<T> getValueList() const;
     std::vector<std::string> getKeyList() const;
