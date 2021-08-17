@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iterator>
 #include <algorithm>
+#include <time.h>
 
 #include "rf62Xtypes.h"
 #include "rf62Xcore.h"
@@ -554,6 +555,13 @@ bool calib_table::setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd)
 
     return true;
 
+}
+
+bool calib_table::updateTimeStamp()
+{
+    m_TimeStamp = time(nullptr);
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_TimeStamp = m_TimeStamp;
+    return true;
 }
 
 bool calib_table::save_to_file(std::string file_name)
