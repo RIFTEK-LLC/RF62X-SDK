@@ -1,3 +1,3 @@
 [submodule "RF62X-Core"]
 	path = RF62X-Core
-	url = git@github.com:RIFTEK-LLC/RF62X-Core.git
+	url = ../RF62X-Core.git
