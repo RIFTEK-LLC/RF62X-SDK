@@ -3036,6 +3036,7 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
+        connect_mutex.lock();
         if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
@@ -3046,6 +3047,7 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
         {
             result = _is_connected;
         }
+        connect_mutex.unlock();
 
         return result;
         break;
@@ -3069,6 +3071,7 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
+        connect_mutex.lock();
         if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
@@ -3083,6 +3086,7 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
             result = TRUE;
             _is_connected = FALSE;
         }
+        connect_mutex.unlock();
         return result;
         break;
     }
