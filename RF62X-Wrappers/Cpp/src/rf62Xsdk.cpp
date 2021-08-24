@@ -60,6 +60,8 @@ namespace SDK {
 namespace SCANNERS {
 namespace RF62X {
 
+static std::mutex search_mutex;
+
 class convert{
     public:
     static std::string to_hex(int to_convert, int precision_specifier, bool uppercase = false)
@@ -2178,7 +2180,6 @@ std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool o
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        static std::mutex search_mutex;
         search_mutex.lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
@@ -2826,7 +2827,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        static std::mutex search_mutex;
         search_mutex.lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
