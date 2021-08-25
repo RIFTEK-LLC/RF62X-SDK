@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iterator>
 #include <algorithm>
+#include <time.h>
 
 #include "rf62Xtypes.h"
 #include "rf62Xcore.h"
@@ -58,6 +59,8 @@ bool SDK::SCANNERS::RF62X::sdk_init()
 namespace SDK {
 namespace SCANNERS {
 namespace RF62X {
+
+static std::mutex search_mutex;
 
 class convert{
     public:
@@ -554,6 +557,13 @@ bool calib_table::setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd)
 
     return true;
 
+}
+
+bool calib_table::updateTimeStamp()
+{
+    m_TimeStamp = time(nullptr);
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_TimeStamp = m_TimeStamp;
+    return true;
 }
 
 bool calib_table::save_to_file(std::string file_name)
@@ -2170,7 +2180,6 @@ std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool o
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        static std::mutex search_mutex;
         search_mutex.lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
@@ -2818,7 +2827,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        static std::mutex search_mutex;
         search_mutex.lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
@@ -3028,6 +3036,7 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
+        connect_mutex.lock();
         if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
@@ -3038,6 +3047,7 @@ bool rf627smart::check_connection(uint32_t timeout, PROTOCOLS protocol)
         {
             result = _is_connected;
         }
+        connect_mutex.unlock();
 
         return result;
         break;
@@ -3061,6 +3071,7 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
     case PROTOCOLS::SERVICE:
     {
         bool result = false;
+        connect_mutex.lock();
         if (_is_connected)
         {
             // Establish connection to the RF627 device by Service Protocol.
@@ -3075,6 +3086,7 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
             result = TRUE;
             _is_connected = FALSE;
         }
+        connect_mutex.unlock();
         return result;
         break;
     }
