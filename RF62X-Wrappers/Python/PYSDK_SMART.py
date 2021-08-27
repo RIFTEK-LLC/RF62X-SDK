@@ -4458,7 +4458,7 @@ def py_profile2python(profile_sdk):
 
     return ret
 
-def get_dumps_profiles(scanner, index, count, protocol=kSERVICE):
+def get_dumps_profiles(scanner, index, count, timeout=10000):
     result=[]
     fact_dump_unitSize = get_param(scanner, "fact_dump_unitSize")
     if (fact_dump_unitSize is not None and fact_dump_unitSize["type"]=="uint32_t"):
@@ -4467,7 +4467,7 @@ def get_dumps_profiles(scanner, index, count, protocol=kSERVICE):
         unit_size=fact_dump_unitSize["value"]
         status = lib.get_dumps_profiles_from_scanner(
                     scanner, index, count,
-                    1000, kSERVICE,
+                    timeout, kSERVICE,
                     (dumps),byref(dump_size_val),
                     unit_size)
         if status:

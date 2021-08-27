@@ -3540,54 +3540,39 @@ bool rf627smart::stop_dump_recording(uint32_t &count_of_profiles)
 }
 
 std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
-        uint32_t index, uint32_t count, PROTOCOLS protocol)
+        uint32_t index, uint32_t count, uint32_t timeout)
 {
-    PROTOCOLS p;
-    if (protocol == PROTOCOLS::CURRENT)
-        p = this->current_protocol;
-    else
-        p = protocol;
-
     std::vector<std::shared_ptr<profile2D>> result;
     if (_is_connected)
     {
-        switch (p) {
-        case PROTOCOLS::SERVICE:
+        // Get parameter of fact_dump_unitSize
+        std::shared_ptr<param> fact_dump_unitSize = get_param("fact_dump_unitSize");
+        if (fact_dump_unitSize !=nullptr && fact_dump_unitSize->getType()=="uint32_t")
         {
-            // Get parameter of fact_dump_unitSize
-            std::shared_ptr<param> fact_dump_unitSize = get_param("fact_dump_unitSize");
-            if (fact_dump_unitSize !=nullptr && fact_dump_unitSize->getType()=="uint32_t")
+            rf627_profile2D_t** dumps =
+                    (rf627_profile2D_t**)calloc(count, sizeof (rf627_profile2D_t*));
+            uint32_t dump_size = 0;
+            uint8_t status = get_dumps_profiles_from_scanner(
+                        (scanner_base_t*)scanner_base, index, count, timeout, kSERVICE,
+                        dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
+            if (status)
             {
-                rf627_profile2D_t** dumps =
-                        (rf627_profile2D_t**)calloc(count, sizeof (rf627_profile2D_t*));
-                uint32_t dump_size = 0;
-                uint8_t status = get_dumps_profiles_from_scanner(
-                            (scanner_base_t*)scanner_base, index, count, 1000, kSERVICE,
-                            dumps, &dump_size, fact_dump_unitSize->getValue<uint32_t>());
-                if (status)
+                for(uint32_t i = 0; i < dump_size; i++)
                 {
-                    for(uint32_t i = 0; i < dump_size; i++)
+                    if (dumps[i]->rf627smart_profile2D != nullptr)
                     {
-                        if (dumps[i]->rf627smart_profile2D != nullptr)
-                        {
-                            result.push_back(std::make_shared<profile2D>(dumps[i]));
-                        }else
-                        {
-                            throw ("get_dumps_profiles dump_size exception");
-                        }
+                        result.push_back(std::make_shared<profile2D>(dumps[i]));
+                    }else
+                    {
+                        throw ("get_dumps_profiles dump_size exception");
                     }
-                    free(dumps);
                 }
-                return result;
-            }else
-            {
-                return result;
+                free(dumps);
             }
-
-            break;
-        }
-        default:
-            break;
+            return result;
+        }else
+        {
+            return result;
         }
     }
 

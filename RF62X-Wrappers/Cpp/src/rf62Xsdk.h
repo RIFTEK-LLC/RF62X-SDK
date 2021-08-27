@@ -174,11 +174,11 @@ public:
      * @brief get_dumps_profiles - getting the content of the profile dump
      * @param index Start number of the requested profile from memory
      * @param count The count of requested profiles
-     * @param proto Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @param timeout Waiting time for dump download
      * @return Vector profiles
      */
     std::vector<std::shared_ptr<profile2D>> get_dumps_profiles(
-            uint32_t index,uint32_t count,PROTOCOLS proto = PROTOCOLS::CURRENT);
+            uint32_t index, uint32_t count, uint32_t timeout = 10000);
 
 
 
