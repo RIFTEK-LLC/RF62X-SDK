@@ -999,54 +999,42 @@ namespace SDK
                 /// </summary>
                 /// <param name="index">Start number of the requested profile from memory</param>
                 /// <param name="count">The count of requested profiles</param>
-                /// <param name="protocol">Protocol's type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="timeout">Waiting time for dump download</param>
                 /// <returns></returns>
-                public List<Profile2D> GetDumpsProfiles(uint index, uint count, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public List<Profile2D> GetDumpsProfiles(uint index, uint count, uint timeout=10000)
                 {
-                    PROTOCOL_TYPES p;
-                    if (protocol == PROTOCOL_TYPES.CURRENT)
-                        p = this.currentProtocol;
-                    else
-                        p = protocol;
-
                     List<Profile2D> result = new List<Profile2D>();
                     if (isConnected)
                     {
-                        switch (p)
+                        // Get parameter of fact_dump_unitSize
+                        Parameter<uint> fact_dump_unitSize = GetParam("fact_dump_unitSize");
+                        if (fact_dump_unitSize != null && fact_dump_unitSize.type == "uint32_t")
                         {
-                            case PROTOCOL_TYPES.SERVICE:
+                            rf627_profile2D_t** dumps = (rf627_profile2D_t**)platform_calloc((UIntPtr)count, (UIntPtr)sizeof(void*));
+                            uint dump_size = 0;
+                            byte status = get_dumps_profiles_from_scanner(
+                                        (scanner_base_t*)scannerBase, index, count, timeout, PROTOCOL_TYPES.SERVICE,
+                                        dumps, &dump_size, fact_dump_unitSize.GetValue());
+                            if (status == 1 ? true : false)
+                            {
+                                for (uint i = 0; i < dump_size; i++)
                                 {
-                                    // Get parameter of fact_dump_unitSize
-                                    Parameter<uint> fact_dump_unitSize = GetParam("fact_dump_unitSize");
-                                    if (fact_dump_unitSize != null && fact_dump_unitSize.type == "uint32_t")
+                                    if (dumps[i]->rf627smart_profile2D != null)
                                     {
-                                        rf627_profile2D_t** dumps = (rf627_profile2D_t**)platform_calloc((UIntPtr)count, (UIntPtr)sizeof(void*));
-                                        uint dump_size = 0;
-                                        byte status = get_dumps_profiles_from_scanner(
-                                                    (scanner_base_t*)scannerBase, index, count, 1000, PROTOCOL_TYPES.SERVICE,
-                                                    dumps, &dump_size, fact_dump_unitSize.GetValue());
-                                        if (status == 1 ? true : false)
-                                        {
-                                            for (uint i = 0; i < dump_size; i++)
-                                            {
-                                                if (dumps[i]->rf627smart_profile2D != null)
-                                                {
-                                                    result.Add(new Profile2D(dumps[i]));
-                                                }
-                                                else
-                                                {
-                                                    throw new Exception("get_dumps_profiles dump_size exception");
-                                                }
-                                            }
-                                            platform_free(dumps);
-                                        }
-                                        return result;
+                                        result.Add(new Profile2D(dumps[i]));
                                     }
                                     else
                                     {
-                                        return result;
+                                        throw new Exception("get_dumps_profiles dump_size exception");
                                     }
                                 }
+                                platform_free(dumps);
+                            }
+                            return result;
+                        }
+                        else
+                        {
+                            return result;
                         }
                     }
                     return result;

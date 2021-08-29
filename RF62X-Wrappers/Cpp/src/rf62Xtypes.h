@@ -123,6 +123,7 @@ public:
     bool setZ(std::vector<int16_t> Zd);
     bool setX(std::vector<int16_t> Xd);
     bool setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd);
+    bool updateTimeStamp();
 
     bool save_to_file(std::string file_name);
     bool convert_to_bytes(std::vector<char>& bytes);
