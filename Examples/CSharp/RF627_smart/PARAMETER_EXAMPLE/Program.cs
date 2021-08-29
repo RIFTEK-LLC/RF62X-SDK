@@ -149,6 +149,26 @@ namespace PARAMETER_EXAMPLE
                         list[i].SetParam(streamsFormat);
                     }
 
+
+                    //
+                    // Example of working with parameters using an Enum
+                    //
+                    // Get/Set parameter of Sync Source
+                    RF62X.Parameter<uint> syncSource = list[i].GetParam("user_sensor_syncSource");
+                    if (syncSource != null)
+                    {
+                        // Set syncSource to SYNC_INTERNAL (or SYNC_EXTERNAL)
+                        var newSource = syncSource.valuesEnum.Find(
+                                delegate (RF62X.Parameter<uint>.ValuesEnum v) {
+                                    return v.GetKey() == "SYNC_INTERNAL";
+                                });
+                        syncSource.SetValue(newSource.GetValue());
+                        Console.WriteLine("New Sync Source\t: {0}", newSource.GetLabel());
+
+                        Console.WriteLine("-----------------------------------------");
+                        list[i].SetParam(syncSource);
+                    }
+
                     // Apply changed parameters to the device
                     char answer = 'n';
                     Console.Write("Apply changed params to the device? (y/n):");
