@@ -1,39 +1,39 @@
 .. _clone_rf62x_sdk:
 
 *******************************************************************************
-Загрузка проекта
+Скачивание проекта
 *******************************************************************************
 
 Git-клиент
 ===============================================================================
 
-Для разработчиков, которые хотят загрузить библиотеку из исходников с помощью 
+Для разработчиков, которые хотят скачать библиотеку из исходников с помощью 
 Git-клиента, следует выполнить следующие инструкции:
 
 *  **Установите git-клиент на свой локальный компьютер (если ещё не установлен)**
     
     -  В Linux используйте команду терминала: ``sudo apt install git``
     -  На MacOS используйте команду терминала: ``brew install git``
-    -  Для других платформ смотрите `документация по установке git <https://git-scm.com/downloads>`__.
+    -  Для других платформ смотрите `документацию по установке git-клиента <https://git-scm.com/downloads>`__.
 
 *  **Откройте командную строку/терминал на вашем компьютере**
     
-    - В Linux щелкните панель запуска и найдите «терминал» - `terminal`
-    - В OS X нажмите command-space и найдите «терминал» - `terminal`
+    - В Linux щелкните панель запуска и найдите `terminal`
+    - В OS X нажмите command-space и найдите `terminal`
     - В Windows нажмите меню «Пуск» и найдите «командную строку» - `cmd`.
 
 *  **Клонируйте репозиторий с помощью следующих команд:**
 
-   .. code-block:: bash
-
-      git clone https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git
-      cd RF62X-SDK
-      git submodule update --init --recursive
+    .. code-block:: bash
+    
+        git clone https://github.com/RIFTEK-LLC/RF62X-SDK.git
+        cd RF62X-SDK
+        git submodule update --init --recursive
 
 Git в Qt Creator
 ===============================================================================
 
-Для разработчиков, которые хотят загрузить и собрать библиотеку из исходников с 
+Для разработчиков, которые хотят скачать и собрать библиотеку из исходников с 
 помощью Git, встроенного в IDE Qt Creator, следует выполнить следующие инструкции:
 
 1. Нажмите **File->New File or Project**
@@ -41,47 +41,47 @@ Git в Qt Creator
 
 2. Выберите опцию **Import Project->Git Clone**, как показано ниже.
 
-.. figure:: ../_static/clone-qt-code.png
-    :alt: chouse repo
+.. figure:: ../../resources/img/clone-qt-code.png
+    :alt: clone-qt-code
     :width: 100%
     :align: center
 
 
-3. Введите url-адрес SDK ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``, 
+3. Введите url-адрес SDK ``https://github.com/RIFTEK-LLC/RF62X-SDK.git``, 
    выберите опцию **«Recursive»**, а затем нажмите **Next**.
 
-.. figure:: ../_static/clone-qt-code-repo.png
-    :alt: chouse repo
+.. figure:: ../../resources/img/clone-qt-code-repo.png
+    :alt: clone-qt-code-repo
     :width: 100%
     :align: center
 
 4. После загрузки откройте файл CMakeLists.txt необходимого вам проекта  
-   через **File > Open File or Project**, выберите компилятор (MinGW, MSVC2017, Clang)
+   через **File > Open File or Project**, выберите компилятор (MinGW, MSVC, Clang)
    и нажмите **Configure Project**
 
-5. Запустите сборку проекта
+5. Запустите компиляцию проекта
 
 
 Git в Visual Studio
 ===============================================================================
 
-Для разработчиков, которые хотят загрузить и собрать библиотеку из исходников с 
+Для разработчиков, которые хотят скачать и собрать библиотеку из исходников с 
 помощью Git, встроенного в IDE Visual Studio, следует выполнить следующие инструкции:
 
 1. Откройте Visual Studio 2019.
 
 2. В стартовом окне выберите **Клонирование или извлечение кода**.
 
-.. figure:: ../_static/clone-checkout-code-dark.png
-    :alt: clone code
+.. figure:: ../../resources/img/clone-checkout-code-dark.png
+    :alt: clone-checkout-code-dark
     :width: 100%
     :align: center
 
 3. Введите url-адрес SDK ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``,
    выберите или введите местоположение хранилища, а затем нажмите **Клонировать**.
 
-.. figure:: ../_static/clone-checkout-code-git-repo-dark.png
-    :alt: chouse repo
+.. figure:: ../../resources/img/clone-checkout-code-git-repo-dark.png
+    :alt: clone-checkout-code-git-repo-dark
     :width: 100%
     :align: center
 
@@ -89,8 +89,8 @@ Git в Visual Studio
 
 5. Выберите один из необходимых вам проектов и запустите его сборку.
 
-.. figure:: ../_static/run-csharp-code-git-repo-dark.png
-    :alt: chouse repo
+.. figure:: ../../resources/img/run-csharp-code-git-repo-dark.png
+    :alt: run-csharp-code-git-repo-dark
     :width: 100%
     :align: center
 

@@ -4,39 +4,6 @@
 Компиляция «ядра» на C
 *******************************************************************************
 
-**RF62X-CORE** - основная библиотека («Ядро») с базовым набором функций и типов  
-для работы с лазерными сканерами серии RF62X. Библиотека написана на языке 
-программирования CИ в соответствии со стандартом C99 (ISO / IEC 9899: 1999) и 
-является кросс-платформенной. Для использования данной библиотеки необходима 
-реализация платформозависимых функций (работа с памятью, работа с сетью, функции 
-ввода/вывода). 
-
-.. _rf62Xcore_dll_mingw_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/178471d04d864e6110deba9ac9074df1/rf62Xcore.dll
-.. _rf62Xcore_a_mingw_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/4391dcfc692165676df647cbc65fb570/rf62Xcore.a
-.. _rf62Xcore_mingw_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip
-
-.. _rf62Xcore_dll_msvc17_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/b97b1cec97a78ab3c9b09de946fd7e70/rf62Xcore.dll
-.. _rf62Xcore_lib_msvc17_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/4eb42c2565bc2f61ed6714fc1bcf9d90/rf62Xcore.lib
-.. _rf62Xcore_msvc17_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/912861a038055097ae482022a9003702/include.zip
-
-.. _rf62Xcore_dll_clang_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/49e8e99d59fba95fa9f952c5befe8e92/rf62Xcore.dll
-.. _rf62Xcore_lib_clang_64: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/5f96d0e7bb69d9a6ad60f41644a7e72d/rf62Xcore.lib
-.. _rf62Xcore_clang_64_include: https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK/uploads/e2dc04f462b16838265ffcd069f9324c/include.zip
-
-.. _rf62x_core_last_release:
-
-.. table:: Последние выпуски:
-
-   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
-   | Compiler      | 64bit                                                                                   | Includes                                      |
-   +===============+=========================================================================================+===============================================+
-   | MinGW 7.3.0   | `rf62Xcore.dll <rf62Xcore_dll_mingw_64_>`_ `rf62Xcore.a <rf62Xcore_a_mingw_64_>`_       | `include.zip <rf62Xcore_mingw_64_include>`_   |
-   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
-   | MSVC2017      | `rf62Xcore.dll <rf62Xcore_dll_msvc17_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_msvc17_64_>`_ | `include.zip <rf62Xcore_msvc17_64_include_>`_ |
-   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
-   | Clang 9.1.0   | `rf62Xcore.dll <rf62Xcore_dll_clang_64_>`_ `rf62Xcore.lib <rf62Xcore_lib_clang_64_>`_   | `include.zip <rf62Xcore_clang_64_include_>`_  |
-   +---------------+-----------------------------------------------------------------------------------------+-----------------------------------------------+
-
 .. _how_to_compile_rf62x_core:
 
 Как скомпилировать
@@ -54,14 +21,13 @@ RF62X-CORE может быть скомпилирован при помощи к
 CMake
 -------------------------------------------------------------------------------
 
-Находясь в папке с проектом, для построения RF62X-CORE 
+Находясь в папке с проектом, для построения RF62X-Core 
 введите следующую команду в консоль (терминал):
 
 .. code-block:: bash
 
-   cd rf62Xcore
-   mkdir build
-   cd build
+   cd RF62X-Core
+   mkdir build && cd build
    cmake ..
    cmake --build .
 
@@ -70,13 +36,12 @@ CMake
 Qt Creator
 -------------------------------------------------------------------------------
 
-Для построения RF62X-CORE с использованием IDE Qt Creator: 
+Для построения RF62X-Core с использованием IDE Qt Creator: 
 
--  Загрузите файл CMakeLists.txt из папки **rf62Xcore** через 
+-  Загрузите файл CMakeLists.txt из папки **RF62X-Core** через 
    **File > Open File or Project** (выберите файл CMakeLists.txt)
--  Выберите компилятор (MinGW, MSVC2017, Clang)
+-  Выберите компилятор (MinGW, MSVC, Clang)
    и нажмите **Configure Project** 
--  Откройте **Build Settings** и отметьте пункт **install** для **Build Steps**
 -  Скомпилируйте проект
 
 .. _how_to_compile_rf62x_core_vs:
@@ -89,12 +54,11 @@ Visual Studio
 
 .. code-block:: bash
 
-   cd rf62Xcore
-   mkdir build
-   cd build
+   cd RF62X-Core
+   mkdir build && cd build
    cmake ..
 
--  Откройте полученное решение rf62Xcore.sln в Visual Studio
+-  Откройте полученное решение RF62X-Core.sln в Visual Studio
 -  Скомпилируйте проект
 
 .. _rf62x_core_description_how_to_use:
@@ -102,7 +66,7 @@ Visual Studio
 Как использовать
 ===============================================================================
 
-При желании использовать библиотеку RF62X-CORE вместо предоставляемых библиотек-«обёрток» 
+При желании использовать библиотеку RF62X-Core вместо имеющихся библиотек-«обёрток» 
 разработчику необходимо самостоятельно реализовать платформозависимую часть «ядра».
 
 .. _rf62x_core_description_dependence:

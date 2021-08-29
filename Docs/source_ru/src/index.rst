@@ -1,10 +1,5 @@
-.. RF62X-SDK documentation master file, created by
-   sphinx-quickstart on Sun Mar 29 11:20:17 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-.. figure:: _static/RF62X_SDK.png
-    :alt: RF62X SDK logo
+.. figure:: ../resources/img/RF62X_SDK.png
+    :alt: RF62X-SDK logo
     :width: 100%
     :align: center
 
@@ -14,20 +9,15 @@
 Набор программных средств для работы с лазерными сканерами серии RF62X
 ===============================================================================
 
-*******************************************************************************
-Введение
-*******************************************************************************
-
-**RF627X-SDK** - набор средств разработки, который позволяет специалистам создавать
-собственное программное обеспечение для работы с лазерными сканерами серии RF62X 
-(RF627Old, RF627Smart) производства компании РИФТЭК. 
-
 .. toctree::
-   :maxdepth: 2
-   :caption: Руководство программиста
+   :maxdepth: 1
+   :caption: Подготовка к работе
 
-   overview
-   getting_started/_index
+   1.getting_started/1.overview
+   1.getting_started/2.compatibility
+   1.getting_started/3.preinstall_and_setup
+   1.getting_started/4.loading_sdk
+   1.getting_started/5.running_sdk_examples
    sdk_compilation/_index
    additional_info
 
