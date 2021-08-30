@@ -17,7 +17,7 @@ RF62X необходимо:
 2) Для вызовов методов из **rf62Xsdk.dll** при проектировании алгоритмом в LabVIEW 
    необходим компонент **Invoke Node (.Net)**, который располагается в разделе **Connectivity->.Net**
    
-   .. figure:: ../_static/labview_image2.png
+   .. figure:: ../../resources/img/labview_image2.png
     :alt: image1
     :width: 40%
     :align: center
@@ -25,7 +25,7 @@ RF62X необходимо:
 3) В контекстном меню добавленного компонента **Invoke Node (.Net)** необходимо указать 
    библиотеку **rf62Xsdk.dll** и выбрать класс **SDK.SCANNERS.RF62X**:
    
-   .. figure:: ../_static/labview_image4.png
+   .. figure:: ../../resources/img/labview_image4.png
     :alt: image2
     :width: 100%
     :align: center
@@ -33,7 +33,7 @@ RF62X необходимо:
 4) Для вызова в IDE LabVIEW конкретного метода из библиотеки **rf62Xsdk.dll** необходимо 
    в контекстном меню добавленного компонента **Invoke Node (.Net)** открыть раздел **Class Method**:
    
-   .. figure:: ../_static/labview_image5.png
+   .. figure:: ../../resources/img/labview_image5.png
     :alt: image3
     :width: 70%
     :align: center
@@ -44,7 +44,7 @@ RF62X необходимо:
 
 Ниже приведен пример поиска сканеров серии RF627Old в сети 
 
-.. figure:: ../_static/labview_image6.png
+.. figure:: ../../resources/img/labview_image6.png
    :alt: image4
    :width: 100%
    :align: center
