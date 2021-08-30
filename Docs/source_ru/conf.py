@@ -77,7 +77,7 @@ gettext_compact = False     # optional.
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = 'sphinx' #None
 
 
 # -- Options for HTML output -------------------------------------------------

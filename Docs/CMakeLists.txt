@@ -8,8 +8,8 @@ project(Docs LANGUAGES CXX)
 
 
 # set rf627sdk path variable
-set(RF62XCORE_DIR "../rf62Xcore")
-set(RF62XSDK_DIR "../rf62Xwrappers")
+set(RF62XCORE_DIR "../RF62X-Core")
+set(RF62XSDK_DIR "../RF62X-Wrappers")
 
 # Find all the public headers
 file(GLOB_RECURSE RF62X_CORE_HEADERS
@@ -50,7 +50,7 @@ set(SPHINX_BUILD ${CMAKE_CURRENT_SOURCE_DIR}/build/sphinx)
 add_custom_target(Sphinx_gettext ALL
                   COMMAND ${SPHINX_EXECUTABLE} -b gettext
                   # Tell Breathe where to find the Doxygen output
-                  -Dbreathe_projects.rf62Xcore=${DOXYGEN_OUTPUT_DIR}/xml/
+                  -Dbreathe_projects.RF62XSDK=${DOXYGEN_OUTPUT_DIR}/xml/
                   ${SPHINX_SOURCE} ${SPHINX_BUILD}_gettext
                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                   COMMENT "Generating documentation with Sphinx")
@@ -58,7 +58,7 @@ add_custom_target(Sphinx_gettext ALL
 add_custom_target(Sphinx_html ALL
                   COMMAND ${SPHINX_EXECUTABLE} -b html
                   # Tell Breathe where to find the Doxygen output
-                  -Dbreathe_projects.rf62Xcore=${DOXYGEN_OUTPUT_DIR}/xml/
+                  -Dbreathe_projects.RF62XSDK=${DOXYGEN_OUTPUT_DIR}/xml/
                   ${SPHINX_SOURCE} ${SPHINX_BUILD}_html
                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                   COMMENT "Generating documentation with Sphinx")
@@ -66,7 +66,7 @@ add_custom_target(Sphinx_html ALL
 add_custom_target(Sphinx_latex ALL
                   COMMAND ${SPHINX_EXECUTABLE} -b latex
                   # Tell Breathe where to find the Doxygen output
-                  -Dbreathe_projects.rf62Xcore=${DOXYGEN_OUTPUT_DIR}/xml/
+                  -Dbreathe_projects.RF62XSDK=${DOXYGEN_OUTPUT_DIR}/xml/
                   ${SPHINX_SOURCE} ${SPHINX_BUILD}_latex
                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                   COMMENT "Generating documentation with Sphinx")
