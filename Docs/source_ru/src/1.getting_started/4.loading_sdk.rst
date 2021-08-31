@@ -36,10 +36,10 @@ Git в Qt Creator
 Для разработчиков, которые хотят скачать и собрать библиотеку из исходников с 
 помощью Git, встроенного в IDE Qt Creator, следует выполнить следующие инструкции:
 
-1. Нажмите **File->New File or Project**
+1. Нажмите **File > New File or Project**
 
 
-2. Выберите опцию **Import Project->Git Clone**, как показано ниже.
+2. Выберите опцию **Import Project > Git Clone**, как показано ниже.
 
 .. figure:: ../../resources/img/clone-qt-code.png
     :alt: clone-qt-code
@@ -56,7 +56,7 @@ Git в Qt Creator
     :align: center
 
 4. После загрузки откройте файл CMakeLists.txt необходимого вам проекта  
-   через **File > Open File or Project**, выберите компилятор (MinGW, MSVC, Clang)
+   через **File > Open File or Project**, выберите компилятор (*MinGW, MSVC, Clang*)
    и нажмите **Configure Project**
 
 5. Запустите компиляцию проекта
@@ -77,7 +77,7 @@ Git в Visual Studio
     :width: 100%
     :align: center
 
-3. Введите url-адрес SDK ``https://gitlab.com/riftek_llc/software/sdk/scanners/RF62X-SDK.git``,
+3. Введите url-адрес SDK ``https://github.com/RIFTEK-LLC/RF62X-SDK.git``,
    выберите или введите местоположение хранилища, а затем нажмите **Клонировать**.
 
 .. figure:: ../../resources/img/clone-checkout-code-git-repo-dark.png
@@ -88,11 +88,6 @@ Git в Visual Studio
 4. После чего Visual Studio загрузит проект из удаленного репозитория и откроет его.
 
 5. Выберите один из необходимых вам проектов и запустите его сборку.
-
-.. figure:: ../../resources/img/run-csharp-code-git-repo-dark.png
-    :alt: run-csharp-code-git-repo-dark
-    :width: 100%
-    :align: center
 
 .. note:: Для сборки библиотек **на языке С++**, а также компиляции приложений с примерами их использования в Visual Studio 
    должен быть установлен `C++ CMake tools для Windows <https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019>`__.

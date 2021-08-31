@@ -19,7 +19,7 @@ import sys
 # -- Project information -----------------------------------------------------
 
 project = 'RF62X-SDK'
-copyright = '2021`, Vladislav Kuzmin'
+copyright = '2021, Vladislav Kuzmin'
 author = 'Vladislav Kuzmin'
 
 
@@ -125,7 +125,7 @@ latex_elements = {
 
     'preamble': r''' 
 \usepackage{polyglossia}
-\setdefaultlanguage{english}
+\setdefaultlanguage{russian}
 \usepackage{fontspec}\setmainfont{Arial}
 \usepackage{geometry}
  \geometry{

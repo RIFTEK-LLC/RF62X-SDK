@@ -1,7 +1,7 @@
 .. _compilation_rf62x_core:
 
 *******************************************************************************
-Компиляция «ядра» на C
+Компиляция «ядра»
 *******************************************************************************
 
 .. _how_to_compile_rf62x_core:
@@ -21,7 +21,7 @@ RF62X-Core может быть скомпилирован при помощи к
 CMake
 -------------------------------------------------------------------------------
 
-Находясь в папке с проектом, для построения RF62X-Core 
+Находясь в папке проекта RF62X-SDK для построения RF62X-Core 
 введите следующую команду в консоль (терминал):
 
 .. code-block:: bash
@@ -38,9 +38,9 @@ Qt Creator
 
 Для построения RF62X-Core с использованием IDE Qt Creator: 
 
--  Загрузите файл CMakeLists.txt из папки **RF62X-Core** через 
-   **File > Open File or Project** (выберите файл CMakeLists.txt)
--  Выберите компилятор (MinGW, MSVC, Clang)
+-  Загрузите файл ``CMakeLists.txt`` из папки **RF62X-Core** через 
+   **File > Open File or Project** (выберите файл ``CMakeLists.txt``)
+-  Выберите компилятор (*MinGW*, *MSVC*, *Clang*)
    и нажмите **Configure Project** 
 -  Скомпилируйте проект
 
@@ -49,7 +49,7 @@ Qt Creator
 Visual Studio
 -------------------------------------------------------------------------------
 
-Находясь в папке с проектом, для построения RF62X-Core  
+Находясь в папке проекта RF62X-SDK для построения RF62X-Core  
 введите следующую команду в консоль (терминал):
 
 .. code-block:: bash
@@ -66,22 +66,26 @@ Visual Studio
 Как использовать
 ===============================================================================
 
-При желании использовать библиотеку RF62X-Core вместо имеющихся библиотек-«обёрток» 
-разработчику необходимо самостоятельно реализовать платформозависимую часть «ядра».
+Для использования библиотеки RF62X-Core вместо имеющихся библиотек-«обёрток» 
+разработчику необходимо будет самостоятельно реализовать платформозависимую 
+часть.
 
 .. _rf62x_core_description_dependence:
 
 Обзор платформозависимых функций
 -------------------------------------------------------------------------------
 
-В «Ядре» RF62X-Core платформозависимые функции (работа с памятью, работа с сетью, 
+В RF62X-Core платформозависимые функции (работа с памятью, работа с сетью, 
 функции ввода/вывода) представлены в виде указателей на функции. 
 
 Указатели на платформозависимые функции объявлены в файлах, 
-``memory_platform.h``, ``network_platform.h`` и ``iostream_platform.h``:
+``memory_platform.h``, ``network_platform.h`` и ``iostream_platform.h``.
 
-**typedef void* (*calloc_t)(..)**
+**calloc_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*calloc_t)(rfSize num, rfSize size);*
 
 **Описание:**
    *Указатель на функцию* ``calloc_t`` *выделяет блок памяти для массива размером* 
@@ -118,8 +122,11 @@ Visual Studio
    typedef void* (*calloc_t)(rfSize num, rfSize size);
 
 
-**typedef void* (*malloc_t)(..)**
+**malloc_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*malloc_t)(rfSize size);*
 
 **Описание:**
    *Указатель на функцию* ``malloc_t`` *выделяет блок памяти размером* ``size`` 
@@ -154,8 +161,11 @@ Visual Studio
     */
    typedef void* (*malloc_t)(rfSize size);
 
-**typedef void* (*realloc_t)(..)**
+**realloc_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*realloc_t)(void \*ptr, rfSize newsize);*
 
 **Описание:**
    *Указатель на функцию* ``realloc_t`` *выполняет перераспределение блоков памяти.*
@@ -203,19 +213,23 @@ Visual Studio
 
    /**
     * @brief realloc_t - ptr to function whish reallocates memory block
-    * Changes the size of the memory block pointed to by ptr. The function may move
-    * the memory block to a new location (whose address is returned by the function).
+    * Changes the size of the memory block pointed to by ptr. The function 
+    * may move the memory block to a new location (whose address is 
+    * returned by the function).
     *
     * @param ptr Pointer to a memory block previously allocated.
     * @param newsize New size for the memory block, in bytes.
     * 
-    * @return A pointer to the reallocated memory block, which may be either the
-    * same as ptr or a new location.
+    * @return A pointer to the reallocated memory block, which may be either 
+    * the same as ptr or a new location.
     */
    typedef void* (*realloc_t)(void *ptr, rfSize newsize);
 
-**typedef void (*free_t)(..)**
+**free_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void (\*free_t)(void\* data);*
 
 **Описание:**
    *Указатель на функцию* ``free_t`` *освобождает место в памяти. Блок памяти,* 
@@ -248,8 +262,11 @@ Visual Studio
     */
    typedef void (*free_t)(void* data);
 
-**typedef void* (*memset_t)(..)**
+**memset_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*memset_t)(void\* memptr, rfInt val, rfSize num);*
 
 **Описание:**
    *Указатель на функцию* ``memset_t`` *заполняет* ``num`` *байтов блока памяти,* 
@@ -285,8 +302,11 @@ Visual Studio
     */
    typedef void* (*memset_t)(void* memptr, rfInt val, rfSize num);
 
-**typedef void* (*memcpy_t)(..)**
+**memcpy_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*memcpy_t)(void\* destination, const void\* source, rfSize num);*
 
 **Описание:**
    *Указатель на функцию* ``memset_t`` *копирует* ``num`` *байтов первого блока* 
@@ -322,8 +342,11 @@ Visual Studio
     */
    typedef void* (*memcpy_t)(void* destination, const void* source, rfSize num);
 
-**typedef rfInt (*memcmp_t)(..)**
+**memcmp_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt (\*memcmp_t)(const void\* ptr1, const void\* ptr2, rfSize num );*
 
 **Описание:**
    *Указатель на функцию* ``memcmp_t`` *сравнивает первые* ``num`` *байтов блока* 
@@ -350,8 +373,8 @@ Visual Studio
    /**
     * @brief memcmp_t - ptr to function whish compare two blocks of memory
     * Compares the first num bytes of the block of memory pointed by ptr1 to the
-    * first num bytes pointed by ptr2, returning zero if they all match or a value
-    * different from zero representing which is greater if they do not.
+    * first num bytes pointed by ptr2, returning zero if they all match or a 
+    * value different from zero representing which is greater if they do not.
     *
     * @param ptr1 Pointer to block of memory.
     * @param ptr2 Pointer to block of memory.
@@ -359,15 +382,21 @@ Visual Studio
     *
     * @return
     * 0 - if the contents of both memory blocks are equal,
-    * <0 - if the first byte that does not match in both memory blocks has a lower
-    * value in ptr1 than in ptr2.
+    * <0 - if the first byte that does not match in both memory blocks has a 
+    * lower value in ptr1 than in ptr2.
     * >0 - if the first byte that does not match in both memory blocks has a
     * greater value in ptr1 than in ptr2.
     */
-   typedef rfInt (*memcmp_t)(const void * ptr1, const void * ptr2, rfSize num );
+   typedef rfInt (*memcmp_t)(const void* ptr1, const void* ptr2, rfSize num);
 
-**hton_long_t(..) , ntoh_long_t(..) , hton_short_t(..) , ntoh_short_t(..)**
+**hton_long_t, ntoh_long_t, hton_short_t, ntoh_short_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   - *typedef rfUint32 (\*hton_long_t) (rfUint32 hostlong);*
+   - *typedef rfUint32 (\*ntoh_long_t) (rfUint32 netlong);*
+   - *typedef rfUint16 (\*hton_short_t)(rfUint16 hostshort);*
+   - *typedef rfUint16 (\*ntoh_short_t)(rfUint16 netshort);*
 
 **Описание:**
    *Указатели на функции* ``hton_long_t`` *,* ``ntoh_long_t`` *,* ``hton_short_t``
@@ -399,8 +428,8 @@ Visual Studio
    typedef rfUint32 (*hton_long_t) (rfUint32 hostlong);      
 
    /**
-    * @brief The ntoh_long_t function converts a u_long from network order to host
-    * byte order (which is little-endian on rfIntel processors).
+    * @brief The ntoh_long_t function converts a u_long from network order to 
+    * host byte order (which is little-endian on rfIntel processors).
     *
     * @param netlong A 32-bit number in network byte order.
     *
@@ -431,8 +460,11 @@ Visual Studio
    typedef rfUint16 (*ntoh_short_t)(rfUint16 netshort);
 
 
-**typedef void* (*create_udp_socket_t)(..)**
+**create_udp_socket_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*create_udp_socket_t)();*
 
 **Описание:**
    *Указатель на функцию* ``create_udp_socket_t`` *создает несвязанный UDP сокет* 
@@ -462,8 +494,13 @@ Visual Studio
    typedef void* (*create_udp_socket_t)();
 
 
-**set_broadcast_socket_option_t(..) , set_reuseaddr_socket_option_t(..) , set_socket_recv_timeout_t(..)**
+**set_broadcast_socket_option_t, set_reuseaddr_socket_option_t, set_socket_recv_timeout_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   - *typedef rfInt8 (\*set_broadcast_socket_option_t)(void\* socket);*
+   - *typedef rfInt8 (\*set_reuseaddr_socket_option_t)(void\* socket);*
+   - *typedef rfInt8 (\*set_socket_recv_timeout_t)(void\* socket, rfInt32 msec);*
 
 **Описание:**
    *Указатели на функции* ``set_broadcast_socket_option_t`` *,* 
@@ -522,8 +559,11 @@ Visual Studio
     */
    typedef rfInt8 (*set_socket_recv_timeout_t)(void* socket, rfInt32 msec);
 
-**set_socket_option_t(..)**
+**set_socket_option_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt8 (\*set_socket_option_t)(void\* socket, rfInt32 level, rfInt32 optname, const rfChar\* optval, rfInt32 optlen);*
 
 **Описание:**
    *Указатель на функцию* ``set_socket_option_t`` *устанавливает параметр сокета.* 
@@ -564,8 +604,11 @@ Visual Studio
            void* socket, rfInt32 level, rfInt32 optname,
            const rfChar* optval, rfInt32 optlen);
 
-**typedef rfInt8 (*socket_connect_t)(..)**
+**socket_connect_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt8 (\*socket_connect_t)(void\* socket, rfUint32 dst_ip_addr, rfUint16 dst_port);*
 
 **Описание:**
    *Указатель на функцию* ``socket_connect_t`` *устанавливает соединение с* 
@@ -603,8 +646,11 @@ Visual Studio
    typedef rfInt8 (*socket_connect_t)(
            void* socket, rfUint32 dst_ip_addr, rfUint16 dst_port);
 
-**typedef rfInt (*socket_bind_t)(..)**
+**socket_bind_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt (\*socket_bind_t)(void\* socket, rfUint32 host_ip_addr, rfUint16 host_port);*
 
 **Описание:**
    *Указатель на функцию* ``socket_bind_t`` *связывает локальный адрес с сокетом.* 
@@ -625,7 +671,8 @@ Visual Studio
    /** @file network_platform.h */
 
    /**
-    * @brief Pointer to the function that associates a local address with a socket.
+    * @brief Pointer to the function that associates a local address with 
+    * a socket.
     *
     * @param socket A descriptor identifying an unconnected socket.
     * @param host_ip_addr Host IP Addr to which the connection should be bind.
@@ -638,8 +685,11 @@ Visual Studio
    typedef rfInt (*socket_bind_t)(
            void* socket, rfUint32 host_ip_addr, rfUint16 host_port);
 
-**typedef rfInt8 (*socket_listen_t)(..)**
+**socket_listen_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt8 (\*socket_listen_t)(void\* socket, rfInt32 backlog);*
 
 **Описание:**
    *Указатель на функцию* ``socket_listen_t`` *переводит сокет в состояние, в* 
@@ -671,8 +721,11 @@ Visual Studio
     */
    typedef rfInt8 (*socket_listen_t)(void* socket, rfInt32 backlog);   
 
-**typedef void* (*socket_accept_t)(..)**
+**socket_accept_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef void\* (\*socket_accept_t)(void\* socket, rfUint32\* srs_ip_addr, rfUint16\* srs_port);*
 
 **Описание:**
    *Указатель на функцию* ``socket_accept_t`` *разрешает попытку входящего* 
@@ -710,8 +763,11 @@ Visual Studio
    typedef void* (*socket_accept_t)(
            void* socket, rfUint32* srs_ip_addr, rfUint16* srs_port);
 
-**typedef rfInt8 (*close_socket_t)(..)**
+**close_socket_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt8 (\*close_socket_t)(void\* socket);*
 
 **Описание:**
    *Указатель на функцию* ``close_socket_t`` *закрывает существующий сокет.* 
@@ -740,8 +796,11 @@ Visual Studio
     */
    typedef rfInt8 (*close_socket_t)(void* socket);   
 
-**typedef rfInt (*send_tcp_data_t)(..)**
+**send_tcp_data_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt (\*send_tcp_data_t)(void\* socket, const void \*buf, rfSize len);*
 
 **Описание:**
    *Указатель на функцию* ``send_tcp_data_t`` *отправляет данные в подключенный TCP сокет.* 
@@ -763,7 +822,8 @@ Visual Studio
    /** @file network_platform.h */
 
    /**
-    * @brief Pointer to the send function that sends data on a TCP connected socket
+    * @brief Pointer to the send function that sends data on a TCP 
+    * connected socket.
     *
     * @param socket A descriptor identifying a connected socket.
     * @param buf A pointer to a buffer containing the data to be transmitted.
@@ -777,8 +837,11 @@ Visual Studio
     */
    typedef rfInt (*send_tcp_data_t)(void* socket, const void *buf, rfSize len);
 
-**typedef rfInt (*send_udp_data_t)(..)**
+**send_udp_data_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt (\*send_udp_data_t)(void\* socket, const void \*data, rfSize len, rfUint32 dest_ip_addr, rfUint16 dest_port);*
 
 **Описание:**
    *Указатель на функцию* ``send_udp_data_t`` *отправляет данные по UDP в*
@@ -822,8 +885,11 @@ Visual Studio
            void* socket, const void *data, rfSize len,
            rfUint32 dest_ip_addr, rfUint16 dest_port);   
 
-**typedef rfInt (*recv_data_from_t)(..)**
+**recv_data_from_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt (\*recv_data_from_t)(void\* socket, void \*buf, rfSize len, rfUint32\* srs_ip_addr, rfUint16\* srs_port);*
 
 **Описание:**
    *Указатель на функцию* ``recv_data_from_t`` *получает данные из сокета и*
@@ -854,7 +920,8 @@ Visual Studio
     * be received.
     * @param buf Specifies the buffer in which to place the message.
     * @param len Specifies the length of the buffer area.
-    * @param srs_ip_addr Pointer to the IP address from which the data was received.
+    * @param srs_ip_addr Pointer to the IP address from which the data 
+    * was received.
     * @param srs_port Pointer to the port from which the data was received.
     *
     * @return
@@ -865,8 +932,11 @@ Visual Studio
            void* socket, void *buf, rfSize len,
            rfUint32* srs_ip_addr, rfUint16* srs_port);
 
-**typedef rfInt (*recv_data_t)(..)**
+**recv_data_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   *typedef rfInt (\*recv_data_t)(void\* socket, void \*buf, rfSize len);*
 
 **Описание:**
    *Указатель на функцию* ``recv_data_t`` *получает данные от подключенного*
@@ -891,7 +961,8 @@ Visual Studio
     * @brief Pointer to the function that receive message from socket and capture
     * address of sender.
     *
-    * @param sockfd Specifies a socket descriptor from which data should be received.
+    * @param sockfd Specifies a socket descriptor from which data 
+    * should be received.
     * @param buf Specifies the buffer in which to place the message.
     * @param len Specifies the length of the buffer area.
     *
@@ -901,8 +972,13 @@ Visual Studio
     */
    typedef rfInt (*recv_data_t)(void* socket, void *buf, rfSize len);
 
-**trace_info_t(..) , trace_warning_t(..) , trace_error_t(..)**
+**trace_info_t, trace_warning_t, trace_error_t**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Прототип:**
+   - *typedef rfInt(\*trace_info_t)(const rfChar\* msg, ...);*
+   - *typedef rfInt(\*trace_warning_t)(const rfChar\* msg, ...);*
+   - *typedef rfInt(\*trace_error_t)(const rfChar\* msg, ...);*
 
 **Описание:**
    *Указатели на функции* ``trace_info_t`` *,* 
@@ -928,8 +1004,8 @@ Visual Studio
     * @brief Method for outputting debugging information
     *
     * @param msg Pointer to a string containing the text to be output
-    * @param ...(additional arguments) Depending on the format string, the function
-    * may expect a sequence of additional arguments
+    * @param ...(additional arguments) Depending on the format string, 
+    * the function may expect a sequence of additional arguments
     *
     * @return On success, the total number of characters written is returned.
     */
@@ -939,8 +1015,8 @@ Visual Studio
     * @brief Method for outputting alert information
     *
     * @param msg Pointer to a string containing the text to be output
-    * @param ...(additional arguments) Depending on the format string, the function
-    * may expect a sequence of additional arguments
+    * @param ...(additional arguments) Depending on the format string, 
+    * the function may expect a sequence of additional arguments
     *
     * @return On success, the total number of characters written is returned.
     */
@@ -950,8 +1026,8 @@ Visual Studio
     * @brief Method for outputting error information
     *
     * @param msg Pointer to a string containing the text to be output
-    * @param ...(additional arguments) Depending on the format string, the function
-    * may expect a sequence of additional arguments
+    * @param ...(additional arguments) Depending on the format string, 
+    * the function may expect a sequence of additional arguments
     *
     * @return On success, the total number of characters written is returned.
     */
@@ -1059,12 +1135,12 @@ Visual Studio
    /**
     * @brief Init platform dependent methods and settings
     *
-    * @param memory_methods Structure with platform-specific methods for work with
-    * memory
-    * @param iostream_methods Structure with platform-specific methods for work
-    * with iostream
-    * @param network_methods Structure with platform-specific methods for work
-    * with network
+    * @param memory_methods Structure with platform-specific methods 
+    * for work with memory
+    * @param iostream_methods Structure with platform-specific methods 
+    * for work with iostream
+    * @param network_methods Structure with platform-specific methods 
+    * for work with network
     * @param adapter_settings Structure with adapter settings
     */
    API_EXPORT void init_platform_dependent_methods(
