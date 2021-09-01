@@ -351,7 +351,7 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
  * - On success: If no error occurs, modbusSocketConnect_t returns zero
  * - On error: -1
  */
-rfUint8 platform_socket_connect(
+rfInt8 platform_socket_connect(
         void* socket, rfUint32 dst_ip_addr, rfUint16 dst_port)
 {
     std::size_t s = reinterpret_cast<std::size_t>(socket);
@@ -401,7 +401,7 @@ rfInt platform_socket_bind(
  * - On success: If no error occurs, modbusSocketListen_t returns zero
  * - On error: -1
  */
-rfUint8 platform_socket_listen(
+rfInt8 platform_socket_listen(
         void* socket, rfInt32 backlog)
 {
     std::size_t s = reinterpret_cast<std::size_t>(socket);
@@ -452,7 +452,7 @@ void* platform_socket_accept(
  * - On success: If no error occurs, modbusCloseTcpSocket_t returns zero.
  * - On error: -1
  */
-rfUint8 platform_close_socket(void* socket)
+rfInt8 platform_close_socket(void* socket)
 {
     std::size_t s = reinterpret_cast<std::size_t>(socket);
     if (s == INVALID_SOCKET) {

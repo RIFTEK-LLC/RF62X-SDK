@@ -175,6 +175,9 @@ namespace SDK
                                     isConnected = result == 1 ? true : false;
                                     if (isConnected)
                                         ReadParams();
+                                    else
+                                        disconnect_from_scanner(
+                                            ((scanner_base_t*)this.scannerBase), PROTOCOL_TYPES.SERVICE);
                                     return isConnected;
                                 }
                                 else
@@ -291,7 +294,10 @@ namespace SDK
                                         this.profileMutex.ReleaseMutex();
                                         return result;
                                     }
-                                    platform_free(profile_from_scanner);
+                                    else
+                                    {
+                                        free_profile2D(profile_from_scanner);
+                                    }
                                     break;
                                 }
                             default:
@@ -1103,7 +1109,7 @@ namespace SDK
                 }
                 ~RF627smart()
                 {
-                    free_scanner(((scanner_base_t*)this.scannerBase));
+                    //free_scanner(((scanner_base_t*)this.scannerBase));
                 }
 
 
