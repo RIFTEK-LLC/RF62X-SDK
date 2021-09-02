@@ -46,9 +46,9 @@
    :caption: Компиляция SDK
 
    3.sdk_compilation/RF62XCore
-   3.sdk_compilation/wrappers/RF62XSDK_c
-   3.sdk_compilation/wrappers/RF62XSDK_cpp
-   3.sdk_compilation/wrappers/RF62XSDK_csharp
+   3.sdk_compilation/RF62XSDK_c
+   3.sdk_compilation/RF62XSDK_cpp
+   3.sdk_compilation/RF62XSDK_csharp
   
 *******************************************************************************
 Описания API
