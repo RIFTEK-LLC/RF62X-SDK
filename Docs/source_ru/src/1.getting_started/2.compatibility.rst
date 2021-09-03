@@ -34,4 +34,4 @@ Linux, поддерживающими компиляторы языка СИ с�
 
 -   Репозиторий проекта: https://github.com/RIFTEK-LLC/RF62X-SDK
 -   Документация: RF62X-SDK.ru.pdf_, RF62X-SDK.en.pdf_
--   Форум: www.riftek.com
+-   Форум: https://bustezeu.beget.tech/index.php

@@ -77,7 +77,7 @@ gettext_compact = False     # optional.
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx' #None
+pygments_style = 'vs' #None
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -134,6 +134,9 @@ latex_elements = {
  left=20mm,
  top=20mm,
  }
+\usepackage{ragged2e}
+\usepackage{microtype}
+\hyphenpenalty=10000
 ''',
     # Additional stuff for the LaTeX preamble.
     #'preamble': '',

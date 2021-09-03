@@ -81,11 +81,7 @@ int main()
         printf("-----------------------------------------\n");
     }
 
-    // Cleanup resources allocated with core_init()
-    FreeAdapterAddresses();
-#ifdef _WIN32
-    WinSockDeinit();
-#endif
+    core_cleanup();
 }
 
 

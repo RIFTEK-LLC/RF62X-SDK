@@ -628,7 +628,7 @@ extern int GetAdaptersCount();
 extern const char* GetAdapterAddress(int index);
 /* windows sockets tweaks */
 extern BOOL WinSockInit();
-
+extern void WinSockDeinit();
 
 std::string SDK::CORES::RF62X::version()
 {
@@ -669,4 +669,12 @@ bool SDK::CORES::RF62X::init()
                 &network_methods, &adapter_settings);
 
     return true;
+}
+
+void SDK::CORES::RF62X::cleanup()
+{
+    FreeAdapterAddresses();
+#if (defined _WIN32)
+    WinSockDeinit();
+#endif
 }

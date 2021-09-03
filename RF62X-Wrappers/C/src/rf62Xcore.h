@@ -11,16 +11,26 @@
 #define API_EXPORT
 #endif
 
-//#define exportToDll extern "C" __declspec(dllexport)
-
-
-API_EXPORT rfBool core_init();
+/**
+ * @brief core_init - Initialize sdk library
+ * @details Must be called once before further calls to any
+ * library functions
+ *
+ * @return 1 if success or error code.
+ */
+API_EXPORT int8_t core_init();
 
 /**
  * @brief sdk_version - Return info about SDK version
  * @return SDK version
  */
-API_EXPORT char* sdk_version(void);
+API_EXPORT char* sdk_version();
+
+/**
+ * @brief core_cleanup - Cleanup resources allocated
+ * with core_init() function
+ */
+API_EXPORT void core_cleanup();
 
 /** @brief Allocates an array in memory with elements initialized to 0.
  *
@@ -207,7 +217,7 @@ API_EXPORT rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec);
  * - On success: If no error occurs, modbusSocketConnect_t returns zero
  * - On error: -1
  */
-API_EXPORT rfUint8 platform_socket_connect(
+API_EXPORT rfInt8 platform_socket_connect(
         void* socket, rfUint32 dst_ip_addr, rfUint16 dst_port);
 
 /** @brief Pointer to the function that associates a local address with a socket.
@@ -230,7 +240,7 @@ API_EXPORT rfInt platform_socket_bind(
  * - On success: If no error occurs, modbusSocketListen_t returns zero
  * - On error: -1
  */
-API_EXPORT rfUint8 platform_socket_listen(
+API_EXPORT rfInt8 platform_socket_listen(
         void* socket, rfInt32 backlog);
 
 /** @brief Pointer to the function that permits an incoming connection attempt on a socket.
@@ -259,7 +269,7 @@ API_EXPORT void* platform_socket_accept(
  * - On success: If no error occurs, modbusCloseTcpSocket_t returns zero.
  * - On error: -1
  */
-API_EXPORT rfUint8 platform_close_socket(void* socket);
+API_EXPORT rfInt8 platform_close_socket(void* socket);
 
 /** @brief Pointer to the send function that sends data on a TCP connected socket
  *

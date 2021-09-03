@@ -72,6 +72,10 @@ Qt Creator + CMake + RF62X-SDK в качестве библиотеки
    target_link_libraries(${PROJECT_NAME} PUBLIC ${RF62X_SDK_LIBRARIES})
    target_include_directories(${PROJECT_NAME} PUBLIC ${RF62X_SDK_INCLUDE_DIRS})
 
+.. note::
+
+   Для работы с динамической библиотекой RF62X-SDK необходимо параметр RF62X_SDK_LIBRARY_TYPE установить в значение SHARED (``SET(RF62X_SDK_LIBRARY_TYPE "SHARED")``) и скопировать библиотеку RF62X-SDK.dll(\*.so) в каталог с исполняемым файлом проекта (PROJECT_BINARY_DIR)
+
 
 -   Измените файл ``main.cpp`` вашего проекта в соответствии с приведенным ниже примером:
 
@@ -139,10 +143,6 @@ Qt Creator + CMake + RF62X-SDK в качестве библиотеки
       sdk_cleanup();
    }
 
-.. note::
-
-   Для работы с динамической библиотекой RF62X-SDK необходимо параметр RF62X_SDK_LIBRARY_TYPE установить в значение SHARED (``SET(RF62X_SDK_LIBRARY_TYPE "SHARED")``) и скопировать библиотеку RF62X-SDK.dll(\*.so) в каталог с исполняемым файлом проекта (PROJECT_BINARY_DIR)
-
 -   Выберите тип сборки **Debug** или **Release** и запустите построение проекта.
 
 .. _creating_project_rf62Xsdk_cpp_qt_with_source:
@@ -161,7 +161,7 @@ Qt Creator + CMake + RF62X-SDK в качестве файлов исходног
 -   Выберите **CMake** в качестве системы постояние проекта и нажмите кнопку **Next** дважды
 -   Выберите компилятор (*MinGW*, *MSVC*, *Clang*), нажмите кнопку **Next** и завершите настройку проекта
 -   Скачайте **RF62X-SDK** проект (для получения дополнительной информации о шагах загрузки проекта см. :ref:`clone_rf62x_sdk`)  
--   Измените файл ``CMakeLists.txt`` вашего проекта в соответствии с приведенным ниже примером и установите в параметре ``RF62XSDK_DIR`` путь к папке ``RF62X-Wrappers/Cpp`` в соответствии с расположением скачанного проекта **RF62X-SDK** 
+-   Измените файл ``CMakeLists.txt`` вашего проекта в соответствии с приведенным ниже примером и установите в параметре ``RF62XSDK_DIR`` на путь к папке ``RF62X-Wrappers/Cpp`` в соответствии с расположением скачанного проекта **RF62X-SDK** 
 
 .. code-block:: cmake
 

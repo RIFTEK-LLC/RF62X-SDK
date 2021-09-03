@@ -3,26 +3,8 @@
 
 
 #include "rf62X_core.h"
+#include "network.h"
 
-
-#ifdef _WIN32
-#include <winsock.h>
-#else
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <stdlib.h>
-
-typedef int BOOL;
-typedef int SOCKET;
-
-#define INVALID_SOCKET          (-1)
-#define SOCKET_ERROR            (-1)
-#define TRUE 1
-#define FALSE 0
-
-#endif
 
 /** @brief Allocates an array in memory with elements initialized to 0.
  *
@@ -296,7 +278,7 @@ rfInt8 platform_set_socket_recv_timeout(void* socket, rfInt32 msec)
  * - On success: If no error occurs, modbusSocketConnect_t returns zero
  * - On error: -1
  */
-rfUint8 platform_socket_connect(
+rfInt8 platform_socket_connect(
         void* socket, rfUint32 dst_ip_addr, rfUint16 dst_port)
 {
     SOCKET s = (SOCKET)socket;
@@ -334,7 +316,7 @@ rfInt platform_socket_bind(
  * - On success: If no error occurs, modbusSocketListen_t returns zero
  * - On error: -1
  */
-rfUint8 platform_socket_listen(
+rfInt8 platform_socket_listen(
         void* socket, rfInt32 backlog)
 {
     SOCKET s = (SOCKET)socket;
@@ -376,7 +358,7 @@ void* platform_socket_accept(
  * - On success: If no error occurs, modbusCloseTcpSocket_t returns zero.
  * - On error: -1
  */
-rfUint8 platform_close_socket(void* socket)
+rfInt8 platform_close_socket(void* socket)
 {
     SOCKET s = (SOCKET)socket;
     if (s != INVALID_SOCKET) {
@@ -537,7 +519,7 @@ extern const char* GetAdapterAddress(int index);
 extern BOOL WinSockInit();
 
 
-rfBool core_init()
+int8_t core_init()
 {
 #if (defined _WIN32)
     /*
@@ -578,4 +560,13 @@ rfBool core_init()
 char* sdk_version(void)
 {
     return core_version();
+}
+
+void core_cleanup()
+{
+    // Cleanup resources allocated with core_init()
+    FreeAdapterAddresses();
+#ifdef _WIN32
+    WinSockDeinit();
+#endif
 }

@@ -18,13 +18,16 @@ API_EXPORT std::string sdk_version();
 
 /**
  * @brief sdk_init - Initialize sdk library
- * @details Must be called once before further calls to any library functions
+ * @details Must be called once before further calls to any
+ * library functions
+ *
  * @return true if success.
  */
 API_EXPORT bool sdk_init();
 
 /**
- * @brief sdk_cleanup - Cleanup resources allocated with sdk_init() function
+ * @brief sdk_cleanup - Cleanup resources allocated with
+ * sdk_init() function
  */
 API_EXPORT void sdk_cleanup();
 
@@ -39,38 +42,54 @@ class API_EXPORT rf627smart
 public:
     /**
      * @brief search - Search for RF627smart devices over network
-     * @param timeout Search timeout for each Ethernet interface
+     *
+     * @param timeout Search timeout[ms] for each Ethernet interface
+     * @param only_available_result Without saving search history
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return vector of rf627smart devices
      */
     static std::vector<std::shared_ptr<rf627smart>> search(
-            uint32_t timeout = 1000, bool only_available_result = true, PROTOCOLS protocol = PROTOCOLS::SERVICE);
+            uint32_t timeout = 300, bool only_available_result = true,
+            PROTOCOLS protocol = PROTOCOLS::SERVICE);
+
     /**
      * @brief get_info - Get information about scanner from hello packet
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return hello_info on success, else - null
+     *
+     * @return hello_info on success, else - nullptr
      */
-    std::shared_ptr<hello_info> get_info(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<hello_info> get_info(
+            PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
 
 
     /**
      * @brief connect - Establish connection to the RF627old device
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool connect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
-     * @brief disconnect_from_scanner - Close connection to the device
+     * @brief disconnect - Close connection to the device
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool disconnect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
-     * @brief check_connection - Сheck the connection with the RF627smart device
+     * @brief check_connection - Сheck the connection with the
+     * RF627smart device
+     *
      * @param timeout Connection check timeout
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool check_connection(
@@ -79,17 +98,21 @@ public:
 
     /**
      * @brief get_profile2D - Get 2D measurement from scanner's data stream
+     *
      * @param zero_points Enable zero points in return profile2D
      * @param realtime Enable getting profile in real time (buffering is disabled)
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return profile2D if success, else - null
+     *
+     * @return profile2D if success, else - nullptr
      */
     std::shared_ptr<profile2D> get_profile2D(
             bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
     /**
      * @brief get_frame - Get RAW frame from scanner
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return frame if success, else - null
      */
     std::shared_ptr<frame> get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
@@ -97,29 +120,41 @@ public:
 
 
     /**
-     * @brief read_params - Read parameters from device to internal SDK memory
+     * @brief read_params - Read parameters from device to
+     * internal SDK memory
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool read_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief write_params - Send current parameters to device
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool write_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief save_params - Save changes to device's memory
      * @details The saved parameters will also be used if the device
      * is restarted or even if the firmware is updated.
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool save_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief load_recovery_params - Loading parameters from recovery area
      * @details The device will automatically reboot.
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool load_recovery_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
@@ -127,13 +162,19 @@ public:
     /**
      * @brief get_param - Get parameter by his name
      * Before using read_params() method should be called
+     *
      * @param param_name Name of parameter
+     *
      * @return param on success, else - null
      */
     std::shared_ptr<param> get_param(std::string param_name);
+
     /**
      * @brief set_param - Set parameter
+     *
+     * @param name Name of parameter
      * @param value Value to set
+     *
      * @return true on success, else - false
      */
     template<typename T>
@@ -151,13 +192,15 @@ public:
      * memory of the device - generating a dump.
      * @details Recording will stop when the number of recorded profiles exceeds
      * the maximum allowed dump size, or when the count_of_profiles number is
-     * exceeded, or when the stop_dump_recording method is called
+     * exceeded, or when the stop_dump_recording method is called.
+     *
      * @param count_of_profiles The number of profiles to record the dump:
-     *      count_of_profiles == 0 - Recording will continue until the maximum
+     * if count_of_profiles == 0 - Recording will continue until the maximum
      * dump size is reached, or until recording is stopped by calling
      * the stop_dump_recording method;
-     *      count_of_profiles > 0  - Recording will continue until the number
+     * if count_of_profiles > 0  - Recording will continue until the number
      * of recorded profiles exceeds the specified number.
+     *
      * @return true if recording started successfully, else - false
      */
     bool start_dump_recording(uint32_t count_of_profiles = 0);
@@ -165,16 +208,20 @@ public:
     /**
      * @brief stop_dump_recording - disabling profile recording to the internal
      * memory of the device.
+     *
      * @param count_of_profiles The number of recorded profiles
+     *
      * @return true if recording was stopped successfully, else - false
      */
     bool stop_dump_recording(uint32_t& count_of_profiles);
 
     /**
      * @brief get_dumps_profiles - getting the content of the profile dump
+     *
      * @param index Start number of the requested profile from memory
      * @param count The count of requested profiles
      * @param timeout Waiting time for dump download
+     *
      * @return Vector profiles
      */
     std::vector<std::shared_ptr<profile2D>> get_dumps_profiles(
@@ -190,7 +237,9 @@ public:
      * after receiving this command.
      * ! In "software measurement" mode the get_profile2D method must be used
      * with the realtime == false argument to avoid loss of requested profiles.
+     *
      * @param count_of_profiles The count of measurements
+     *
      * @return true if measuring was started successfully, else - false
      */
     bool start_profile_capturing(uint32_t count_of_profiles = 0);

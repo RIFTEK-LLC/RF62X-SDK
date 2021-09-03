@@ -41,10 +41,11 @@ extern BOOL EnumAdapterAddresses();
 extern void FreeAdapterAddresses();
 extern int GetAdaptersCount();
 extern const char* GetAdapterAddress(int index);
-extern const char* GetAdapterMasks(int index);
 /* windows sockets tweaks */
 extern BOOL WinSockInit();
 extern void WinSockDeinit();
+extern const char* GetAdapterMasks(int index);
+
 
 std::string SDK::SCANNERS::RF62X::sdk_version()
 {
@@ -3896,10 +3897,7 @@ bool rf627smart::save_calibration_table(PROTOCOLS protocol)
 
 void sdk_cleanup()
 {
-#if (defined _WIN32)
-    FreeAdapterAddresses();
-    WinSockDeinit();
-#endif
+    SDK::CORES::RF62X::cleanup();
 }
 
 

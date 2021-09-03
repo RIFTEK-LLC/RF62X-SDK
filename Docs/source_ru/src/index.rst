@@ -23,7 +23,7 @@
    1.getting_started/4.loading_sdk
    1.getting_started/5.running_sdk_examples
    sdk_compilation/_index
-   additional_info
+   .. additional_info
 
 *******************************************************************************
 Создание проекта
@@ -58,13 +58,13 @@
    :maxdepth: 2
    :caption: Описания API
    
-   api_description/rf62Xcore
-   api_description/rf62Xsdk_c/_index
-   api_description/rf62Xsdk_cpp/_index
-   api_description/rf62Xsdk_csharp/_index
-   api_description/rf62Xsdk_python/_index
-   api_description/rf62Xsdk_labview
-   api_description/rf62Xsdk_matlab
+   4.api_description/rf62Xcore
+   4.api_description/rf62Xsdk_c/_index
+   4.api_description/rf62Xsdk_cpp/_index
+   4.api_description/rf62Xsdk_csharp/_index
+   4.api_description/rf62Xsdk_python/_index
+   4.api_description/rf62Xsdk_labview
+   4.api_description/rf62Xsdk_matlab
 
 *******************************************************************************
 Примеры использования
