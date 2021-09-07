@@ -296,7 +296,9 @@ public:
 
     /**
      * @brief reboot_device - The scanner will restart
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);

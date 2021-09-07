@@ -1389,6 +1389,77 @@
       }
    }
 
+**reboot_device**
+===============================================================================
+
+**Прототип:**
+   *bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT)*
+
+**Описание:**
+   *Метод перезагрузки устройства*
+   
+**Параметры:**
+   - ``protocol`` *- Тип протокола, по которому будет отправлена команда на перезагрузку устройства (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``true`` *при успехе, иначе -* ``false``
+
+**Пример в коде:**
+
+.. code-block:: cpp
+   :emphasize-lines: 37
+
+   /** @file rf62Xsdk.h */
+
+   /**
+    * @brief reboot_device - The scanner will restart
+    * 
+    * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    * 
+    * @return true on success, else - false
+    */
+   bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.cpp */
+
+   #include <string>
+   #include <iostream>
+   #include <chrono>
+
+   #include "rf62Xsdk.h"
+   #include "rf62Xtypes.h"
+
+   int main()
+   {
+
+      // Initialize sdk library
+      sdk_init();
+
+      // Search for rf627smart devices over network
+      std::vector<std::shared_ptr<rf627smart>> scanners = rf627smart::search();
+
+      for (size_t i = 0; i < scanners.size(); i++)
+      {
+         scanners[i]->connect();
+      
+         // Start device reboot
+         scanners[i]->reboot_device();
+         
+         // Waiting 10 sec
+         std::this_thread::sleep_for(std::chrono::seconds(10));
+
+         bool isAvailable = scanners[i]->check_connection();
+         if (!isAvailable){
+            std::cout << "Scanner has been successfully restarted" << std::endl;
+         }
+
+         // some other actions with scanner...
+
+      }
+   }
+
 send_cmd()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
