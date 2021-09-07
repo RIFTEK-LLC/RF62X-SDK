@@ -1,14 +1,15 @@
 
 
-.. _rf62x_wrappers_description_cpp_rf627old:
+.. _rf62x_wrappers_cpp_rf627smart:
 
 *******************************************************************************
 Класс rf627smart
 *******************************************************************************
 
 Данный класс определён в файле ``rf62Xsdk.h`` и предоставляет интерфейс 
-для работы со сканерами серии RF62X v2.X.X
+для работы со сканерами серии RF62X v2.x.x
 
+.. _rf62x_wrappers_cpp_rf627smart_search:
 
 **search**
 ===============================================================================
@@ -35,7 +36,7 @@
    /** @file rf62Xsdk.h */
 
    /**
-    * @brief search - Search for RF627smart devices over network
+    * @brief search - Search for rf627smart devices over network
     *
     * @param timeout Search timeout[ms] for each Ethernet interface 
     * @param only_available_result Without saving search history
@@ -69,11 +70,13 @@
       list = rf627smart::search(500);
 
       // Print count of discovered rf627smart in network
-      std::cout << "Was found\t: " << list.size() << " RF627-Smart";
+      std::cout << "Was found\t: " << list.size() << " RF62X v2.x.x";
       
       // some code...
 
    }
+
+.. _rf62x_wrappers_cpp_rf627smart_get_info:
 
 **get_info**
 ===============================================================================
@@ -93,7 +96,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 41-60
+   :emphasize-lines: 41, 46-49, 52-55, 58-59
 
    /** @file rf62Xsdk.h */
 
@@ -160,6 +163,8 @@
       // some code...
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_connect:
+
 **connect**
 ===============================================================================
 
@@ -178,12 +183,12 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 42-47
+   :emphasize-lines: 43
 
    /** @file rf62Xsdk.h */
 
    /**
-    * @brief connect - Establish connection to the RF627old device
+    * @brief connect - Establish connection to the rf627smart device
     * 
     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
     * 
@@ -232,6 +237,71 @@
 
       }
    }
+
+.. _rf62x_wrappers_cpp_rf627smart_is_connected:
+
+**is_connected**
+===============================================================================
+
+**Прототип:**
+   *bool is_connected();*
+
+**Описание:**
+   *Получение статуса подключения к сканеру методом* :ref:`rf62x_wrappers_cpp_rf627smart_connect`
+
+**Возвращаемое значение:**
+   ``true`` *, если соединение со сканером было успешно установлено, иначе - * ``false``
+
+**Пример в коде:**
+
+.. code-block:: cpp
+   :emphasize-lines: 38
+
+   /** @file rf62Xsdk.h */
+
+   /**
+    * @brief is_connected - Scanner connection status by the
+    * connect() method.
+    *
+    * @return true, if a connection to the scanner was previously
+    * established using the connect() method, else - false.
+    */
+   bool is_connected();
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.cpp */
+
+   #include <string>
+   #include <iostream>
+
+   #include "rf62Xsdk.h"
+   #include "rf62Xtypes.h"
+
+   int main()
+   {
+
+      // Initialize sdk library
+      sdk_init();
+
+      // Search for rf627smart devices over network
+      std::vector<std::shared_ptr<rf627smart>> list = rf627smart::search();
+
+      for (size_t i = 0; i < list.size(); i++)
+      {
+         std::shared_ptr<rf627smart> scanner = list[i];
+         
+         // Establish connection to the RF627 device by Service Protocol.
+         scanner->connect();
+
+         bool result = scanner->is_connected()
+         if (result) {
+            std::cout << "Connection has been established";
+         }
+      }
+   }
+
+.. _rf62x_wrappers_cpp_rf627smart_disconnect:
 
 **disconnect**
 ===============================================================================
@@ -301,6 +371,7 @@
       }
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_check_connection:
 
 **check_connection**
 ===============================================================================
@@ -327,7 +398,7 @@
 
    /**
     * @brief check_connection - Сheck the connection with the
-    * RF627smart device
+    * rf627smart device
     *
     * @param timeout Connection check timeout
     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -377,7 +448,81 @@
          // some actions with scanner...
       }
    }
+
+.. _rf62x_wrappers_cpp_rf627smart_is_available:
+
+**is_available**
+===============================================================================
+
+**Прототип:**
+   *bool is_available();*
+
+**Описание:**
+   *Метод получения статуса доступности сканера в сети. Значение, возвращаемое*
+   *методом, зависит от результатов выполнения методов* :ref:`rf62x_wrappers_cpp_rf627smart_search` *и* :ref:`rf62x_wrappers_cpp_rf627smart_check_connection` 
+
+**Возвращаемое значение:**
+   ``true`` *если сканер доступен, иначе -* ``false``
+
+**Пример в коде:**
+
+.. code-block:: cpp
+   :emphasize-lines: 42
+
+   /** @file rf62Xsdk.h */
+
+   /**
+    * @brief is_available - Scanner availability status on the network.
+    * @details The value returned by the method depends on the results
+    * of the execution of the search() and check_connection() methods.
+    *
+    * @return true, if the scanner is available, otherwise - false.
+    */
+   bool is_available();
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.cpp */
+
+   #include <string>
+   #include <iostream>
+
+   #include "rf62Xsdk.h"
+   #include "rf62Xtypes.h"
+
+   int main()
+   {
+
+      // Initialize sdk library
+      sdk_init();
+
+      // Search for rf627smart devices over network
+      std::vector<std::shared_ptr<rf627smart>> list = rf627smart::search();
+
+      for (size_t i = 0; i < list.size(); i++)
+      {
+         std::shared_ptr<rf627smart> scanner = list[i];
+         
+         // Establish connection to the RF627 device by Service Protocol.
+         scanner->connect();
+
+         // some time after using the scanner...
+
+         // Check network connections to scanner
+         scanner->check_connection(300);
+         bool isAvailable = scanner->is_available();
+         if (!isAvailable){
+            std::cout << "Scanner is not available!" << std::endl;
+            std::cout << "Check the power supply to the scanner.";
+         }
+
+         // some code...
+         
+      }
+   }
  
+.. _rf62x_wrappers_cpp_rf627smart_get_profile2D:
+
 **get_profile2D**
 ===============================================================================
 
@@ -398,7 +543,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 42-53
+   :emphasize-lines: 47
 
    /** @file rf62Xsdk.h */
 
@@ -457,6 +602,8 @@
       }
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_get_frame:
+
 **get_frame**
 ===============================================================================
 
@@ -477,7 +624,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 38-44
+   :emphasize-lines: 39
 
    /** @file rf62Xsdk.h */
 
@@ -528,7 +675,7 @@
       }
    }
 
-.. _rf62x_wrappers_cpp_read_params:
+.. _rf62x_wrappers_cpp_rf627smart_read_params:
 
 **read_params**
 ===============================================================================
@@ -550,7 +697,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 38-44
+   :emphasize-lines: 40
 
    /** @file rf62Xsdk.h */
 
@@ -602,6 +749,8 @@
       // some code...
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_get_param:
+
 **get_param**
 ===============================================================================
 
@@ -611,7 +760,7 @@
 **Описание:**
    *Метод получения конкретного параметра по его имени (ключу). При вызове* 
    *данной функции SDK осуществляет поиск нужного параметра из последних прочитанных*
-   *при вызове функции* :ref:`rf62x_wrappers_cpp_read_params` *. В случае, если* 
+   *при вызове функции* :ref:`rf62x_wrappers_cpp_rf627smart_read_params` *. В случае, если* 
    *запрашиваемый параметр отсутствует в конкретном сканере, функция вернёт nullptr.* 
 
 **Параметры:**
@@ -623,7 +772,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 40-45, 47-52
+   :emphasize-lines: 41, 48
 
    /** @file rf62Xsdk.h */
 
@@ -685,7 +834,9 @@
    }
 
 .. note::
-   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj`__
+   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
+
+.. _rf62x_wrappers_cpp_rf627smart_set_param:
 
 **set_param**
 ===============================================================================
@@ -696,7 +847,7 @@
 **Описание:**
    *Метод установки конкретного параметра. При вызове данного метода происходит*
    установка параметра в списке параметров во внутренней памяти SDK.*
-   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_cpp_write_params` *.*
+   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_cpp_rf627smart_write_params` *.*
 
 **Параметры:**
    - ``param_name`` *- Имя (ключ) параметра.*
@@ -708,7 +859,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 40, 43, 46-47
+   :emphasize-lines: 40, 43, 47
 
    /** @file rf62Xsdk.h */
 
@@ -765,7 +916,9 @@
    }
 
 .. note::
-   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj`__
+   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
+
+.. _rf62x_wrappers_cpp_rf627smart_set_param_by_key:
 
 **set_param_by_key**
 ===============================================================================
@@ -776,7 +929,7 @@
 **Описание:**
    *Метод установки конкретного параметра по ключу. При вызове данного метода* 
    *происходит установка параметра в списке параметров во внутренней памяти SDK.*
-   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_cpp_write_params` *.*
+   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_cpp_rf627smart_write_params` *.*
 
 **Параметры:**
    - ``param_name`` *- Имя (ключ) параметра.*
@@ -844,7 +997,9 @@
    }
 
 .. note::
-   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj`__
+   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
+
+.. _rf62x_wrappers_cpp_rf627smart_write_params:
 
 **write_params**
 ===============================================================================
@@ -865,7 +1020,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 44-48
+   :emphasize-lines: 44
 
    /** @file rf62Xsdk.h */
 
@@ -920,6 +1075,7 @@
       // some code...
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_save_params:
 
 **save_params**
 ===============================================================================
@@ -941,7 +1097,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 45-49
+   :emphasize-lines: 44
 
    /** @file rf62Xsdk.h */
 
@@ -996,6 +1152,8 @@
       // some code...
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_load_recovery_params:
+
 **load_recovery_params**
 ===============================================================================
 
@@ -1015,7 +1173,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 37-41
+   :emphasize-lines: 37
 
    /** @file rf62Xsdk.h */
 
@@ -1063,6 +1221,7 @@
       // some code...
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_start_dump_recording:
 
 **start_dump_recording**
 ===============================================================================
@@ -1074,7 +1233,7 @@
    *Метод включения записи профилей во внутреннюю память устройства - запуск записи дампа.* 
    *Запись остановится, когда количество записанных профилей превысит максимально* 
    *допустимый размер дампа, или когда будет превышено количество переданного в метод параметра* 
-   ``count_of_profiles`` *, или когда будет вызван метод остановки записи* :ref:`rf62x_wrappers_cpp_stop_dump_recording` *.*
+   ``count_of_profiles`` *, или когда будет вызван метод остановки записи* :ref:`rf62x_wrappers_cpp_rf627smart_stop_dump_recording` *.*
 
 **Параметры:**
    - ``count_of_profiles`` *- Количество профилей для записи дампа*
@@ -1085,7 +1244,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 45-50
+   :emphasize-lines: 46
 
    /** @file rf62Xsdk.h */
 
@@ -1143,6 +1302,7 @@
       }
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_stop_dump_recording:
 
 **stop_dump_recording**
 ===============================================================================
@@ -1162,7 +1322,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 44-49
+   :emphasize-lines: 45
 
    /** @file rf62Xsdk.h */
 
@@ -1219,6 +1379,8 @@
       }
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_get_dumps_profiles:
+
 **get_dumps_profiles**
 ===============================================================================
 
@@ -1239,7 +1401,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 39-40, 43-48, 50-51
+   :emphasize-lines: 50-51
 
    /** @file rf62Xsdk.h */
 
@@ -1300,6 +1462,8 @@
       }
    }
 
+.. _rf62x_wrappers_cpp_rf627smart_start_profile_capturing:
+
 **start_profile_capturing**
 ===============================================================================
 
@@ -1312,7 +1476,7 @@
    *). При получении команды устройство запускает цикл измерения, после чего выполняется* 
    *расчет и отправляется стандартный пакет с профилем* 
 
-   *В режиме "программного измерения" метод* :ref:`rf62x_wrappers_cpp_get_profile2D` 
+   *В режиме "программного измерения" метод* :ref:`rf62x_wrappers_cpp_rf627smart_get_profile2D` 
    *должен использоваться с переметром* ``realtime = false`` *, чтобы избежать потери* 
    *запрашиваемых профилей.*
    
@@ -1325,7 +1489,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 39-40, 43-48, 50-51
+   :emphasize-lines: 46
 
    /** @file rf62Xsdk.h */
 
@@ -1366,28 +1530,26 @@
       for (size_t i = 0; i < scanners.size(); i++)
       {
          scanners[i]->connect();
-      
-         // Start dump recording
+         
+         // Select SYNC_SOFTWARE measurement mode
+         scanners[i]->set_param_by_key("user_sensor_syncSource", "SYNC_SOFTWARE");
+         
+         // Start profile capturing
          uint32_t count_of_profiles = 1000;
-         scanners[i]->start_dump_recording(count_of_profiles);
+         scanners[i]->start_profile_capturing(count_of_profiles);
 
-         // Print information about the current dump size
-         uint32_t size = 0;
-         do {
-            scanners[i]->read_params();
-            size =scanners[i]->get_param("user_dump_size")->getValue<uint32_t>();
-            std::cout << "Current profiles in the dump: " << size << std::endl;
-         }while(size < count_of_profiles);
+         // realtime must be set to false
+         bool realtime = false; /// It is important!
+         bool zero_points = true;
+         // Get profile from scanner
+         std::shared_ptr<profile2D> profile =
+            scanner[i]->get_profile2D(zero_points, realtime);
 
-         std::vector<std::shared_ptr<profile2D>> dump =
-                  list[i]->get_dumps_profiles(0, count_of_profiles);
-
-         std::cout << dump.size() << " Profiles were received! " << std::endl;
-
-         // Next steps with dumps...
-
+         // some actions with profiles...
       }
    }
+
+.. _rf62x_wrappers_cpp_rf627smart_reboot_device:
 
 **reboot_device**
 ===============================================================================
@@ -1451,7 +1613,7 @@
          std::this_thread::sleep_for(std::chrono::seconds(10));
 
          bool isAvailable = scanners[i]->check_connection();
-         if (!isAvailable){
+         if (isAvailable){
             std::cout << "Scanner has been successfully restarted" << std::endl;
          }
 
@@ -1460,11 +1622,251 @@
       }
    }
 
-send_cmd()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _rf62x_wrappers_cpp_rf627smart_reboot_sensor:
 
-Функция отправки команд в сканер
+**reboot_sensor**
+===============================================================================
 
-.. doxygenfunction:: SDK::SCANNERS::RF62X::rf627old::send_cmd(const char *, int, ...)
+**Прототип:**
+   *bool reboot_sensor(PROTOCOLS protocol = PROTOCOLS::CURRENT)*
 
-Для более детального описания команд и их свойств см. :ref:`rf62x_more_description_commands`
+**Описание:**
+   *Метод переинициализация CMOS-сенсора устройства, необходимо использовать,* 
+   *если сенсор "завис" при воздействии внешней помехи.*
+   
+**Параметры:**
+   - ``protocol`` *- Тип протокола, по которому будет отправлена команда на переинициализацию CMOS-сенсора устройства (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``true`` *при успехе, иначе -* ``false``
+
+**Пример в коде:**
+
+.. code-block:: cpp
+   :emphasize-lines: 37
+
+   /** @file rf62Xsdk.h */
+
+   /**
+    * @brief reboot_sensor - Reboot CMOS-sensor
+    *
+    * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return true on success, else - false
+    */
+   bool reboot_sensor(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.cpp */
+
+   #include <string>
+   #include <iostream>
+   #include <chrono>
+
+   #include "rf62Xsdk.h"
+   #include "rf62Xtypes.h"
+
+   int main()
+   {
+
+      // Initialize sdk library
+      sdk_init();
+
+      // Search for rf627smart devices over network
+      std::vector<std::shared_ptr<rf627smart>> scanners = rf627smart::search();
+
+      for (size_t i = 0; i < scanners.size(); i++)
+      {
+         scanners[i]->connect();
+      
+         // Reboot CMOS-sensor
+         scanners[i]->reboot_sensor();
+         
+         // Waiting 100 milliseconds
+         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+         // some other actions with scanner...
+
+      }
+   }
+
+.. _rf62x_wrappers_cpp_rf627smart_send_to_periphery:
+
+**send_to_periphery**
+===============================================================================
+
+**Прототип:**
+   *bool send_to_periphery(std::string iface_name, std::vector<char> in, std::vector<char>& out, uint32_t timeout)*
+
+**Описание:**
+   *Метод отправки данных к периферийному устройству. Под периферией понимаются*
+   *"внешние" по отношению к сканеру устройства, например: драйверы шаговых*
+   *двигателей, пневматические клапаны, устройства термостатирования и т.д.*
+   *Периферия подключается по стандартным интерфейсам, например USART, I2C и т.д.*
+   *Команды работы с периферией обеспечивают "прозрачный" обмен, не добавляя и*
+   *не убирая никаких данных.*
+   
+**Параметры:**
+   - ``iface_name`` *- Имя интерфейса, на который будут отправляться данные. Если интерфейс не существует, будет возвращена ошибка "RF_WRONG_ARGUMENT". Поддерживаемые значения: "Usart0" - отправка на периферию, подключенную через USART0.*
+   - ``in`` *- Данные для отправки. Если данных для отправки нет, будет возвращена ошибка "RF_NO_DATA". Ограничение длины: 1024 байта. Если длина данных превышает лимит, будет возвращена ошибка "RF_OUT_OF_BOUNDS".*
+   - ``out`` *- Данные, которые были получены.*
+   - ``timeout`` *- Таймаут ответа в мс. Если таймаут равен 0, будут возвращены данные, уже находящиеся в буфере устройства.*
+
+**Возвращаемое значение:**
+   ``true`` *при успехе, иначе -* ``false``
+
+**Пример в коде:**
+
+.. code-block:: cpp
+   :emphasize-lines: 57
+
+   /** @file rf62Xsdk.h */
+
+   /**
+    * @brief send_to_periphery - sending data to a peripheral device.
+    * @details Peripherals are devices "external" to the scanner,
+    * for example: stepper motors, pneumatic valves, thermostats, etc.
+    * Peripherals are connected via standard interfaces such as USART,
+    * I2C, etc. Peripheral commands provide transparent exchange without
+    * adding or removing any data.
+    *
+    * @param iface_name The name of the interface where the
+    * data will be sent. If the interface does not exist,
+    * the error "RF_WRONG_ARGUMENT" will be returned.
+    * Supported values:
+    * "Usart0" - sending to the peripherals connected via the USART0.
+    * @param in The data to be sent. If there is no data to send,
+    * then the error "RF_NO_DATA" will be returned.
+    * Length limit: 1024 bytes. If the data length is greater than
+    * the limit, the error "RF_OUT_OF_BOUNDS" will be returned.
+    * @param out The data that was received.
+    * @param timeout Response timeout in ms. If the timeout is 0,
+    * the data already in the device buffer will be returned.
+    *
+    * @return true on success, else - false
+    */
+   bool send_to_periphery(
+           std::string iface_name, std::vector<char> in,
+           std::vector<char>& out, uint32_t timeout);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.cpp */
+
+   #include <string>
+   #include <iostream>
+   #include <chrono>
+
+   #include "rf62Xsdk.h"
+   #include "rf62Xtypes.h"
+
+   int main()
+   {
+
+      // Initialize sdk library
+      sdk_init();
+
+      // Search for rf627smart devices over network
+      std::vector<std::shared_ptr<rf627smart>> scanners = rf627smart::search();
+
+      for (size_t i = 0; i < scanners.size(); i++)
+      {
+         scanners[i]->connect();
+      
+         // Send data to periphery
+         std::vector<char> in {'H', 'E', 'L', 'L', 'O'};
+         std::vector<char> out;
+         bool isSent = scanners[i]->send_to_periphery("Usart0", in, out, 1000);
+         if (isSent){
+            std::cout << "The data was sent successfully." << std::endl;
+            std::cout << "Size of received data: " << out.size() << std::endl;
+         }
+            
+         // some other actions with scanner...
+
+      }
+   }
+
+.. _rf62x_wrappers_cpp_rf627smart_receive_from_periphery:
+
+**receive_from_periphery**
+===============================================================================
+
+**Прототип:**
+   *bool receive_from_periphery(std::string iface_name, uint16_t count, std::vector<char>& out, uint32_t timeout)*
+
+**Описание:**
+   *Метод приема данных от периферийного устройства.*
+   
+**Параметры:**
+   - ``iface_name`` *- Имя интерфейса с которого будут прочитаны данные. Если интерфейс не существует, будет возвращена ошибка "RF_WRONG_ARGUMENT". Поддерживаемые значения: "Usart0" - получение с периферии, подключенную через USART0.*
+   - ``count`` *- Количество байт, которые ожидается принять. Если* ``count`` *равен 0, то будет возвращена ошибка "RF_NO_DATA". Ограничение длины: 1024 байта. Если длина данных для разового получения превышает лимит, будет возвращена ошибка "RF_OUT_OF_BOUNDS".*
+   - ``out`` *- Данные, которые были получены.*
+   - ``timeout`` *- Таймаут ответа в мс. Если требуемое количество байт не было принято по истечении данного времени, то будет возвращено принятое количество байт. Если таймаут равен 0, будут возвращены данные, уже находящиеся в буфере устройства.*
+
+**Возвращаемое значение:**
+   ``true`` *при успехе, иначе -* ``false``
+
+**Пример в коде:**
+
+.. code-block:: cpp
+   :emphasize-lines: 50
+
+   /** @file rf62Xsdk.h */
+
+   /**
+    * @brief receive_from_periphery - receiving data from a
+    * peripheral device
+    *
+    * @param iface_name The name of the interface from which the data
+    * will be received. If the interface does not exist, the error
+    * "RF_WRONG_ARGUMENT" will be returned.
+    * Supported values:
+    * "Usart0" - sending to the peripherals connected via the USART0.
+    * @param count The number of bytes expected to be received
+    * @param out The data that was received.
+    * @param timeout Response timeout in ms. If the requested number of
+    * bytes is not received after this time, will be returned current
+    * number of bytes.
+    *
+    * @return true on success, else - false
+    */
+   bool receive_from_periphery(
+           std::string iface_name, uint16_t count,
+           std::vector<char>& out, uint32_t timeout);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.cpp */
+
+   #include <string>
+   #include <iostream>
+   #include <chrono>
+
+   #include "rf62Xsdk.h"
+   #include "rf62Xtypes.h"
+
+   int main()
+   {
+
+      // Initialize sdk library
+      sdk_init();
+
+      // Search for rf627smart devices over network
+      std::vector<std::shared_ptr<rf627smart>> scanners = rf627smart::search();
+
+      for (size_t i = 0; i < scanners.size(); i++)
+      {
+         scanners[i]->connect();
+      
+         // Receive data from periphery
+         std::vector<char> out;
+         scanners[i]->receive_from_periphery("Usart0", 512, out, 1000);
+         
+         std::cout << "Size of received data: " << out.size() << std::endl;
+            
+         // some other actions with scanner...
+
+      }
+   }

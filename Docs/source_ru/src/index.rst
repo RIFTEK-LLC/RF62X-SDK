@@ -58,13 +58,11 @@
    :maxdepth: 2
    :caption: Описания API
    
-   4.api_description/rf62Xcore
-   4.api_description/rf62Xsdk_c/_index
+   .. 4.api_description/rf62Xcore
+   .. 4.api_description/rf62Xsdk_c/_index
    4.api_description/rf62Xsdk_cpp/_index
-   4.api_description/rf62Xsdk_csharp/_index
-   4.api_description/rf62Xsdk_python/_index
-   4.api_description/rf62Xsdk_labview
-   4.api_description/rf62Xsdk_matlab
+   .. 4.api_description/rf62Xsdk_csharp/_index
+   .. 4.api_description/rf62Xsdk_python/_index
 
 *******************************************************************************
 Примеры использования
@@ -92,7 +90,7 @@
 +-------------------+-------------------------------------------------------------+
 | Website           | `www.riftek.com <https://riftek.com>`__                     |
 +-------------------+-------------------------------------------------------------+
-| Версия документа  | 1.4.0 от |date|                                             |
+| Версия документа  | 2.0.0 от |date|                                             |
 +-------------------+-------------------------------------------------------------+
-| Версии библиотеки | 1.4.0 от |date|                                             |
+| Версии библиотеки | 2.18.1 от |date|                                             |
 +-------------------+-------------------------------------------------------------+

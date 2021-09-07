@@ -12,6 +12,7 @@ namespace RF62X {
 
 /**
  * @brief sdk_version - Return info about SDK version
+ *
  * @return SDK version
  */
 API_EXPORT std::string sdk_version();
@@ -34,7 +35,7 @@ API_EXPORT void sdk_cleanup();
 
 /**
  * @brief rf627smart - This class is the main interface
- * for working with RF627-smart series scanners.
+ * for working with RF62X v2.x.x series scanners.
  */
 class API_EXPORT rf627smart
 {
@@ -66,13 +67,22 @@ public:
 
 
     /**
-     * @brief connect - Establish connection to the RF627old device
+     * @brief connect - Establish connection to the rf627smart device
      *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
      *
      * @return true on success, else - false
      */
     bool connect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    /**
+     * @brief is_connected - Scanner connection status by the
+     * connect() method.
+     *
+     * @return true, if a connection to the scanner was previously
+     * established using the connect() method, else - false.
+     */
+    bool is_connected();
 
     /**
      * @brief disconnect - Close connection to the device
@@ -85,7 +95,7 @@ public:
 
     /**
      * @brief check_connection - Сheck the connection with the
-     * RF627smart device
+     * rf627smart device
      *
      * @param timeout Connection check timeout
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
@@ -94,6 +104,15 @@ public:
      */
     bool check_connection(
             uint32_t timeout = 500, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    /**
+     * @brief is_available - Scanner availability status on the network.
+     * @details The value returned by the method depends on the results
+     * of the execution of the search() and check_connection() methods.
+     *
+     * @return true, if the scanner is available, otherwise - false.
+     */
+    bool is_available();
 
 
     /**
@@ -302,9 +321,12 @@ public:
      * @return true on success, else - false
      */
     bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief reboot_sensor - Reboot CMOS-sensor
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool reboot_sensor(PROTOCOLS protocol = PROTOCOLS::CURRENT);
@@ -368,8 +390,6 @@ public:
     */
     ~rf627smart();
 
-    bool is_connected();
-    bool is_available();
 private:
     void* scanner_base = NULL;
     bool _is_connected;
@@ -385,125 +405,179 @@ private:
 
 /**
  * @brief rf627old - This class is the main interface
- * for working with RF627-old series scanners.
+ * for working with RF627 v20.x.x.x series scanners.
  */
 class API_EXPORT rf627old
 {
 public:
     /**
-     * @brief search - Search for RF627old devices over network
-     * @param timeout Search timeout for each Ethernet interface
+     * @brief search - Search for rf627old devices over network
+     *
+     * @param timeout Search timeout[ms] for each Ethernet interface
+     * @param only_available_result Without saving search history
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return vector of rf627smart devices
+     *
+     * @return vector of rf627old devices
      */
     static std::vector<std::shared_ptr<rf627old>> search(
-            uint32_t timeout = 1000, bool only_available_result = true, PROTOCOLS protocol = PROTOCOLS::SERVICE);
+            uint32_t timeout = 300, bool only_available_result = true,
+            PROTOCOLS protocol = PROTOCOLS::SERVICE);
 
     /**
      * @brief get_info - Get information about scanner from hello packet
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return hello_info on success
+     *
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return hello_info on success, else - nullptr
      */
-    std::shared_ptr<hello_info> get_info(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<hello_info> get_info(
+            PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+
+
     /**
-     * @brief connect - Establish connection to the RF627old device
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return true on success
+     * @brief connect - Establish connection to the rf627old device
+     *
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return true on success, else - false
      */
     bool connect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
-     * @brief check_connection - Сheck the connection with the RF627old device
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return true on success
+     * @brief is_connected - Scanner connection status by the
+     * connect() method.
+     *
+     * @return true, if a connection to the scanner was previously
+     * established using the connect() method, else - false.
      */
-    bool check_connection(
-            uint32_t timeout = 500, PROTOCOLS protocol = PROTOCOLS::CURRENT);
-
+    bool is_connected();
 
     /**
-     * @brief disconnect_from_scanner - Close connection to the device
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return true on success
+     * @brief disconnect - Close connection to the device
+     *
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return true on success, else - false
      */
     bool disconnect(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
-     * @brief get_profile2D  - Get 2D measurement from scanner's data stream
-     * @param zero_points - include zero points in return profile2D
+     * @brief check_connection - Сheck the connection with the
+     * rf627old device
+     *
+     * @param timeout Connection check timeout
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return true on success, else - false
+     */
+    bool check_connection(
+            uint32_t timeout = 500, PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
+    /**
+     * @brief is_available - Scanner availability status on the network.
+     * @details The value returned by the method depends on the results
+     * of the execution of the search() and check_connection() methods.
+     *
+     * @return true, if the scanner is available, otherwise - false.
+     */
+    bool is_available();
+
+
+    /**
+     * @brief get_profile2D - Get 2D measurement from scanner's data stream
+     *
+     * @param zero_points Enable zero points in return profile2D
      * @param realtime Enable getting profile in real time (buffering is disabled)
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return ptr to profile2D_t structure if success, else - null
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return profile2D if success, else - nullptr
      */
     std::shared_ptr<profile2D> get_profile2D(
             bool zero_points = true, bool realtime = true,
             PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
-    char* get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
-
     /**
-     * @brief read_params - Read parameters from device to internal structure.
-     * This structure is accessible via get_params() function
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return true on success
+     * @brief read_params - Read parameters from device to
+     * internal SDK memory
+     *
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return true on success, else - false
      */
     bool read_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
-     * @brief write_params - Write current parameters to device's memory
-     * @param protocol - protocol's type (Service Protocol, ENIP, Modbus-TCP)
-     * @return true on success
+     * @brief write_params - Send current parameters to device
+     *
+     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
+     * @return true on success, else - false
      */
     bool write_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+
     /**
      * @brief save_params - Save changes to device's memory
      * @details The saved parameters will also be used if the device
      * is restarted or even if the firmware is updated.
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool save_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
     /**
-     * @brief get_param - Search parameters by his name
-     * @param param_name - name of parameter
+     * @brief get_param - Get parameter by his name
+     * Before using read_params() method should be called
+     *
+     * @param param_name Name of parameter
+     *
      * @return param on success, else - null
      */
     std::shared_ptr<param> get_param(std::string param_name);
 
     /**
-     * @brief set_param - set parameter
-     * @param param - parameter
+     * @brief set_param - Set parameter
+     *
+     * @param name Name of parameter
+     * @param value Value to set
+     *
      * @return true on success, else - false
      */
-    bool set_param(std::shared_ptr<param> param);
     template<typename T>
-    bool set_param(std::string name, T value)
-    {
-        auto _param = this->get_param(name); _param->setValue<T>(value);
-        return set_param(_param);
+    bool set_param(std::string name, T value) {
+        auto _param = this->get_param(name);
+        _param->setValue(value);
+        return set_param(std::move(_param));
     };
+    bool set_param(std::shared_ptr<param> param);
+    bool set_param_by_key(std::string name, std::string key);
 
 
     /**
-     * @brief send_cmd - Send command to parameter
-     * @param command_name Name of command
-     * @param[in] input Data to send in command payload
-     * @param[out] output Data to receive from command payload
+     * @brief send_cmd - Send command to scanner
+     *
+     * @param command_name Name of command:
+     * CID_PERIPHERY_SEND - send/receive data to/from a peripheral device
+     * CID_PROFILE_SET_COUNTERS - set counters in devices
+     * @param input Data to send in command payload
+     * @param output Data to receive from command payload
+     *
      * @return true on success, else - false
      */
     bool send_cmd(std::string command_name,
-                  std::vector<uint8_t> input, std::vector<uint8_t>& output);
+                  std::vector<uint8_t> in, std::vector<uint8_t>& out);
 
     /**
      * @brief reboot_device - The scanner will restart
+     *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     *
      * @return true on success, else - false
      */
     bool reboot_device(PROTOCOLS protocol = PROTOCOLS::CURRENT);
 
-    bool is_connected();
-    bool is_available();
     rf627old(void* scanner_base);
     ~rf627old();
 

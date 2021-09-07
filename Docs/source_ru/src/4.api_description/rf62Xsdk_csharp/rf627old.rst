@@ -1,6 +1,6 @@
 
 
-.. _rf62x_wrappers_description_cpp_rf627old:
+.. _rf62x_wrappers_csharp_rf627old:
 
 *******************************************************************************
 Класс rf627old

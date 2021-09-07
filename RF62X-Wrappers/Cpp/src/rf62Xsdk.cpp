@@ -2479,11 +2479,6 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 }
 
 
-char *rf627old::get_frame(PROTOCOLS protocol)
-{
-    return nullptr;
-}
-
 bool rf627old::read_params(PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -2758,6 +2753,13 @@ bool rf627old::set_param(std::shared_ptr<param> param)
         return true;
     }
     return false;
+}
+
+bool rf627old::set_param_by_key(std::string name, std::string key)
+{
+    auto _param = this->get_param(name);
+    _param->setValue(_param->getEnum<uint32_t>().getValue(key));
+    return set_param(std::move(_param));
 }
 
 

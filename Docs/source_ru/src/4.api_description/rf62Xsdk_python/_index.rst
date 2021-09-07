@@ -3,10 +3,7 @@
 .. |PYSDK_functions| replace:: PYSDK_functions.py
 .. |PYCLASS| replace:: rf627old
 
-
-
-
-.. _rf62x_wrappers_description_python:
+.. _rf62x_wrappers_python:
 
 *******************************************************************************
 API «обёртки» на Python

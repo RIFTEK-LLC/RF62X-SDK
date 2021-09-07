@@ -1,4 +1,4 @@
-.. _rf62x_wrappers_description_python:
+.. _rf62x_wrappers_python:
 
 .. |pydll| replace:: rf62Xsdk.dll
 .. |PYSDK| replace:: PYSDK.py

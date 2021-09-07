@@ -1,6 +1,6 @@
 
 
-.. _rf62x_wrappers_description_cpp_rf627old:
+.. _rf62x_wrappers_description_c_rf627old:
 
 *******************************************************************************
 Интерфейс работы с rf627old
