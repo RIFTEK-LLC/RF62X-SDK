@@ -41,10 +41,11 @@ extern BOOL EnumAdapterAddresses();
 extern void FreeAdapterAddresses();
 extern int GetAdaptersCount();
 extern const char* GetAdapterAddress(int index);
-extern const char* GetAdapterMasks(int index);
 /* windows sockets tweaks */
 extern BOOL WinSockInit();
 extern void WinSockDeinit();
+extern const char* GetAdapterMasks(int index);
+
 
 std::string SDK::SCANNERS::RF62X::sdk_version()
 {
@@ -2478,11 +2479,6 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 }
 
 
-char *rf627old::get_frame(PROTOCOLS protocol)
-{
-    return nullptr;
-}
-
 bool rf627old::read_params(PROTOCOLS protocol)
 {
     PROTOCOLS p;
@@ -2757,6 +2753,13 @@ bool rf627old::set_param(std::shared_ptr<param> param)
         return true;
     }
     return false;
+}
+
+bool rf627old::set_param_by_key(std::string name, std::string key)
+{
+    auto _param = this->get_param(name);
+    _param->setValue(_param->getEnum<uint32_t>().getValue(key));
+    return set_param(std::move(_param));
 }
 
 
@@ -3776,7 +3779,6 @@ bool rf627smart::send_to_periphery(
 {
     if (_is_connected)
     {
-        // Set authorization key to the RF627 device by Service Protocol.
         bool result = false;
 
         char* out_data = nullptr;
@@ -3790,6 +3792,8 @@ bool rf627smart::send_to_periphery(
             out.resize(out_data_size);
             for(uint32_t i = 0; i < out_data_size; i++)
                 out.push_back(out_data[i]);
+
+            free(out_data);
         }
 
         return result;
@@ -3799,9 +3803,31 @@ bool rf627smart::send_to_periphery(
 }
 
 bool rf627smart::receive_from_periphery(
-        std::string iface_name, uint32_t count,
+        std::string iface_name, uint16_t count,
         std::vector<char> &out, uint32_t timeout)
 {
+    if (_is_connected)
+    {
+        bool result = false;
+
+        char* out_data = nullptr;
+        uint32_t out_data_size = 0;
+        result = receive_data_from_scanner_periphery(
+                    (scanner_base_t*)scanner_base, iface_name.c_str(), timeout,
+                    count, &out_data, &out_data_size);
+
+        if (out_data_size > 0)
+        {
+            out.resize(out_data_size);
+            for(uint32_t i = 0; i < out_data_size; i++)
+                out.push_back(out_data[i]);
+
+            free(out_data);
+        }
+
+        return result;
+    }
+
     return false;
 }
 
@@ -3896,10 +3922,7 @@ bool rf627smart::save_calibration_table(PROTOCOLS protocol)
 
 void sdk_cleanup()
 {
-#if (defined _WIN32)
-    FreeAdapterAddresses();
-    WinSockDeinit();
-#endif
+    SDK::CORES::RF62X::cleanup();
 }
 
 

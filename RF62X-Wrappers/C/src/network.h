@@ -4,11 +4,12 @@
 
 
 #ifndef __MINGW32__
-#include <WinSock2.h>
+//#include <WinSock2.h>
+#include <winsock.h>
 #pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib,"iphlpapi.lib")
 #endif
-#include <ws2tcpip.h>
+//#include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <stdio.h>
 

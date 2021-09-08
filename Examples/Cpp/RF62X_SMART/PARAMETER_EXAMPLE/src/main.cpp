@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "rf62Xsdk.h"
 #include "rf62Xtypes.h"

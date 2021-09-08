@@ -1154,6 +1154,7 @@ namespace SDK
                                         serial_number = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_serial;
 
                                         ip_address = Marshal.PtrToStringAnsi((IntPtr)(((rf627_smart_hello_info_by_service_protocol*)info)->user_network_ip));
+                                        host_ip_address = Marshal.PtrToStringAnsi((IntPtr)(((rf627_smart_hello_info_by_service_protocol*)info)->user_network_hostIP));
                                         mac_address = Marshal.PtrToStringAnsi((IntPtr)(((rf627_smart_hello_info_by_service_protocol*)info)->fact_network_macAddr));
 
                                         profile_port = (ushort)((rf627_smart_hello_info_by_service_protocol*)info)->user_network_hostPort;
@@ -1191,6 +1192,7 @@ namespace SDK
                 public string device_name { get; }
                 public uint serial_number { get; }
                 public string ip_address { get; }
+                public string host_ip_address { get; }
                 public string mac_address { get; }
                 public ushort profile_port { get; }
                 public ushort service_port { get; }
