@@ -3,178 +3,1029 @@
 .. _rf62x_wrappers_description_c_rf627old:
 
 *******************************************************************************
-Интерфейс работы с rf627old
+Интерфейс работы со сканерами серии RF627 v20.x.x.x
 *******************************************************************************
 
 Файлы ``rf62X_sdk.h``, ``rf62X_types.h`` и ``rf62Xcore.h`` предоставляют весь 
-необходимый интерфейс для работы со сканерами серии RF627Old
+необходимый интерфейс для работы со сканерами серии RF627 v20.x.x.x
 
-search_scanners()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _rf62x_wrappers_c_rf627old_search_scanners:
 
-Функция для поиска устройств RF627 доступных в сети
+**search_scanners**
+===============================================================================
 
-.. doxygenfunction::  search_scanners(vector_t *, scanner_types_t, protocol_types_t)
+**Прототип:**
+   *rfUint8 search_scanners(vector_t \*list, scanner_types_t type, rfUint32 timeout, protocol_types_t protocol);*
 
-Пример использования:
+**Описание:**
+   *Функция поиска устройств RF62X v2.x.x в сети* 
 
-.. code-block:: cpp
-   :emphasize-lines: 20
+**Параметры:**
+   - ``list`` *- Указатель на список, который будет заполнен найденными сканерами в сети.*
+   - ``type`` *- Тип сканера для поиска (kRF627_OLD, kRF627_SMART).*
+   - ``timeout`` *- Время поиска на каждом Ethernet интерфейсе (мс).*
+   - ``protocol`` *- Тип протокола, по которому будет осуществляться поиск (Service Protocol, ENIP, Modbus-TCP)*
 
-   // Initialize sdk library
-   score_init();
+**Возвращаемое значение:**
+   *Вектор rf627old устройств*
 
-   // Print return rf627 sdk version
-   printf("SDK version: %s\n", sdk_version());
-   printf("=========================================\n");
+**Пример в коде:**
 
-   // Create value for scanners vector's type
-   vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
-   // Initialization vector
-   vector_init(&scanners);
+.. code-block:: c
+   :emphasize-lines: 70
 
-   uint32_t host_ip_addr = ntohl(inet_addr("192.168.1.1"));
-   uint32_t host_mask = ntohl(inet_addr("255.255.255.0"));
+   /** @file rf62X_sdk.h */
 
-   // call the function to change adapter settings inside the library.
-   set_platform_adapter_settings(host_mask, host_ip_addr);
+   /**
+    * @brief search_scanners - Search for RF62X devices over network
+    *
+    * @param[out] list Ptr to list of rf627 objects. If not null list will be
+    * filled with found devices
+    * @param[in] type Scanner's type (RF627-old, RF627-smart)
+    * @param[in] timeout Time to search
+    * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return TRUE on success
+    */
+   rfUint8 search_scanners(
+        vector_t *list, scanner_types_t type,
+        rfUint32 timeout, protocol_types_t protocol);
 
-   // Search for RF627-old devices over network by Service Protocol.
-   search_scanners(scanners, kRF627_OLD, kSERVICE);
+   ------------------------------------------------------------------------------
 
+   /** @file main.c */
 
-get_info_about_scanner()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   #include <stdio.h>
+   #include <stdlib.h>
 
-Функция для получения информации о сканере из пакета приветствия (Hello-пакет)
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
 
-.. doxygenfunction:: get_info_about_scanner(scanner_base_t *, protocol_types_t)
-
-Пример использования:
-
-.. code-block:: cpp
-   :emphasize-lines: 27-56
-
-   // Initialize sdk library
-   score_init();
-
-   // Print return rf627 sdk version
-   printf("SDK version: %s\n", sdk_version());
-   printf("=========================================\n");
-
-   // Create value for scanners vector's type
-   vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
-   // Initialization vector
-   vector_init(&scanners);
-
-   uint32_t host_ip_addr = ntohl(inet_addr("192.168.1.1"));
-   uint32_t host_mask = ntohl(inet_addr("255.255.255.0"));
-
-   // call the function to change adapter settings inside the library.
-   set_platform_adapter_settings(host_mask, host_ip_addr);
-
-   // Search for RF627-old devices over network by Service Protocol.
-   search_scanners(scanners, kRF627_OLD, kSERVICE);
-
-   // Print count of discovered RF627Old in network by Service Protocol
-   printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
-
-   for (int i = 0; i < (int)vector_count(scanners); i++)
+   int main()
    {
-      hello_information info = get_info_about_scanner(vector_get(scanners,i), kSERVICE);
 
-      printf("\n\n\nID scanner's list: %d\n", i);
-      printf("-----------------------------------------\n");
-      printf("Device information: \n");
-      printf("* Name\t: %s\n", info.rf627old.hello_info_service_protocol->device_name);
-      printf("* Serial\t: %d\n", info.rf627old.hello_info_service_protocol->serial_number);
-      printf("* IP Addr\t: %d.%d.%d.%d\n",
-                info.rf627old.hello_info_service_protocol->ip_address[0],
-                info.rf627old.hello_info_service_protocol->ip_address[1],
-                info.rf627old.hello_info_service_protocol->ip_address[2],
-                info.rf627old.hello_info_service_protocol->ip_address[3]);
-      printf("* MAC Addr\t: %d:%d:%d:%d:%d:%d\n",
-                info.rf627old.hello_info_service_protocol->mac_address[0],
-                info.rf627old.hello_info_service_protocol->mac_address[1],
-                info.rf627old.hello_info_service_protocol->mac_address[2],
-                info.rf627old.hello_info_service_protocol->mac_address[3],
-                info.rf627old.hello_info_service_protocol->mac_address[4],
-                info.rf627old.hello_info_service_protocol->mac_address[5]);
+      // Initialize sdk library
+      core_init();
 
-      printf("\nWorking ranges: \n");
-      printf("* Zsmr, mm\t: %d\n", info.rf627old.hello_info_service_protocol->z_begin);
-      printf("* Zmr , mm\t: %d\n", info.rf627old.hello_info_service_protocol->z_range);
-      printf("* Xsmr, mm\t: %d\n", info.rf627old.hello_info_service_protocol->x_begin);
-      printf("* Xemr, mm\t: %d\n", info.rf627old.hello_info_service_protocol->x_end);
+      // Cleaning detected network adapter.
+      FreeAdapterAddresses();
+      // Retrieving addresses associated with adapters on the local computer.
+      EnumAdapterAddresses();
 
-      printf("\nVersions: \n");
-      printf("* Firmware\t: %d\n", info.rf627old.hello_info_service_protocol->firmware_version);
-      printf("* Hardware\t: %d\n", info.rf627old.hello_info_service_protocol->hardware_version);
-      printf("-----------------------------------------\n");
+      // Create value for scanners vector's type
+      vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
+      // Initialization vector
+      vector_init(&scanners);
+
+
+      // Iterate over all available network adapters in the current operating
+      // system to send "Hello" requests.
+      uint32_t count = 0;
+      for (int i=0; i<GetAdaptersCount(); i++)
+      {
+         uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
+         uint32_t host_mask = ntohl(inet_addr(GetAdapterMasks(i)));
+         // call the function to change adapter settings inside the library.
+         set_platform_adapter_settings(host_mask, host_ip_addr);
+
+         // Search for rf627old devices over network by Service Protocol.
+         if (host_ip_addr != 0)
+         {
+            // Get another IP Addr and set this changes in adapter settings.
+            printf("Search scanners from:\n "
+                  "* IP Address\t: %s\n "
+                  "* Netmask\t: %s\n",
+                  GetAdapterAddress(i), GetAdapterMasks(i));
+            search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+            // Print count of discovered rf627old in network by Service Protocol
+            printf("Discovered\t: %d RF627-Old\n",(int)vector_count(scanners)-count);
+            printf("-----------------------------------------\n");
+            count = (int)vector_count(scanners);
+         }
+      }
+
+      // Print count of discovered rf627old in network
+      printf("Was found\t: %d RF627 v20.x.x.x", (int)vector_count(scanners));
+      
+      // some code...
    }
 
-   
+.. _rf62x_wrappers_c_rf627old_get_info_about_scanner:
 
-connect_to_scanner()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**get_info_about_scanner**
+===============================================================================
 
-Функция для установки соединения со сканером серии RF627
+**Прототип:**
+   *hello_information get_info_about_scanner(scanner_base_t \*device, protocol_types_t protocol);*
 
-.. doxygenfunction:: connect_to_scanner(scanner_base_t *, protocol_types_t)
+**Описание:**
+   *Функция получения информации о сканере из пакета приветствия (Hello-пакет)* 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``protocol`` *- Тип протокола, по которому был получен пакет приветствия (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``hello_information`` *в случае успеха, иначе ошибка*
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 39-40, 42-43, 48-51, 54-57, 60-64
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief get_info_about_scanner - Get information about scanner from
+    * hello packet
+    *
+    * @param[in] device Ptr to scanner
+    * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return hello_information on success
+    */
+   hello_information get_info_about_scanner(
+         scanner_base_t *device, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         hello_information result =
+                  get_info_about_scanner(vector_get(scanners,i), kSERVICE);
+
+         rf627_smart_hello_info_by_service_protocol* info =
+                  result.rf627smart.hello_info_service_protocol;
+
+         printf("\n\nID scanner's list: %d\n", i);
+         printf("-----------------------------------------\n");
+         printf("Device information: \n");
+         printf("* Name\t: %s\n", info->user_general_deviceName);
+         printf("* Serial\t: %d\n", info->fact_general_serial);
+         printf("* IP Addr\t: %s\n", info->user_network_ip);
+         printf("* MAC Addr\t: %s\n", info->fact_network_macAddr);
+
+         printf("\nWorking ranges: \n");
+         printf("* Zsmr, mm\t: %d\n", info->fact_general_smr);
+         printf("* Zmr , mm\t: %d\n", info->fact_general_mr);
+         printf("* Xsmr, mm\t: %d\n", info->fact_general_xsmr);
+         printf("* Xemr, mm\t: %d\n", info->fact_general_xemr);
+
+         printf("\nVersions: \n");
+         printf("* Firmware\t: %d.%d.%d\n",
+                info->fact_general_firmwareVer[0],
+                info->fact_general_firmwareVer[1],
+                info->fact_general_firmwareVer[2]);
+         printf("* Hardware\t: %d\n", info->fact_general_hardwareVer);
+         printf("-----------------------------------------\n");
+      }
+      
+      // some code...
+   }
+
+.. _rf62x_wrappers_c_rf627old_free_scanner:
+
+**free_scanner**
+===============================================================================
+
+**Прототип:**
+   *void free_scanner(scanner_base_t *device);*
+
+**Описание:**
+   *Функция очистки памяти, используемой объектом типа* ``scanner_base_t`` 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 39
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief free_scanner - Cleanup resources allocated by device
+    *
+    * @param[in] device Prt to scanner
+    */
+   void free_scanner(scanner_base_t *device);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      while (vector_count(scanners) > 0)
+      {
+         uint32_t index = vector_count(scanners)-1;
+         // Get last scanner in vector for delete
+         scanner_base_t* device = vector_get(scanners, index);
+         
+         // Cleanup resources allocated by device
+         free_scanner(device);
+
+         // Delete from vector
+         vector_delete(scanners, index);
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627old_connect_to_scanner:
+
+**connect_to_scanner**
+===============================================================================
+
+**Прототип:**
+   *rfUint8 connect_to_scanner(scanner_base_t \*device, protocol_types_t protocol);*
+
+**Описание:**
+   *Функция установки соединения со сканером* 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``protocol`` *- Тип протокола, по которому будет выполнено подключение (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``TRUE`` *при успехе, иначе -* ``FALSE``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 41
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief connect_to_scanner - Establish connection to the RF62X device
+    *
+    * @param[in] device Ptr to scanner
+    * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return TRUE on success
+    */
+   rfUint8 connect_to_scanner(
+         scanner_base_t *device, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         
+         // Establish connection to the RF627 device by Service Protocol.
+         uint8_t is_connected = connect_to_scanner(scanner, kSERVICE);
+         if (!isConnected){
+            printf("Failed to connect to scanner!");
+            continue;
+         }
+
+         // some actions with scanner...
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627old_disconnect_from_scanner:
+
+**disconnect_from_scanner**
+===============================================================================
+
+**Прототип:**
+   *rfUint8 disconnect_from_scanner(scanner_base_t \*device, protocol_types_t protocol);*
+
+**Описание:**
+   *Функция закрытия ранее установленного соединения со сканером* 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``protocol`` *- Тип протокола, по которому будет выполнено отключение (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``TRUE`` *при успехе, иначе -* ``FALSE``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 41
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief disconnect_from_scanner - Close connection to the device
+    *
+    * @param[in] device Prt to scanner
+    * @param[in] protocol Protocol's type (Service, ENIP, Modbus-TCP)
+    *
+    * @return TRUE on success
+    */
+   rfUint8 disconnect_from_scanner(
+         scanner_base_t *device, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         
+         // Establish connection to the RF627 device by Service Protocol.
+         uint8_t is_connected = connect_to_scanner(scanner, kSERVICE);
+         if (!isConnected){
+            printf("Failed to connect to scanner!");
+            continue;
+         }
+
+         // some actions with scanner...
+
+         // Disconnect from scanner.
+         disconnect_from_scanner(scanner, kSERVICE)
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627old_check_connection_to_scanner:
+
+**check_connection_to_scanner**
+===============================================================================
+
+**Прототип:**
+   *check_connection_to_scanner(scanner_base_t \*device, rfUint32 timeout, protocol_types_t protocol);*
+
+**Описание:**
+   *Функция проверки доступности сканера в сети (после подключения к нему)* 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``timeout`` *- Время проверки соединения со сканером (мс).*
+   - ``protocol`` *- Тип протокола, по которому будет выполнена проверка (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``TRUE`` *при успехе, иначе -* ``FALSE``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 41
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief check_connection_to_scanner - Check connection to the RF62X device
+    *
+    * @param[in] device Ptr to scanner
+    * @param[in] timeout Time to check connection
+    * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return TRUE on success
+    */
+   rfUint8 check_connection_to_scanner(
+         scanner_base_t *device, rfUint32 timeout, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         
+         // Establish connection to the RF627 device by Service Protocol.
+         uint8_t is_connected = connect_to_scanner(scanner, kSERVICE);
+         if (!isConnected){
+            printf("Failed to connect to scanner!");
+            continue;
+         }
+
+         // Check connection to the RF627 device.
+         uint8_t is_available = 
+               check_connection_to_scanner(scanner, 300, kSERVICE);
+         if (!is_available){
+            printf("Scanner is not available now!");
+            continue;
+         }
+
+         // some actions with scanner...
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627old_get_profile2D_from_scanner:
+
+**get_profile2D_from_scanner**
+===============================================================================
+
+**Прототип:**
+   *rf627_profile2D_t\* get_profile2D_from_scanner(scanner_base_t \*device, rfBool zero_points, rfBool realtime, protocol_types_t protocol);*
+
+**Описание:**
+   *Функция получения результатов измерений* 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``zero_points`` *- Включать нулевые точки в возвращаемом профиле.*
+   - ``realtime`` *- Получение профиля в реальном времени (буферизация отключена).*
+   - ``protocol`` *- Тип протокола, по которому будет выполнена проверка (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``rf627_profile2D_t*`` *при успехе, иначе -* ``NULL``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 41
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief get_profile2D_from_scanner - Get measurement from scanner's
+    * data stream
+    *
+    * @param[in] device - ptr to scanner
+    * @param[in] zero_points Enable zero points in return profile2D
+    * @param[in] realtime Enable getting profile in realtime (buffering disabled)
+    * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return ptr to rf627_profile_t structure
+    */
+   rf627_profile2D_t* get_profile2D_from_scanner(
+         scanner_base_t *device, rfBool zero_points,
+         rfBool realtime, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         connect_to_scanner(scanner, kSERVICE);
+         
+         uint8_t zero_points = TRUE;
+         uint8_t realtime = TRUE;
+         // Get profile from scanner's data stream by Service Protocol.
+         rf627_profile2D_t* result = get_profile2D_from_scanner(
+               scanner, zero_points, realtime, kSERVICE);
+         rf627_smart_profile2D_t* profile2D = result->rf627old_profile2D;
+         if (profile2D != NULL) {
+            printf("Profile was successfully received!");
+            // some actions with profile...
+            free_profile2D(result);
+         }else
+            printf("Profile was not received!");
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627old_free_profile2D:
+
+**free_profile2D**
+===============================================================================
+
+**Прототип:**
+   *void free_profile2D(rf627_profile2D_t\* profile);*
+
+**Описание:**
+   *Функция очистки ресурсов, выделенных для rf627_profile2D_t* 
+
+**Параметры:**
+   - ``rf627_profile2D_t`` *- Указатель на профиль*
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 46
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief free_profile2D - Cleanup resources allocated for profile2D
+    *
+    * @param[in] profile Ptr to rf627_profile2D_t
+    */
+   void free_profile2D(rf627_profile2D_t* profile);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         connect_to_scanner(scanner, kSERVICE);
+         
+         uint8_t zero_points = TRUE;
+         uint8_t realtime = TRUE;
+         // Get profile from scanner's data stream by Service Protocol.
+         rf627_profile2D_t* result = get_profile2D_from_scanner(
+               scanner, zero_points, realtime, kSERVICE);
+         rf627_smart_profile2D_t* profile2D = result->rf627old_profile2D;
+         if (profile2D != NULL) {
+            printf("Profile was successfully received!");
+            // some actions with profile...
+            free_profile2D(result);
+         }else
+            printf("Profile was not received!");
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627old_read_params_from_scanner:
+
+**read_params_from_scanner**
+===============================================================================
+
+**Прототип:**
+   *rfUint8 read_params_from_scanner(scanner_base_t \*device, uint32_t timeout, protocol_types_t protocol);*
+
+**Описание:**
+   *Функция получения текущих параметров сканера. При вызове данной функции SDK вычитывает*
+   *со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей*
+   *работы во внутренней памяти SDK.*
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``timeout`` *- Время получения списка параметров со сканера.*
+   - ``protocol`` *- Тип протокола, по которому будет выполнена проверка (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   ``TRUE`` *при успехе, иначе -* ``FALSE``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 46
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief read_params_from_scanner - Read parameters from device to 
+    * Internal structure.
+    *
+    * @param device Ptr to scanner
+    * @param timeout Time to read parameters
+    * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return TRUE on success
+    */
+    rfUint8 read_params_from_scanner(
+         scanner_base_t *device, rfUint32 timeout, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         connect_to_scanner(scanner, kSERVICE);
+         
+         uint8_t is_read = read_params_from_scanner(scanner, 300, kSERVICE);
+         if (is_read) {
+            printf("Scanner parameters were read successfully!");
+            // some actions with params...
+         }else
+            printf("Scanner parameters were not read!");
+      }
+   }
 
 
-disconnect_from_scanner()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _rf62x_wrappers_c_rf627old_get_parameter:
 
-Функция для закрытия ранее установленного соединения со сканером серии RF627
+**get_parameter**
+===============================================================================
 
-.. doxygenfunction:: disconnect_from_scanner(scanner_base_t *, protocol_types_t)
+**Прототип:**
+   *parameter_t\* get_parameter(scanner_base_t \*device, const rfChar\* param_name);*
 
-   
-get_profile2D_from_scanner()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**Описание:**
+   *Функция получения конкретного параметра по его имени (ключу). При вызове* 
+   *данной функции SDK осуществляет поиск нужного параметра из последних прочитанных*
+   *при вызове функции* :ref:`rf62x_wrappers_c_rf627old_read_params_from_scanner` 
+   *. В случае, если запрашиваемый параметр отсутствует в конкретном сканере, функция* 
+   *вернёт NULL.*
 
-Функция для получения профиля со сканеров серии RF627
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``param_name`` *- Имя (ключ) параметра.*
 
-.. doxygenfunction:: get_profile2D_from_scanner(scanner_base_t *, rfBool, protocol_types_t)
+**Возвращаемое значение:**
+   ``parameter_t*`` *при успехе, иначе -* ``NULL``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 47, 54
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief get_parameter - Search parameters by his name
+    *
+    * @param device - ptr to scanner
+    * @param param_name - name of parameter
+    *
+    * @return param on success, else - null
+    */
+   parameter_t* get_parameter(
+         scanner_base_t *device, const rfChar* param_name);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         
+         // Establish connection.
+         connect_to_scanner(scanner, kSERVICE);
+
+         // Read params.
+         read_params_from_scanner(scanner, 300, kSERVICE);
+
+         // Get parameter of Device Name
+         parameter_t* name = get_parameter(scanner,"user_general_deviceName");
+         if (name != NULL) {
+            char* value = name->val_str->value;
+            printf("Current Device Name\t: %s\n", value);
+         }
+
+         // Get parameter of Sensor Framerate
+         parameter_t* framerate = get_parameter(scanner,"user_sensor_framerate");
+         if (framerate != NULL) {
+            uint32_t value = framerate->val_uint32->value;
+            printf("Current FPS\t\t: %d\n", value);
+         }
+
+         // some actions with other parameters...
+         
+      }
+   }
+
+.. note::
+   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
+
+.. _rf62x_wrappers_c_rf627old_set_parameter:
+
+**set_parameter**
+===============================================================================
+
+**Прототип:**
+   *rfUint8 set_parameter(scanner_base_t \*device, parameter_t\* param)*
+
+**Описание:**
+   *Функция установки конкретного параметра. При вызове данной функции происходит*
+   установка параметра в списке параметров во внутренней памяти SDK.*
+   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_c_rf627old_write_params_to_scanner` *.*
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер.*
+   - ``param`` *- Указатель на параметр для установки.*
+
+**Возвращаемое значение:**
+   ``TRUE`` *при успехе, иначе -* ``FALSE``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 63
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief set_parameter - Set parameter
+    *
+    * @param device Ptr to scanner
+    * @param param Parameter name
+    *
+    * @return TRUE on success
+    */
+   rfUint8 set_parameter(
+         scanner_base_t *device, parameter_t* param);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         
+         // Establish connection.
+         connect_to_scanner(scanner, kSERVICE);
+
+         // Read params.
+         read_params_from_scanner(scanner, 300, kSERVICE);
+
+         //
+         // Example of working with the parameter type:
+         // uint32_t
+         //
+         // Get parameter of Laser Enabled
+         parameter_t* laser = get_parameter(scanner, "user_laser_enabled");
+         if (laser != NULL) 
+         {
+            uint32_t is_enabled = laser->val_uint32->value;
+            printf("Current Laser State\t: %s\n", (is_enabled? "ON":"OFF"));
+
+            // Change the current state to the opposite
+            is_enabled = !is_enabled;
+            laser_enabled->val_uint32->value = is_enabled;
+            printf("New Laser State\t: %s\n", (is_enabled? "ON":"OFF"));
+            printf("-------------------------------------\n");
+
+            set_parameter(scanner, laser_enabled);
+         }
+
+         // some actions with other parameters before applying changes...
+         
+      }
+   }
+
+.. note::
+   Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
 
 
-.. _rf62x_wrappers_c_description_rf627old_read_params:
+.. _rf62x_wrappers_c_rf627old_write_params_to_scanner:
 
-read_params_from_scanner()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**write_params_to_scanner**
+===============================================================================
 
-Функция получения текущих параметров сканера. При вызове данной функции SDK вычитывает 
-со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей 
-работы.
+**Прототип:**
+   *rfUint8 write_params_to_scanner(scanner_base_t \*device, rfUint32 timeout, protocol_types_t protocol)*
 
-.. doxygenfunction:: read_params_from_scanner(scanner_base_t *, protocol_types_t)
+**Описание:**
+   *Функция передачи параметров из внутренней памяти SDK в сканер.* 
+   *При вызове данной функции происходит отправка изменённых параметров в сканер*
 
-get_parameter()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**Параметры:**
+   - ``device`` *- Указатель на сканер.*
+   - ``timeout`` *- Время отправки изменённых параметров в сканер.*
+   - ``protocol`` *- Тип протокола, по которому будет выполнена проверка (Service Protocol, ENIP, Modbus-TCP)*
 
-Функция получения конкретного параметра по его имени (ключу). При вызове 
-данной функции SDK осуществляет поиск нужного параметра из последних прочитанных 
-при вызове функции :ref:`read_params_from_scanner`. В случае, если запрашиваемый 
-параметр отсутствует в конкретном сканере, функция вернёт null.
+**Возвращаемое значение:**
+   ``TRUE`` *при успехе, иначе -* ``FALSE``
 
-.. doxygenfunction:: get_parameter(scanner_base_t *, const rfChar *)
+**Пример в коде:**
 
+.. code-block:: c
+   :emphasize-lines: 63
 
-set_parameter()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   /** @file rf62X_sdk.h */
 
-Функция установки конкретного параметра. При вызове данной функции происходит установка 
-передаваемого параметра в локальном списке параметров в SDK. Для отправки изменений 
-в сканер необходимо вызвать функцию ``write_params``.
+   /**
+    * @brief write_params_to_scanner - Send current parameters to device
+    *
+    * @param device Ptr to scanner
+    * @param timeout Time to send parameters
+    * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    *
+    * @return TRUE on success
+    */
+   rfUint8 write_params_to_scanner(
+         scanner_base_t *device, rfUint32 timeout, protocol_types_t protocol);
 
-.. doxygenfunction:: set_parameter(scanner_base_t *, parameter_t *)
+   ------------------------------------------------------------------------------
 
+   /** @file main.c */
 
-write_params_to_scanner()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   #include <stdio.h>
+   #include <stdlib.h>
 
-Функция записи локальных параметров из SDK в сканер. При вызове данной функции 
-происходит отправка списка локальных параметров из SDK в сканер.
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
 
-.. doxygenfunction:: write_params_to_scanner(scanner_base_t *, protocol_types_t)
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-old devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+
+      // Print count of discovered rf627old in network by Service Protocol
+      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         
+         // Establish connection.
+         connect_to_scanner(scanner, kSERVICE);
+
+         // Read params.
+         read_params_from_scanner(scanner, 300, kSERVICE);
+
+         //
+         // Example of working with the parameter type:
+         // uint32_t
+         //
+         // Get parameter of Laser Enabled
+         parameter_t* laser = get_parameter(scanner, "user_laser_enabled");
+         if (laser != NULL) 
+         {
+            uint32_t is_enabled = laser->val_uint32->value;
+            printf("Current Laser State\t: %s\n", (is_enabled? "ON":"OFF"));
+
+            // Change the current state to the opposite
+            is_enabled = !is_enabled;
+            laser_enabled->val_uint32->value = is_enabled;
+            printf("New Laser State\t: %s\n", (is_enabled? "ON":"OFF"));
+            printf("-------------------------------------\n");
+
+            set_parameter(scanner, laser_enabled);
+         }
+
+         // some actions with other parameters before applying changes...
+
+         // Apply changed parameters to the device
+         uint8_t is_applied = write_params_to_scanner(scanner, 300, kSERVICE);
+         if (is_applied) 
+            printf("Scanner parameters were applied successfully!");
+         else 
+            printf("Scanner parameters were not applied!");
+         
+      }
+   }
