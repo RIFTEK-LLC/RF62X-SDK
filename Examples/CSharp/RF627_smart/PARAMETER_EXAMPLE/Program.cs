@@ -37,12 +37,12 @@ namespace PARAMETER_EXAMPLE
                 Console.WriteLine("-----------------------------------------");
 
                 // Establish connection to the RF627 device by Service Protocol.
-                bool is_connected = list[i].Connect();
+                bool isConnected = list[i].Connect();
 
                 // read params from RF627 device by Service Protocol.
-                bool is_read = list[i].ReadParams();
+                bool isRead = list[i].ReadParams();
 
-                if (is_connected && is_read)
+                if (isConnected && isRead)
                 {
                     //
                     // Example of working with the parameter type:
