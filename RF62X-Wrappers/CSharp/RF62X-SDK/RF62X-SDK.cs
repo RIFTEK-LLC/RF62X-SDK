@@ -53,9 +53,9 @@ namespace SDK
                 /// Search for RF627smart devices over network
                 /// </summary>
                 /// <param name="timeout">Search timeout for each Ethernet interface</param>
-                /// <param name="protocol">Protocol's type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">Protocol's type</param>
                 /// <returns>List of RF627smart devices</returns>
-                public static List<RF627smart> Search(uint timeout = 1000, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public static List<RF627smart> Search(uint timeout = 300, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
                     List<RF627smart> result = new List<RF627smart>();
 
@@ -125,7 +125,7 @@ namespace SDK
                 /// <summary>
                 /// Get information about scanner from hello packet
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>Hello_info on success</returns>
                 public HelloInfo GetInfo(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -151,7 +151,7 @@ namespace SDK
                 /// <summary>
                 /// Establish connection to the RF627smart device
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
                 public bool Connect(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -193,9 +193,9 @@ namespace SDK
                 /// Check connection with RF627smart device
                 /// </summary>
                 /// <param name="timeout">Connection check timeout</param>
-                /// <param name="protocol">Protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">Protocol’s type</param>
                 /// <returns>true on success</returns>
-                public bool CheckConnection(uint timeout = 3000, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public bool CheckConnection(uint timeout = 300, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
                     PROTOCOL_TYPES p;
                     if (protocol == PROTOCOL_TYPES.CURRENT)
@@ -228,7 +228,7 @@ namespace SDK
                 /// <summary>
                 /// Close connection to the device
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
                 public bool Disconnect(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -263,8 +263,8 @@ namespace SDK
                 /// Get 2D measurement from scanner’s data stream
                 /// </summary>
                 /// <param name="zero_points">include zero points in return Profile</param>
-                /// <param name="realtime">Enable getting profile in real time (buffering is disabled)</param>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="realtime">Enable getting profile in real time</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>Profile</returns>
                 public Profile2D GetProfile(
                     bool zero_points = true, bool realtime = true,
@@ -312,7 +312,7 @@ namespace SDK
                 /// <summary>
                 /// Get RAW frame from scanner
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>Frame</returns>
                 public Frame GetFrame(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -365,9 +365,9 @@ namespace SDK
                 }
 
                 /// <summary>
-                /// Read parameters from device to internal structure. This structure is accessible via GetParam() functions
+                /// Read parameters from device to internal structure.
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
                 public bool ReadParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -397,9 +397,9 @@ namespace SDK
                 }
 
                 /// <summary>
-                /// Write current parameters to device’s memory
+                /// Send current parameters to device
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
                 public bool WriteParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -432,7 +432,7 @@ namespace SDK
                 /// Save changes to device's memory. The saved parameters will also be used if the device 
                 /// is restarted or even if the firmware is updated.
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
                 public bool SaveParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -458,9 +458,10 @@ namespace SDK
                 }
 
                 /// <summary>
-                /// Loading parameters from recovery area. The device will automatically reboot.
+                /// Loading parameters from recovery area. 
+                /// The device will automatically reboot.
                 /// </summary>
-                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
                 public bool LoadRacoveryParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
@@ -487,7 +488,7 @@ namespace SDK
                 }
 
                 /// <summary>
-                /// Search parameters by his name
+                /// Search parameters by name
                 /// </summary>
                 /// <param name="nameKey">name of parameter</param>
                 /// <returns>param on success, else - null</returns>
@@ -812,7 +813,7 @@ namespace SDK
                 }
 
                 /// <summary>
-                /// Update parameter in internal structure
+                /// Set parameter
                 /// </summary>
                 /// <param name="param">Updated parameter</param>
                 /// <returns>true on success, else - false</returns>
@@ -896,6 +897,24 @@ namespace SDK
                         return true;
                     }
                     return false;
+                }
+
+                /// <summary>
+                /// Set parameter by name
+                /// </summary>
+                /// <param name="param">Name of parameter</param>
+                /// <param name="value">Value to set</param>
+                /// <returns>true on success, else - false</returns>
+                public bool SetParam(string name, dynamic value)
+                {
+                    dynamic _param = GetParam("user_sensor_framerate");
+                    if (_param != null)
+                    {
+                        _param.SetValue(value);
+                        return SetParam(_param);
+                    }
+                    else
+                        return false;
                 }
 
                 /// <summary>
