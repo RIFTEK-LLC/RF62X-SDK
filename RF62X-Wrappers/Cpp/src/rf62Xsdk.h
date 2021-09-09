@@ -199,8 +199,11 @@ public:
     template<typename T>
     bool set_param(std::string name, T value) {
         auto _param = this->get_param(name);
-        _param->setValue(value);
-        return set_param(std::move(_param));
+        if (_param != nullptr) {
+            _param->setValue(value);
+            return set_param(std::move(_param));
+        }else
+            return false;
     };
     bool set_param(std::shared_ptr<param> param);
     bool set_param_by_key(std::string name, std::string key);
@@ -389,6 +392,9 @@ public:
     * @brief ~rf627smart - Class destructor.
     */
     ~rf627smart();
+
+    rf627smart(const rf627smart&) = delete;
+    rf627smart& operator=(const rf627smart&) = delete;
 
 private:
     void* scanner_base = NULL;
@@ -580,6 +586,9 @@ public:
 
     rf627old(void* scanner_base);
     ~rf627old();
+
+    rf627old(const rf627old&) = delete;
+    rf627old& operator=(const rf627old&) = delete;
 
 private:
     void* scanner_base = NULL;

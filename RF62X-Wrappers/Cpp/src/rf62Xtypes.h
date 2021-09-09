@@ -80,6 +80,8 @@ public:
     uint32_t getSensorWidth();
     uint32_t getSensorHeight();
 
+    frame(const frame&) = delete;
+    frame& operator=(const frame&) = delete;
 private:
     void* m_FrameBase = nullptr;
 
@@ -127,6 +129,9 @@ public:
 
     bool save_to_file(std::string file_name);
     bool convert_to_bytes(std::vector<char>& bytes);
+
+    calib_table(const calib_table&) = delete;
+    calib_table& operator=(const calib_table&) = delete;
 
 private:
     void* m_CalibTableBase = nullptr;
@@ -194,6 +199,9 @@ public:
     hello_info(void* base_hello, SCANNER_TYPES type, PROTOCOLS protocol);
     ~hello_info();
 
+    hello_info(const hello_info&) = delete;
+    hello_info& operator=(const hello_info&) = delete;
+
 private:
     std::string _device_name;
     uint32_t _serial_number;
@@ -251,6 +259,8 @@ public:
     const std::vector<uint16_t>& getPixels() const noexcept;
     const std::vector<uint8_t>& getIntensity() const noexcept;
 
+    profile2D(const profile2D&) = delete;
+    profile2D& operator=(const profile2D&) = delete;
 private:
     void* m_ProfileBase;
 
@@ -392,6 +402,9 @@ public:
 
     template <typename T>
     ValueEnum<T> getEnum() const;
+
+    param(const param&) = delete;
+    param& operator=(const param&) = delete;
 private:
     void* param_base;
 
