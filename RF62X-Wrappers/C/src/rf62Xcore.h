@@ -22,6 +22,7 @@ API_EXPORT int8_t core_init();
 
 /**
  * @brief sdk_version - Return info about SDK version
+ *
  * @return SDK version
  */
 API_EXPORT char* sdk_version();
