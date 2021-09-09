@@ -6,33 +6,75 @@
 Класс rf627old
 *******************************************************************************
 
-Данный класс определён в файле ``rf62Xsdk.cs`` и предоставляет интерфейс 
-для работы со сканерами серии RF627Old
+Данный класс определён в файле ``RF62X-SDK.cs`` и предоставляет интерфейс 
+для работы со сканерами серии RF627 v20.x.x.x
 
-.. doxygenclass:: SDK::SCANNERS::RF62X::RF627old
+.. _rf62x_wrappers_csharp_rf627old_search:
 
-Search()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**Search**
+===============================================================================
 
-Функция для поиска устройств RF627 доступных в сети:
+**Прототип:**
+   *static List<RF627smart> Search(uint timeout = 300, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE);*
 
-.. code-block:: c#
+**Описание:**
+   *Метод поиска устройств RF62X v2.x.x в сети* 
 
-   static List<RF627old> Search(PROTOCOLS_TYPES protocol = PROTOCOLS_TYPES.SERVICE_PROTOKOL)
-
-**Входные параметры:**
-
--  ``protocol`` (*PROTOCOLS_TYPES*) – выбор протокола, по которому будет осуществлен поиск сканеров в сети (Service Protocol, ENIP, Modbus-TCP)
+**Параметры:**
+   - ``timeout`` *- Время поиска на каждом Ethernet интерфейсе (мс).*
+   - ``protocol`` *- Тип протокола, по которому будет осуществляться поиск (Service Protocol, ENIP, Modbus-TCP)*
 
 **Возвращаемое значение:**
+   *Cписок обнаруженных в сети сканеров серии RF627 v20.x.x.x.
 
--  ``List<RF627old>`` – список обнаруженных в сети сканеров серии RF627-old.
-
-**Пример использования в коде:**
+**Пример в коде:**
 
 .. code-block:: c#
    :emphasize-lines: 9
 
+   /// <file> RF62X-SDK.cs
+
+   /// <summary>
+   /// Search for RF627smart devices over network
+   /// </summary>
+   /// <param name="timeout">Search timeout for each Ethernet interface</param>
+   /// <param name="protocol">Protocol's type</param>
+   /// <returns>List of RF627smart devices</returns>
+   public static List<RF627smart> Search(
+         uint timeout = 300, PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+
+   ------------------------------------------------------------------------------
+
+   /// <file> Program.cs
+
+   using System;
+   using System.Collections.Generic;
+   using System.Threading;
+   using SDK.SCANNERS;
+
+   namespace EXAMPLE
+   {
+      class Program
+      {
+         static void Main(string[] args)
+         {
+            // Initialize sdk library
+            bool isInit = RF62X.SdkInit();
+
+            if (isInit)
+               Console.WriteLine("SDK version: {0}", RF62X.SdkVersion());
+            else
+            {
+               Console.WriteLine("SDK initialization error!");
+            }
+
+            // some code...
+
+            // Cleanup resources
+            SdkCleanup();  
+         }
+      }
+   }
    // Start initialization of the library core
    RF62X.SdkInit();
 
