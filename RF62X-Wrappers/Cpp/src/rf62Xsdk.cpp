@@ -2942,7 +2942,8 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
 
 }
 
-std::shared_ptr<rf627smart> rf627smart::search(std::string ip, uint32_t timeout)
+std::shared_ptr<rf627smart> rf627smart::search(
+        std::string scanner_ip, std::string host_ip, std::string mask, uint32_t timeout)
 {
     search_mutex.lock();
     // Cleaning detected network adapter.
@@ -2960,10 +2961,9 @@ std::shared_ptr<rf627smart> rf627smart::search(std::string ip, uint32_t timeout)
     // Iterate over all available network adapters in the current operating
     // system to send "Hello" requests.
     uint32_t count = 0;
-    for (int i=0; i<GetAdaptersCount(); i++)
     {
-        uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
-        uint32_t host_mask = ntohl(inet_addr(GetAdapterMasks(i)));
+        uint32_t host_ip_addr = ntohl(inet_addr(host_ip.c_str()));
+        uint32_t host_mask = ntohl(inet_addr(mask.c_str()));
         // call the function to change adapter settings inside the library.
         set_platform_adapter_settings(host_mask, host_ip_addr);
 
@@ -2974,8 +2974,8 @@ std::shared_ptr<rf627smart> rf627smart::search(std::string ip, uint32_t timeout)
             printf("Search scanners from:\n "
                    "* IP Address\t: %s\n "
                    "* Netmask\t: %s\n",
-                   GetAdapterAddress(i), GetAdapterMasks(i));
-            search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+                   host_ip.c_str(), mask.c_str());
+            search_scanners_by_ip(scanners, kRF627_SMART, (char*)scanner_ip.c_str(), timeout, kSERVICE);
 
             // Print count of discovered rf627-smart in network by Service Protocol
             printf("Discovered\t: %d RF627-Smart\n",(int)vector_count(scanners)-count);
@@ -3040,7 +3040,10 @@ std::shared_ptr<rf627smart> rf627smart::search(std::string ip, uint32_t timeout)
             if (result[i]->_is_exist)
                 available_result.push_back(result[i]);
         search_mutex.unlock();
-        auto it = std::find_if(available_result.begin(), available_result.end(), [&ip](const std::shared_ptr<rf627smart>& obj) {return obj->get_info()->ip_address() == ip;});
+        auto it = std::find_if(available_result.begin(), available_result.end(),
+                               [&scanner_ip](const std::shared_ptr<rf627smart>& obj) {
+            return obj->get_info()->ip_address() == scanner_ip;
+        });
         if (it != std::end(available_result))
         {
             int index = std::distance(available_result.begin(), it);

@@ -54,9 +54,19 @@ public:
             uint32_t timeout = 300, bool only_available_result = true,
             PROTOCOLS protocol = PROTOCOLS::SERVICE);
 
-
+    /**
+     * @brief search - Search for RF627smart devices over network
+     * @param scanner_ip IP Addr destination device
+     * @param host_ip Host IP address of the network interface from which
+     * the search will be performed
+     * @param mask The Mask of the network interface from which
+     * the search will be performed
+     * @param timeout Search timeout[ms]
+     * @return
+     */
     static std::shared_ptr<rf627smart> search(
-            std::string ip, uint32_t timeout = 300);
+            std::string scanner_ip, std::string host_ip, std::string mask,
+            uint32_t timeout = 300);
 
     /**
      * @brief get_info - Get information about scanner from hello packet
