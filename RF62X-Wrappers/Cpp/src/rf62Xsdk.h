@@ -54,6 +54,10 @@ public:
             uint32_t timeout = 300, bool only_available_result = true,
             PROTOCOLS protocol = PROTOCOLS::SERVICE);
 
+
+    static std::shared_ptr<rf627smart> search(
+            std::string ip, uint32_t timeout = 300);
+
     /**
      * @brief get_info - Get information about scanner from hello packet
      *

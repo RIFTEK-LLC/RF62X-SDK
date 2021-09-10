@@ -2942,6 +2942,117 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
 
 }
 
+std::shared_ptr<rf627smart> rf627smart::search(std::string ip, uint32_t timeout)
+{
+    search_mutex.lock();
+    // Cleaning detected network adapter.
+    FreeAdapterAddresses();
+    // Retrieving addresses associated with adapters on the local computer.
+    EnumAdapterAddresses();
+
+    //Create value for scanners vector's type
+    vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
+
+    //Initialization vector
+    vector_init(&scanners);
+
+
+    // Iterate over all available network adapters in the current operating
+    // system to send "Hello" requests.
+    uint32_t count = 0;
+    for (int i=0; i<GetAdaptersCount(); i++)
+    {
+        uint32_t host_ip_addr = ntohl(inet_addr(GetAdapterAddress(i)));
+        uint32_t host_mask = ntohl(inet_addr(GetAdapterMasks(i)));
+        // call the function to change adapter settings inside the library.
+        set_platform_adapter_settings(host_mask, host_ip_addr);
+
+        // Search for RF627-Smart devices over network by Service Protocol.
+        if (host_ip_addr != 0)
+        {
+            // Get another IP Addr and set this changes in adapter settings.
+            printf("Search scanners from:\n "
+                   "* IP Address\t: %s\n "
+                   "* Netmask\t: %s\n",
+                   GetAdapterAddress(i), GetAdapterMasks(i));
+            search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+
+            // Print count of discovered rf627-smart in network by Service Protocol
+            printf("Discovered\t: %d RF627-Smart\n",(int)vector_count(scanners)-count);
+            printf("-----------------------------------------\n");
+            count = (int)vector_count(scanners);
+        }
+    }
+
+    static std::vector<std::shared_ptr<rf627smart>> result;
+    bool only_available_result = true;
+    if (only_available_result)
+    {
+        auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
+            return obj->_is_connected == false && obj->_is_exist == false;
+        });
+
+        while (it != std::end(result))
+        {
+            int index = std::distance(result.begin(), it);
+            result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
+            it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                return obj->_is_connected == false && obj->_is_exist == false;
+            });
+        }
+    }
+
+    std::vector<std::shared_ptr<rf627smart>> available_result;
+
+    std::vector<int> non_exist_index = std::vector<int>();
+    for (size_t i = 0; i < result.size(); i++)
+    {
+        non_exist_index.push_back(i);
+    }
+    //Iterate over all discovered rf627-smart in network and push into list.
+    for(size_t i = 0; i < vector_count(scanners); i++)
+    {
+        scanner_base_t* scanner = (scanner_base_t*)vector_get(scanners,i);
+        auto it = std::find_if(result.begin(), result.end(), [scanner](const std::shared_ptr<rf627smart> obj){
+           return scanner->rf627_smart->info_by_service_protocol.fact_general_serial == obj->get_info()->serial_number();
+        });
+
+        if (it == std::end(result))
+        {
+            result.push_back(std::shared_ptr<rf627smart>(std::make_shared<rf627smart>((void*)vector_get(scanners,i))));
+            result[result.size() - 1]->current_protocol = PROTOCOLS::SERVICE;
+        }else
+        {
+            int index = std::distance(result.begin(), it);
+            result[index]->_is_exist = true;
+            non_exist_index.erase(std::remove(non_exist_index.begin(), non_exist_index.end(), index), non_exist_index.end());
+        }
+    }
+
+    for (size_t i = 0; i < non_exist_index.size(); i++)
+    {
+        result[non_exist_index[i]]->_is_exist = false;
+    }
+
+    if (only_available_result)
+    {
+        for (size_t i = 0; i < result.size(); i++)
+            if (result[i]->_is_exist)
+                available_result.push_back(result[i]);
+        search_mutex.unlock();
+        auto it = std::find_if(available_result.begin(), available_result.end(), [&ip](const std::shared_ptr<rf627smart>& obj) {return obj->get_info()->ip_address() == ip;});
+        if (it != std::end(available_result))
+        {
+            int index = std::distance(available_result.begin(), it);
+            return available_result[index];
+        }
+        return nullptr;
+    }
+
+    search_mutex.unlock();
+    return nullptr;
+}
+
 std::shared_ptr<hello_info> rf627smart::get_info(PROTOCOLS protocol)
 {
     PROTOCOLS p;

@@ -24,5 +24,4 @@
    :caption: Обзор программного интерфейса 
 
    init_sdk
-   .. Работа с RF627 v20.X.X.X <rf627old>
    Работа с RF62X v2.X.X <rf627smart>
