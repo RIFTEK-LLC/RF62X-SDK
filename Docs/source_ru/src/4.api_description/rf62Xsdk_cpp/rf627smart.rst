@@ -367,7 +367,7 @@
          // some actions with scanner...
 
          // Disconnect from scanner.
-        scanner->disconnect();
+         scanner->disconnect();
       }
    }
 
@@ -392,7 +392,7 @@
 **Пример в коде:**
 
 .. code-block:: cpp
-   :emphasize-lines: 45
+   :emphasize-lines: 46
 
    /** @file rf62Xsdk.h */
 
@@ -438,6 +438,7 @@
             continue;
          }
 
+         // Check connection with device
          bool isAvailable = scanner->check_connection(300);
          if (!isAvailable){
             std::cout << "Scanner is not available now, "
@@ -614,8 +615,6 @@
    *Метод получения кадров видео с матрицы сканера* 
 
 **Параметры:**
-   - ``zero_points`` *- Включать нулевые точки в возвращаемом профиле.*
-   - ``realtime`` *- Получение профиля в реальном времени (буферизация отключена).*
    - ``protocol`` *- Тип протокола, по которому будет получен кадр (Service Protocol, ENIP, Modbus-TCP)*
 
 **Возвращаемое значение:**
@@ -684,7 +683,7 @@
    *bool read_params(PROTOCOLS protocol = PROTOCOLS::CURRENT);*
 
 **Описание:**
-   *Метод получения текущих параметров сканера. При вызове данной функции SDK вычитывает*
+   *Метод получения текущих параметров сканера. При вызове данного метода SDK вычитывает*
    *со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей*
    *работы во внутренней памяти SDK.* 
 
@@ -734,10 +733,10 @@
       {
          std::shared_ptr<rf627smart> scanner = list[i];
          
-         // Establish connection to the RF627 device by Service Protocol.
+         // Establish connection to the RF627 device.
          bool isConnected = scanner->connect();
          if (isConnected) {
-            // read params from RF627 device by Service Protocol.
+            // read params from RF627 device.
             bool isRead = scanner->read_params();
             if (isRead) {
                std::cout << "Scanner parameters were read successfully!";
@@ -759,8 +758,8 @@
 
 **Описание:**
    *Метод получения конкретного параметра по его имени (ключу). При вызове* 
-   *данной функции SDK осуществляет поиск нужного параметра из последних прочитанных*
-   *при вызове функции* :ref:`rf62x_wrappers_cpp_rf627smart_read_params` *. В случае, если* 
+   *данного метода SDK осуществляет поиск нужного параметра из последних прочитанных*
+   *при вызове метода* :ref:`rf62x_wrappers_cpp_rf627smart_read_params` *. В случае, если* 
    *запрашиваемый параметр отсутствует в конкретном сканере, функция вернёт nullptr.* 
 
 **Параметры:**
@@ -851,7 +850,7 @@
 
 **Параметры:**
    - ``param_name`` *- Имя (ключ) параметра.*
-   - ``value`` *- Новое значение параметра
+   - ``value`` *- Новое значение параметра*
 
 **Возвращаемое значение:**
    ``true`` *при успехе, иначе -* ``false``
@@ -902,7 +901,7 @@
          // Set parameter of Device Name
          scanner->set_param("user_general_deviceName", "RF627 New Name");
 
-         // Sen parameter of Sensor Framerate
+         // Set parameter of Sensor Framerate
          scanner->set_param("user_sensor_framerate", 100);
 
          // Set parameter of Device IP Addr
@@ -933,7 +932,7 @@
 
 **Параметры:**
    - ``param_name`` *- Имя (ключ) параметра.*
-   - ``key`` *- Ключ (enum) параметра
+   - ``key`` *- Ключ (enum) параметра*
 
 **Возвращаемое значение:**
    ``true`` *при успехе, иначе -* ``false``

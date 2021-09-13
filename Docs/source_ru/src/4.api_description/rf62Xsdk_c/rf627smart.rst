@@ -1,15 +1,15 @@
 
 
-.. _rf62x_wrappers_c_rf627old:
+.. _rf62x_wrappers_c_rf627smart:
 
 *******************************************************************************
-Интерфейс работы со сканерами серии RF627 v20.x.x.x
+Интерфейс работы со сканерами серии RF62X v2.x.x
 *******************************************************************************
 
 Файлы ``rf62X_sdk.h``, ``rf62X_types.h`` и ``rf62Xcore.h`` предоставляют весь 
-необходимый интерфейс для работы со сканерами серии RF627 v20.x.x.x
+необходимый интерфейс для работы со сканерами серии RF62X v2.x.x
 
-.. _rf62x_wrappers_c_rf627old_search_scanners:
+.. _rf62x_wrappers_c_rf627smart_search_scanners:
 
 **search_scanners**
 ===============================================================================
@@ -18,7 +18,7 @@
    *rfUint8 search_scanners(vector_t \*list, scanner_types_t type, rfUint32 timeout, protocol_types_t protocol);*
 
 **Описание:**
-   *Функция поиска устройств RF62X v20.x.x.x в сети* 
+   *Функция поиска устройств RF62X v2.x.x в сети* 
 
 **Параметры:**
    - ``list`` *- Указатель на список, который будет заполнен найденными сканерами в сети.*
@@ -90,7 +90,7 @@
          // call the function to change adapter settings inside the library.
          set_platform_adapter_settings(host_mask, host_ip_addr);
 
-         // Search for rf627old devices over network by Service Protocol.
+         // Search for rf627smart devices over network by Service Protocol.
          if (host_ip_addr != 0)
          {
             // Get another IP Addr and set this changes in adapter settings.
@@ -98,22 +98,22 @@
                   "* IP Address\t: %s\n "
                   "* Netmask\t: %s\n",
                   GetAdapterAddress(i), GetAdapterMasks(i));
-            search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+            search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-            // Print count of discovered rf627old in network
+            // Print count of discovered rf627smart in network
             printf("Discovered\t: %d RF627\n",(int)vector_count(scanners)-count);
             printf("-----------------------------------------\n");
             count = (int)vector_count(scanners);
          }
       }
 
-      // Print count of discovered rf627old in network
-      printf("Was found\t: %d RF627 v20.x.x.x", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network
+      printf("Was found\t: %d RF627 v2.x.x", (int)vector_count(scanners));
       
       // some code...
    }
 
-.. _rf62x_wrappers_c_rf627old_get_info_about_scanner:
+.. _rf62x_wrappers_c_rf627smart_get_info_about_scanner:
 
 **get_info_about_scanner**
 ===============================================================================
@@ -166,11 +166,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -206,7 +206,7 @@
       // some code...
    }
 
-.. _rf62x_wrappers_c_rf627old_free_scanner:
+.. _rf62x_wrappers_c_rf627smart_free_scanner:
 
 **free_scanner**
 ===============================================================================
@@ -250,11 +250,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       while (vector_count(scanners) > 0)
       {
@@ -270,7 +270,7 @@
       }
    }
 
-.. _rf62x_wrappers_c_rf627old_connect_to_scanner:
+.. _rf62x_wrappers_c_rf627smart_connect_to_scanner:
 
 **connect_to_scanner**
 ===============================================================================
@@ -322,11 +322,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -343,7 +343,7 @@
       }
    }
 
-.. _rf62x_wrappers_c_rf627old_disconnect_from_scanner:
+.. _rf62x_wrappers_c_rf627smart_disconnect_from_scanner:
 
 **disconnect_from_scanner**
 ===============================================================================
@@ -395,11 +395,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -419,7 +419,7 @@
       }
    }
 
-.. _rf62x_wrappers_c_rf627old_check_connection_to_scanner:
+.. _rf62x_wrappers_c_rf627smart_check_connection_to_scanner:
 
 **check_connection_to_scanner**
 ===============================================================================
@@ -473,11 +473,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -502,7 +502,7 @@
       }
    }
 
-.. _rf62x_wrappers_c_rf627old_get_profile2D_from_scanner:
+.. _rf62x_wrappers_c_rf627smart_get_profile2D_from_scanner:
 
 **get_profile2D_from_scanner**
 ===============================================================================
@@ -560,11 +560,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -576,7 +576,7 @@
          // Get profile from scanner's data stream by Service Protocol.
          rf627_profile2D_t* result = get_profile2D_from_scanner(
                scanner, zero_points, realtime, kSERVICE);
-         rf627_smart_profile2D_t* profile2D = result->rf627old_profile2D;
+         rf627_smart_profile2D_t* profile2D = result->rf627smart_profile2D;
          if (profile2D != NULL) {
             printf("Profile was successfully received!");
             // some actions with profile...
@@ -586,7 +586,7 @@
       }
    }
 
-.. _rf62x_wrappers_c_rf627old_free_profile2D:
+.. _rf62x_wrappers_c_rf627smart_free_profile2D:
 
 **free_profile2D**
 ===============================================================================
@@ -630,11 +630,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -646,7 +646,7 @@
          // Get profile from scanner's data stream by Service Protocol.
          rf627_profile2D_t* result = get_profile2D_from_scanner(
                scanner, zero_points, realtime, kSERVICE);
-         rf627_smart_profile2D_t* profile2D = result->rf627old_profile2D;
+         rf627_smart_profile2D_t* profile2D = result->rf627smart_profile2D;
          if (profile2D != NULL) {
             printf("Profile was successfully received!");
             // some actions with profile...
@@ -656,7 +656,7 @@
       }
    }
 
-.. _rf62x_wrappers_c_rf627old_read_params_from_scanner:
+.. _rf62x_wrappers_c_rf627smart_read_params_from_scanner:
 
 **read_params_from_scanner**
 ===============================================================================
@@ -713,11 +713,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -734,7 +734,7 @@
    }
 
 
-.. _rf62x_wrappers_c_rf627old_get_parameter:
+.. _rf62x_wrappers_c_rf627smart_get_parameter:
 
 **get_parameter**
 ===============================================================================
@@ -745,7 +745,7 @@
 **Описание:**
    *Функция получения конкретного параметра по его имени (ключу). При вызове* 
    *данной функции SDK осуществляет поиск нужного параметра из последних прочитанных*
-   *при вызове функции* :ref:`rf62x_wrappers_c_rf627old_read_params_from_scanner` 
+   *при вызове функции* :ref:`rf62x_wrappers_c_rf627smart_read_params_from_scanner` 
    *. В случае, если запрашиваемый параметр отсутствует в конкретном сканере, функция* 
    *вернёт NULL.*
 
@@ -790,11 +790,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -828,7 +828,7 @@
 .. note::
    Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
 
-.. _rf62x_wrappers_c_rf627old_set_parameter:
+.. _rf62x_wrappers_c_rf627smart_set_parameter:
 
 **set_parameter**
 ===============================================================================
@@ -839,7 +839,7 @@
 **Описание:**
    *Функция установки конкретного параметра. При вызове данной функции происходит*
    установка параметра в списке параметров во внутренней памяти SDK.*
-   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_c_rf627old_write_params_to_scanner` *.*
+   *Для отправки изменений в сканер необходимо вызвать метод* :ref:`rf62x_wrappers_c_rf627smart_write_params_to_scanner` *.*
 
 **Параметры:**
    - ``device`` *- Указатель на сканер.*
@@ -882,11 +882,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -927,7 +927,7 @@
    Для более детального описания каждого параметра и его свойств см. `RF62X Firmware Cloud <https://cloud.riftek.com/index.php/s/je8KzPyLAWArCKj>`__
 
 
-.. _rf62x_wrappers_c_rf627old_write_params_to_scanner:
+.. _rf62x_wrappers_c_rf627smart_write_params_to_scanner:
 
 **write_params_to_scanner**
 ===============================================================================
@@ -982,11 +982,11 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
-      // Print count of discovered rf627old in network by Service Protocol
-      printf("Discovered: %d rf627-old\n", (int)vector_count(scanners));
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {
@@ -1031,7 +1031,7 @@
    }
 
 
-.. _rf62x_wrappers_c_rf627old_save_params_to_scanner:
+.. _rf62x_wrappers_c_rf627smart_save_params_to_scanner:
 
 **save_params_to_scanner**
 ===============================================================================
@@ -1087,8 +1087,8 @@
    {
       // Actions before search (see example of search_scanners() method)...
 
-      // Search for RF627-old devices over network by Service Protocol.
-      search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
 
       for (int i = 0; i < (int)vector_count(scanners); i++)
       {

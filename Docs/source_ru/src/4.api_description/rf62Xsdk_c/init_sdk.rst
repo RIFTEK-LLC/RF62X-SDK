@@ -117,5 +117,50 @@
       core_cleanup();  
    }
 
+**sdk_version**
+===============================================================================
+
+**Прототип:**
+   *char\* sdk_version();*
+
+**Описание:**
+   *Функция получения информации о версии SDK* 
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 28
+
+   /** @file rf62Xcore.h */
+
+   /**
+    * @brief sdk_version - Return info about SDK version
+    *
+    * @return SDK version
+    */
+   char* sdk_version();
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Initialize sdk library
+      core_init();
+
+      // Print return rf627 sdk version
+      printf("SDK version: %s\n", sdk_version());
+
+      // Cleanup resources
+      core_cleanup();  
+   }
 
 
