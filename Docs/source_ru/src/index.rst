@@ -25,17 +25,17 @@
    sdk_compilation/_index
    .. additional_info
 
+.. _RF62X_SDK_creating_project:
+
 *******************************************************************************
 Создание проекта
 *******************************************************************************
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Создание проекта
 
-   2.creating_project/cpp
-   2.creating_project/csharp
-   2.creating_project/python
+   2.creating_project/_index
 
 *******************************************************************************
 Компиляция SDK
@@ -63,6 +63,7 @@
    4.api_description/rf62Xsdk_cpp/_index
    4.api_description/rf62Xsdk_csharp/_index
    .. 4.api_description/rf62Xsdk_python/_index
+
 
 *******************************************************************************
 Примеры использования

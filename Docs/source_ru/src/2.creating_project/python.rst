@@ -73,3 +73,5 @@ Visual Studio Code + RF62X-SDK в качестве библиотеки
 
    # Cleanup resources allocated with sdk_init()
    sdk_cleanup()
+
+-   Запустите проект.

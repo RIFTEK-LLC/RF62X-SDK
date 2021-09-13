@@ -89,9 +89,5 @@ Git в Visual Studio
 
 5. Выберите один из необходимых вам проектов и запустите его сборку.
 
-.. note:: Для сборки библиотек **на языке С++**, а также компиляции приложений с примерами их использования в Visual Studio 
-   должен быть установлен `C++ CMake tools для Windows <https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019>`__.
-
-
-
-
+.. note:: Перед использованием Git-клиента в Visual Studio необходимо убедиться в установке дополнительного
+   компонента `C++ CMake tools для Windows <https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=vs-2019>`__.
