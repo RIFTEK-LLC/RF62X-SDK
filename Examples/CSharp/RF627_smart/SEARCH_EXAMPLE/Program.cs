@@ -24,8 +24,8 @@ namespace SEARCH_EXAMPLE
             // Search for RF627smart devices over network
             List<RF62X.RF627smart> list = RF62X.RF627smart.Search(500);
 
-            // Print count of discovered rf627smart in network by Service Protocol
-            Console.WriteLine("Was found\t: {0} RF627-Smart", list.Count);
+            // Print count of discovered rf627smart in network
+            Console.WriteLine("Was found\t: {0} RF627 v2.x.x", list.Count);
             Console.WriteLine("=========================================");
 
 
@@ -36,7 +36,7 @@ namespace SEARCH_EXAMPLE
                 Console.WriteLine("\n\nID scanner's list: {0}", i);
                 Console.WriteLine("-----------------------------------------");
                 Console.WriteLine("Device information: ");
-                Console.WriteLine("* Name\t: {0}", info.device_name);
+                Console.WriteLine("* Name  \t: {0}", info.device_name);
                 Console.WriteLine("* Serial\t: {0}", info.serial_number);
                 Console.WriteLine("* IP Addr\t: {0}", info.ip_address);
                 Console.WriteLine("* MAC Addr\t: {0}", info.mac_address);
@@ -53,11 +53,11 @@ namespace SEARCH_EXAMPLE
                 Console.WriteLine("-----------------------------------------");
             }
 
-            Console.WriteLine("{0}Press any key to end \"Search Example\"", Environment.NewLine);
-            Console.ReadKey();
-
             // Cleanup resources allocated with SdkInit()
             RF62X.SdkCleanup();
+
+            Console.WriteLine("Press any key to close this window...");
+            Console.ReadKey();
         }
     }
 }

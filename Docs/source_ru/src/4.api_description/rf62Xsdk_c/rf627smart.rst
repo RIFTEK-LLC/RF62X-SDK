@@ -32,7 +32,7 @@
 **Пример в коде:**
 
 .. code-block:: c
-   :emphasize-lines: 65
+   :emphasize-lines: 60
 
    /** @file rf62X_sdk.h */
 
@@ -69,11 +69,6 @@
       // Initialize sdk library
       core_init();
 
-      // Cleaning detected network adapter.
-      FreeAdapterAddresses();
-      // Retrieving addresses associated with adapters on the local computer.
-      EnumAdapterAddresses();
-
       // Create value for scanners vector's type
       vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
       // Initialization vector
@@ -98,7 +93,7 @@
                   "* IP Address\t: %s\n "
                   "* Netmask\t: %s\n",
                   GetAdapterAddress(i), GetAdapterMasks(i));
-            search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+            search_scanners(scanners, kRF627_SMART, 300, kSERVICE);
 
             // Print count of discovered rf627smart in network
             printf("Discovered\t: %d RF627\n",(int)vector_count(scanners)-count);
@@ -517,7 +512,7 @@
    - ``device`` *- Указатель на сканер*
    - ``zero_points`` *- Включать нулевые точки в возвращаемом профиле.*
    - ``realtime`` *- Получение профиля в реальном времени (буферизация отключена).*
-   - ``protocol`` *- Тип протокола, по которому будет выполнена проверка (Service Protocol, ENIP, Modbus-TCP)*
+   - ``protocol`` *- Тип протокола, по которому будет получен профиль (Service Protocol, ENIP, Modbus-TCP)*
 
 **Возвращаемое значение:**
    *Указатель на* ``rf627_profile2D_t`` *при успехе, иначе -* ``NULL``
@@ -653,6 +648,146 @@
             free_profile2D(result);
          }else
             printf("Profile was not received!");
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627smart_get_frame_from_scanner:
+
+**get_frame_from_scanner**
+===============================================================================
+
+**Прототип:**
+   *rf627_frame_t\* get_frame_from_scanner(scanner_base_t \*device, protocol_types_t protocol);*
+
+**Описание:**
+   *Функция получения кадров с матрицы устройства* 
+
+**Параметры:**
+   - ``device`` *- Указатель на сканер*
+   - ``protocol`` *- Тип протокола, по которому будет получен кадр (Service Protocol, ENIP, Modbus-TCP)*
+
+**Возвращаемое значение:**
+   *Указатель на* ``rf627_frame_t`` *при успехе, иначе -* ``NULL``
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 42
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief get_frame_from_scanner - Get RAW frame from scanner
+    * 
+    * @param[in] device Ptr to scanner
+    * @param[in] protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+    * 
+    * @return ptr to rf627_frame_t structure
+    */
+   rf627_frame_t* get_frame_from_scanner(
+         scanner_base_t *device, protocol_types_t protocol);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         connect_to_scanner(scanner, kSERVICE);
+         
+         // Get frame from CMOS-sensor.
+         rf627_frame_t* frame = get_frame_from_scanner(scanner, kSERVICE);
+         if (frame != NULL) {
+            printf("Frame was successfully received!");
+            // some actions with Frame...
+            free_frame(frame);
+         }else
+            printf("Frame was not received!");
+      }
+   }
+
+.. _rf62x_wrappers_c_rf627smart_free_frame:
+
+**free_frame**
+===============================================================================
+
+**Прототип:**
+   *void free_frame(rf627_frame_t\* profile);*
+
+**Описание:**
+   *Функция очистки ресурсов, выделенных для rf627_frame_t* 
+
+**Параметры:**
+   - ``frame`` *- Указатель на кадр*
+
+**Пример в коде:**
+
+.. code-block:: c
+   :emphasize-lines: 42
+
+   /** @file rf62X_sdk.h */
+
+   /**
+    * @brief free_frame - Cleanup resources allocated for frame
+    *
+    * @param[in] frame Ptr to rf627_frame_t
+    */
+   void free_frame(rf627_frame_t* frame);
+
+   ------------------------------------------------------------------------------
+
+   /** @file main.c */
+
+   #include <stdio.h>
+   #include <stdlib.h>
+
+   #include "network.h"
+   #include "rf62Xcore.h"
+   #include "rf62X_sdk.h"
+   #include "rf62X_types.h"
+
+   int main()
+   {
+      // Actions before search (see example of search_scanners() method)...
+
+      // Search for RF627-smart devices over network by Service Protocol.
+      search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+
+      // Print count of discovered rf627smart in network by Service Protocol
+      printf("Discovered: %d rf627-smart\n", (int)vector_count(scanners));
+
+      for (int i = 0; i < (int)vector_count(scanners); i++)
+      {
+         scanner_base_t* scanner = vector_get(scanners,i);
+         connect_to_scanner(scanner, kSERVICE);
+         
+         // Get frame from CMOS-sensor.
+         rf627_frame_t* frame = get_frame_from_scanner(scanner, kSERVICE);
+         if (frame != NULL) {
+            printf("Frame was successfully received!");
+            // some actions with Frame...
+            free_frame(frame);
+         }else
+            printf("Frame was not received!");
       }
    }
 

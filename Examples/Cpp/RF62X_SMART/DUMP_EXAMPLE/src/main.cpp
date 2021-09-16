@@ -29,7 +29,7 @@ int main()
     list = rf627smart::search();
 
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627 v2.x.x"<< std::endl;
     std::cout << "========================================="     << std::endl;
 
 
@@ -37,7 +37,8 @@ int main()
     // get a frame and print the main frame-info.
     for (size_t i = 0; i < list.size(); i++)
     {
-        std::shared_ptr<hello_info> info = list[i]->get_info();
+        std::shared_ptr<rf627smart> scanner = list[i];
+        std::shared_ptr<hello_info> info = scanner->get_info();
 
         // Print short information about the scanner
         std::cout << "\n\nID scanner's list: " << i              << std::endl;
@@ -46,39 +47,37 @@ int main()
         std::cout << "* Name  \t: "   << info->device_name()     << std::endl;
         std::cout << "* Serial\t: "   << info->serial_number()   << std::endl;
         std::cout << "* IP Addr\t: "  << info->ip_address()      << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
 
         // Establish connection to the RF627 device by Service Protocol.
-        bool is_connected = list[i]->connect();
-
-        if (is_connected)
-        {
-            uint32_t count_of_profiles = 1000;
-            list[i]->start_dump_recording(count_of_profiles);
-
-            uint32_t size = 0;
-            do {
-                list[i]->read_params();
-                size = list[i]->get_param("user_dump_size")->getValue<uint32_t>();
-                std::cout << "Current profiles in the dump: " << size << std::endl;
-            }while(size < count_of_profiles);
-
-            std::vector<std::shared_ptr<profile2D>> dump =
-                    list[i]->get_dumps_profiles(0, count_of_profiles);
-
-            std::cout << dump.size() << " Profiles were received!  "   << std::endl;
-            for (size_t j = 0; j < dump.size(); j++)
-            {
-                std::cout <<"#"<< j << " - Point count:" << dump[j]->getPoints().size() << std::endl;
-            }
-            std::cout << "-----------------------------------------"   << std::endl;
-        }else
-        {
-            std::cout << "Dump was not received!"                      << std::endl;
-            std::cout << "-----------------------------------------"   << std::endl;
+        bool is_connected = scanner->connect();
+        if (!is_connected){
+            std::cout << "Failed to connect to scanner!" << std::endl;
+            continue;
         }
 
+        uint32_t count_of_profiles = 1000;
+        scanner->start_dump_recording(count_of_profiles);
+
+        std::cout << "Start dump recording..."                   << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+        uint32_t size = 0;
+        do {
+            scanner->read_params();
+            size = scanner->get_param("user_dump_size")->getValue<uint32_t>();
+            std::cout << "Current profiles in the dump: "<< size << std::endl;
+        }while(size < count_of_profiles);
+        std::cout << "-----------------------------------------" << std::endl;
+
+        std::cout << "Start dump downloading..."                 << std::endl;
+        std::vector<std::shared_ptr<profile2D>> dump =
+                scanner->get_dumps_profiles(0, count_of_profiles);
+
+        std::cout << dump.size() << " Profiles in dump were downloaded!\n";
+        std::cout << "-----------------------------------------" << std::endl;
+
         // Disconnect from scanner.
-        list[i]->disconnect();
+        scanner->disconnect();
     }
 
     // Cleanup resources allocated with sdk_init()

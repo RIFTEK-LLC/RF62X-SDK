@@ -29,7 +29,7 @@ int main()
     list = rf627smart::search();
 
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627 v2.x.x"<< std::endl;
     std::cout << "========================================="     << std::endl;
 
 
@@ -37,7 +37,8 @@ int main()
     // get a frame and print the main frame-info.
     for (size_t i = 0; i < list.size(); i++)
     {
-        std::shared_ptr<hello_info> info = list[i]->get_info();
+        std::shared_ptr<rf627smart> scanner = list[i];
+        std::shared_ptr<hello_info> info = scanner->get_info();
 
         // Print short information about the scanner
         std::cout << "\n\nID scanner's list: " << i              << std::endl;
@@ -48,25 +49,27 @@ int main()
         std::cout << "* IP Addr\t: "  << info->ip_address()      << std::endl;
 
         // Establish connection to the RF627 device by Service Protocol.
-        bool is_connected = list[i]->connect();
+        bool is_connected = scanner->connect();
+        if (!is_connected)
+            continue;
 
         std::shared_ptr<frame> frame = nullptr;
-        if (is_connected && ((frame = list[i]->get_frame()) != nullptr))
+        if ((frame = scanner->get_frame()))
         {
-            std::cout << "Frame information: "                          << std::endl;
-            std::cout << "* Data Size\t: " << frame->getDataSize()      << std::endl;
-            std::cout << "* Frame Height\t: " << frame->getFrameHeight()<< std::endl;
-            std::cout << "* Frame Width\t: " << frame->getFrameWidth()  << std::endl;
-            std::cout << "Frame was successfully received!"             << std::endl;
-            std::cout << "-----------------------------------------"    << std::endl;
+            std::cout << "Frame information: "                          << "\n";
+            std::cout << "* Data Size\t: " << frame->getDataSize()      << "\n";
+            std::cout << "* Frame Height\t: " << frame->getFrameHeight()<< "\n";
+            std::cout << "* Frame Width\t: " << frame->getFrameWidth()  << "\n";
+            std::cout << "Frame was successfully received!"             << "\n";
+            std::cout << "-----------------------------------------"    << "\n";
         }else
         {
-            std::cout << "Frame was not received!"                      << std::endl;
-            std::cout << "-----------------------------------------"    << std::endl;
+            std::cout << "Frame was not received!"                      << "\n";
+            std::cout << "-----------------------------------------"    << "\n";
         }
 
         // Disconnect from scanner.
-        list[i]->disconnect();
+        scanner->disconnect();
     }
 
     // Cleanup resources allocated with sdk_init()
