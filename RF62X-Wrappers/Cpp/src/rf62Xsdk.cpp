@@ -9,6 +9,7 @@
 #include <iterator>
 #include <algorithm>
 #include <time.h>
+#include <thread>
 
 #include "rf62Xtypes.h"
 #include "rf62Xcore.h"
@@ -3196,6 +3197,8 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
         connect_mutex.lock();
         if (_is_connected)
         {
+            _is_connected = false;
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             // Establish connection to the RF627 device by Service Protocol.
             result = disconnect_from_scanner(
                         (scanner_base_t*)scanner_base, kSERVICE);
