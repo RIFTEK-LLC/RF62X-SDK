@@ -7,7 +7,7 @@
 *******************************************************************************
 
 Данный класс определён в файле ``RF62X-SDK.cs`` и предоставляет интерфейс 
-для работы со сканерами серии RF627 v20.x.x.x
+для работы со сканерами серии RF627 v2.x.x
 
 .. _rf62x_wrappers_csharp_rf627smart_search:
 
@@ -25,7 +25,7 @@
    - ``protocol`` *- Тип протокола, по которому будет осуществляться поиск (Service Protocol, ENIP, Modbus-TCP)*
 
 **Возвращаемое значение:**
-   *Cписок обнаруженных в сети сканеров серии RF627 v20.x.x.x.
+   *Список обнаруженных в сети сканеров серии RF627 v2.x.x.
 
 **Пример в коде:**
 
@@ -470,7 +470,7 @@
 **Пример в коде:**
 
 .. code-block:: c#
-   :emphasize-lines: 46
+   :emphasize-lines: 37
 
    /// <file> RF62X-SDK.cs
 
@@ -529,7 +529,7 @@
 
 **Описание:**
    *Метод получения текущих параметров сканера. При вызове данного метода SDK вычитывает*
-   *со сканера все актуальные параметры, сохраняя их ввиде «списка параметров» для дальнейшей*
+   *со сканера все актуальные параметры, сохраняя их в виде «списка параметров» для дальнейшей*
    *работы во внутренней памяти SDK.* 
 
 **Параметры:**
@@ -581,7 +581,7 @@
                // Read params from RF627 device.
                bool isRead = list[i].ReadParams();
                if (isRead) {
-                  Console.WriteLine("Scanner parameters were read successfully!");
+                  Console.WriteLine("Scanner parameters were read!");
                }else
                   Console.WriteLine("Scanner parameters were not read!");
             }
@@ -774,7 +774,7 @@
 **Пример в коде:**
 
 .. code-block:: c#
-   :emphasize-lines: 41, 44
+   :emphasize-lines: 44
 
    /// <file> RF62X-SDK.cs
 
@@ -852,7 +852,7 @@
 **Пример в коде:**
 
 .. code-block:: c#
-   :emphasize-lines: 41, 44
+   :emphasize-lines: 44
 
    /// <file> RF62X-SDK.cs
 
@@ -909,7 +909,7 @@
 
 .. _rf62x_wrappers_csharp_rf627smart_load_recovery_params:
 
-**LoadRacoveryParams**
+**LoadRecoveryParams**
 ===============================================================================
 
 **Прототип:**
@@ -928,7 +928,7 @@
 **Пример в коде:**
 
 .. code-block:: c#
-   :emphasize-lines: 41, 44
+   :emphasize-lines: 37
 
    /// <file> RF62X-SDK.cs
 
@@ -938,7 +938,7 @@
    /// </summary>
    /// <param name="protocol">protocol’s type</param>
    /// <returns>true on success</returns>
-   bool LoadRacoveryParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE);
+   bool LoadRecoveryParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE);
 
    ------------------------------------------------------------------------------
 
@@ -966,7 +966,7 @@
                list[i].Connect();
 
                // Load parameters from recovery area
-               bool isLoaded = list[i].LoadRacoveryParams();
+               bool isLoaded = list[i].LoadRecoveryParams();
                if (isLoaded) 
                   Console.WriteLine("Recovery parameters loaded successfully!");
                else 

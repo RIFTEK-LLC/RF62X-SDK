@@ -23,7 +23,7 @@ int main()
 
 
     // Create value for scanners vector's type
-    vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
+    void* scanners = NULL;// = calloc(1, sizeof (vector_t));
     // Initialization vector
     vector_init(&scanners);
 

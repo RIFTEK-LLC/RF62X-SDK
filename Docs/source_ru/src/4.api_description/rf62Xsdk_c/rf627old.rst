@@ -32,7 +32,7 @@
 **Пример в коде:**
 
 .. code-block:: c
-   :emphasize-lines: 65
+   :emphasize-lines: 60
 
    /** @file rf62X_sdk.h */
 
@@ -69,11 +69,6 @@
       // Initialize sdk library
       core_init();
 
-      // Cleaning detected network adapter.
-      FreeAdapterAddresses();
-      // Retrieving addresses associated with adapters on the local computer.
-      EnumAdapterAddresses();
-
       // Create value for scanners vector's type
       vector_t* scanners = (vector_t*)calloc(1, sizeof (vector_t));
       // Initialization vector
@@ -98,7 +93,7 @@
                   "* IP Address\t: %s\n "
                   "* Netmask\t: %s\n",
                   GetAdapterAddress(i), GetAdapterMasks(i));
-            search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+            search_scanners(scanners, kRF627_OLD, 300, kSERVICE);
 
             // Print count of discovered rf627old in network
             printf("Discovered\t: %d RF627\n",(int)vector_count(scanners)-count);

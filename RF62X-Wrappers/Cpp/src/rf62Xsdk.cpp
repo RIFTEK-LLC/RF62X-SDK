@@ -9,6 +9,7 @@
 #include <iterator>
 #include <algorithm>
 #include <time.h>
+#include <thread>
 
 #include "rf62Xtypes.h"
 #include "rf62Xcore.h"
@@ -985,7 +986,7 @@ std::vector<std::string> ValueEnum<T>::getLabelList() const
 template <typename T>
 std::tuple<T, std::string, std::string> ValueEnum<T>::getItem(uint32_t index) const
 {
-    if (_enum_base.size() < index)
+    if (index < _enum_base.size())
     {
         return _enum_base[index];
     }else
@@ -1735,9 +1736,8 @@ uint32_t version::to_uint()
     return _value;
 }
 
-version::version()
+version::version() : version((uint32_t)0)
 {
-    version((uint32_t)0);
 }
 
 version::version(uint32_t value)
@@ -1753,17 +1753,19 @@ version::version(std::string value)
     std::string s = value;
     std::string delimiter = ".";
 
-    size_t pos = 0;
+    size_t pos = s.find(delimiter);
     std::string token;
 
     token = s.substr(0, pos);
     major =  std::stoi(token);
     s.erase(0, pos + delimiter.length());
 
+    pos = s.find(delimiter);
     token = s.substr(0, pos);
     minor =  std::stoi(token);
     s.erase(0, pos + delimiter.length());
 
+    pos = s.find(delimiter);
     token = s.substr(0, pos);
     patch =  std::stoi(token);
     s.erase(0, pos + delimiter.length());
@@ -1904,6 +1906,10 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 
             _firmware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
             _hardware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
+            std::string ss = "2.4.3";
+            _hardware_version = version(ss);
+             uint32_t a = 124234;
+            _hardware_version = version(&a);
 
             _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
             _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
@@ -3191,6 +3197,8 @@ bool rf627smart::disconnect(PROTOCOLS protocol)
         connect_mutex.lock();
         if (_is_connected)
         {
+            _is_connected = false;
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             // Establish connection to the RF627 device by Service Protocol.
             result = disconnect_from_scanner(
                         (scanner_base_t*)scanner_base, kSERVICE);

@@ -463,7 +463,7 @@ namespace SDK
                 /// </summary>
                 /// <param name="protocol">protocol’s type</param>
                 /// <returns>true on success</returns>
-                public bool LoadRacoveryParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public bool LoadRecoveryParams(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
                     PROTOCOL_TYPES p;
                     if (protocol == PROTOCOL_TYPES.CURRENT)

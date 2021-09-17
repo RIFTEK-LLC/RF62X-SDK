@@ -24,8 +24,8 @@ namespace PARAMETER_EXAMPLE
             // Search for RF627smart devices over network
             List<RF62X.RF627smart> list = RF62X.RF627smart.Search(500);
 
-            // Print count of discovered rf627smart in network by Service Protocol
-            Console.WriteLine("Was found\t: {0} RF627-Smart", list.Count);
+            // Print count of discovered rf627smart in network
+            Console.WriteLine("Was found\t: {0} RF627 v2.x.x", list.Count);
             Console.WriteLine("=========================================");
 
 

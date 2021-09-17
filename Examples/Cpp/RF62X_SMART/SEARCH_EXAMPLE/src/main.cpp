@@ -29,7 +29,7 @@ int main()
     list = rf627smart::search(500);
 
     // Print count of discovered rf627smart in network by Service Protocol
-    std::cout << "Was found\t: " << list.size()<< " RF627-Smart" << std::endl;
+    std::cout << "Was found\t: " << list.size()<< " RF627 v2.x.x"<< std::endl;
     std::cout << "========================================="     << std::endl;
 
 

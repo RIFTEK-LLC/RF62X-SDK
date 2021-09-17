@@ -41,8 +41,13 @@ int main()
         std::shared_ptr<rf627smart> scanner = list[i];
         std::shared_ptr<hello_info> info = scanner->get_info();
 
-        std::cout << "\n\nID scanner's list: " << i                 << std::endl;
-        std::cout << "-----------------------------------------"    << std::endl;
+        // Print information about the scanner to which the profile belongs.
+        std::cout << "\n\nID scanner's list: " << i              << std::endl;
+        std::cout << "-----------------------------------------" << std::endl;
+        std::cout << "Device information: "                      << std::endl;
+        std::cout << "* Name  \t: "   << info->device_name()     << std::endl;
+        std::cout << "* Serial\t: "   << info->serial_number()   << std::endl;
+        std::cout << "* IP Addr\t: "  << info->ip_address()      << std::endl;
 
         // Establish connection to the RF627 device by Service Protocol.
         bool is_connected = scanner->connect();
@@ -64,8 +69,8 @@ int main()
         // std::string
         //
         // Get parameter of Device Name
-        std::shared_ptr<param> name = scanner->get_param("user_general_deviceName");
-        if (name != nullptr && name->getType() == "string_t")
+        auto name = scanner->get_param("user_general_deviceName");
+        if (name != nullptr)
         {
             std::string str_name = name->getValue<std::string>();
             std::cout << "Current Device Name \t: " << str_name << std::endl;
@@ -82,11 +87,11 @@ int main()
         // uint32_t
         //
         // Get parameter of Sensor Framerate
-        std::shared_ptr<param> framerate = scanner->get_param("user_sensor_framerate");
-        if (framerate != nullptr)
+        auto fps = scanner->get_param("user_sensor_framerate");
+        if (fps != nullptr)
         {
-            uint32_t fps = framerate->getValue<uint32_t>();
-            std::cout<<"Current FPS\t\t: "<< fps << std::endl;
+            uint32_t value = fps->getValue<uint32_t>();
+            std::cout<<"Current FPS\t\t: "<< value << std::endl;
 
             // Change the framerate to 100
             scanner->set_param("user_sensor_framerate", 100);
@@ -98,20 +103,53 @@ int main()
         // Example of working with the parameter type:
         // std::vector<uint32_t>
         //
-        // Get parameter of Device IP Addr (second way to get a parameter by keys)
-        std::shared_ptr<param> ip_addr = scanner->get_param("user_network_ip");
+        // Get parameter of Device IP Addr
+        auto ip_addr = scanner->get_param("user_network_ip");
         if (ip_addr != nullptr)
         {
-            std::vector<uint32_t> ip = ip_addr->getValue<std::vector<uint32_t>>();
+            std::vector<uint32_t> ip =ip_addr->getValue<std::vector<uint32_t>>();
             std::cout << "Current Device IP\t: ";
-            for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
+            for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<< "\n";
 
-            // Change last digit of IP address (e.g. 192.168.1.30 -> 192.168.1.31)
+            // Change last digit of IP address (e.g. 192.168.1.30->192.168.1.31)
             //ip[3]++;
             scanner->set_param("user_network_ip", ip);
             std::cout << "New Device IP    \t: ";
-            for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<<std::endl;
-            std::cout << "-------------------------------------"       <<std::endl;
+            for(auto i: ip) std::cout<<std::to_string(i)<<".";std::cout<< "\n";
+            std::cout << "-------------------------------------"       << "\n";
+        }
+
+        //
+        // Example of working with using an Enum:
+        // uint32_t
+        //
+        // Get parameter of Sync Source
+        auto syncSource = scanner->get_param("user_sensor_syncSource");
+        if (syncSource != nullptr)
+        {
+            uint32_t value = syncSource->getValue<uint32_t>();
+            auto syncEnum = syncSource->getEnum<uint32_t>();
+            std::cout << "Current Sync Source\t: "
+                      << syncEnum.findLabel(value)
+                      << std::endl;
+
+            // Change the current state to SYNC_EXTERNAL (or SYNC_INTERNAL)
+            if(value == syncEnum.getValue("SYNC_INTERNAL"))
+            {
+                scanner->set_param_by_key(
+                             "user_sensor_syncSource", "SYNC_EXTERNAL");
+                std::cout << "New Sync Source  \t: "
+                          << syncEnum.getLabel("SYNC_EXTERNAL")
+                          << std::endl;
+            }else
+            {
+                scanner->set_param_by_key(
+                             "user_sensor_syncSource", "SYNC_INTERNAL");
+                std::cout << "New Sync Source  \t: "
+                          << syncEnum.getLabel("SYNC_INTERNAL")
+                          << std::endl;
+            }
+            std::cout << "-------------------------------------"<< std::endl;
         }
 
         //
@@ -119,28 +157,28 @@ int main()
         // uint32_t
         //
         // Get parameter of Laser Enabled
-        std::shared_ptr<param> laser_enabled = scanner->get_param("user_laser_enabled");
-        if (laser_enabled != nullptr)
+        std::shared_ptr<param> laser = scanner->get_param("user_laser_enabled");
+        if (laser != nullptr)
         {
-            uint32_t isEnabled = laser_enabled->getValue<uint32_t>();
-            auto t = laser_enabled->getEnum<uint32_t>();
+            uint32_t isEnabled = laser->getValue<uint32_t>();
+            auto laserEnum = laser->getEnum<uint32_t>();
             std::cout << "Current Laser State\t: "
-                      << laser_enabled->getEnum<uint32_t>().findLabel(isEnabled)
+                      << laserEnum.findLabel(isEnabled)
                       << std::endl;
 
 
             // Change the current state to the opposite
-            if(isEnabled == laser_enabled->getEnum<uint32_t>().getValue("FALSE"))
+            if(isEnabled == laser->getEnum<uint32_t>().getValue("FALSE"))
             {
                 scanner->set_param_by_key("user_laser_enabled", "TRUE");
                 std::cout << "New Laser State  \t: "
-                          << laser_enabled->getEnum<uint32_t>().getLabel("TRUE")
+                          << laserEnum.getLabel("TRUE")
                           << std::endl;
             }else
             {
                 scanner->set_param_by_key("user_laser_enabled", "FALSE");
                 std::cout << "New Laser State  \t: "
-                          << laser_enabled->getEnum<uint32_t>().getLabel("FALSE")
+                          << laserEnum.getLabel("FALSE")
                           << std::endl;
             }
             std::cout << "-------------------------------------"<< std::endl;
