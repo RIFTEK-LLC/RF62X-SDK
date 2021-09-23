@@ -1906,10 +1906,6 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 
             _firmware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
             _hardware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
-            std::string ss = "2.4.3";
-            _hardware_version = version(ss);
-             uint32_t a = 124234;
-            _hardware_version = version(&a);
 
             _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
             _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
