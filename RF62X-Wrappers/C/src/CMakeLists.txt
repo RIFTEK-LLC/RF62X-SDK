@@ -52,7 +52,7 @@ if (NOT TARGET ${PROJECT_NAME})
             $<TARGET_OBJECTS:libpthreads4w>
             $<TARGET_OBJECTS:getopt>)
     endif()
-    add_library(${PROJECT_NAME} STATIC ${SOURCES} ${TARGET_OBJECTS_LIST})
+    add_library(${PROJECT_NAME} SHARED ${SOURCES} ${TARGET_OBJECTS_LIST})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
 
