@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     # Create value for scanners vector's type
     list_scanners=search(500)
-    print("Was found\t:", len(list_scanners), "RF627-Smart")
+    print("Was found\t:", len(list_scanners), "RF627 v2.x.x")
     print("=========================================")
 
 
@@ -37,13 +37,14 @@ if __name__ == '__main__':
         print("* Name\t\t: ",   info['user_general_deviceName'])
         print("* Serial\t: ",   info['fact_general_serial'])
         print("* IP Addr\t: ",  info['user_network_ip'])
-        print("* MAC Addr\t: ",  info['fact_network_macAddr'])
+        print("* MAC Addr\t: ", info['fact_network_macAddr'])
 
         print("\nWorking ranges: ")
-        print("* Zsmr, mm\t: ", info["fact_general_smr"])
-        print("* Zmr, mm\t: ", info["fact_general_mr"])
-        print("* Xsmr, mm\t: ", info["fact_general_xsmr"])
-        print("* Xemr, mm\t: ", info["fact_general_xemr"])
+        print("* Zsmr, mm\t: ",   info["fact_general_smr"])
+        print( "* Zmr , mm\t: ",  info["fact_general_mr"])
+        print( "* Xsmr, mm\t: ",  info["fact_general_xsmr"])
+        print( "* Xemr, mm\t: " , info['fact_general_xemr'])
+
 
         print("\nVersions: " )
         print("* Firmware\t: ", info["firmware_version"])
