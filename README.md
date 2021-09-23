@@ -1,4 +1,4 @@
-![RF62X_SDK](Docs/source_ru/_static/RF62X_SDK(v2).png)
+![RF62X_SDK](Docs/source_ru/resources/img/RF62X_SDK(v2).png)
 
 
 # CONTENTS
