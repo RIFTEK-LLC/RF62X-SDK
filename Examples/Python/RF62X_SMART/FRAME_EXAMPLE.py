@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     print("#########################################")
     print("#                                       #")
-    print("#          Frame Example v2.x.x          #")
+    print("#          Frame Example v2.x.x         #")
     print("#                                       #")
     print("#########################################")
     
@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     # Create value for scanners vector's type
     list_scanners=search()
-    print("Was found\t:", len(list_scanners), "RF627-Smart")
+    print("Was found\t:", len(list_scanners), "RF627 v2.x.x")
     print("=========================================")
 
 
@@ -39,10 +39,13 @@ if __name__ == '__main__':
         print("* IP Addr\t: ",  info['user_network_ip']); 
         # Establish connection to the RF627 device by Service Protocol.
         is_connected = connect(scanner)
-        if (is_connected):
-            frame=get_frame(scanner, kSERVICE)
+        if (not is_connected):
+            continue
 
-        if (is_connected and frame is not None):
+
+        frame=get_frame(scanner, kSERVICE)
+
+        if (frame is not None):
             print("Frame information: ")
             print("* Data Size\t: ",frame['data_size'])
             print("* Frame Height\t: ",frame['height'])
