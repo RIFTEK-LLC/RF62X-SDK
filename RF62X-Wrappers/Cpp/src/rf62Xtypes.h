@@ -221,8 +221,10 @@ private:
  */
 class profile2D
 {
+    explicit profile2D(void* frame_base);
+    friend class rf627old;
+    friend class rf627smart;
 public:
-    profile2D(void* frame_base);
     ~profile2D();
 
     typedef struct
