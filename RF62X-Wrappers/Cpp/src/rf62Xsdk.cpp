@@ -2464,7 +2464,8 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 
             if (profile_from_scanner != nullptr)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                //std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                std::shared_ptr<profile2D> result(new profile2D(profile_from_scanner));
                 profile_mutex.unlock();
                 return result;
             }
@@ -3242,7 +3243,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
 
             if (profile_from_scanner->rf627smart_profile2D != nullptr)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                std::shared_ptr<profile2D> result(new profile2D(profile_from_scanner));
                 profile_mutex.unlock();
                 return result;
             }else
@@ -3682,7 +3683,7 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
                 {
                     if (dumps[i]->rf627smart_profile2D != nullptr)
                     {
-                        result.push_back(std::make_shared<profile2D>(dumps[i]));
+                        result.emplace_back(new profile2D(dumps[i]));
                     }else
                     {
                         throw ("get_dumps_profiles dump_size exception");
