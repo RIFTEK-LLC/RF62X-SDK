@@ -160,7 +160,7 @@ public:
     uint8_t minor;
     uint8_t patch;
 
-    std::string to_string();
+    std::string to_string() const;
     uint32_t to_uint();
 
     friend std::ostream& operator<<(std::ostream& out, const version &v);
@@ -195,6 +195,7 @@ public:
     const uint32_t& z_mr();
     const uint32_t& x_smr();
     const uint32_t& x_emr();
+    const uint32_t& product_code();
 
     hello_info(void* base_hello, SCANNER_TYPES type, PROTOCOLS protocol);
     ~hello_info();
@@ -215,6 +216,7 @@ private:
     uint32_t _z_mr;
     uint32_t _x_smr;
     uint32_t _x_emr;
+    uint32_t _product_code;
 };
 
 /*! Structure to store a profile

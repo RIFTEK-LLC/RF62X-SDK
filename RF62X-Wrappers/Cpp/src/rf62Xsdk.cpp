@@ -1724,7 +1724,7 @@ bool operator >(const version &v1, const version &v2)
             ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
 }
 
-std::string version::to_string()
+std::string version::to_string() const
 {
     std::string s;
     s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
@@ -1846,6 +1846,10 @@ const uint32_t& hello_info::x_emr()
     return _x_emr;
 }
 
+const uint32_t &hello_info::product_code()
+{
+    return _product_code;
+}
 
 hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 {
@@ -1884,6 +1888,7 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
             _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
             _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
             _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
+            _product_code = 627;
             break;
         }
         default:
@@ -1911,6 +1916,7 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
             _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
             _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
             _x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xemr;
+            _product_code = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_productCode;
             break;
         }
         default:
