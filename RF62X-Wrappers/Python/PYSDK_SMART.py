@@ -4548,15 +4548,15 @@ def get_profile2D(scanner, zero_points=True, realtime=True,  protocol=kSERVICE):
 
     _profile_mutex.acquire()
 
-    is_connected=lib.check_connection_to_scanner(scanner, 3000,protocol)
+    # is_connected=lib.check_connection_to_scanner(scanner, 3000,protocol)
 
-    if is_connected:
+    # if is_connected:
 
-        if protocol==kSERVICE:
+    if protocol==kSERVICE:
 
-            prof = lib.get_profile2D_from_scanner(scanner, zero_points, realtime, kSERVICE)
+        prof = lib.get_profile2D_from_scanner(scanner, zero_points, realtime, kSERVICE)
 
-            prof=py_profile2python(prof)
+        prof=py_profile2python(prof)
 
 
 
