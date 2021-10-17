@@ -1,4 +1,4 @@
-![RF62X_SDK](Docs/source_ru/_static/RF62X_SDK(v2).png)
+![RF62X_SDK](Docs/source_ru/resources/img/RF62X_SDK(v2).png)
 
 
 # CONTENTS
@@ -581,7 +581,7 @@ To build the C wrapper:
 ```bash
 cd RF62X-SDK
 mkdir build && cd build
-cmake .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
+cmake -DCMAKE_BUILD_TYPE=Release .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
 cmake --build . 
 ```
  
@@ -604,7 +604,7 @@ To build the code:
 ```bash
 cd RF62X-SDK
 mkdir build && cd build
-cmake .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
+cmake -DCMAKE_BUILD_TYPE=Release .. -D_WRAPPER_LANGUAGE:STRING=C -D_SUBMODULE_CACHE_OVERWRITE=OFF
 ```
 *  Open RF62X-SDK.sln with Visual Studio
 *  Compile
@@ -620,7 +620,7 @@ To build the C wrapper:
 ```bash
 cd RF62X-SDK
 mkdir build && cd build
-cmake .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
+cmake -DCMAKE_BUILD_TYPE=Release .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
 cmake --build . 
 ```
 
@@ -643,7 +643,7 @@ To build the code:
 ```bash
 cd RF62X-SDK
 mkdir build && cd build
-cmake .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
+cmake -DCMAKE_BUILD_TYPE=Release .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
 ```
 *  Open RF62X-SDK.sln with Visual Studio
 *  Compile

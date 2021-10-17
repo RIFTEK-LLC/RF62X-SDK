@@ -1724,7 +1724,7 @@ bool operator >(const version &v1, const version &v2)
             ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
 }
 
-std::string version::to_string()
+std::string version::to_string() const
 {
     std::string s;
     s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
@@ -1846,6 +1846,10 @@ const uint32_t& hello_info::x_emr()
     return _x_emr;
 }
 
+const uint32_t &hello_info::product_code()
+{
+    return _product_code;
+}
 
 hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 {
@@ -1884,6 +1888,7 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
             _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
             _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
             _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
+            _product_code = 627;
             break;
         }
         default:
@@ -1906,15 +1911,12 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 
             _firmware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
             _hardware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
-            std::string ss = "2.4.3";
-            _hardware_version = version(ss);
-             uint32_t a = 124234;
-            _hardware_version = version(&a);
 
             _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
             _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
             _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
             _x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xemr;
+            _product_code = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_productCode;
             break;
         }
         default:
@@ -2468,7 +2470,8 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 
             if (profile_from_scanner != nullptr)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                //std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                std::shared_ptr<profile2D> result(new profile2D(profile_from_scanner));
                 profile_mutex.unlock();
                 return result;
             }
@@ -3246,7 +3249,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
 
             if (profile_from_scanner->rf627smart_profile2D != nullptr)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                std::shared_ptr<profile2D> result(new profile2D(profile_from_scanner));
                 profile_mutex.unlock();
                 return result;
             }else
@@ -3686,7 +3689,7 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
                 {
                     if (dumps[i]->rf627smart_profile2D != nullptr)
                     {
-                        result.push_back(std::make_shared<profile2D>(dumps[i]));
+                        result.emplace_back(new profile2D(dumps[i]));
                     }else
                     {
                         throw ("get_dumps_profiles dump_size exception");
