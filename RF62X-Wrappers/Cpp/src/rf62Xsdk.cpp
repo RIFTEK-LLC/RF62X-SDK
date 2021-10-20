@@ -2852,6 +2852,23 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
         vector_init(&scanners);
 
 
+        static std::vector<std::shared_ptr<rf627smart>> result;
+        if (only_available_result)
+        {
+            auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                return obj->_is_connected == false && obj->_is_exist == false;
+            });
+
+            while (it != std::end(result))
+            {
+                int index = std::distance(result.begin(), it);
+                result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
+                it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                    return obj->_is_connected == false && obj->_is_exist == false;
+                });
+            }
+        }
+
         // Iterate over all available network adapters in the current operating
         // system to send "Hello" requests.
         uint32_t count = 0;
@@ -2876,23 +2893,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
                 printf("Discovered\t: %d RF627-Smart\n",(int)vector_count(scanners)-count);
                 printf("-----------------------------------------\n");
                 count = (int)vector_count(scanners);
-            }
-        }
-
-        static std::vector<std::shared_ptr<rf627smart>> result;
-        if (only_available_result)
-        {
-            auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
-                return obj->_is_connected == false && obj->_is_exist == false;
-            });
-
-            while (it != std::end(result))
-            {
-                int index = std::distance(result.begin(), it);
-                result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
-                it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
-                    return obj->_is_connected == false && obj->_is_exist == false;
-                });
             }
         }
 
