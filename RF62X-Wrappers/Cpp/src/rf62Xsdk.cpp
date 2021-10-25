@@ -3956,6 +3956,22 @@ bool rf627smart::receive_from_periphery(
     return false;
 }
 
+bool rf627smart::add_protocol_settings(
+        std::string cmd_name,
+        bool crc_enabled, bool confirm_enabled, bool one_answ,
+        uint32_t waiting_time, uint32_t resends_count)
+{
+    return add_protocol_settings_for_cmd((scanner_base_t*)scanner_base,
+                (const char *)cmd_name.c_str(), crc_enabled, confirm_enabled, one_answ,
+                                         waiting_time, resends_count);
+}
+
+bool rf627smart::remove_protocol_settings(std::string cmd_name)
+{
+    return remove_protocol_settings_for_cmd(
+                (scanner_base_t*)scanner_base, (const char *)cmd_name.c_str());
+}
+
 
 bool rf627smart::read_calibration_table(PROTOCOLS protocol)
 {

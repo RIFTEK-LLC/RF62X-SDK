@@ -396,6 +396,33 @@ public:
             std::string iface_name, uint16_t count,
             std::vector<char>& out, uint32_t timeout);
 
+    /**
+     * @brief add_protocol_settings - Adding custom protocol settings for a
+     * specific command
+     *
+     * @param cmd_name Command name
+     * @param crc_enabled Enable checksum verification
+     * @param confirm_enabled Enable confirmation
+     * @param one_answ Wait for one response per request
+     * @param waiting_time Time to wait for a response
+     * @param resends_count Number of repetitions when a packet is lost
+     *
+     * @return true on success, else - false
+     */
+    bool add_protocol_settings(
+            std::string cmd_name,
+            bool crc_enabled, bool confirm_enabled, bool one_answ,
+            uint32_t waiting_time, uint32_t resends_count);
+
+    /**
+     * @brief remove_protocol_settings Remove custom protocol settings for a
+     * specific command
+     *
+     * @param cmd_name Command name
+     *
+     * @return true on success, else - false
+     */
+    bool remove_protocol_settings(std::string cmd_name);
 
     /**
      * @brief rf627smart - Class constructor.
