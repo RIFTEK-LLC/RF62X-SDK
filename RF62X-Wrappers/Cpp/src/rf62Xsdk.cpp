@@ -3957,8 +3957,8 @@ bool rf627smart::receive_from_periphery(
 }
 
 bool rf627smart::send_custom_command(
-        std::string cmd_name, std::string data_type,
-        std::vector<char> in, std::vector<char> &out)
+        std::string cmd_name, std::vector<unsigned char> &out,
+        std::string data_type, std::vector<unsigned char> in)
 {
     if (_is_connected)
     {
@@ -3968,13 +3968,13 @@ bool rf627smart::send_custom_command(
         uint32_t out_data_size = 0;
         result = send_custom_command_to_scanner(
                     (scanner_base_t*)scanner_base, cmd_name.c_str(), data_type.c_str(),
-                    in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
+                    (char*)in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
 
         if (out_data_size > 0)
         {
             out.resize(out_data_size);
             for(uint32_t i = 0; i < out_data_size; i++)
-                out.push_back(out_data[i]);
+                out[i] = (out_data[i]);
 
             free(out_data);
         }

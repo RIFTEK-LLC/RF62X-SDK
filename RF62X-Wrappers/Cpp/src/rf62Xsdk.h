@@ -402,14 +402,14 @@ public:
      * settings before sending a custom command
      *
      * @param cmd_name Command name
+     * @param out The data to be received.
      * @param data_type Type of packaging of the sent data (blob, mpack, json).
      * @param in The data to be sent.
-     * @param out The data to be received.
      * @return
      */
     bool send_custom_command(
-            std::string cmd_name, std::string data_type,
-            std::vector<char> in, std::vector<char>& out);
+            std::string cmd_name, std::vector<unsigned char>& out,
+            std::string data_type = "blob", std::vector<unsigned char> in = {});
 
 
     /**
