@@ -397,6 +397,22 @@ public:
             std::vector<char>& out, uint32_t timeout);
 
     /**
+     * @brief send_custom_command - Send custom command to device.
+     * @details Use the add_protocol_settings method to add specific protocol
+     * settings before sending a custom command
+     *
+     * @param cmd_name Command name
+     * @param data_type Type of packaging of the sent data (blob, mpack, json).
+     * @param in The data to be sent.
+     * @param out The data to be received.
+     * @return
+     */
+    bool send_custom_command(
+            std::string cmd_name, std::string data_type,
+            std::vector<char> in, std::vector<char>& out);
+
+
+    /**
      * @brief add_protocol_settings - Adding custom protocol settings for a
      * specific command
      *
@@ -423,6 +439,8 @@ public:
      * @return true on success, else - false
      */
     bool remove_protocol_settings(std::string cmd_name);
+
+
 
     /**
      * @brief rf627smart - Class constructor.
