@@ -26,8 +26,10 @@ SET(RF62X_2XX_FRAME_EXAMPLE                           ON  CACHE BOOL "" FORCE)
 SET(RF62X_2XX_PARAMETER_EXAMPLE                       ON  CACHE BOOL "" FORCE)
 # Get dump profiles
 SET(RF62X_2XX_DUMP_EXAMPLE                            ON  CACHE BOOL "" FORCE)
-# Get dump profiles
+# Multithread example
 SET(RF62X_2XX_MULTITHREAD_EXAMPLE                     ON  CACHE BOOL "" FORCE)
+# Send custom command
+SET(RF62X_2XX_CUSTOM_COMMAND_EXAMPLE                  ON  CACHE BOOL "" FORCE)
 
 
 ## WIDGETS APPLICATIONS
@@ -69,6 +71,10 @@ endif()
 # Multithread example
 if (RF62X_2XX_MULTITHREAD_EXAMPLE)
     add_subdirectory(MULTITHREAD_EXAMPLE)
+endif()
+# Send custom command example
+if (RF62X_2XX_CUSTOM_COMMAND_EXAMPLE)
+    add_subdirectory(CUSTOM_COMMAND_EXAMPLE)
 endif()
 
 ## WIDGETS APPLICATIONS
