@@ -2853,7 +2853,7 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
 
 
         static std::vector<std::shared_ptr<rf627smart>> result;
-        if (only_available_result)
+        if (only_available_result && result.size() > 0)
         {
             auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
                 return obj->_is_connected == false && obj->_is_exist == false;
@@ -2863,6 +2863,8 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
             {
                 int index = std::distance(result.begin(), it);
                 result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
+                if (result.size() == 0)
+                    break;
                 it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
                     return obj->_is_connected == false && obj->_is_exist == false;
                 });
