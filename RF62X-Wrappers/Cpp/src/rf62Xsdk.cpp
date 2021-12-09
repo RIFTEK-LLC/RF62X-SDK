@@ -3785,6 +3785,15 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
     return false;
 }
 
+bool rf627smart::create_calibration_table()
+{
+    if (_is_connected)
+    {
+        return create_calibration_table_for_scanner((scanner_base_t*)scanner_base, 3000);
+    }
+    return false;
+}
+
 std::shared_ptr<calib_table> rf627smart::get_calibration_table()
 {
     if (_is_connected)

@@ -302,6 +302,11 @@ public:
 
 
     /**
+     * @brief create_calibration_table - Create calibration table for scanner
+     * @return true on success, else - false
+     */
+    bool create_calibration_table();
+    /**
      * @brief read_calibration_table - Read calibration table from scanner
      * @return true on success, else - false
      */
