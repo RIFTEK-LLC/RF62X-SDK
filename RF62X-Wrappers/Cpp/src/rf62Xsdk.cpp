@@ -568,6 +568,13 @@ bool calib_table::updateTimeStamp()
     return true;
 }
 
+bool calib_table::setTimeStamp(int value)
+{
+    m_TimeStamp = value;
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_TimeStamp = m_TimeStamp;
+    return true;
+}
+
 bool calib_table::save_to_file(std::string file_name)
 {
     FILE* pFile;
