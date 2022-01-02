@@ -302,6 +302,11 @@ public:
 
 
     /**
+     * @brief create_calibration_table - Create calibration table for scanner
+     * @return true on success, else - false
+     */
+    bool create_calibration_table();
+    /**
      * @brief read_calibration_table - Read calibration table from scanner
      * @return true on success, else - false
      */
@@ -395,6 +400,51 @@ public:
     bool receive_from_periphery(
             std::string iface_name, uint16_t count,
             std::vector<char>& out, uint32_t timeout);
+
+    /**
+     * @brief send_custom_command - Send custom command to device.
+     * @details Use the add_protocol_settings method to add specific protocol
+     * settings before sending a custom command
+     *
+     * @param cmd_name Command name
+     * @param out The data to be received.
+     * @param data_type Type of packaging of the sent data (blob, mpack, json).
+     * @param in The data to be sent.
+     * @return
+     */
+    bool send_custom_command(
+            std::string cmd_name, std::vector<unsigned char>& out,
+            std::string data_type = "blob", std::vector<unsigned char> in = {});
+
+
+    /**
+     * @brief add_protocol_settings - Adding custom protocol settings for a
+     * specific command
+     *
+     * @param cmd_name Command name
+     * @param crc_enabled Enable checksum verification
+     * @param confirm_enabled Enable confirmation
+     * @param one_answ Wait for one response per request
+     * @param waiting_time Time to wait for a response
+     * @param resends_count Number of repetitions when a packet is lost
+     *
+     * @return true on success, else - false
+     */
+    bool add_protocol_settings(
+            std::string cmd_name,
+            bool crc_enabled, bool confirm_enabled, bool one_answ,
+            uint32_t waiting_time, uint32_t resends_count);
+
+    /**
+     * @brief remove_protocol_settings Remove custom protocol settings for a
+     * specific command
+     *
+     * @param cmd_name Command name
+     *
+     * @return true on success, else - false
+     */
+    bool remove_protocol_settings(std::string cmd_name);
+
 
 
     /**

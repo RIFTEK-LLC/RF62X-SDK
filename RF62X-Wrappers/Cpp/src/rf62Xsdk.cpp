@@ -568,6 +568,13 @@ bool calib_table::updateTimeStamp()
     return true;
 }
 
+bool calib_table::setTimeStamp(int value)
+{
+    m_TimeStamp = value;
+    ((rf627_calib_table_t*)m_CalibTableBase)->rf627smart_calib_table->m_TimeStamp = m_TimeStamp;
+    return true;
+}
+
 bool calib_table::save_to_file(std::string file_name)
 {
     FILE* pFile;
@@ -1724,7 +1731,7 @@ bool operator >(const version &v1, const version &v2)
             ((v2.major << 24) + (v2.minor << 16) + (v2.patch << 8)) ? true : false);
 }
 
-std::string version::to_string()
+std::string version::to_string() const
 {
     std::string s;
     s = std::to_string(major) + "." + std::to_string(minor) + "." + std::to_string(patch);
@@ -1846,6 +1853,10 @@ const uint32_t& hello_info::x_emr()
     return _x_emr;
 }
 
+const uint32_t &hello_info::product_code()
+{
+    return _product_code;
+}
 
 hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 {
@@ -1884,6 +1895,7 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
             _z_mr = ((rf627_old_hello_info_by_service_protocol*)info)->z_range;
             _x_smr = ((rf627_old_hello_info_by_service_protocol*)info)->x_begin;
             _x_emr = ((rf627_old_hello_info_by_service_protocol*)info)->x_end;
+            _product_code = 627;
             break;
         }
         default:
@@ -1906,15 +1918,12 @@ hello_info::hello_info(void* info, SCANNER_TYPES type, PROTOCOLS protocol)
 
             _firmware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_firmwareVer);
             _hardware_version = version(((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_hardwareVer);
-            std::string ss = "2.4.3";
-            _hardware_version = version(ss);
-             uint32_t a = 124234;
-            _hardware_version = version(&a);
 
             _z_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_smr;
             _z_mr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_mr;
             _x_smr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xsmr;
             _x_emr = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_xemr;
+            _product_code = ((rf627_smart_hello_info_by_service_protocol*)info)->fact_general_productCode;
             break;
         }
         default:
@@ -2468,7 +2477,8 @@ std::shared_ptr<profile2D> rf627old::get_profile2D(
 
             if (profile_from_scanner != nullptr)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                //std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                std::shared_ptr<profile2D> result(new profile2D(profile_from_scanner));
                 profile_mutex.unlock();
                 return result;
             }
@@ -2849,6 +2859,25 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
         vector_init(&scanners);
 
 
+        static std::vector<std::shared_ptr<rf627smart>> result;
+        if (only_available_result && result.size() > 0)
+        {
+            auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                return obj->_is_connected == false && obj->_is_exist == false;
+            });
+
+            while (it != std::end(result))
+            {
+                int index = std::distance(result.begin(), it);
+                result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
+                if (result.size() == 0)
+                    break;
+                it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
+                    return obj->_is_connected == false && obj->_is_exist == false;
+                });
+            }
+        }
+
         // Iterate over all available network adapters in the current operating
         // system to send "Hello" requests.
         uint32_t count = 0;
@@ -2873,23 +2902,6 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
                 printf("Discovered\t: %d RF627-Smart\n",(int)vector_count(scanners)-count);
                 printf("-----------------------------------------\n");
                 count = (int)vector_count(scanners);
-            }
-        }
-
-        static std::vector<std::shared_ptr<rf627smart>> result;
-        if (only_available_result)
-        {
-            auto it = std::find_if(result.begin(), result.end(), [](const std::shared_ptr<rf627smart> obj){
-                return obj->_is_connected == false && obj->_is_exist == false;
-            });
-
-            while (it != std::end(result))
-            {
-                int index = std::distance(result.begin(), it);
-                result.erase(std::remove(result.begin(), result.end(), result[index]), result.end());
-                it = std::find_if(std::next(it), result.end(), [](const std::shared_ptr<rf627smart> obj){
-                    return obj->_is_connected == false && obj->_is_exist == false;
-                });
             }
         }
 
@@ -3246,7 +3258,7 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
 
             if (profile_from_scanner->rf627smart_profile2D != nullptr)
             {
-                std::shared_ptr<profile2D> result = std::make_shared<profile2D>(profile_from_scanner);
+                std::shared_ptr<profile2D> result(new profile2D(profile_from_scanner));
                 profile_mutex.unlock();
                 return result;
             }else
@@ -3686,7 +3698,7 @@ std::vector<std::shared_ptr<profile2D>> rf627smart::get_dumps_profiles(
                 {
                     if (dumps[i]->rf627smart_profile2D != nullptr)
                     {
-                        result.push_back(std::make_shared<profile2D>(dumps[i]));
+                        result.emplace_back(new profile2D(dumps[i]));
                     }else
                     {
                         throw ("get_dumps_profiles dump_size exception");
@@ -3777,6 +3789,15 @@ bool rf627smart::set_authorization_key(std::string key, PROTOCOLS protocol)
         }
     }
 
+    return false;
+}
+
+bool rf627smart::create_calibration_table()
+{
+    if (_is_connected)
+    {
+        return create_calibration_table_for_scanner((scanner_base_t*)scanner_base, 3000);
+    }
     return false;
 }
 
@@ -3951,6 +3972,50 @@ bool rf627smart::receive_from_periphery(
     }
 
     return false;
+}
+
+bool rf627smart::send_custom_command(
+        std::string cmd_name, std::vector<unsigned char> &out,
+        std::string data_type, std::vector<unsigned char> in)
+{
+    if (_is_connected)
+    {
+        bool result = false;
+
+        char* out_data = nullptr;
+        uint32_t out_data_size = 0;
+        result = send_custom_command_to_scanner(
+                    (scanner_base_t*)scanner_base, cmd_name.c_str(), data_type.c_str(),
+                    (char*)in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
+
+        if (out_data_size > 0)
+        {
+            out.resize(out_data_size);
+            for(uint32_t i = 0; i < out_data_size; i++)
+                out[i] = (out_data[i]);
+
+            free(out_data);
+        }
+
+        return result;
+    }
+    return false;
+}
+
+bool rf627smart::add_protocol_settings(
+        std::string cmd_name,
+        bool crc_enabled, bool confirm_enabled, bool one_answ,
+        uint32_t waiting_time, uint32_t resends_count)
+{
+    return add_protocol_settings_for_cmd((scanner_base_t*)scanner_base,
+                (const char *)cmd_name.c_str(), crc_enabled, confirm_enabled, one_answ,
+                                         waiting_time, resends_count);
+}
+
+bool rf627smart::remove_protocol_settings(std::string cmd_name)
+{
+    return remove_protocol_settings_for_cmd(
+                (scanner_base_t*)scanner_base, (const char *)cmd_name.c_str());
 }
 
 

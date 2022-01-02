@@ -127,6 +127,8 @@ public:
     bool setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd);
     bool updateTimeStamp();
 
+    bool setTimeStamp(int);
+
     bool save_to_file(std::string file_name);
     bool convert_to_bytes(std::vector<char>& bytes);
 
@@ -160,7 +162,7 @@ public:
     uint8_t minor;
     uint8_t patch;
 
-    std::string to_string();
+    std::string to_string() const;
     uint32_t to_uint();
 
     friend std::ostream& operator<<(std::ostream& out, const version &v);
@@ -195,6 +197,7 @@ public:
     const uint32_t& z_mr();
     const uint32_t& x_smr();
     const uint32_t& x_emr();
+    const uint32_t& product_code();
 
     hello_info(void* base_hello, SCANNER_TYPES type, PROTOCOLS protocol);
     ~hello_info();
@@ -215,14 +218,17 @@ private:
     uint32_t _z_mr;
     uint32_t _x_smr;
     uint32_t _x_emr;
+    uint32_t _product_code;
 };
 
 /*! Structure to store a profile
  */
 class profile2D
 {
+    explicit profile2D(void* frame_base);
+    friend class rf627old;
+    friend class rf627smart;
 public:
-    profile2D(void* frame_base);
     ~profile2D();
 
     typedef struct
