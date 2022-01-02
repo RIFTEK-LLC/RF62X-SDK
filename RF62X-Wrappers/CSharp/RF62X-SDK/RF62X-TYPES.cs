@@ -1030,15 +1030,46 @@ namespace SDK
                     return x;
                 }
 
-                public float[] getPointsYArray()
+                public float[] getPointsZArray()
                 {
-                    float[] y = new float[points.Count];
+                    float[] z = new float[points.Count];
                     for (int i = 0; i < points.Count; i++)
                     {
-                        y[i] = points[i].Y;
+                        z[i] = points[i].Z;
                     }
-                    return y;
+                    return z;
                 }
+
+                public ushort* getPixelsPtr()
+                {
+                    return ((rf627_profile2D_t*)m_ProfileBase)->rf627smart_profile2D->pixelsFormat.pixels;
+                }
+
+                public float* getPointsPtr()
+                {
+                    return (float*)((rf627_profile2D_t*)m_ProfileBase)->rf627smart_profile2D->profileFormat.points;
+                }
+
+                public float* getPointsXptr()
+                {
+                    float* x = (float*)platform_calloc((UIntPtr)((rf627_profile2D_t*)m_ProfileBase)->rf627smart_profile2D->profileFormat.points_count, (UIntPtr)2);
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        x[i] = ((rf627_profile2D_t*)m_ProfileBase)->rf627smart_profile2D->profileFormat.points[i].x;
+                    }
+                    return x;
+                }
+
+                public float* getPointsZptr()
+                {
+                    float* x = (float*)platform_calloc((UIntPtr)((rf627_profile2D_t*)m_ProfileBase)->rf627smart_profile2D->profileFormat.points_count, (UIntPtr)2);
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        x[i] = ((rf627_profile2D_t*)m_ProfileBase)->rf627smart_profile2D->profileFormat.points[i].z;
+                    }
+                    return x;
+                }
+
 
                 private void* m_ProfileBase;
 
