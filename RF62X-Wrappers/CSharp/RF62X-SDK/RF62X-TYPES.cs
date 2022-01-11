@@ -1010,6 +1010,37 @@ namespace SDK
                 public List<Point2D> points { get; }
                 public List<ushort> pixels { get; }
 
+                public ushort[] getPixelsArray()
+                {
+                    return pixels.ToArray();
+                }
+
+                public Point2D[] getPointsArray()
+                {
+                    return points.ToArray();
+                }
+
+                public float[] getPointsXArray()
+                {
+                    float[] x = new float[points.Count];
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        x[i] = points[i].X;
+                    }
+                    return x;
+                }
+
+                public float[] getPointsZArray()
+                {
+                    float[] z = new float[points.Count];
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        z[i] = points[i].Z;
+                    }
+                    return z;
+                }
+
+
                 private void* m_ProfileBase;
 
             }
