@@ -53,9 +53,15 @@ std::string SDK::SCANNERS::RF62X::sdk_version()
     return RF62X_SDK_VERSION;
 }
 
+static bool is_initialized = false;
 bool SDK::SCANNERS::RF62X::sdk_init()
 {   
-    return SDK::CORES::RF62X::init();
+    if (!is_initialized)
+    {
+        is_initialized = SDK::CORES::RF62X::init();
+        return is_initialized;
+    }else
+        return is_initialized;
 }
 
 namespace SDK {
@@ -2193,6 +2199,9 @@ const std::vector<point2D_t>& profile2D::getPoints()  const noexcept
 
 std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool only_available_result, PROTOCOLS protocol)
 {
+    if (!is_initialized)
+        throw std::runtime_error("first you should initialize SDK - sdk_init()");
+
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
@@ -2843,6 +2852,9 @@ bool rf627old::is_available()
 //
 std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bool only_available_result, PROTOCOLS protocol)
 {
+    if (!is_initialized)
+        throw std::runtime_error("first you should initialize SDK - sdk_init()");
+
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
@@ -4109,7 +4121,14 @@ bool rf627smart::save_calibration_table(PROTOCOLS protocol)
 
 void sdk_cleanup()
 {
-    SDK::CORES::RF62X::cleanup();
+    if (is_initialized)
+    {
+        is_initialized = false;
+        SDK::CORES::RF62X::cleanup();
+    }else
+    {
+        throw std::runtime_error("first you should initialize SDK - sdk_init()");
+    }
 }
 
 
