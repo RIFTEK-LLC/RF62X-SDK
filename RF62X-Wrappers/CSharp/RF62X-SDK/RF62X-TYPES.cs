@@ -622,6 +622,10 @@ namespace SDK
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte send_reboot_device_request_to_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
+            [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
+            private static extern byte send_custom_command_to_scanner(
+                scanner_base_t* device, byte* cmd_name, byte* data_type, byte* input, uint in_size, byte** output, uint* out_size);
+
 
             [DllImport("libRF62X-SDK.dll", CallingConvention = CallingConvention.Cdecl)]
             private static extern void vector_init(vector_t** vec);

@@ -907,7 +907,7 @@ namespace SDK
                 /// <returns>true on success, else - false</returns>
                 public bool SetParam(string name, dynamic value)
                 {
-                    dynamic _param = GetParam("user_sensor_framerate");
+                    dynamic _param = GetParam(name);
                     if (_param != null)
                     {
                         _param.SetValue(value);
@@ -1085,6 +1085,53 @@ namespace SDK
                         return ret == 1 ? true : false;
                     }
 
+                    return false;
+                }
+
+                public bool SendCustomCommand(string name, ref List<byte> outData, string dataType = "blob\0", List<byte> inData = null)
+                {
+                    if (isConnected)
+                    {
+                        byte result = 0;
+
+                        byte* out_data = null;
+                        uint out_data_size = 0;
+
+                        byte[] bytesName = Encoding.ASCII.GetBytes(name);
+                        IntPtr unmanagedPointerName = Marshal.AllocHGlobal(bytesName.Length);
+                        Marshal.Copy(bytesName, 0, unmanagedPointerName, bytesName.Length);
+
+                        byte[] bytesType = Encoding.ASCII.GetBytes(dataType);
+                        IntPtr unmanagedPointerType = Marshal.AllocHGlobal(bytesType.Length);
+                        Marshal.Copy(bytesType, 0, unmanagedPointerType, bytesType.Length);
+
+                        if (inData == null)
+                        {
+                            result = send_custom_command_to_scanner(
+                                        (scanner_base_t*)scannerBase, (byte*)unmanagedPointerName, (byte*)unmanagedPointerType,
+                                        null, 0, &out_data, &out_data_size);
+                        }
+                        else
+                        {
+                            IntPtr unmanagedPointerIn = Marshal.AllocHGlobal(inData.ToArray().Length);
+                            Marshal.Copy(inData.ToArray(), 0, unmanagedPointerIn, inData.ToArray().Length);
+
+                            result = send_custom_command_to_scanner(
+                                        (scanner_base_t*)scannerBase, (byte*)unmanagedPointerName, (byte*)unmanagedPointerType,
+                                        (byte*)unmanagedPointerIn, (uint)inData.ToArray().Length, &out_data, &out_data_size);
+                        }
+
+                        if (out_data_size > 0)
+                        {
+                            outData.Capacity = (int)out_data_size;
+                            for (int i = 0; i < out_data_size; i++)
+                                outData.Add(out_data[i]);
+
+                            platform_free(out_data);
+                        }
+
+                        return result == 0 ? false : true;
+                    }
                     return false;
                 }
 

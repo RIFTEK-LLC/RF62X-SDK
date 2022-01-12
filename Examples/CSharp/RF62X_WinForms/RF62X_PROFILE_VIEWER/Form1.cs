@@ -9,18 +9,19 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using SDK.SCANNERS;
-
+using MessagePack;
+using System.Collections;
 
 namespace RF62X_PROFILE_VIEWER
 {
     public partial class Form1 : Form
     {
-        // RF627old devices list
-        public List<RF62X.RF627old> Scanners { get; set; }
-        public RF62X.Profile profile { get; set; }
-        public List<RF62X.Params.Description> ParamDescriptionList { get; set; }
+        // RF627smart devices list
+        public List<RF62X.RF627smart> Scanners { get; set; }
+        public RF62X.Profile2D profile { get; set; }
 
         public Thread TmpThread { get; set; }
+        public bool stop { get; set; }
         public System.Windows.Forms.Timer t { get; set; }
         public System.Windows.Forms.Timer t2 { get; set; }
 
@@ -37,13 +38,14 @@ namespace RF62X_PROFILE_VIEWER
             chart1.ChartAreas[0].AxisY.Minimum = 0;
             chart1.ChartAreas[0].AxisY.Enabled = AxisEnabled.True;
 
-            ParamDescriptionList = RF62X.Params.GetParamsDescriptionList();
+            //ParamDescriptionList = RF62X.Params.GetParamsDescriptionList();
 
-            foreach (RF62X.Params.Description param in ParamDescriptionList)
-            {
-                paramsComboBox.Items.Add(param.Key);
-            }
+            //foreach (RF62X.Params.Description param in ParamDescriptionList)
+            //{
+            //    paramsComboBox.Items.Add(param.Key);
+            //}
 
+            stop = false;
             TmpThread = new Thread(ReadData);
            
             t = new System.Windows.Forms.Timer();
@@ -55,19 +57,86 @@ namespace RF62X_PROFILE_VIEWER
             t2.Interval = 1000;
         }
 
+        public static byte[] HexStringToByteArray(string hex)
+        {
+            var result = new byte[hex.Length / 2];
+            for (var i = 0; i < result.Length; i++)
+            {
+                result[i] = System.Convert.ToByte(hex.Substring(i * 2, 2), 16);
+            }
+            return result;
+        }
+
+        private TreeNode[] RecurseTree(Dictionary<object, object> dic)
+        {
+            List<TreeNode> branch = new List<TreeNode>();
+
+            foreach (KeyValuePair<object, object> kvp in dic)
+            {
+                TreeNode twig = new TreeNode(kvp.Key.ToString());
+                if (!(kvp.Value is object[]))
+                {
+                    if (kvp.Key.ToString() == "name")
+                        comboBox1.Items.Add(kvp.Value);
+                    twig.Nodes.Add(new TreeNode(kvp.Value.ToString()));
+                }
+                else if (kvp.Value is Dictionary<object, object>)
+                {
+                    twig.Nodes.AddRange(RecurseTree((Dictionary<object, object>)kvp.Value));
+                }
+                else
+                {
+                    IEnumerable enumerable = (kvp.Value as IEnumerable);
+                    if (enumerable != null)
+                    {
+                        int count = 0;
+                        foreach (var item in enumerable)
+                        {
+                            if (!(item is Dictionary<object, object>))
+                            {
+                                twig.Nodes.Add(new TreeNode(item.ToString()));
+                            }
+                            else if (item is Dictionary<object, object>)
+                            {
+                                TreeNode twig2 = new TreeNode(count.ToString());
+                                twig2.Nodes.AddRange(RecurseTree((Dictionary<object, object>)item));
+                                twig.Nodes.Add(twig2);
+                                count++;
+                            }
+                        }
+                    }
+                }
+                branch.Add(twig);
+            }
+
+            return branch.ToArray();
+        }
+
         private void buttonForSearch_Click(object sender, EventArgs e)
         {
-            Scanners = RF62X.RF627old.Search();
+            Scanners = RF62X.RF627smart.Search();
 
             for (int i = 0; i < Scanners.Count; i++)
             {
                 Scanners[i].Connect();
                 Scanners[i].ReadParams();
-                RF62X.Param<string> name = Scanners[i].GetParam(RF62X.Params.User.General.deviceName);
+                RF62X.Parameter<string> name = Scanners[i].GetParam("user_general_deviceName");
                 listScanners.Items.Add(name.GetValue());
-            }
-                
 
+                List<byte> outData = new List<byte>();
+                Scanners[i].SendCustomCommand("GET_PARAMS_DESCRIPTION\0", ref outData);
+
+                if (outData.Count() > 0)
+                {
+                    var hexUtf8 = Encoding.UTF8.GetString(outData.ToArray());
+                    //var bytesUtf8 = HexStringToByteArray(hexUtf8);
+
+                    var test = MessagePackSerializer.Deserialize<dynamic>(outData.ToArray());
+
+                    treeView1.Nodes.AddRange(RecurseTree(test));
+                }
+            }
+           
         }
 
         private int currentScanner { get; set; }
@@ -106,8 +175,8 @@ namespace RF62X_PROFILE_VIEWER
             while(true)
             {
                 // Receive profile
-                RF62X.Profile _profile = Scanners[currentScanner].GetProfile();
-                if (_profile.header != null)
+                RF62X.Profile2D _profile = Scanners[currentScanner].GetProfile();
+                if (_profile != null)
                 {
                     profile = _profile;
                     count++;
@@ -121,6 +190,9 @@ namespace RF62X_PROFILE_VIEWER
                         profile.points.Clear();
                     currentScannerChanged = false;
                 }
+
+                if (stop)
+                    break;
 
             }
         }
@@ -147,220 +219,138 @@ namespace RF62X_PROFILE_VIEWER
             count = 0;
         }
 
-        private void paramsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            RF62X.Params.Description selectedParamDescription = ParamDescriptionList.Where(p => p.Key.Equals(paramsComboBox.SelectedItem)).FirstOrDefault();
+            string selected = this.comboBox1.GetItemText(this.comboBox1.SelectedItem);
+            var param = Scanners[currentScanner].GetParam(selected);
 
-            if (selectedParamDescription != null)
+            if (param != null)
             {
+                labelName.Text = ": " + param.name;
+                labelType.Text = ": " + param.type;
 
-                labelParamName.Text = "Name:";
-                labelParamType.Text = "Type:";
-                labelParamAccess.Text = "Access:";
-                labelParamIndex.Text = "Index:";
-                labelParamOffset.Text = "Offset:";
-                labelParamSize.Text = "Size:";
-                labelParamUints.Text = "Uints:";
-
-                switch (selectedParamDescription.Type)
+                switch (param.type)
                 {
                     case "unkn_t":
                         {
-                            
+                            labelName.Text = ": ...";
+                            labelType.Text = ": ...";
                             break;
                         }
                     case "uint32_t":
                         {
-                            RF62X.Param<uint> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<uint> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
                     case "uint64_t":
                         {
-                            RF62X.Param<ulong> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<ulong> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
                     case "int32_t":
                         {
-                            RF62X.Param<int> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<int> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
                     case "int64_t":
                         {
-                            RF62X.Param<long> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<long> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamName.Text = "Type:" + param.type;
-                                labelParamName.Text = "Access:" + param.access;
-                                labelParamName.Text = "Index:" + param.index.ToString();
-                                labelParamName.Text = "Offset:" + param.offset.ToString();
-                                labelParamName.Text = "Size:" + param.size.ToString();
-                                labelParamName.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
                     case "float_t":
                         {
-                            RF62X.Param<float> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<float> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
                     case "double_t":
                         {
-                            RF62X.Param<double> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<double> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
                     case "u32_arr_t":
                         {
-                            RF62X.Param<uint[]> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<List<uint>> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + string.Join(",", _param.GetValue());
                             }
                             break;
                         }
                     case "u64_arr_t":
                         {
-                            RF62X.Param<ulong> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<List<ulong>> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + string.Join(",", _param.GetValue());
                             }
                             break;
                         }
                     case "i32_arr_t":
                         {
-                            RF62X.Param<int[]> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<List<int>> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + string.Join(",", _param.GetValue());
                             }
                             break;
                         }
                     case "i64_arr_t":
                         {
-                            RF62X.Param<long[]> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<List<long>> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + string.Join(",", _param.GetValue());
                             }
                             break;
                         }
                     case "flt_array_t":
                         {
-                            RF62X.Param<float[]> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<List<float>> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + string.Join(",", _param.GetValue());
                             }
                             break;
                         }
                     case "dbl_array_t":
                         {
-                            RF62X.Param<double[]> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<List<double>> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + string.Join(",", _param.GetValue());
                             }
                             break;
                         }
                     case "string_t":
                         {
-                            RF62X.Param<string> param = Scanners[currentScanner].GetParam(selectedParamDescription);
+                            RF62X.Parameter<string> _param = param;
                             if (param != null)
                             {
-                                labelParamName.Text = "Name:" + param.name;
-                                labelParamType.Text = "Type:" + param.type;
-                                labelParamAccess.Text = "Access:" + param.access;
-                                labelParamIndex.Text = "Index:" + param.index.ToString();
-                                labelParamOffset.Text = "Offset:" + param.offset.ToString();
-                                labelParamSize.Text = "Size:" + param.size.ToString();
-                                labelParamUints.Text = "Uints:" + param.units;
+                                labelValue.Text = ": " + _param.GetValue();
                             }
                             break;
                         }
@@ -371,6 +361,13 @@ namespace RF62X_PROFILE_VIEWER
 
                 }
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            t.Stop();
+            t2.Stop();
+            stop = true;
         }
     }
 }

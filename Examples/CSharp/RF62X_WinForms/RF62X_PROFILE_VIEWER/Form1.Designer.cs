@@ -35,41 +35,38 @@
             this.buttonForSearch = new System.Windows.Forms.Button();
             this.listScanners = new System.Windows.Forms.ListView();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.paramsComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.labelParamName = new System.Windows.Forms.Label();
-            this.labelParamType = new System.Windows.Forms.Label();
-            this.labelParamAccess = new System.Windows.Forms.Label();
-            this.labelParamIndex = new System.Windows.Forms.Label();
-            this.labelParamOffset = new System.Windows.Forms.Label();
-            this.labelParamSize = new System.Windows.Forms.Label();
-            this.labelParamUints = new System.Windows.Forms.Label();
-            this.labelParamMin = new System.Windows.Forms.Label();
-            this.labelParamMax = new System.Windows.Forms.Label();
-            this.labelParamMaxCount = new System.Windows.Forms.Label();
-            this.labelParamDefCount = new System.Windows.Forms.Label();
-            this.labelParamStep = new System.Windows.Forms.Label();
-            this.labelParamDefValue = new System.Windows.Forms.Label();
-            this.labelParamValue = new System.Windows.Forms.Label();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.labelName = new System.Windows.Forms.Label();
+            this.labelType = new System.Windows.Forms.Label();
+            this.labelValue = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonForSearch
             // 
+            this.buttonForSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonForSearch.Location = new System.Drawing.Point(12, 12);
             this.buttonForSearch.Name = "buttonForSearch";
-            this.buttonForSearch.Size = new System.Drawing.Size(201, 33);
+            this.buttonForSearch.Size = new System.Drawing.Size(292, 33);
             this.buttonForSearch.TabIndex = 0;
-            this.buttonForSearch.Text = "SEARCH SCANNERS";
+            this.buttonForSearch.Text = "Search Scanners";
             this.buttonForSearch.UseVisualStyleBackColor = true;
             this.buttonForSearch.Click += new System.EventHandler(this.buttonForSearch_Click);
             // 
             // listScanners
             // 
+            this.listScanners.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listScanners.HideSelection = false;
             this.listScanners.Location = new System.Drawing.Point(12, 51);
             this.listScanners.Name = "listScanners";
-            this.listScanners.Size = new System.Drawing.Size(201, 105);
+            this.listScanners.Size = new System.Drawing.Size(292, 116);
             this.listScanners.TabIndex = 1;
             this.listScanners.UseCompatibleStateImageBehavior = false;
             this.listScanners.View = System.Windows.Forms.View.List;
@@ -77,197 +74,163 @@
             // 
             // chart1
             // 
+            this.chart1.BorderlineColor = System.Drawing.Color.Gray;
+            this.chart1.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
             chartArea2.AxisY.Maximum = 50D;
             chartArea2.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
+            legend2.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chart1.Legends.Add(legend2);
-            this.chart1.Location = new System.Drawing.Point(219, 12);
+            this.chart1.Location = new System.Drawing.Point(310, 12);
             this.chart1.Name = "chart1";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             series2.IsVisibleInLegend = false;
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             series2.YValuesPerPoint = 2;
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(496, 444);
+            this.chart1.Size = new System.Drawing.Size(867, 835);
             this.chart1.TabIndex = 2;
             this.chart1.Text = "chart1";
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             title2.Name = "Title1";
             title2.Text = "FPS: ";
             this.chart1.Titles.Add(title2);
             // 
-            // paramsComboBox
-            // 
-            this.paramsComboBox.FormattingEnabled = true;
-            this.paramsComboBox.Location = new System.Drawing.Point(12, 178);
-            this.paramsComboBox.Name = "paramsComboBox";
-            this.paramsComboBox.Size = new System.Drawing.Size(201, 21);
-            this.paramsComboBox.TabIndex = 3;
-            this.paramsComboBox.SelectedIndexChanged += new System.EventHandler(this.paramsComboBox_SelectedIndexChanged);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 162);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(8, 170);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 13);
+            this.label1.Size = new System.Drawing.Size(209, 24);
             this.label1.TabIndex = 4;
-            this.label1.Text = "parameter selection";
+            this.label1.Text = "Parameter Descriptions:";
             // 
-            // labelParamName
+            // treeView1
             // 
-            this.labelParamName.AutoSize = true;
-            this.labelParamName.Location = new System.Drawing.Point(12, 212);
-            this.labelParamName.Name = "labelParamName";
-            this.labelParamName.Size = new System.Drawing.Size(38, 13);
-            this.labelParamName.TabIndex = 5;
-            this.labelParamName.Text = "Name:";
+            this.treeView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.treeView1.Location = new System.Drawing.Point(12, 197);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(292, 361);
+            this.treeView1.TabIndex = 18;
             // 
-            // labelParamType
+            // label2
             // 
-            this.labelParamType.AutoSize = true;
-            this.labelParamType.Location = new System.Drawing.Point(12, 225);
-            this.labelParamType.Name = "labelParamType";
-            this.labelParamType.Size = new System.Drawing.Size(34, 13);
-            this.labelParamType.TabIndex = 6;
-            this.labelParamType.Text = "Type:";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(8, 561);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(170, 24);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Get Parameter Info:";
             // 
-            // labelParamAccess
+            // label3
             // 
-            this.labelParamAccess.AutoSize = true;
-            this.labelParamAccess.Location = new System.Drawing.Point(12, 238);
-            this.labelParamAccess.Name = "labelParamAccess";
-            this.labelParamAccess.Size = new System.Drawing.Size(45, 13);
-            this.labelParamAccess.TabIndex = 7;
-            this.labelParamAccess.Text = "Access:";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(12, 624);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 20);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "name";
             // 
-            // labelParamIndex
+            // label4
             // 
-            this.labelParamIndex.AutoSize = true;
-            this.labelParamIndex.Location = new System.Drawing.Point(12, 251);
-            this.labelParamIndex.Name = "labelParamIndex";
-            this.labelParamIndex.Size = new System.Drawing.Size(36, 13);
-            this.labelParamIndex.TabIndex = 8;
-            this.labelParamIndex.Text = "Index:";
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label4.Location = new System.Drawing.Point(12, 644);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 20);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "type";
             // 
-            // labelParamOffset
+            // label5
             // 
-            this.labelParamOffset.AutoSize = true;
-            this.labelParamOffset.Location = new System.Drawing.Point(12, 264);
-            this.labelParamOffset.Name = "labelParamOffset";
-            this.labelParamOffset.Size = new System.Drawing.Size(38, 13);
-            this.labelParamOffset.TabIndex = 9;
-            this.labelParamOffset.Text = "Offset:";
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(12, 664);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(46, 20);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "value";
             // 
-            // labelParamSize
+            // label6
             // 
-            this.labelParamSize.AutoSize = true;
-            this.labelParamSize.Location = new System.Drawing.Point(12, 277);
-            this.labelParamSize.Name = "labelParamSize";
-            this.labelParamSize.Size = new System.Drawing.Size(30, 13);
-            this.labelParamSize.TabIndex = 10;
-            this.labelParamSize.Text = "Size:";
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.Location = new System.Drawing.Point(12, 624);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(49, 20);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "name";
             // 
-            // labelParamUints
+            // labelName
             // 
-            this.labelParamUints.AutoSize = true;
-            this.labelParamUints.Location = new System.Drawing.Point(12, 290);
-            this.labelParamUints.Name = "labelParamUints";
-            this.labelParamUints.Size = new System.Drawing.Size(34, 13);
-            this.labelParamUints.TabIndex = 11;
-            this.labelParamUints.Text = "Uints:";
+            this.labelName.AutoSize = true;
+            this.labelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelName.Location = new System.Drawing.Point(81, 624);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(29, 20);
+            this.labelName.TabIndex = 22;
+            this.labelName.Text = ": ...";
             // 
-            // labelParamMin
+            // labelType
             // 
-            this.labelParamMin.AutoSize = true;
-            this.labelParamMin.Location = new System.Drawing.Point(12, 311);
-            this.labelParamMin.Name = "labelParamMin";
-            this.labelParamMin.Size = new System.Drawing.Size(27, 13);
-            this.labelParamMin.TabIndex = 12;
-            this.labelParamMin.Text = "Min:";
+            this.labelType.AutoSize = true;
+            this.labelType.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelType.Location = new System.Drawing.Point(81, 644);
+            this.labelType.Name = "labelType";
+            this.labelType.Size = new System.Drawing.Size(29, 20);
+            this.labelType.TabIndex = 22;
+            this.labelType.Text = ": ...";
             // 
-            // labelParamMax
+            // labelValue
             // 
-            this.labelParamMax.AutoSize = true;
-            this.labelParamMax.Location = new System.Drawing.Point(12, 324);
-            this.labelParamMax.Name = "labelParamMax";
-            this.labelParamMax.Size = new System.Drawing.Size(30, 13);
-            this.labelParamMax.TabIndex = 13;
-            this.labelParamMax.Text = "Max:";
+            this.labelValue.AutoSize = true;
+            this.labelValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelValue.Location = new System.Drawing.Point(81, 664);
+            this.labelValue.Name = "labelValue";
+            this.labelValue.Size = new System.Drawing.Size(29, 20);
+            this.labelValue.TabIndex = 22;
+            this.labelValue.Text = ": ...";
             // 
-            // labelParamMaxCount
+            // comboBox1
             // 
-            this.labelParamMaxCount.AutoSize = true;
-            this.labelParamMaxCount.Location = new System.Drawing.Point(12, 337);
-            this.labelParamMaxCount.Name = "labelParamMaxCount";
-            this.labelParamMaxCount.Size = new System.Drawing.Size(58, 13);
-            this.labelParamMaxCount.TabIndex = 14;
-            this.labelParamMaxCount.Text = "MaxCount:";
-            // 
-            // labelParamDefCount
-            // 
-            this.labelParamDefCount.AutoSize = true;
-            this.labelParamDefCount.Location = new System.Drawing.Point(12, 350);
-            this.labelParamDefCount.Name = "labelParamDefCount";
-            this.labelParamDefCount.Size = new System.Drawing.Size(55, 13);
-            this.labelParamDefCount.TabIndex = 15;
-            this.labelParamDefCount.Text = "DefCount:";
-            // 
-            // labelParamStep
-            // 
-            this.labelParamStep.AutoSize = true;
-            this.labelParamStep.Location = new System.Drawing.Point(12, 370);
-            this.labelParamStep.Name = "labelParamStep";
-            this.labelParamStep.Size = new System.Drawing.Size(32, 13);
-            this.labelParamStep.TabIndex = 16;
-            this.labelParamStep.Text = "Step:";
-            // 
-            // labelParamDefValue
-            // 
-            this.labelParamDefValue.AutoSize = true;
-            this.labelParamDefValue.Location = new System.Drawing.Point(12, 383);
-            this.labelParamDefValue.Name = "labelParamDefValue";
-            this.labelParamDefValue.Size = new System.Drawing.Size(54, 13);
-            this.labelParamDefValue.TabIndex = 17;
-            this.labelParamDefValue.Text = "DefValue:";
-            // 
-            // labelParamValue
-            // 
-            this.labelParamValue.AutoSize = true;
-            this.labelParamValue.Location = new System.Drawing.Point(12, 396);
-            this.labelParamValue.Name = "labelParamValue";
-            this.labelParamValue.Size = new System.Drawing.Size(37, 13);
-            this.labelParamValue.TabIndex = 17;
-            this.labelParamValue.Text = "Value:";
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(12, 585);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(292, 26);
+            this.comboBox1.TabIndex = 23;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(727, 468);
-            this.Controls.Add(this.labelParamValue);
-            this.Controls.Add(this.labelParamDefValue);
-            this.Controls.Add(this.labelParamStep);
-            this.Controls.Add(this.labelParamDefCount);
-            this.Controls.Add(this.labelParamMaxCount);
-            this.Controls.Add(this.labelParamMax);
-            this.Controls.Add(this.labelParamMin);
-            this.Controls.Add(this.labelParamUints);
-            this.Controls.Add(this.labelParamSize);
-            this.Controls.Add(this.labelParamOffset);
-            this.Controls.Add(this.labelParamIndex);
-            this.Controls.Add(this.labelParamAccess);
-            this.Controls.Add(this.labelParamType);
-            this.Controls.Add(this.labelParamName);
+            this.ClientSize = new System.Drawing.Size(1189, 859);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.labelValue);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.labelType);
+            this.Controls.Add(this.labelName);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.paramsComboBox);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.listScanners);
             this.Controls.Add(this.buttonForSearch);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -279,22 +242,17 @@
         private System.Windows.Forms.Button buttonForSearch;
         private System.Windows.Forms.ListView listScanners;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.ComboBox paramsComboBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label labelParamName;
-        private System.Windows.Forms.Label labelParamType;
-        private System.Windows.Forms.Label labelParamAccess;
-        private System.Windows.Forms.Label labelParamIndex;
-        private System.Windows.Forms.Label labelParamOffset;
-        private System.Windows.Forms.Label labelParamSize;
-        private System.Windows.Forms.Label labelParamUints;
-        private System.Windows.Forms.Label labelParamMin;
-        private System.Windows.Forms.Label labelParamMax;
-        private System.Windows.Forms.Label labelParamMaxCount;
-        private System.Windows.Forms.Label labelParamDefCount;
-        private System.Windows.Forms.Label labelParamStep;
-        private System.Windows.Forms.Label labelParamDefValue;
-        private System.Windows.Forms.Label labelParamValue;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelName;
+        private System.Windows.Forms.Label labelType;
+        private System.Windows.Forms.Label labelValue;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
