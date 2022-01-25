@@ -621,7 +621,7 @@ To build the C wrapper:
 cd RF62X-SDK
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release .. -D_WRAPPER_LANGUAGE:STRING=C++ -D_SUBMODULE_CACHE_OVERWRITE=OFF
-cmake --build . 
+cmake --build . --config Release
 ```
 
 </details>
