@@ -30,6 +30,8 @@ SET(RF62X_2XX_DUMP_EXAMPLE                            ON  CACHE BOOL "" FORCE)
 SET(RF62X_2XX_MULTITHREAD_EXAMPLE                     ON  CACHE BOOL "" FORCE)
 # Send custom command
 SET(RF62X_2XX_CUSTOM_COMMAND_EXAMPLE                  ON  CACHE BOOL "" FORCE)
+# Communication with peripherals
+SET(RF62X_2XX_PERIPHERY_EXAMPLE                       ON  CACHE BOOL "" FORCE)
 
 
 ## WIDGETS APPLICATIONS
@@ -76,6 +78,10 @@ endif()
 if (RF62X_2XX_CUSTOM_COMMAND_EXAMPLE)
     add_subdirectory(CUSTOM_COMMAND_EXAMPLE)
 endif()
+# Communication with peripherals
+if (RF62X_2XX_PERIPHERY_EXAMPLE)
+    add_subdirectory(PERIPHERY_EXAMPLE)
+endif()
 
 ## WIDGETS APPLICATIONS
 # Getting profiles and displaying in profile-widget
@@ -90,3 +96,5 @@ endif()
 if (RF62X_2XX_PARAMETERS_VIEWER)
     add_subdirectory(PARAMETERS_VIEWER)
 endif()
+
+

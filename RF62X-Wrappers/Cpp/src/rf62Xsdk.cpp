@@ -3928,6 +3928,29 @@ bool rf627smart::reboot_sensor(PROTOCOLS protocol)
     return false;
 }
 
+bool rf627smart::send_to_periphery(std::string iface_name, std::vector<char> in)
+{
+    if (_is_connected)
+    {
+        bool result = false;
+
+        char* out_data = nullptr;
+        uint32_t out_data_size = 0;
+        result = send_data_to_scanner_periphery(
+                    (scanner_base_t*)scanner_base, iface_name.c_str(), 0,
+                    in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
+
+        if (out_data_size > 0)
+        {
+            free(out_data);
+        }
+
+        return result;
+    }
+
+    return false;
+}
+
 bool rf627smart::send_to_periphery(
         std::string iface_name, std::vector<char> in,
         std::vector<char> &out, uint32_t timeout)

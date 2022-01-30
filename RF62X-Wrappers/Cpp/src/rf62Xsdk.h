@@ -365,7 +365,29 @@ public:
      * data will be sent. If the interface does not exist,
      * the error "RF_WRONG_ARGUMENT" will be returned.
      * Supported values:
-     * "Usart0" - sending to the peripherals connected via the USART0.
+     * "usart0" - sending to the peripherals connected via the USART0.
+     * @param in The data to be sent. If there is no data to send,
+     * then the error "RF_NO_DATA" will be returned.
+     * Length limit: 1024 bytes. If the data length is greater than
+     * the limit, the error "RF_OUT_OF_BOUNDS" will be returned.
+     *
+     * @return true on success, else - false
+     */
+    bool send_to_periphery(
+            std::string iface_name, std::vector<char> in);
+    /**
+     * @brief send_to_periphery - sending data to a peripheral device.
+     * @details Peripherals are devices "external" to the scanner,
+     * for example: stepper motors, pneumatic valves, thermostats, etc.
+     * Peripherals are connected via standard interfaces such as USART,
+     * I2C, etc. Peripheral commands provide transparent exchange without
+     * adding or removing any data.
+     *
+     * @param iface_name The name of the interface where the
+     * data will be sent. If the interface does not exist,
+     * the error "RF_WRONG_ARGUMENT" will be returned.
+     * Supported values:
+     * "usart0" - sending to the peripherals connected via the USART0.
      * @param in The data to be sent. If there is no data to send,
      * then the error "RF_NO_DATA" will be returned.
      * Length limit: 1024 bytes. If the data length is greater than
@@ -379,6 +401,7 @@ public:
     bool send_to_periphery(
             std::string iface_name, std::vector<char> in,
             std::vector<char>& out, uint32_t timeout);
+
 
     /**
      * @brief receive_from_periphery - receiving data from a
