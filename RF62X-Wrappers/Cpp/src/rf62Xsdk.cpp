@@ -3994,6 +3994,7 @@ bool rf627smart::receive_from_periphery(
                     (scanner_base_t*)scanner_base, iface_name.c_str(), timeout,
                     count, &out_data, &out_data_size);
 
+        out.clear();
         if (out_data_size > 0)
         {
             out.resize(out_data_size);
