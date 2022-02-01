@@ -61,8 +61,8 @@ int main()
             continue;
 
         // Send data to periphery
-        std::vector<char> in {'H', 'E', 'L', 'L', 'O'};
-        std::vector<char> out;
+        std::vector<uint8_t> in {'H', 'E', 'L', 'L', 'O'};
+        std::vector<uint8_t> out;
         bool status = scanner->send_to_periphery("usart0", in, out, 1000);
         if (status){
             std::cout << "The data was sent successfully." << std::endl;
