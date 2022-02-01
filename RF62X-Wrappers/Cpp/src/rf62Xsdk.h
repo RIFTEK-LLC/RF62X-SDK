@@ -374,7 +374,7 @@ public:
      * @return true on success, else - false
      */
     bool send_to_periphery(
-            std::string iface_name, std::vector<char> in);
+            std::string iface_name, std::vector<uint8_t> in);
     /**
      * @brief send_to_periphery - sending data to a peripheral device.
      * @details Peripherals are devices "external" to the scanner,
@@ -399,8 +399,8 @@ public:
      * @return true on success, else - false
      */
     bool send_to_periphery(
-            std::string iface_name, std::vector<char> in,
-            std::vector<char>& out, uint32_t timeout);
+            std::string iface_name, std::vector<uint8_t> in,
+            std::vector<uint8_t>& out, uint32_t timeout);
 
 
     /**
@@ -422,7 +422,7 @@ public:
      */
     bool receive_from_periphery(
             std::string iface_name, uint16_t count,
-            std::vector<char>& out, uint32_t timeout);
+            std::vector<uint8_t>& out, uint32_t timeout);
 
     /**
      * @brief send_custom_command - Send custom command to device.

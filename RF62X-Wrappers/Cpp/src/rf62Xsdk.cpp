@@ -3928,7 +3928,7 @@ bool rf627smart::reboot_sensor(PROTOCOLS protocol)
     return false;
 }
 
-bool rf627smart::send_to_periphery(std::string iface_name, std::vector<char> in)
+bool rf627smart::send_to_periphery(std::string iface_name, std::vector<uint8_t> in)
 {
     if (_is_connected)
     {
@@ -3938,7 +3938,7 @@ bool rf627smart::send_to_periphery(std::string iface_name, std::vector<char> in)
         uint32_t out_data_size = 0;
         result = send_data_to_scanner_periphery(
                     (scanner_base_t*)scanner_base, iface_name.c_str(), 0,
-                    in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
+                    (char*)in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
 
         if (out_data_size > 0)
         {
@@ -3952,8 +3952,8 @@ bool rf627smart::send_to_periphery(std::string iface_name, std::vector<char> in)
 }
 
 bool rf627smart::send_to_periphery(
-        std::string iface_name, std::vector<char> in,
-        std::vector<char> &out, uint32_t timeout)
+        std::string iface_name, std::vector<uint8_t> in,
+        std::vector<uint8_t> &out, uint32_t timeout)
 {
     if (_is_connected)
     {
@@ -3963,11 +3963,11 @@ bool rf627smart::send_to_periphery(
         uint32_t out_data_size = 0;
         result = send_data_to_scanner_periphery(
                     (scanner_base_t*)scanner_base, iface_name.c_str(), timeout,
-                    in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
+                    (char*)in.data(), (uint32_t)in.size(), &out_data, &out_data_size);
 
         if (out_data_size > 0)
         {
-            out.resize(out_data_size);
+            out.clear();
             for(uint32_t i = 0; i < out_data_size; i++)
                 out.push_back(out_data[i]);
 
@@ -3982,7 +3982,7 @@ bool rf627smart::send_to_periphery(
 
 bool rf627smart::receive_from_periphery(
         std::string iface_name, uint16_t count,
-        std::vector<char> &out, uint32_t timeout)
+        std::vector<uint8_t> &out, uint32_t timeout)
 {
     if (_is_connected)
     {
@@ -3997,7 +3997,7 @@ bool rf627smart::receive_from_periphery(
         out.clear();
         if (out_data_size > 0)
         {
-            out.resize(out_data_size);
+            out.clear();
             for(uint32_t i = 0; i < out_data_size; i++)
                 out.push_back(out_data[i]);
 
