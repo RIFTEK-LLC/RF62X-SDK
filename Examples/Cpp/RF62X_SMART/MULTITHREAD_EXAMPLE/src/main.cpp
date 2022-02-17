@@ -84,11 +84,11 @@ int main()
     sdk_cleanup();
 }
 
-std::mutex print_mutex;
+std::mutex printMutex;
 void print_profile_info(std::shared_ptr<profile2D>& profile,
                         std::thread::id thread_id, int& count)
 {
-    print_mutex.lock();
+    printMutex.lock();
     if (profile)
     {
         std::cout << "Profile information from thread_id = " << thread_id <<": "<<std::endl;
@@ -119,7 +119,7 @@ void print_profile_info(std::shared_ptr<profile2D>& profile,
         std::cout << "Profile was not received!"                 <<std::endl;
         std::cout << "-----------------------------------------" <<std::endl;
     }
-    print_mutex.unlock();
+    printMutex.unlock();
 }
 
 void get_profile_func(std::shared_ptr<rf627smart>& scanner)
@@ -144,7 +144,7 @@ void get_profile_func(std::shared_ptr<rf627smart>& scanner)
 
 void print_read_params_info(bool is_read, std::thread::id thread_id, int& count)
 {
-    print_mutex.lock();
+    printMutex.lock();
     if (is_read)
     {
         std::cout << "Params read from thread_id = " << thread_id <<std::endl;
@@ -154,7 +154,7 @@ void print_read_params_info(bool is_read, std::thread::id thread_id, int& count)
         std::cout << "Params not read from thread_id = " << thread_id <<std::endl;
         count++;
     }
-    print_mutex.unlock();
+    printMutex.unlock();
 }
 
 void read_params_func(std::shared_ptr<rf627smart>& obj)
