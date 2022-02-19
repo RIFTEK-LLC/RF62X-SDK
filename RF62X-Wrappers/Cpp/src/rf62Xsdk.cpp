@@ -4054,6 +4054,33 @@ bool rf627smart::remove_protocol_settings(std::string cmd_name)
                 (scanner_base_t*)scanner_base, (const char *)cmd_name.c_str());
 }
 
+bool rf627smart::get_firmware(std::vector<uint8_t> &firmware, uint32_t timeout)
+{
+    if (_is_connected)
+    {
+        bool result = false;
+
+        char* out_data = nullptr;
+        uint32_t out_data_size = 0;
+        result = receive_firmware_from_scanner(
+                    (scanner_base_t*)scanner_base, timeout, &out_data, &out_data_size);
+
+        if (out_data_size > 0)
+        {
+            firmware.clear();
+            firmware.reserve(out_data_size);
+            for(uint32_t i = 0; i < out_data_size; i++)
+                firmware.push_back(out_data[i]);
+
+            free(out_data);
+        }
+
+        return result;
+    }
+
+    return false;
+}
+
 
 bool rf627smart::read_calibration_table(PROTOCOLS protocol)
 {

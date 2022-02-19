@@ -32,6 +32,8 @@ SET(RF62X_2XX_MULTITHREAD_EXAMPLE                     ON  CACHE BOOL "" FORCE)
 SET(RF62X_2XX_CUSTOM_COMMAND_EXAMPLE                  ON  CACHE BOOL "" FORCE)
 # Communication with peripherals
 SET(RF62X_2XX_PERIPHERY_EXAMPLE                       ON  CACHE BOOL "" FORCE)
+# Get profiles and write to file
+SET(RF62X_2XX_FIRMWARE_EXAMPLE                        ON  CACHE BOOL "" FORCE)
 
 
 ## WIDGETS APPLICATIONS
@@ -81,6 +83,10 @@ endif()
 # Communication with peripherals
 if (RF62X_2XX_PERIPHERY_EXAMPLE)
     add_subdirectory(PERIPHERY_EXAMPLE)
+endif()
+# Download firmware
+if (RF62X_2XX_FIRMWARE_EXAMPLE)
+    add_subdirectory(FIRMWARE_EXAMPLE)
 endif()
 
 ## WIDGETS APPLICATIONS

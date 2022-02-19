@@ -468,6 +468,16 @@ public:
      */
     bool remove_protocol_settings(std::string cmd_name);
 
+    /**
+     * @brief get_firmware - receiving firmware from a scanner
+     *
+     * @param out The data that was received.
+     * @param timeout Waiting time for dump download
+     *
+     * @return true on success, else - false
+     */
+    bool get_firmware(std::vector<uint8_t>& firmware, uint32_t timeout = 100000);
+
 
 
     /**
