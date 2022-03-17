@@ -123,7 +123,9 @@ public:
 
     bool setData(std::vector<uint8_t> data);
     bool setZ(std::vector<int16_t> Zd);
+    std::vector<int16_t> getZ();
     bool setX(std::vector<int16_t> Xd);
+    std::vector<int16_t> getX();
     bool setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd);
     bool updateTimeStamp();
 

@@ -329,7 +329,27 @@ std::shared_ptr<calib_table> calib_table::parse_from_bytes(std::vector<char> byt
     rf627_calib_table_t* _table =
             convert_calibration_table_from_bytes(bytes.data(), bytes.size());
 
-    return std::make_shared<calib_table>(_table);
+    std::shared_ptr<calib_table> table = std::make_shared<calib_table>(_table);
+
+    table->m_Zd.resize(2*table->m_Height * table->m_Width);
+    table->m_Xd.resize(2*table->m_Height * table->m_Width);
+    // Copy tables
+    for (size_t iRow = 0; iRow < 2*table->m_Height; iRow++) // x2 resolution in vertical
+    {
+        for (size_t iCol = 0; iCol < table->m_Width; iCol++)
+        {
+            int16_t valZ;
+            int16_t valX;
+
+            memcpy(&valZ, &table->m_Data[iCol*2048*4 + iRow*4 + 2 + 0], 2);
+            memcpy(&valX, &table->m_Data[iCol*2048*4 + iRow*4 + 0], 2);
+
+            table->m_Zd[iRow*table->m_Width + iCol] = valZ;
+            table->m_Xd[iRow * table->m_Width + iCol] = valX;
+        }
+    }
+
+    return table;
 }
 
 uint16_t calib_table::getType()
@@ -404,6 +424,7 @@ bool calib_table::setData(std::vector<uint8_t> data)
 }
 bool calib_table::setZ(std::vector<int16_t> Zd)
 {
+    m_Zd = Zd;
     if(m_Data.size() != 2047*2048*4)
         m_Data.resize(2047*2048*4);
 
@@ -455,9 +476,14 @@ bool calib_table::setZ(std::vector<int16_t> Zd)
     return true;
 }
 
+std::vector<int16_t> calib_table::getZ()
+{
+    return m_Zd;
+}
+
 bool calib_table::setX(std::vector<int16_t> Xd)
 {
-
+    m_Xd = Xd;
     if(m_Data.size() != 2047*2048*4)
         m_Data.resize(2047*2048*4);
 
@@ -508,8 +534,16 @@ bool calib_table::setX(std::vector<int16_t> Xd)
 
     return true;
 }
+
+std::vector<int16_t> calib_table::getX()
+{
+    return m_Xd;
+}
 bool calib_table::setZX(std::vector<int16_t> Zd, std::vector<int16_t> Xd)
 {
+    m_Zd = Zd;
+    m_Xd = Xd;
+
     if(m_Data.size() != 2047*2048*4)
         m_Data.resize(2047*2048*4);
 
