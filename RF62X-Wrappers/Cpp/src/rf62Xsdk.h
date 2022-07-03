@@ -336,6 +336,41 @@ public:
 
 
     /**
+     * @brief Method for creating approximate table based on scanner params
+     * @return true on success, else - false
+     */
+    bool create_approximation_table();
+    /**
+     * @brief Method for reading approximate table from scanner
+     * @return true on success, else - false
+     */
+    bool read_approximation_table();
+    /**
+     * @brief Method for writing approximate table to scanner
+     * @return true on success, else - false
+     */
+    bool write_approximation_table();
+    /**
+     * @brief Method for saving approximate table to device's memory
+     * @return true on success, else - false
+     */
+    bool save_approximation_table();
+
+    /**
+     * @brief Method for getting approximation table from internal SDK memory
+     * Before using should be called read_approximation_table() method or
+     * create_approximation_table() method
+     * @return calib_table on success, else - null
+     */
+    std::shared_ptr<ApproxTable> get_approximation_table();
+    /**
+     * @brief set_calibration_table - Set calibration table to internal SDK memory
+     * @return true on success, else - false
+     */
+    bool set_approximation_table(std::shared_ptr<ApproxTable> table);
+
+
+    /**
      * @brief reboot_device - The scanner will restart
      *
      * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)

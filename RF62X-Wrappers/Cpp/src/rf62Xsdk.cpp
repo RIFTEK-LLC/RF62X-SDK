@@ -653,6 +653,324 @@ bool calib_table::convert_to_bytes(std::vector<char>& bytes)
         return false;
 }
 
+ApproxTable::ApproxTable() : SettingsModel()
+{
+    m_approxTableBase = new rf627_approx_table_t();
+}
+
+ApproxTable::~ApproxTable()
+{
+    delete (rf627_approx_table_t*)m_approxTableBase;
+}
+
+ApproxTable_v6::ApproxTable_v6() : ApproxTable_v6(nullptr)
+{
+
+}
+
+ApproxTable_v6::ApproxTable_v6(void* base) : ApproxTable()
+{
+    ((rf627_approx_table_t*)m_approxTableBase)->version = 6;
+
+    addProperty("version", (unsigned int)6);
+    addProperty("crc_x", (unsigned int)0, (unsigned int)0, (unsigned int)65535);
+    addProperty("crc_z", (unsigned int)0, (unsigned int)0, (unsigned int)65535);
+    addProperty("serial", (unsigned int)0);
+    addProperty("width", (unsigned int)32, (unsigned int)32, (unsigned int)65535);
+    addProperty("height", (unsigned int)32, (unsigned int)32, (unsigned int)65535);
+    addProperty("scaling_factor", (float)0.0);
+    addProperty("polynomial_degree_x", (unsigned int)2, (unsigned int)2, (unsigned int)8);
+    addProperty("polynomial_degree_z", (unsigned int)2, (unsigned int)2, (unsigned int)8);
+    addProperty("time_stamp", (unsigned int)0);
+    addProperty("poly_coef_x", std::vector<std::vector<float>>());
+    addProperty("poly_coef_z", std::vector<std::vector<float>>());
+
+    if (base != nullptr)
+        convertFromBase(base);
+}
+
+ApproxTable_v6::~ApproxTable_v6()
+{
+}
+
+std::string ApproxTable_v6::getVersion()
+{
+    return std::to_string(props("version")->getValue<unsigned int>());
+}
+
+bool ApproxTable_v6::readFromFile(std::string fileName){
+    std::ifstream input(fileName, std::ios::binary);
+    std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
+    return parseFromBytes(buffer);
+}
+
+bool ApproxTable_v6::saveToFile(std::string fileName)
+{
+    std::vector<uint8_t> bytes = convertToBytes();
+
+    if (bytes.size() > 0)
+    {
+        std::ofstream file(fileName, std::ios::out | std::ios::binary);
+        file.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
+        file.close();
+        return true;
+    }
+
+    return false;
+ }
+
+bool ApproxTable_v6::parseFromBytes(std::vector<uint8_t> bytes)
+{
+    convert_approximation_table_from_bytes(
+                (rf627_approx_table_t*)m_approxTableBase, (char*)bytes.data(), (uint32_t)bytes.size());
+
+    return convertFromBase(m_approxTableBase);
+}
+
+std::vector<uint8_t> ApproxTable_v6::convertToBytes()
+{
+    uint32_t data_size = 0;
+    char* data = nullptr;
+
+    convertToBase(m_approxTableBase);
+
+    bool result = convert_approximation_table_to_bytes(
+                (rf627_approx_table_t*)m_approxTableBase, &data, &data_size);
+
+    std::cout << data_size << std::endl;
+    if (result && data_size > 0)
+    {
+        auto bytes = std::vector<uint8_t>(data, data + data_size);
+        free(data);
+        return bytes;
+    }
+    else
+        return std::vector<uint8_t>();
+}
+
+bool ApproxTable_v6::setSerial(unsigned int value)
+{
+    return setProperty("serial", value);
+}
+
+bool ApproxTable_v6::setWidth(unsigned int value)
+{
+    return setProperty("width", value);
+}
+
+bool ApproxTable_v6::setHeight(unsigned int value)
+{
+    return setProperty("height", value);
+}
+
+bool ApproxTable_v6::setScalingFactor(float value)
+{
+    return setProperty("scaling_factor", value);
+}
+
+bool ApproxTable_v6::setPolyDegreeX(unsigned int value)
+{
+    return setProperty("polynomial_degree_x", value);
+}
+
+bool ApproxTable_v6::setPolyDegreeZ(unsigned int value)
+{
+    return setProperty("polynomial_degree_z", value);
+}
+
+bool ApproxTable_v6::updateTimeStamp()
+{
+    return setProperty("time_stamp", (unsigned int)time(nullptr));
+}
+
+bool ApproxTable_v6::setPolyCoeffsX(std::vector<std::vector<float>> value)
+{
+    props("crc_x")->setValue(crc16(value));
+    return setProperty("poly_coef_x", value);
+}
+
+bool ApproxTable_v6::setPolyCoeffsZ(std::vector<std::vector<float>> value)
+{
+    props("crc_z")->setValue(crc16(value));
+    return setProperty("poly_coef_z", value);
+}
+
+unsigned int ApproxTable_v6::getCrcX()
+{
+    return props("crc_x")->getValue<unsigned int>();
+}
+
+unsigned int ApproxTable_v6::getCrcZ()
+{
+    return props("crc_z")->getValue<unsigned int>();
+}
+
+unsigned int ApproxTable_v6::getSerial()
+{
+    return props("serial")->getValue<unsigned int>();
+}
+
+unsigned int ApproxTable_v6::getWidth()
+{
+    return props("width")->getValue<unsigned int>();
+}
+
+unsigned int ApproxTable_v6::getHeight()
+{
+    return props("height")->getValue<unsigned int>();
+}
+
+float ApproxTable_v6::getScalingFactor()
+{
+    return props("scaling_factor")->getValue<float>();
+}
+
+unsigned int ApproxTable_v6::getPolyDegreeX()
+{
+    return props("polynomial_degree_x")->getValue<unsigned int>();
+}
+
+unsigned int ApproxTable_v6::getPolyDegreeZ()
+{
+    return props("polynomial_degree_z")->getValue<unsigned int>();
+}
+
+unsigned int ApproxTable_v6::getTimeStamp()
+{
+    return props("time_stamp")->getValue<unsigned int>();
+}
+
+std::vector<std::vector<float>> ApproxTable_v6::getPolyCoeffsX()
+{
+    return props("poly_coef_x")->getValue<std::vector<std::vector<float>>>();
+}
+
+std::vector<std::vector<float> > ApproxTable_v6::getPolyCoeffsZ()
+{
+    return props("poly_coef_z")->getValue<std::vector<std::vector<float>>>();
+}
+
+bool ApproxTable_v6::convertFromBase(void* base)
+{
+    if (base != nullptr && ((rf627_approx_table_t*)base)->version == 6 && ((rf627_approx_table_t*)base)->table_v6 != nullptr)
+    {
+        rf627_smart_approx_table_v6_t* table_v6 = ((rf627_approx_table_t*)base)->table_v6;
+
+        std::vector<std::vector<float>> coeffsX(table_v6->width, std::vector<float>(table_v6->polynomial_degree_x));
+        std::vector<std::vector<float>> coeffsZ(table_v6->width, std::vector<float>(table_v6->polynomial_degree_z));
+        for (int i = 0; i < table_v6->width; i++){
+            if (table_v6->poly_coef_x)
+                for (int j = 0; j < table_v6->polynomial_degree_x; j++)
+                    coeffsX[i][j] = table_v6->poly_coef_x[(i * table_v6->polynomial_degree_x + j) * sizeof(float)];
+
+            if (table_v6->poly_coef_z)
+                for (int j = 0; j < table_v6->polynomial_degree_z; j++)
+                    coeffsZ[i][j] = table_v6->poly_coef_z[(i * table_v6->polynomial_degree_z + j) * sizeof(float)];
+        }
+
+        setProperty("crc_x", table_v6->crc_x);
+        setProperty("crc_z", table_v6->crc_z);
+        setProperty("serial", table_v6->serial);
+        setProperty("width", table_v6->width);
+        setProperty("height", table_v6->height);
+        setProperty("scaling_factor", table_v6->scaling_factor);
+        setProperty("polynomial_degree_x", table_v6->polynomial_degree_x);
+        setProperty("polynomial_degree_z", table_v6->polynomial_degree_z);
+        setProperty("time_stamp", table_v6->time_stamp);
+        setProperty("poly_coef_x", coeffsX);
+        setProperty("poly_coef_z", coeffsZ);
+        return true;
+    }
+    return false;
+}
+
+bool ApproxTable_v6::convertToBase(void* base)
+{
+    if (((rf627_approx_table_t*)base)->table_v6 == nullptr)
+    {
+        ((rf627_approx_table_t*)base)->table_v6 =
+                (rf627_smart_approx_table_v6_t*)calloc(1, sizeof (rf627_smart_approx_table_v6_t));
+    }
+
+    rf627_smart_approx_table_v6_t* table = ((rf627_approx_table_t*)base)->table_v6;
+    table->version = props("version")->getValue<unsigned int>();
+    table->crc_x = props("crc_x")->getValue<unsigned int>();
+    table->crc_z = props("crc_z")->getValue<unsigned int>();
+    table->serial = props("serial")->getValue<unsigned int>();
+    table->width = props("width")->getValue<unsigned int>();
+    table->height = props("height")->getValue<unsigned int>();
+    table->scaling_factor = props("scaling_factor")->getValue<float>();
+    table->polynomial_degree_x = props("polynomial_degree_x")->getValue<unsigned int>();
+    table->polynomial_degree_z = props("polynomial_degree_z")->getValue<unsigned int>();
+    table->time_stamp = props("time_stamp")->getValue<unsigned int>();
+
+    auto poly_coef_x = props("poly_coef_x")->getValue<std::vector<std::vector<float>>>();
+    auto poly_coef_z = props("poly_coef_z")->getValue<std::vector<std::vector<float>>>();
+
+
+    if (!table->poly_coef_x)
+    {
+        table->poly_coef_x = (float*)calloc(table->width * table->polynomial_degree_x, sizeof (float));
+    }
+    if (!table->poly_coef_z)
+    {
+        table->poly_coef_z = (float*)calloc(table->width * table->polynomial_degree_z, sizeof (float));
+    }
+
+    for (int i = 0; i < table->width; i++)
+    {
+        for (int j = 0; j < table->polynomial_degree_x; j++){
+            table->poly_coef_x[i * table->polynomial_degree_x + j] = poly_coef_x[i][j];
+        }
+        for (int j = 0; j < table->polynomial_degree_z; j++){
+            table->poly_coef_z[i * table->polynomial_degree_z + j] = poly_coef_z[i][j];
+        }
+    }
+
+
+    return true;
+}
+
+bool ApproxTable_v6::clearBase(void* base)
+{
+    switch (((rf627_approx_table_t*)base)->version) {
+    case 6:
+        if (((rf627_approx_table_t*)base)->table_v6)
+        {
+            if (((rf627_approx_table_t*)base)->table_v6->poly_coef_x)
+                free(((rf627_approx_table_t*)base)->table_v6->poly_coef_x);
+            if (((rf627_approx_table_t*)base)->table_v6->poly_coef_z)
+                free(((rf627_approx_table_t*)base)->table_v6->poly_coef_z);
+            free(((rf627_approx_table_t*)base)->table_v6);
+            ((rf627_approx_table_t*)base)->table_v6 = nullptr;
+        }
+        return true;
+    }
+    return false;
+}
+
+unsigned int ApproxTable_v6::crc16(std::vector<std::vector<float>> value)
+{
+    std::vector<float> _vec;
+
+    for (int i = 0; i < value.size(); i++)
+        for (int j = 0; j < value[i].size(); j++)
+            _vec.push_back(value[i][j]);
+
+    uint16_t crc = 0;
+    uint16_t* data16 = (uint16_t*)_vec.data();
+
+    int len = _vec.size();
+    while(len > 1)
+    {
+        crc += 44111 * *data16++;
+        len -= sizeof(uint16_t);
+    }
+    if (len > 0) crc += *(uint8_t*)data16;
+    crc = crc ^ (crc >> 8);
+    return crc;
+}
+
 
 typedef struct
 {
@@ -3899,6 +4217,99 @@ bool rf627smart::set_calibration_table(std::shared_ptr<calib_table> table)
             free(_table->rf627smart_calib_table->m_Data);
         free (_table->rf627smart_calib_table);
         free(_table);
+
+        return result;
+    }
+
+    return false;
+}
+
+bool rf627smart::create_approximation_table()
+{
+    if (_is_connected)
+    {
+        return create_approximation_table_for_scanner((scanner_base_t*)scanner_base);
+    }
+    return false;
+}
+
+bool rf627smart::read_approximation_table()
+{
+    if (_is_connected)
+    {
+        return read_approximation_table_from_scanner(
+                    (scanner_base_t*)scanner_base, 3000);
+    }
+    return false;
+}
+
+bool rf627smart::write_approximation_table()
+{
+    if (_is_connected)
+    {
+        return write_approximation_table_to_scanner(
+                    (scanner_base_t*)scanner_base, 1000);;
+    }
+
+    return false;
+}
+
+bool rf627smart::save_approximation_table()
+{
+    if (_is_connected)
+    {
+        return save_approximation_table_to_scanner(
+                    (scanner_base_t*)scanner_base, 1000 * 120);
+    }
+    return false;
+}
+
+std::shared_ptr<ApproxTable> rf627smart::get_approximation_table()
+{
+    if (_is_connected)
+    {
+        // Set authorization key to the RF627 device by Service Protocol.
+        rf627_approx_table_t* result = get_approximation_table_from_scanner(
+                    (scanner_base_t*)scanner_base, 3000, kSERVICE);
+        if (result != nullptr)
+        {
+            switch (result->version) {
+            case 6:
+            {
+                std::shared_ptr<ApproxTable> table = std::make_shared<ApproxTable_v6>(result);
+                return table;
+            }
+            default:
+                return nullptr;
+            }
+        }else
+        {
+            return nullptr;
+        }
+    }
+
+    return nullptr;
+}
+
+bool rf627smart::set_approximation_table(std::shared_ptr<ApproxTable> table)
+{
+    if (_is_connected && table != nullptr)
+    {
+        bool result = false;
+
+        if (table->getVersion() == "6"){
+            rf627_approx_table_t* _table = (rf627_approx_table_t*)calloc(1, sizeof (rf627_approx_table_t));
+            _table->version = 6;
+
+            table->convertToBase(_table);
+
+            result = set_approximation_table_to_scanner(
+                        (scanner_base_t*)scanner_base, _table, 3000);
+
+            table->clearBase(_table);
+            free(_table);
+
+        }
 
         return result;
     }

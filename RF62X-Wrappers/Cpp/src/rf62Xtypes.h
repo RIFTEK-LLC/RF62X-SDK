@@ -4,6 +4,11 @@
 #include <memory>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <any>
+
+#include "SettingsModel.h"
+using namespace cr::utils;
 
 #if (defined _WIN32 && defined RF62X_LIBRARY)
 #define API_EXPORT __declspec(dllexport)
@@ -154,6 +159,259 @@ private:
 
     std::vector<int16_t> m_Zd;
     std::vector<int16_t> m_Xd;
+};
+
+class rf627smart;
+
+/**
+ * @brief The class for working with an approximate table.
+ */
+class ApproxTable : public SettingsModel
+{
+public:
+    /**
+     * @brief Class constructor.
+     */
+    ApproxTable();
+
+    /**
+     * @brief Class destructor.
+     */
+    virtual ~ApproxTable();
+
+    /**
+     * @brief Method for getting table version (type).
+     *
+     * @return String of current table version.
+     */
+    virtual std::string getVersion() = 0;
+
+    /**
+     * @brief Method for read approximate table from file.
+     *
+     * @param fileName The name of the file from which the approximate
+     * table will be read.
+     *
+     * @return TRUE if successful, otherwise FALSE.
+     */
+    virtual bool readFromFile(std::string fileName) = 0;
+
+    /**
+     * @brief Method for save approximate table to file.
+     *
+     * @param fileName The name of the file where the approximate table
+     * will be saved.
+     *
+     * @return TRUE if successful, otherwise FALSE.
+     */
+    virtual bool saveToFile(std::string fileName) = 0;
+
+    /**
+     * @brief Method for parsing  approximate table of bytes
+     *
+     * @param bytes The bytes from which the approximate table will be parsed.
+     *
+     * @return TRUE if successful, otherwise FALSE.
+     */
+    virtual bool parseFromBytes(std::vector<uint8_t> bytes) = 0;
+
+    /**
+     * @brief Method for converting approximate table to bytes
+     *
+     * @return The vector of bytes.
+     */
+    virtual std::vector<uint8_t> convertToBytes() = 0;
+
+    virtual bool convertFromBase(void*) = 0;
+    virtual bool convertToBase(void*) = 0;
+    virtual bool clearBase(void*) = 0;
+
+protected:
+    void* m_approxTableBase;
+};
+
+/**
+ * @brief The class for working with an approximate table.
+ */
+class ApproxTable_v6 : public ApproxTable
+{
+public:
+    /**
+     * @brief Class constructor.
+     */
+    ApproxTable_v6();
+    ApproxTable_v6(void*);
+
+    /**
+     * @brief Class destructor.
+     */
+    ~ApproxTable_v6();
+
+    /**
+     * @brief Method for getting table version (type).
+     *
+     * @return The table version.
+     */
+    std::string getVersion();
+
+    /**
+     * @brief Method for read approximate table from file.
+     *
+     * @param fileName The name of the file from which the approximate
+     * table will be read.
+     *
+     * @return TRUE if successful, otherwise FALSE.
+     */
+    bool readFromFile(std::string fileName);
+
+    /**
+     * @brief Method for save approximate table to file.
+     *
+     * @param fileName The name of the file where the approximate table
+     * will be saved.
+     *
+     * @return TRUE if successful, otherwise FALSE.
+     */
+    bool saveToFile(std::string fileName);
+
+    /**
+     * @brief Method for parsing approximate table of bytes
+     *
+     * @param bytes The bytes from which the approximate table will be parsed.
+     *
+     * @return TRUE if successful, otherwise FALSE.
+     */
+    bool parseFromBytes(std::vector<uint8_t> bytes);
+
+    /**
+     * @brief Method for converting approximate table to bytes
+     *
+     * @return The vector of bytes.
+     */
+    std::vector<uint8_t> convertToBytes();
+
+    /**
+     * @brief Method for setting scanner serial number to which the approx table
+     * is intended.
+     */
+    bool setSerial(unsigned int value);
+    /**
+     * @brief Method for setting the number of points in the row of the scanner
+     * sensor (i.e. the physical resolution of the sensor. Must match the
+     * scanner parameter "fact_sensor_width")
+     */
+    bool setWidth(unsigned int value);
+    /**
+     * @brief Method for setting the number of points in the column of the
+     * scanner sensor (i.e. the physical resolution of the sensor. Must match
+     * the scanner parameter "fact_sensor_height")
+     */
+    bool setHeight(unsigned int value);
+    /**
+     * @brief Method for setting the scaling factor for converting values to mm.
+     */
+    bool setScalingFactor(float value);
+    /**
+     * @brief Method for setting the polynomial degree for x-axis.
+     */
+    bool setPolyDegreeX(unsigned int value);
+    /**
+     * @brief Method for setting the polynomial degree for z-axis.
+     */
+    bool setPolyDegreeZ(unsigned int value);
+    /**
+     * @brief Method for updating table datetime.
+     */
+    bool updateTimeStamp();
+    /**
+     * @brief Method for setting polynomial coefficients for x-axis
+     */
+    bool setPolyCoeffsX(std::vector<std::vector<float>> value);
+    /**
+     * @brief Method for setting polynomial coefficients for z-axis
+     */
+    bool setPolyCoeffsZ(std::vector<std::vector<float>> value);
+
+    /**
+     * @brief Method for getting checksum value of the field "poly_coef_x".
+     *
+     * @return The checksum value of the field "poly_coef_x".
+     */
+    unsigned int getCrcX();
+    /**
+     * @brief Method for getting checksum value of the field "poly_coef_z".
+     *
+     * @return The checksum value of the field "poly_coef_z".
+     */
+    unsigned int getCrcZ();
+    /**
+     * @brief Method for getting scanner serial number to which the approx table
+     * is intended.
+     *
+     * @return The scanner serial number.
+     */
+    unsigned int getSerial();
+    /**
+     * @brief Method for getting the number of points in the row of the scanner
+     * sensor (i.e. the physical resolution of the sensor. Must match the
+     * scanner parameter "fact_sensor_width")
+     *
+     * @return The physical resolution of the sensor in the row.
+     */
+    unsigned int getWidth();
+    /**
+     * @brief Method for getting the number of points in the column of the
+     * scanner sensor (i.e. the physical resolution of the sensor. Must match
+     * the scanner parameter "fact_sensor_height")
+     *
+     * @return The physical resolution of the sensor in the column.
+     */
+    unsigned int getHeight();
+    /**
+     * @brief Method for getting the scaling factor for converting values to mm.
+     *
+     * @return The scaling factor for converting values to mm.
+     */
+    float getScalingFactor();
+    /**
+     * @brief Method for getting the polynomial degree for x-axis.
+     *
+     * @return The polynomial degree for x-axis.
+     */
+    unsigned int getPolyDegreeX();
+    /**
+     * @brief Method for getting the polynomial degree for z-axis.
+     *
+     * @return The polynomial degree for z-axis.
+     */
+    unsigned int getPolyDegreeZ();
+    /**
+     * @brief Method for getting datetime (UNIX format) when table was created.
+     *
+     * @return The datetime (UNIX format).
+     */
+    unsigned int getTimeStamp();
+    /**
+     * @brief Method for getting polynomial coefficients for x-axis
+     *
+     * @return Vector of polynomial coefficients for x-axis
+     */
+    std::vector<std::vector<float>> getPolyCoeffsX();
+    /**
+     * @brief Method for getting polynomial coefficients for z-axis
+     *
+     * @return Vector of polynomial coefficients for z-axis
+     */
+    std::vector<std::vector<float>> getPolyCoeffsZ();
+
+
+    bool convertFromBase(void*);
+    bool convertToBase(void*);
+    bool clearBase(void*);
+
+private:
+    unsigned int crc16(std::vector<std::vector<float>> value);
+
 };
 
 

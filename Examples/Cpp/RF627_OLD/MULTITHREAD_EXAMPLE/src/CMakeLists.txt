@@ -15,7 +15,7 @@ project(RF62XOldMultithreadExample LANGUAGES CXX)
 ## basic project settings before use
 ###############################################################################
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # creating output directory architecture in accordance with GNU guidelines
 set(BINARY_DIR "${CMAKE_BINARY_DIR}")

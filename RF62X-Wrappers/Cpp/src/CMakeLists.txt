@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## LIBRARY-PROJECT
 ## name and version
 ###############################################################################
-project(RF62X-SDK VERSION 2.22.0 LANGUAGES CXX)
+project(RF62X-SDK VERSION 2.23.0 LANGUAGES CXX)
 
 
 
@@ -15,7 +15,7 @@ project(RF62X-SDK VERSION 2.22.0 LANGUAGES CXX)
 ## basic project settings before use
 ###############################################################################
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Enabling export of all symbols to create a dynamic library
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -70,6 +70,7 @@ find_package (Threads)
 target_link_libraries (${PROJECT_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE RF62X-Core)
+target_link_libraries(${PROJECT_NAME} PUBLIC SettingsModel)
 if(MINGW)
     target_link_libraries(${PROJECT_NAME} PUBLIC ws2_32)
     target_link_libraries(${PROJECT_NAME} PUBLIC iphlpapi)
