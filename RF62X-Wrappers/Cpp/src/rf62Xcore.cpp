@@ -7,8 +7,9 @@ extern "C"{
 }
 
 #ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <winsock2.h>
 #include <Ws2tcpip.h>
-#include <winsock.h>
 #else
 #include <string.h>
 #include <arpa/inet.h>

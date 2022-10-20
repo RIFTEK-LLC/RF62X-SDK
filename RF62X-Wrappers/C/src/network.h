@@ -5,10 +5,12 @@
 
 #ifndef __MINGW32__
 //#include <WinSock2.h>
-#include <winsock.h>
+#include <winsock2.h>
 #pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib,"iphlpapi.lib")
 #endif
+#define WIN32_LEAN_AND_MEAN
+#include <winsock2.h>
 //#include <ws2tcpip.h>
 #include <iphlpapi.h>
 #include <stdio.h>

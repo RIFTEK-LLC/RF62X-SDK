@@ -15,7 +15,7 @@
 #include "rf62Xcore.h"
 #include "rf62Xversion.h"
 
-extern "C"{
+extern "C" {
 #include "rf62X_sdk.h"
 #include "netwok_platform.h"
 #include "utils.h"
@@ -27,7 +27,8 @@ extern "C"{
 
 
 #ifdef _WIN32
-#include <winsock.h>
+#define WIN32_LEAN_AND_MEAN
+#include <winsock2.h>
 #else
 #include <arpa/inet.h>
 typedef int BOOL;
