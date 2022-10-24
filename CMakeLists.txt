@@ -2,18 +2,18 @@ cmake_minimum_required(VERSION 3.13)
 
 
 
-###############################################################################
+################################################################################
 ## PROJECT
 ## name and version
-###############################################################################
+################################################################################
 project(RF62X-SDK)
 
 
 
-###############################################################################
+################################################################################
 ## SETTINGS
 ## basic project settings before use
-###############################################################################
+################################################################################
 # If this project is used as a submodule, the variable should be overridden
 # to "OFF" in the top-level application (to disable forced cache rewriting)
 option(${PARENT}_SUBMODULE_CACHE_OVERWRITE "Enable forced cache rewriting" ON)
@@ -25,10 +25,10 @@ endif()
 
 
 
-###############################################################################
+################################################################################
 ## CONFIGURATION
 ## project configuration
-###############################################################################
+################################################################################
 # Select a wrapper programming language (C, C++, C#, Python)
 SET(${PARENT}_WRAPPER_LANGUAGE     "C++"       CACHE STRING "" ${REWRITE_FORCE})
 
@@ -37,10 +37,10 @@ SET(${PARENT}_RF62X_SDK_EXAMPLES    ON         CACHE BOOL   "" ${REWRITE_FORCE})
 
 
 
-###############################################################################
+################################################################################
 ## INCLUDING SUBDIRECTORIES
 ## Adding subdirectories according to the configuration
-###############################################################################
+################################################################################
 # Add sdk-library
 if(${${PARENT}_WRAPPER_LANGUAGE} STREQUAL "C")
     add_subdirectory(RF62X-Wrappers/C)
@@ -64,10 +64,10 @@ if(${${PARENT}_WRAPPER_LANGUAGE} STREQUAL "Python")
 endif()
 
 
-###############################################################################
+################################################################################
 ## ADDITIONAL SETTINGS
 ## additional options and project settings
-###############################################################################
+################################################################################
 # List of possible WRAPPER_LANGUAGE values
 SET(WRAPPER_LANGUAGE_VALUES "C99;C++;C#;Python"
     CACHE INTERNAL "" ${REWRITE_FORCE})
