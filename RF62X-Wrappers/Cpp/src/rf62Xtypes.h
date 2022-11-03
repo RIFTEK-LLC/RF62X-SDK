@@ -485,10 +485,14 @@ private:
  */
 class profile2D
 {
+private:
     explicit profile2D(void* frame_base);
     friend class rf627old;
     friend class rf627smart;
 public:
+    static std::shared_ptr<profile2D> parse_from_bytes(std::vector<char> bytes, int& parsed);
+    bool convert_to_bytes(std::vector<char>& bytes);
+
     ~profile2D();
 
     typedef struct
