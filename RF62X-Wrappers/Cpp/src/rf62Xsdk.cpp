@@ -2539,28 +2539,42 @@ std::shared_ptr<profile2D> profile2D::parse_from_bytes(std::vector<char> bytes, 
    }
 }
 
-//bool profile2D::save_to_file(std::string file_name, bool append)
-//{
-//    FILE* pFile;
-//    if (append)
-//        pFile = fopen(file_name.c_str(), "ab");
-//    else
-//        pFile = fopen(file_name.c_str(), "wb");
+std::shared_ptr<profile2D> profile2D::parse_from_bytes(char *bytes, int size, int &parsed)
+{
+    if (size > 0)
+    {
+        rf627_profile2D_t* profile = (rf627_profile2D_t*)calloc(1 ,sizeof(rf627_profile2D_t));
+        parsed = convert_profile2D_from_bytes(profile, bytes, size);
+        std::shared_ptr<profile2D> result(new profile2D(profile));
+        return result;
+    }else
+    {
+        return nullptr;
+    }
+}
 
-//    std::vector<char> bytes;
+bool profile2D::save_to_file(std::string file_name, bool append)
+{
+    FILE* pFile;
+    if (append)
+        pFile = fopen(file_name.c_str(), "ab");
+    else
+        pFile = fopen(file_name.c_str(), "wb");
 
-//    if (this->convert_to_bytes(bytes))
-//    {
-//        char* data = bytes.data();
-//        fwrite(data, 1, bytes.size(), pFile);
-//        fclose(pFile);
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
+    std::vector<char> bytes;
+
+    if (this->convert_to_bytes(bytes))
+    {
+        char* data = bytes.data();
+        fwrite(data, 1, bytes.size(), pFile);
+        fclose(pFile);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 bool profile2D::convert_to_bytes(std::vector<char> &bytes)
 {

@@ -491,7 +491,10 @@ private:
     friend class rf627smart;
 public:
     static std::shared_ptr<profile2D> parse_from_bytes(std::vector<char> bytes, int& parsed);
+    static std::shared_ptr<profile2D> parse_from_bytes(char* bytes, int size, int& parsed);
     bool convert_to_bytes(std::vector<char>& bytes);
+
+    bool save_to_file(std::string file_name, bool append = true);
 
     ~profile2D();
 
