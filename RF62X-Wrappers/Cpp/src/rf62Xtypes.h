@@ -36,7 +36,8 @@ enum class PROFILE_DATA_TYPES{
     PIXELS				= 0x10,
     PROFILE				= 0x11,
     PIXELS_INTRP		= 0x12,
-    PROFILE_INTRP		= 0x13
+    PROFILE_INTRP		= 0x13,
+    PROFILE_POLYNOMIAL  = 0x20
 };
 
 enum class COUNT_TYPES {

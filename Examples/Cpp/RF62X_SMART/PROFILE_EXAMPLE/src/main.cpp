@@ -79,6 +79,10 @@ int main()
                 std::cout<<"* DataType\t: "<<"PROFILE_INTRP"         <<std::endl;
                 std::cout<<"* Size\t: "<<profile->getPoints().size() <<std::endl;
                 break;
+            case PROFILE_DATA_TYPES::PROFILE_POLYNOMIAL:
+                std::cout<<"* DataType\t: "<<"PROFILE_POLYNOMIAL"    <<std::endl;
+                std::cout<<"* Size\t: "<<profile->getPoints().size() <<std::endl;
+                break;
             }
             std::cout << "Profile was successfully received!"        <<std::endl;
             std::cout << "-----------------------------------------" <<std::endl;
