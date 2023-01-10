@@ -11,9 +11,9 @@
 #include <time.h>
 #include <thread>
 
-#include "rf62Xtypes.h"
 #include "rf62Xcore.h"
 #include "rf62Xversion.h"
+#include "rf62Xtypes.h"
 
 extern "C" {
 #include "rf62X_sdk.h"
@@ -2337,11 +2337,11 @@ profile2D::profile2D(void* profile_base)
                         profile_from_scanner->rf627old_profile2D->header.measure_count;
 
                 m_Header.zmr =
-                        profile_from_scanner->rf627old_profile2D->header.zmr;
+                        profile_from_scanner->rf627old_profile2D->header.v1_0_standart.zmr;
                 m_Header.xemr =
-                        profile_from_scanner->rf627old_profile2D->header.xemr;
+                        profile_from_scanner->rf627old_profile2D->header.v1_0_standart.xemr;
                 m_Header.discrete_value =
-                        profile_from_scanner->rf627old_profile2D->header.discrete_value;
+                        profile_from_scanner->rf627old_profile2D->header.v1_0_standart.discrete_value;
 
                 m_Header.exposure_time =
                         profile_from_scanner->rf627old_profile2D->header.exposure_time;
@@ -2438,12 +2438,35 @@ profile2D::profile2D(void* profile_base)
                 m_Header.measure_count =
                         profile_from_scanner->rf627smart_profile2D->header.measure_count;
 
-                m_Header.zmr =
-                        profile_from_scanner->rf627smart_profile2D->header.zmr;
-                m_Header.xemr =
-                        profile_from_scanner->rf627smart_profile2D->header.xemr;
-                m_Header.discrete_value =
-                        profile_from_scanner->rf627smart_profile2D->header.discrete_value;
+                if (m_Header.proto_version_major == 1 && m_Header.proto_version_minor == 0)
+                {
+                    m_Header.zmr =
+                            profile_from_scanner->rf627smart_profile2D->header.v1_0_standart.zmr;
+                    m_Header.xemr =
+                            profile_from_scanner->rf627smart_profile2D->header.v1_0_standart.xemr;
+                    m_Header.discrete_value =
+                            profile_from_scanner->rf627smart_profile2D->header.v1_0_standart.discrete_value;
+                }else if (m_Header.proto_version_major == 1 && m_Header.proto_version_minor == 1)
+                {
+                    if (m_Header.data_type == SPDT_v1_1_ProfilePoly)
+                    {
+                        m_Header.zmr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_1_polynomial.zmr;
+                        m_Header.xemr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_1_polynomial.xemr;
+                        m_Header.scaling_factor =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_1_polynomial.scaling_factor;
+                    }else
+                    {
+                        m_Header.zmr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_1_standart.zmr;
+                        m_Header.xemr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_1_standart.xemr;
+                        m_Header.discrete_value =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_1_standart.discrete_value;
+                    }
+                }
+
                 m_Header.license_hash =
                         profile_from_scanner->rf627smart_profile2D->header.license_hash;
 

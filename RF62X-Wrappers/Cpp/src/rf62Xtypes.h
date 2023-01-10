@@ -516,6 +516,7 @@ public:
         uint16_t    zmr;
         uint16_t    xemr;
         uint16_t    discrete_value;
+        float       scaling_factor;
         uint32_t    license_hash;
 
         uint32_t    exposure_time;
