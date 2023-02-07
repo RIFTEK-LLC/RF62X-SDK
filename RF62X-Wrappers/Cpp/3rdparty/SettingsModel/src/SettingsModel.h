@@ -14,6 +14,7 @@
 #include <thread>
 #include <chrono>
 #include <ctime>
+#include <memory>
 
 namespace cr
 {
