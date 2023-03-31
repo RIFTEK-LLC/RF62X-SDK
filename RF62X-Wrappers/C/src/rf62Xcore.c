@@ -1,6 +1,6 @@
 #include "rf62Xcore.h"
 #include <stdio.h>
-
+#include <stdlib.h>
 
 #include "rf62X_core.h"
 #include "network.h"
