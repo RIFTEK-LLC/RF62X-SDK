@@ -2675,6 +2675,10 @@ std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool o
             // Search for RF627-old devices over network by Service Protocol.
             if (host_ip_addr != 0)
             {
+#ifdef NDEBUG
+                 search_scanners(scanners, kRF627_OLD, timeout, kSERVICE);
+                 count = (int)vector_count(scanners);
+#else
                 // Get another IP Addr and set this changes in adapter settings.
                 printf("Search scanners from:\n "
                        "* IP Address\t: %s\n "
@@ -2686,6 +2690,7 @@ std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool o
                 printf("Discovered\t: %d RF627-Old\n",(int)vector_count(scanners)-count);
                 printf("-----------------------------------------\n");
                 count = (int)vector_count(scanners);
+#endif
             }
         }
 
@@ -3347,6 +3352,10 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
             // Search for RF627-Smart devices over network by Service Protocol.
             if (host_ip_addr != 0)
             {
+#ifdef NDEBUG
+                search_scanners(scanners, kRF627_SMART, timeout, kSERVICE);
+                count = (int)vector_count(scanners);
+#else
                 // Get another IP Addr and set this changes in adapter settings.
                 printf("Search scanners from:\n "
                        "* IP Address\t: %s\n "
@@ -3358,6 +3367,8 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
                 printf("Discovered\t: %d RF627-Smart\n",(int)vector_count(scanners)-count);
                 printf("-----------------------------------------\n");
                 count = (int)vector_count(scanners);
+#endif
+
             }
         }
 
