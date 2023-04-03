@@ -69,7 +69,7 @@ endif()
 ## additional options and project settings
 ################################################################################
 # List of possible WRAPPER_LANGUAGE values
-SET(WRAPPER_LANGUAGE_VALUES "C99;C++;C#;Python"
+SET(WRAPPER_LANGUAGE_VALUES "C;C++;C#;Python"
     CACHE INTERNAL "" ${REWRITE_FORCE})
 # to display WRAPPER_LANGUAGE in combobox format
 SET_PROPERTY(CACHE ${PARENT}_WRAPPER_LANGUAGE
