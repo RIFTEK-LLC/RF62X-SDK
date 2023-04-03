@@ -626,7 +626,7 @@ class ValueEnum
 {
 public:
     ValueEnum(std::vector <std::tuple<T, std::string, std::string>> enum_base);
-    ~ValueEnum();
+    ~ValueEnum(){};
 
     T getValue(std::string key) const;
     std::string getLabel(std::string key) const;

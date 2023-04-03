@@ -195,8 +195,8 @@ private:
 class SettingsModel
 {
 public:
-    SettingsModel();
-    ~SettingsModel();
+    SettingsModel(){};
+    ~SettingsModel(){};
 
     /**
      * @brief Method to get string of current version of library.

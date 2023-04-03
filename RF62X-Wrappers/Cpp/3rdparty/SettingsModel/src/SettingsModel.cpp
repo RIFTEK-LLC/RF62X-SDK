@@ -573,16 +573,6 @@ std::vector<std::tuple<std::string, std::string, std::string>> ValueEnum::getIte
     return _res;
 }
 
-SettingsModel::SettingsModel()
-{
-
-}
-
-SettingsModel::~SettingsModel()
-{
-
-}
-
 std::string SettingsModel::getVersion()
 {
     return SETTINGS_MODEL_VERSION;

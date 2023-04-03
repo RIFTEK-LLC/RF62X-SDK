@@ -1264,12 +1264,6 @@ ValueEnum<T>::ValueEnum(std::vector<std::tuple<T, std::string, std::string>> enu
 }
 
 template <typename T>
-ValueEnum<T>::~ValueEnum()
-{
-
-}
-
-template <typename T>
 T ValueEnum<T>::getValue(std::string key) const
 {
     auto it = std::find_if(_enum_base.begin(), _enum_base.end(), [key](const std::tuple<T, std::string, std::string>& e) {return std::get<1>(e) == key;});
