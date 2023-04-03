@@ -1240,23 +1240,6 @@ param_t* create_param_from_type(std::string type)
     return p;
 }
 
-
-template class ValueEnum<uint32_t>;
-template class ValueEnum<uint64_t>;
-template class ValueEnum<int32_t>;
-template class ValueEnum<int64_t>;
-template class ValueEnum<float>;
-template class ValueEnum<double>;
-
-template class ValueEnum<std::vector<uint32_t>>;
-template class ValueEnum<std::vector<uint64_t>>;
-template class ValueEnum<std::vector<int32_t>>;
-template class ValueEnum<std::vector<int64_t>>;
-template class ValueEnum<std::vector<float>>;
-template class ValueEnum<std::vector<double>>;
-
-template class ValueEnum<std::string>;
-
 template<typename T>
 ValueEnum<T>::ValueEnum(std::vector<std::tuple<T, std::string, std::string>> enum_base)
 {
@@ -4730,8 +4713,24 @@ void sdk_cleanup()
     }
 }
 
+template class ValueEnum<uint32_t>;
+template class ValueEnum<uint64_t>;
+template class ValueEnum<int32_t>;
+template class ValueEnum<int64_t>;
+template class ValueEnum<float>;
+template class ValueEnum<double>;
+
+template class ValueEnum<std::vector<uint32_t>>;
+template class ValueEnum<std::vector<uint64_t>>;
+template class ValueEnum<std::vector<int32_t>>;
+template class ValueEnum<std::vector<int64_t>>;
+template class ValueEnum<std::vector<float>>;
+template class ValueEnum<std::vector<double>>;
+
+template class ValueEnum<std::string>;
 
 }
 }
 }
+
 
