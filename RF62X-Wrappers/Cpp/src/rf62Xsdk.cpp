@@ -2441,6 +2441,27 @@ profile2D::profile2D(void* profile_base)
                         m_Header.discrete_value =
                                 profile_from_scanner->rf627smart_profile2D->header.v1_1_standart.discrete_value;
                     }
+                }else if (m_Header.proto_version_major == 1 && m_Header.proto_version_minor == 2)
+                {
+                    if (m_Header.data_type == SPDT_v1_2_ProfilePoly)
+                    {
+                        m_Header.zmr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_polynomial.zmr;
+                        m_Header.xemr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_polynomial.xemr;
+                        m_Header.scaling_factor =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_polynomial.scaling_factor;
+                    }else
+                    {
+                        m_Header.zmr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_standart.zmr;
+                        m_Header.xemr =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_standart.xemr;
+                        m_Header.discrete_value =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_standart.discrete_value;
+                        m_Header.alignment_with_sensor =
+                                profile_from_scanner->rf627smart_profile2D->header.v1_2_standart.alignment_with_sensor;
+                    }
                 }
 
                 m_Header.license_hash =
@@ -2459,57 +2480,164 @@ profile2D::profile2D(void* profile_base)
                 m_Header.bytes_per_point =
                         profile_from_scanner->rf627smart_profile2D->header.bytes_per_point;
 
-                switch (m_Header.data_type) {
-                case DTY_PixelsNormal:
-                case DTY_PixelsInterpolated:
+                if (m_Header.proto_version_major == 1 && m_Header.proto_version_minor == 0)
                 {
-                    m_Pixels.resize(profile_from_scanner->
-                                          rf627smart_profile2D->pixels_format.pixels_count);
-
-                    for(size_t i = 0; i < m_Pixels.size(); i++)
+                    switch (m_Header.data_type) {
+                    case SPDT_v1_0_PixelsNormal:
+                    case SPDT_v1_0_PixelsInterpolated:
                     {
-                        m_Pixels[i] = profile_from_scanner->
-                                rf627smart_profile2D->pixels_format.pixels[i];
-                    }
+                        m_Pixels.resize(profile_from_scanner->
+                                              rf627smart_profile2D->pixels_format.pixels_count);
 
-                    if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        for(size_t i = 0; i < m_Pixels.size(); i++)
+                        {
+                            m_Pixels[i] = profile_from_scanner->
+                                    rf627smart_profile2D->pixels_format.pixels[i];
+                        }
+
+                        if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        {
+                            m_Intensity.resize(
+                                        profile_from_scanner->rf627smart_profile2D->intensity_count);
+                            for (size_t i = 0; i < m_Intensity.size(); i++)
+                                m_Intensity[i] =
+                                        profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        }
+
+                        break;
+                    }
+                    case SPDT_v1_0_ProfileNormal:
+                    case SPDT_v1_0_ProfileInterpolated:
                     {
-                        m_Intensity.resize(
-                                    profile_from_scanner->rf627smart_profile2D->intensity_count);
-                        for (size_t i = 0; i < m_Intensity.size(); i++)
-                            m_Intensity[i] =
-                                    profile_from_scanner->rf627smart_profile2D->intensity[i];
-                    }
+                        m_Points.resize(profile_from_scanner->
+                                              rf627smart_profile2D->profile_format.points_count);
 
-                    break;
-                }
-                case DTY_ProfileNormal:
-                case DTY_ProfileInterpolated:
+                        for(size_t i = 0; i < m_Points.size(); i++)
+                        {
+                            m_Points[i].x = profile_from_scanner->rf627smart_profile2D->
+                                    profile_format.points[i].x;
+                            m_Points[i].z = profile_from_scanner->rf627smart_profile2D->
+                                    profile_format.points[i].z;
+                        }
+
+                        if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        {
+                            m_Intensity.resize(
+                                        profile_from_scanner->rf627smart_profile2D->intensity_count);
+                            for (size_t i = 0; i < m_Intensity.size(); i++)
+                                m_Intensity[i] =
+                                        profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                }else if (m_Header.proto_version_major == 1 && m_Header.proto_version_minor == 1)
                 {
-                    m_Points.resize(profile_from_scanner->
-                                          rf627smart_profile2D->profile_format.points_count);
-
-                    for(size_t i = 0; i < m_Points.size(); i++)
+                    switch (m_Header.data_type) {
+                    case SPDT_v1_1_Pixels:
                     {
-                        m_Points[i].x = profile_from_scanner->rf627smart_profile2D->
-                                profile_format.points[i].x;
-                        m_Points[i].z = profile_from_scanner->rf627smart_profile2D->
-                                profile_format.points[i].z;
-                    }
+                        m_Pixels.resize(profile_from_scanner->
+                                              rf627smart_profile2D->pixels_format.pixels_count);
 
-                    if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
-                    {
-                        m_Intensity.resize(
-                                    profile_from_scanner->rf627smart_profile2D->intensity_count);
-                        for (size_t i = 0; i < m_Intensity.size(); i++)
-                            m_Intensity[i] =
-                                    profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        for(size_t i = 0; i < m_Pixels.size(); i++)
+                        {
+                            m_Pixels[i] = profile_from_scanner->
+                                    rf627smart_profile2D->pixels_format.pixels[i];
+                        }
+
+                        if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        {
+                            m_Intensity.resize(
+                                        profile_from_scanner->rf627smart_profile2D->intensity_count);
+                            for (size_t i = 0; i < m_Intensity.size(); i++)
+                                m_Intensity[i] =
+                                        profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        }
+
+                        break;
                     }
-                    break;
+                    case SPDT_v1_1_ProfilePoly:
+                    {
+                        m_Points.resize(profile_from_scanner->
+                                              rf627smart_profile2D->profile_format.points_count);
+
+                        for(size_t i = 0; i < m_Points.size(); i++)
+                        {
+                            m_Points[i].x = profile_from_scanner->rf627smart_profile2D->
+                                    profile_format.points[i].x;
+                            m_Points[i].z = profile_from_scanner->rf627smart_profile2D->
+                                    profile_format.points[i].z;
+                        }
+
+                        if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        {
+                            m_Intensity.resize(
+                                        profile_from_scanner->rf627smart_profile2D->intensity_count);
+                            for (size_t i = 0; i < m_Intensity.size(); i++)
+                                m_Intensity[i] =
+                                        profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                    }
                 }
-                default:
-                    break;
+                else if (m_Header.proto_version_major == 1 && m_Header.proto_version_minor == 2)
+                {
+                    switch (m_Header.data_type) {
+                    case SPDT_v1_2_Pixels:
+                    {
+                        m_Pixels.resize(profile_from_scanner->
+                                              rf627smart_profile2D->pixels_format.pixels_count);
+
+                        for(size_t i = 0; i < m_Pixels.size(); i++)
+                        {
+                            m_Pixels[i] = profile_from_scanner->
+                                    rf627smart_profile2D->pixels_format.pixels[i];
+                        }
+
+                        if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        {
+                            m_Intensity.resize(
+                                        profile_from_scanner->rf627smart_profile2D->intensity_count);
+                            for (size_t i = 0; i < m_Intensity.size(); i++)
+                                m_Intensity[i] =
+                                        profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        }
+
+                        break;
+                    }
+                    case SPDT_v1_2_ProfilePoly:
+                    {
+                        m_Points.resize(profile_from_scanner->
+                                              rf627smart_profile2D->profile_format.points_count);
+
+                        for(size_t i = 0; i < m_Points.size(); i++)
+                        {
+                            m_Points[i].x = profile_from_scanner->rf627smart_profile2D->
+                                    profile_format.points[i].x;
+                            m_Points[i].z = profile_from_scanner->rf627smart_profile2D->
+                                    profile_format.points[i].z;
+                        }
+
+                        if(profile_from_scanner->rf627smart_profile2D->intensity_count > 0)
+                        {
+                            m_Intensity.resize(
+                                        profile_from_scanner->rf627smart_profile2D->intensity_count);
+                            for (size_t i = 0; i < m_Intensity.size(); i++)
+                                m_Intensity[i] =
+                                        profile_from_scanner->rf627smart_profile2D->intensity[i];
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                    }
                 }
+
             }
             break;
         }

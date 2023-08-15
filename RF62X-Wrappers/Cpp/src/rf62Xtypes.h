@@ -518,6 +518,7 @@ public:
         uint16_t    xemr;
         uint16_t    discrete_value;
         float       scaling_factor;
+        uint16_t    alignment_with_sensor;
         uint32_t    license_hash;
 
         uint32_t    exposure_time;
