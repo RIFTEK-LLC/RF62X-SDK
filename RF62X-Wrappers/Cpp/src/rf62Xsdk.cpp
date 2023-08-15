@@ -3857,84 +3857,71 @@ std::shared_ptr<profile2D> rf627smart::get_profile2D(
 
 }
 
-std::shared_ptr<frame> rf627smart::get_frame(PROTOCOLS protocol)
+std::shared_ptr<frame> rf627smart::get_frame(
+        bool confirm_enabled, uint32_t waiting_time)
 {
-    PROTOCOLS p;
-    if (protocol == PROTOCOLS::CURRENT)
-        p = this->current_protocol;
-    else
-        p = protocol;
-
     if (_is_connected)
     {
-        switch (p) {
-        case PROTOCOLS::SERVICE:
+        // Establish connection to the RF627 device by Service Protocol.
+        rf627_frame_t* _frame = get_frame_from_scanner(
+                    (scanner_base_t*)scanner_base, confirm_enabled, waiting_time, kSERVICE);
+        if (_frame != nullptr)
         {
-            // Establish connection to the RF627 device by Service Protocol.
-            rf627_frame_t* _frame = get_frame_from_scanner(
-                        (scanner_base_t*)scanner_base, kSERVICE);
-            if (_frame != nullptr)
+            if (_frame->rf627smart_frame != nullptr)
             {
-                if (_frame->rf627smart_frame != nullptr)
+                if (_frame->rf627smart_frame->fact_sensor_width == 0)
                 {
-                    if (_frame->rf627smart_frame->fact_sensor_width == 0)
+                    std::shared_ptr<param> width = get_param("fact_sensor_width");
+                    if (width != NULL)
                     {
-                        std::shared_ptr<param> width = get_param("fact_sensor_width");
-                        if (width != NULL)
-                        {
-                            _frame->rf627smart_frame->fact_sensor_width = width->getValue<uint32_t>();
-                        }
-                    }
-                    if (_frame->rf627smart_frame->fact_sensor_height == 0)
-                    {
-                        std::shared_ptr<param> height = get_param("fact_sensor_height");
-
-                        if (height != NULL)
-                        {
-                            _frame->rf627smart_frame->fact_sensor_height =
-                                    height->getValue<uint32_t>();
-                        }
-                    }
-
-                    if (_frame->rf627smart_frame->frame_width == 0)
-                    {
-                        _frame->rf627smart_frame->frame_width =
-                                _frame->rf627smart_frame->fact_sensor_width;
-                    }
-
-                    if (_frame->rf627smart_frame->frame_height == 0)
-                    {
-                        _frame->rf627smart_frame->frame_height =
-                                _frame->rf627smart_frame->user_roi_enabled ?
-                                    _frame->rf627smart_frame->user_roi_size :
-                                    _frame->rf627smart_frame->fact_sensor_height;
-                    }
-
-                    if (_frame->rf627smart_frame->data_size ==
-                            (_frame->rf627smart_frame->frame_width *
-                            _frame->rf627smart_frame->frame_height))
-                    {
-                        _frame->rf627smart_frame->pixel_size = 1;
-                    }
-
-                    if (_frame->rf627smart_frame->pixel_size == 1)
-                    {
-                        std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
-                        return result;
-                    }
-                    else
-                    {
-                        if(_frame->rf627smart_frame->data != nullptr)
-                            free(_frame->rf627smart_frame->data);
-                        free(_frame->rf627smart_frame);
+                        _frame->rf627smart_frame->fact_sensor_width = width->getValue<uint32_t>();
                     }
                 }
-                free(_frame);
+                if (_frame->rf627smart_frame->fact_sensor_height == 0)
+                {
+                    std::shared_ptr<param> height = get_param("fact_sensor_height");
+
+                    if (height != NULL)
+                    {
+                        _frame->rf627smart_frame->fact_sensor_height =
+                                height->getValue<uint32_t>();
+                    }
+                }
+
+                if (_frame->rf627smart_frame->frame_width == 0)
+                {
+                    _frame->rf627smart_frame->frame_width =
+                            _frame->rf627smart_frame->fact_sensor_width;
+                }
+
+                if (_frame->rf627smart_frame->frame_height == 0)
+                {
+                    _frame->rf627smart_frame->frame_height =
+                            _frame->rf627smart_frame->user_roi_enabled ?
+                                _frame->rf627smart_frame->user_roi_size :
+                                _frame->rf627smart_frame->fact_sensor_height;
+                }
+
+                if (_frame->rf627smart_frame->data_size ==
+                        (_frame->rf627smart_frame->frame_width *
+                        _frame->rf627smart_frame->frame_height))
+                {
+                    _frame->rf627smart_frame->pixel_size = 1;
+                }
+
+                if (_frame->rf627smart_frame->pixel_size == 1)
+                {
+                    std::shared_ptr<frame> result = std::make_shared<frame>(_frame);
+                    return result;
+                }
+                else
+                {
+                    if(_frame->rf627smart_frame->data != nullptr)
+                        free(_frame->rf627smart_frame->data);
+                    free(_frame->rf627smart_frame);
+                }
             }
-            break;
-        }
-        default:
-            break;
+            free(_frame);
         }
     }
 

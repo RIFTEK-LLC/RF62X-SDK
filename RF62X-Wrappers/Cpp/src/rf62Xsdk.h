@@ -144,11 +144,13 @@ public:
     /**
      * @brief get_frame - Get RAW frame from scanner
      *
-     * @param protocol Protocol's type (Service Protocol, ENIP, Modbus-TCP)
+     * @param confirm_enabled Enable confirmation
+     * @param waiting_time Time to wait for a response
      *
      * @return frame if success, else - null
      */
-    std::shared_ptr<frame> get_frame(PROTOCOLS protocol = PROTOCOLS::CURRENT);
+    std::shared_ptr<frame> get_frame(
+            bool confirm_enabled = false, uint32_t waiting_time = 300);
 
 
 
