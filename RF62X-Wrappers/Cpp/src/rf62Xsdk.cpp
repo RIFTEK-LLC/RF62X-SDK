@@ -2559,6 +2559,7 @@ profile2D::profile2D(void* profile_base)
                         break;
                     }
                     case SPDT_v1_1_ProfilePoly:
+                    case SPDT_v1_1_ProfileTable:
                     {
                         m_Points.resize(profile_from_scanner->
                                               rf627smart_profile2D->profile_format.points_count);
@@ -2611,6 +2612,7 @@ profile2D::profile2D(void* profile_base)
                         break;
                     }
                     case SPDT_v1_2_ProfilePoly:
+                    case SPDT_v1_2_ProfileTable:
                     {
                         m_Points.resize(profile_from_scanner->
                                               rf627smart_profile2D->profile_format.points_count);

@@ -61,27 +61,30 @@ int main()
         if ((profile=scanner->get_profile2D(zero_points,realtime)))
         {
             std::cout << "Profile information: "                     <<std::endl;
+            std::cout << "* Version\t: v"
+                      << std::to_string(profile->getHeader().proto_version_major) << "."
+                      << std::to_string(profile->getHeader().proto_version_minor) << std::endl;
             switch ((PROFILE_DATA_TYPES)profile->getHeader().data_type)
             {
             case PROFILE_DATA_TYPES::PIXELS:
                 std::cout<<"* DataType\t: "<<"PIXELS"                <<std::endl;
-                std::cout<<"* Count\t: "<<profile->getPixels().size()<<std::endl;
+                std::cout<<"* Count\t\t: "<<profile->getPixels().size()<<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PIXELS_INTRP:
                 std::cout<<"* DataType\t: "<<"PIXELS_INTRP"          <<std::endl;
-                std::cout<<"* Count\t: "<<profile->getPixels().size()<<std::endl;
+                std::cout<<"* Count\t\t: "<<profile->getPixels().size()<<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PROFILE:
                 std::cout<<"* DataType\t: "<<"PROFILE"               <<std::endl;
-                std::cout<<"* Size\t: "<<profile->getPoints().size() <<std::endl;
+                std::cout<<"* Size\t\t: "<<profile->getPoints().size() <<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PROFILE_INTRP:
                 std::cout<<"* DataType\t: "<<"PROFILE_INTRP"         <<std::endl;
-                std::cout<<"* Size\t: "<<profile->getPoints().size() <<std::endl;
+                std::cout<<"* Size\t\t: "<<profile->getPoints().size() <<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PROFILE_POLYNOMIAL:
                 std::cout<<"* DataType\t: "<<"PROFILE_POLYNOMIAL"    <<std::endl;
-                std::cout<<"* Size\t: "<<profile->getPoints().size() <<std::endl;
+                std::cout<<"* Size\t\t: "<<profile->getPoints().size() <<std::endl;
                 break;
             }
             std::cout << "Profile was successfully received!"        <<std::endl;
