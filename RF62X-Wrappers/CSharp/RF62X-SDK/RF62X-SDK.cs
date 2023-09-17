@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Net.NetworkInformation;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace SDK
 {
@@ -41,7 +42,6 @@ namespace SDK
             public static void SdkCleanup()
             {
                 FreeAdapterAddresses();
-                WinSockDeinit();
             }
 
             /// <summary>
@@ -1893,6 +1893,49 @@ namespace SDK
                         return true;
                     }
                     return false;
+                }
+
+                /// <summary>
+                /// Reset profile and packet counters
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>true on success</returns>
+                public bool ResetCounters(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                {
+                    PROTOCOL_TYPES p;
+                    if (protocol == PROTOCOL_TYPES.CURRENT)
+                        p = this.currentProtocol;
+                    else
+                        p = protocol;
+
+                    switch (p)
+                    {
+                        case PROTOCOL_TYPES.SERVICE:
+                            {
+                                // Establish connection to the RF627 device by Service Protocol.
+                                byte result;
+                                this.paramMutex.WaitOne();
+
+                                byte[] commandNameBytes = Encoding.ASCII.GetBytes("CID_PROFILE_SET_COUNTERS");
+                                IntPtr unmanagedPointerCommandName = Marshal.AllocHGlobal(commandNameBytes.Length);
+                                Marshal.Copy(commandNameBytes, 0, unmanagedPointerCommandName, commandNameBytes.Length);
+
+                                byte[] argListBytes = { /* profile counter bytes = 0 */0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* packet counter bytes = 0 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+                                IntPtr unmanagedPointerArgList = Marshal.AllocHGlobal(argListBytes.Length);
+                                Marshal.Copy(argListBytes, 0, unmanagedPointerArgList, argListBytes.Length);
+
+                                command_t cmd = new command_t();
+                                cmd.name = (byte*)unmanagedPointerCommandName;
+                                cmd.arg_list = (byte*)unmanagedPointerArgList;
+
+                                result = send_command((scanner_base_t*)scannerBase, &cmd);
+
+                                this.paramMutex.ReleaseMutex();
+                                return result == 1 ? true : false;
+                            }
+                    }
+                    return false;
+
                 }
 
             }
