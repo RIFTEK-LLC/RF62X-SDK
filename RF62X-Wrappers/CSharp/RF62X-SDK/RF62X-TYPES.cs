@@ -24,10 +24,25 @@ namespace SDK
 #endif
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
-            private struct command_t
+            private struct input_t
+            {
+                public ushort size;
+                public byte* payload;
+            };
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private struct output_t
+            {
+                public ushort size;
+                public byte* payload;
+            };
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private struct command2_t
             {
                 public byte* name;
-                public byte* arg_list;
+                public input_t input;
+                public output_t output;
             };
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
@@ -631,7 +646,7 @@ namespace SDK
             private static extern byte send_reboot_device_request_to_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
 
             [DllImport("libRF62X-SDK", CallingConvention = CallingConvention.Cdecl)]
-            private static extern byte send_command(scanner_base_t* device, command_t* command);
+            private static extern byte send_command2(scanner_base_t* device, command2_t* command);
 
             [DllImport("libRF62X-SDK", CallingConvention = CallingConvention.Cdecl)]
             private static extern byte send_custom_command_to_scanner(

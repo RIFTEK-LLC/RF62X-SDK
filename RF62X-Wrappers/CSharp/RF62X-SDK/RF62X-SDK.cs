@@ -1900,7 +1900,7 @@ namespace SDK
                 /// </summary>
                 /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
                 /// <returns>true on success</returns>
-                public bool ResetCounters(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public bool ResetCounters(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE, UInt32 profileCounter = 0, UInt32 packetCounter = 0)
                 {
                     PROTOCOL_TYPES p;
                     if (protocol == PROTOCOL_TYPES.CURRENT)
@@ -1912,25 +1912,28 @@ namespace SDK
                     {
                         case PROTOCOL_TYPES.SERVICE:
                             {
-                                // Establish connection to the RF627 device by Service Protocol.
-                                byte result;
-                                this.paramMutex.WaitOne();
+                                byte[] profileCounterBytes = BitConverter.GetBytes(profileCounter);
+                                byte[] packetCounterBytes = BitConverter.GetBytes(packetCounter);
+                                byte[] inputByteArr = new byte[profileCounterBytes.Length + packetCounterBytes.Length];
+
+                                Buffer.BlockCopy(profileCounterBytes, 0, inputByteArr, 0, profileCounterBytes.Length);
+                                Buffer.BlockCopy(packetCounterBytes, 0, inputByteArr, profileCounterBytes.Length, packetCounterBytes.Length);                                
+
+                                IntPtr unmanagedPointerArgList = Marshal.AllocHGlobal(inputByteArr.Length);
+                                Marshal.Copy(inputByteArr, 0, unmanagedPointerArgList, inputByteArr.Length);
 
                                 byte[] commandNameBytes = Encoding.ASCII.GetBytes("CID_PROFILE_SET_COUNTERS");
                                 IntPtr unmanagedPointerCommandName = Marshal.AllocHGlobal(commandNameBytes.Length);
                                 Marshal.Copy(commandNameBytes, 0, unmanagedPointerCommandName, commandNameBytes.Length);
 
-                                byte[] argListBytes = { /* profile counter bytes = 0 */0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* packet counter bytes = 0 */ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-                                IntPtr unmanagedPointerArgList = Marshal.AllocHGlobal(argListBytes.Length);
-                                Marshal.Copy(argListBytes, 0, unmanagedPointerArgList, argListBytes.Length);
-
-                                command_t cmd = new command_t();
+                                command2_t cmd = new command2_t();
                                 cmd.name = (byte*)unmanagedPointerCommandName;
-                                cmd.arg_list = (byte*)unmanagedPointerArgList;
 
-                                result = send_command((scanner_base_t*)scannerBase, &cmd);
+                                cmd.input.size = Convert.ToUInt16(inputByteArr.Length);
+                                cmd.input.payload = (byte*)unmanagedPointerArgList;
 
-                                this.paramMutex.ReleaseMutex();
+                                byte result = send_command2((scanner_base_t*)scannerBase, &cmd);
+
                                 return result == 1 ? true : false;
                             }
                     }
