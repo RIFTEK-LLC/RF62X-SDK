@@ -74,7 +74,7 @@ int main()
 
         if (is_connected && is_read)
         {
-            rf627_frame_t* _frame = get_frame_from_scanner(scanner, kSERVICE);
+            rf627_frame_t* _frame = get_frame_from_scanner(scanner, TRUE, 500, kSERVICE);
             if (_frame != NULL && _frame->rf627smart_frame != NULL)
             {
                 // Get parameter of user_dump_enabled
