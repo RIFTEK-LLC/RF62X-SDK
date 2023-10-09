@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Net.NetworkInformation;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace SDK
 {
@@ -41,7 +42,6 @@ namespace SDK
             public static void SdkCleanup()
             {
                 FreeAdapterAddresses();
-                WinSockDeinit();
             }
 
             /// <summary>
@@ -1893,6 +1893,52 @@ namespace SDK
                         return true;
                     }
                     return false;
+                }
+
+                /// <summary>
+                /// Reset profile and packet counters
+                /// </summary>
+                /// <param name="protocol">protocol’s type (Service Protocol, ENIP, Modbus-TCP)</param>
+                /// <returns>true on success</returns>
+                public bool ResetCounters(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE, UInt32 profileCounter = 0, UInt32 packetCounter = 0)
+                {
+                    PROTOCOL_TYPES p;
+                    if (protocol == PROTOCOL_TYPES.CURRENT)
+                        p = this.currentProtocol;
+                    else
+                        p = protocol;
+
+                    switch (p)
+                    {
+                        case PROTOCOL_TYPES.SERVICE:
+                            {
+                                byte[] profileCounterBytes = BitConverter.GetBytes(profileCounter);
+                                byte[] packetCounterBytes = BitConverter.GetBytes(packetCounter);
+                                byte[] inputByteArr = new byte[profileCounterBytes.Length + packetCounterBytes.Length];
+
+                                Buffer.BlockCopy(profileCounterBytes, 0, inputByteArr, 0, profileCounterBytes.Length);
+                                Buffer.BlockCopy(packetCounterBytes, 0, inputByteArr, profileCounterBytes.Length, packetCounterBytes.Length);                                
+
+                                IntPtr unmanagedPointerArgList = Marshal.AllocHGlobal(inputByteArr.Length);
+                                Marshal.Copy(inputByteArr, 0, unmanagedPointerArgList, inputByteArr.Length);
+
+                                byte[] commandNameBytes = Encoding.ASCII.GetBytes("CID_PROFILE_SET_COUNTERS");
+                                IntPtr unmanagedPointerCommandName = Marshal.AllocHGlobal(commandNameBytes.Length);
+                                Marshal.Copy(commandNameBytes, 0, unmanagedPointerCommandName, commandNameBytes.Length);
+
+                                command2_t cmd = new command2_t();
+                                cmd.name = (byte*)unmanagedPointerCommandName;
+
+                                cmd.input.size = Convert.ToUInt16(inputByteArr.Length);
+                                cmd.input.payload = (byte*)unmanagedPointerArgList;
+
+                                byte result = send_command2((scanner_base_t*)scannerBase, &cmd);
+
+                                return result == 1 ? true : false;
+                            }
+                    }
+                    return false;
+
                 }
 
             }
