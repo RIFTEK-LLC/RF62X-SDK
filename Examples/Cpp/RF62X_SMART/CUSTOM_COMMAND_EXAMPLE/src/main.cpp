@@ -1,7 +1,6 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <unordered_map>
 
 #include "rf62Xsdk.h"
 #include "rf62Xtypes.h"

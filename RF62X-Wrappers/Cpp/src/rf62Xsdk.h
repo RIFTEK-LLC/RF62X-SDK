@@ -531,6 +531,9 @@ public:
     rf627smart& operator=(const rf627smart&) = delete;
 
 private:
+    static std::mutex& get_search_mutex();
+
+private:
     void* scanner_base = NULL;
     bool _is_connected;
     bool _is_exist;
@@ -723,6 +726,9 @@ public:
 
     rf627old(const rf627old&) = delete;
     rf627old& operator=(const rf627old&) = delete;
+
+private:
+    static std::mutex& get_search_mutex();
 
 private:
     void* scanner_base = NULL;

@@ -68,8 +68,6 @@ namespace SDK {
 namespace SCANNERS {
 namespace RF62X {
 
-static std::mutex search_mutex;
-
 class convert{
     public:
     static std::string to_hex(int to_convert, int precision_specifier, bool uppercase = false)
@@ -2762,7 +2760,7 @@ std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool o
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        search_mutex.lock();
+        get_search_mutex().lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
         // Retrieving addresses associated with adapters on the local computer.
@@ -2861,11 +2859,11 @@ std::vector<std::shared_ptr<rf627old>> rf627old::search(uint32_t timeout, bool o
             for (size_t i = 0; i < result.size(); i++)
                 if (result[i]->_is_exist)
                     available_result.push_back(result[i]);
-            search_mutex.unlock();
+            get_search_mutex().unlock();
             return available_result;
         }
 
-        search_mutex.unlock();
+        get_search_mutex().unlock();
         return result;
         break;
     }
@@ -2909,6 +2907,12 @@ rf627old::rf627old(void* base)
     this->scanner_base = base;
     _is_connected = false;
     _is_exist = true;
+}
+
+std::mutex &rf627old::get_search_mutex()
+{
+    static std::mutex mutex_;
+    return mutex_;
 }
 
 rf627old::~rf627old()
@@ -3420,7 +3424,7 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
     switch (protocol) {
     case PROTOCOLS::SERVICE:
     {
-        search_mutex.lock();
+        get_search_mutex().lock();
         // Cleaning detected network adapter.
         FreeAdapterAddresses();
         // Retrieving addresses associated with adapters on the local computer.
@@ -3522,11 +3526,11 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
             for (size_t i = 0; i < result.size(); i++)
                 if (result[i]->_is_exist)
                     available_result.push_back(result[i]);
-            search_mutex.unlock();
+            get_search_mutex().unlock();
             return available_result;
         }
 
-        search_mutex.unlock();
+        get_search_mutex().unlock();
         return result;
         break;
     }
@@ -3543,7 +3547,7 @@ std::vector<std::shared_ptr<rf627smart>> rf627smart::search(uint32_t timeout, bo
 std::shared_ptr<rf627smart> rf627smart::search(
         std::string scanner_ip, std::string host_ip, std::string mask, uint32_t timeout)
 {
-    search_mutex.lock();
+    get_search_mutex().lock();
     // Cleaning detected network adapter.
     FreeAdapterAddresses();
     // Retrieving addresses associated with adapters on the local computer.
@@ -3637,7 +3641,7 @@ std::shared_ptr<rf627smart> rf627smart::search(
         for (size_t i = 0; i < result.size(); i++)
             if (result[i]->_is_exist)
                 available_result.push_back(result[i]);
-        search_mutex.unlock();
+        get_search_mutex().unlock();
         auto it = std::find_if(available_result.begin(), available_result.end(),
                                [&scanner_ip](const std::shared_ptr<rf627smart>& obj) {
             return obj->get_info()->ip_address() == scanner_ip;
@@ -3650,7 +3654,7 @@ std::shared_ptr<rf627smart> rf627smart::search(
         return nullptr;
     }
 
-    search_mutex.unlock();
+    get_search_mutex().unlock();
     return nullptr;
 }
 
@@ -3684,6 +3688,12 @@ rf627smart::rf627smart(void* base)
     this->scanner_base = base;
     _is_connected = false;
     _is_exist = true;
+}
+
+std::mutex& rf627smart::get_search_mutex()
+{
+    static std::mutex mutex_;
+    return mutex_;
 }
 
 rf627smart::~rf627smart()
