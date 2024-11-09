@@ -1402,26 +1402,66 @@ struct_anon_42._fields_ = [
     ('reserved_0', rfUint8 * int(8)),
 ]
 
-#	rf62X_types.h: 393
-class union_anon_43(Union):
+#	rf62X_types.h: 412
+class struct_anon_43(Structure):
     pass
 
-union_anon_43.__slots__ = [
-    'v1_0_standart',
-    'v1_1_standart',
-    'v1_1_polynomial',
+struct_anon_43.__slots__ = [
+    'zmr',
+    'xemr',
+    'discrete_value',
+    'alignment_with_sensor',
+    'reserved_0',
 ]
-union_anon_43._fields_ = [
-    ('v1_0_standart', struct_anon_40),
-    ('v1_1_standart', struct_anon_41),
-    ('v1_1_polynomial', struct_anon_42),
+struct_anon_43._fields_ = [
+    ('zmr', rfUint16),
+    ('xemr', rfUint16),
+    ('discrete_value', rfUint16),
+    ('alignment_with_sensor', rfUint16),
+    ('reserved_0', rfUint8 * int(8)),
 ]
 
-#	rf62X_types.h: 423
+#	rf62X_types.h: 419
 class struct_anon_44(Structure):
     pass
 
 struct_anon_44.__slots__ = [
+    'zmr',
+    'xemr',
+    'scaling_factor',
+    'reserved_0',
+]
+struct_anon_44._fields_ = [
+    ('zmr', rfUint16),
+    ('xemr', rfUint16),
+    ('scaling_factor', rfFloat),
+    ('reserved_0', rfUint8 * int(8)),
+]
+
+#	rf62X_types.h: 393
+class union_anon_45(Union):
+    pass
+
+union_anon_45.__slots__ = [
+    'v1_0_standart',
+    'v1_1_standart',
+    'v1_1_polynomial',
+    'v1_2_standart',
+    'v1_2_polynomial',
+]
+union_anon_45._fields_ = [
+    ('v1_0_standart', struct_anon_40),
+    ('v1_1_standart', struct_anon_41),
+    ('v1_1_polynomial', struct_anon_42),
+    ('v1_2_standart', struct_anon_43),
+    ('v1_2_polynomial', struct_anon_44),
+]
+
+#	rf62X_types.h: 436
+class struct_anon_46(Structure):
+    pass
+
+struct_anon_46.__slots__ = [
     'data_type',
     'flags',
     'device_type',
@@ -1442,10 +1482,10 @@ struct_anon_44.__slots__ = [
     'payload_size',
     'bytes_per_point',
 ]
-struct_anon_44._anonymous_ = [
+struct_anon_46._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_44._fields_ = [
+struct_anon_46._fields_ = [
     ('data_type', rfUint8),
     ('flags', rfUint8),
     ('device_type', rfUint16),
@@ -1457,7 +1497,7 @@ struct_anon_44._fields_ = [
     ('data_offset', rfUint8),
     ('packet_count', rfUint32),
     ('measure_count', rfUint32),
-    ('unnamed_1', union_anon_43),
+    ('unnamed_1', union_anon_45),
     ('license_hash', rfUint32),
     ('exposure_time', rfUint32),
     ('laser_value', rfUint32),
@@ -1467,235 +1507,245 @@ struct_anon_44._fields_ = [
     ('bytes_per_point', rfUint8),
 ]
 
-rf627_old_profile_header_t = struct_anon_44#	rf62X_types.h: 423
+rf627_old_profile_header_t = struct_anon_46#	rf62X_types.h: 436
 
-#	rf62X_types.h: 426
-class struct_anon_45(Structure):
+#	rf62X_types.h: 439
+class struct_anon_47(Structure):
     pass
 
-struct_anon_45.__slots__ = [
+struct_anon_47.__slots__ = [
     'H',
     'M',
     'S',
 ]
-struct_anon_45._fields_ = [
+struct_anon_47._fields_ = [
     ('H', rfUint32),
     ('M', rfUint8),
     ('S', rfUint8),
 ]
 
-#	rf62X_types.h: 434
-class struct_anon_46(Structure):
+#	rf62X_types.h: 447
+class struct_anon_48(Structure):
     pass
 
-struct_anon_46.__slots__ = [
+struct_anon_48.__slots__ = [
     'Time',
     'ModuleID',
     'EventID',
     'String',
 ]
-struct_anon_46._fields_ = [
-    ('Time', struct_anon_45),
+struct_anon_48._fields_ = [
+    ('Time', struct_anon_47),
     ('ModuleID', rfUint8),
     ('EventID', rfUint8),
     ('String', rfChar * int(128)),
 ]
 
-log_record_t = struct_anon_46#	rf62X_types.h: 434
+log_record_t = struct_anon_48#	rf62X_types.h: 447
 
-enum_anon_47 = c_int#	rf62X_types.h: 442
+enum_anon_49 = c_int#	rf62X_types.h: 455
 
-DTY_PixelsNormal = 0x10#	rf62X_types.h: 442
+DTY_PixelsNormal = 0x10#	rf62X_types.h: 455
 
-DTY_ProfileNormal = 0x11#	rf62X_types.h: 442
+DTY_ProfileNormal = 0x11#	rf62X_types.h: 455
 
-DTY_PixelsInterpolated = 0x12#	rf62X_types.h: 442
+DTY_PixelsInterpolated = 0x12#	rf62X_types.h: 455
 
-DTY_ProfileInterpolated = 0x13#	rf62X_types.h: 442
+DTY_ProfileInterpolated = 0x13#	rf62X_types.h: 455
 
-rf627_old_data_type_t = enum_anon_47#	rf62X_types.h: 442
+rf627_old_data_type_t = enum_anon_49#	rf62X_types.h: 455
 
-enum_anon_48 = c_int#	rf62X_types.h: 450
+enum_anon_50 = c_int#	rf62X_types.h: 463
 
-SPDT_v1_0_PixelsNormal = 0x10#	rf62X_types.h: 450
+SPDT_v1_0_PixelsNormal = 0x10#	rf62X_types.h: 463
 
-SPDT_v1_0_ProfileNormal = 0x11#	rf62X_types.h: 450
+SPDT_v1_0_ProfileNormal = 0x11#	rf62X_types.h: 463
 
-SPDT_v1_0_PixelsInterpolated = 0x12#	rf62X_types.h: 450
+SPDT_v1_0_PixelsInterpolated = 0x12#	rf62X_types.h: 463
 
-SPDT_v1_0_ProfileInterpolated = 0x13#	rf62X_types.h: 450
+SPDT_v1_0_ProfileInterpolated = 0x13#	rf62X_types.h: 463
 
-rf627_smart_profile_data_type_v1_0_t = enum_anon_48#	rf62X_types.h: 450
+rf627_smart_profile_data_type_v1_0_t = enum_anon_50#	rf62X_types.h: 463
 
-enum_anon_49 = c_int#	rf62X_types.h: 457
+enum_anon_51 = c_int#	rf62X_types.h: 470
 
-SPDT_v1_1_Pixels = 0x10#	rf62X_types.h: 457
+SPDT_v1_1_Pixels = 0x10#	rf62X_types.h: 470
 
-SPDT_v1_1_ProfileTable = 0x11#	rf62X_types.h: 457
+SPDT_v1_1_ProfileTable = 0x11#	rf62X_types.h: 470
 
-SPDT_v1_1_ProfilePoly = 0x20#	rf62X_types.h: 457
+SPDT_v1_1_ProfilePoly = 0x20#	rf62X_types.h: 470
 
-rf627_smart_profile_data_type_v1_1_t = enum_anon_49#	rf62X_types.h: 457
+rf627_smart_profile_data_type_v1_1_t = enum_anon_51#	rf62X_types.h: 470
 
-#	rf62X_types.h: 465
-class struct_anon_50(Structure):
+enum_anon_52 = c_int#	rf62X_types.h: 477
+
+SPDT_v1_2_Pixels = 0x10#	rf62X_types.h: 477
+
+SPDT_v1_2_ProfileTable = 0x11#	rf62X_types.h: 477
+
+SPDT_v1_2_ProfilePoly = 0x20#	rf62X_types.h: 477
+
+rf627_smart_profile_data_type_v1_2_t = enum_anon_52#	rf62X_types.h: 477
+
+#	rf62X_types.h: 485
+class struct_anon_53(Structure):
     pass
 
-struct_anon_50.__slots__ = [
+struct_anon_53.__slots__ = [
     'x',
     'z',
 ]
-struct_anon_50._fields_ = [
+struct_anon_53._fields_ = [
     ('x', rfFloat),
     ('z', rfFloat),
 ]
 
-rf627_old_point2D_t = struct_anon_50#	rf62X_types.h: 465
+rf627_old_point2D_t = struct_anon_53#	rf62X_types.h: 485
 
-#	rf62X_types.h: 474
-class struct_anon_51(Structure):
+#	rf62X_types.h: 494
+class struct_anon_54(Structure):
     pass
 
-struct_anon_51.__slots__ = [
+struct_anon_54.__slots__ = [
     'x',
     'y',
     'z',
 ]
-struct_anon_51._fields_ = [
+struct_anon_54._fields_ = [
     ('x', rfFloat),
     ('y', rfFloat),
     ('z', rfFloat),
 ]
 
-rf627_old_point3D_t = struct_anon_51#	rf62X_types.h: 474
+rf627_old_point3D_t = struct_anon_54#	rf62X_types.h: 494
 
-#	rf62X_types.h: 482
-class struct_anon_52(Structure):
-    pass
-
-struct_anon_52.__slots__ = [
-    'pixels',
-    'pixels_count',
-]
-struct_anon_52._fields_ = [
-    ('pixels', POINTER(rfUint16)),
-    ('pixels_count', rfUint32),
-]
-
-#	rf62X_types.h: 486
-class struct_anon_53(Structure):
-    pass
-
-struct_anon_53.__slots__ = [
-    'points',
-    'points_count',
-]
-struct_anon_53._fields_ = [
-    ('points', POINTER(rf627_old_point2D_t)),
-    ('points_count', rfUint32),
-]
-
-#	rf62X_types.h: 481
-class union_anon_54(Union):
-    pass
-
-union_anon_54.__slots__ = [
-    'pixels_format',
-    'profile_format',
-]
-union_anon_54._fields_ = [
-    ('pixels_format', struct_anon_52),
-    ('profile_format', struct_anon_53),
-]
-
-#	rf62X_types.h: 493
+#	rf62X_types.h: 502
 class struct_anon_55(Structure):
     pass
 
 struct_anon_55.__slots__ = [
-    'header',
-    'unnamed_1',
-    'intensity',
-    'intensity_count',
-]
-struct_anon_55._anonymous_ = [
-    'unnamed_1',
-]
-struct_anon_55._fields_ = [
-    ('header', rf627_old_profile_header_t),
-    ('unnamed_1', union_anon_54),
-    ('intensity', POINTER(rfUint8)),
-    ('intensity_count', rfUint32),
-]
-
-rf627_old_profile2D_t = struct_anon_55#	rf62X_types.h: 493
-
-#	rf62X_types.h: 501
-class struct_anon_56(Structure):
-    pass
-
-struct_anon_56.__slots__ = [
     'pixels',
     'pixels_count',
 ]
-struct_anon_56._fields_ = [
+struct_anon_55._fields_ = [
     ('pixels', POINTER(rfUint16)),
     ('pixels_count', rfUint32),
 ]
 
-#	rf62X_types.h: 505
-class struct_anon_57(Structure):
+#	rf62X_types.h: 506
+class struct_anon_56(Structure):
     pass
 
-struct_anon_57.__slots__ = [
+struct_anon_56.__slots__ = [
     'points',
     'points_count',
 ]
-struct_anon_57._fields_ = [
-    ('points', POINTER(rf627_old_point3D_t)),
+struct_anon_56._fields_ = [
+    ('points', POINTER(rf627_old_point2D_t)),
     ('points_count', rfUint32),
 ]
 
-#	rf62X_types.h: 500
-class union_anon_58(Union):
+#	rf62X_types.h: 501
+class union_anon_57(Union):
     pass
 
-union_anon_58.__slots__ = [
+union_anon_57.__slots__ = [
     'pixels_format',
     'profile_format',
 ]
-union_anon_58._fields_ = [
-    ('pixels_format', struct_anon_56),
-    ('profile_format', struct_anon_57),
+union_anon_57._fields_ = [
+    ('pixels_format', struct_anon_55),
+    ('profile_format', struct_anon_56),
 ]
 
-#	rf62X_types.h: 512
-class struct_anon_59(Structure):
+#	rf62X_types.h: 513
+class struct_anon_58(Structure):
     pass
 
-struct_anon_59.__slots__ = [
+struct_anon_58.__slots__ = [
     'header',
     'unnamed_1',
     'intensity',
     'intensity_count',
 ]
-struct_anon_59._anonymous_ = [
+struct_anon_58._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_59._fields_ = [
+struct_anon_58._fields_ = [
     ('header', rf627_old_profile_header_t),
-    ('unnamed_1', union_anon_58),
+    ('unnamed_1', union_anon_57),
     ('intensity', POINTER(rfUint8)),
     ('intensity_count', rfUint32),
 ]
 
-rf627_old_profile3D_t = struct_anon_59#	rf62X_types.h: 512
+rf627_old_profile2D_t = struct_anon_58#	rf62X_types.h: 513
 
-#	rf62X_types.h: 527
+#	rf62X_types.h: 521
+class struct_anon_59(Structure):
+    pass
+
+struct_anon_59.__slots__ = [
+    'pixels',
+    'pixels_count',
+]
+struct_anon_59._fields_ = [
+    ('pixels', POINTER(rfUint16)),
+    ('pixels_count', rfUint32),
+]
+
+#	rf62X_types.h: 525
 class struct_anon_60(Structure):
     pass
 
 struct_anon_60.__slots__ = [
+    'points',
+    'points_count',
+]
+struct_anon_60._fields_ = [
+    ('points', POINTER(rf627_old_point3D_t)),
+    ('points_count', rfUint32),
+]
+
+#	rf62X_types.h: 520
+class union_anon_61(Union):
+    pass
+
+union_anon_61.__slots__ = [
+    'pixels_format',
+    'profile_format',
+]
+union_anon_61._fields_ = [
+    ('pixels_format', struct_anon_59),
+    ('profile_format', struct_anon_60),
+]
+
+#	rf62X_types.h: 532
+class struct_anon_62(Structure):
+    pass
+
+struct_anon_62.__slots__ = [
+    'header',
+    'unnamed_1',
+    'intensity',
+    'intensity_count',
+]
+struct_anon_62._anonymous_ = [
+    'unnamed_1',
+]
+struct_anon_62._fields_ = [
+    ('header', rf627_old_profile_header_t),
+    ('unnamed_1', union_anon_61),
+    ('intensity', POINTER(rfUint8)),
+    ('intensity_count', rfUint32),
+]
+
+rf627_old_profile3D_t = struct_anon_62#	rf62X_types.h: 532
+
+#	rf62X_types.h: 547
+class struct_anon_63(Structure):
+    pass
+
+struct_anon_63.__slots__ = [
     'data',
     'data_size',
     'width',
@@ -1706,7 +1756,7 @@ struct_anon_60.__slots__ = [
     'user_roi_pos',
     'user_roi_size',
 ]
-struct_anon_60._fields_ = [
+struct_anon_63._fields_ = [
     ('data', c_char_p),
     ('data_size', rfUint32),
     ('width', rfUint32),
@@ -1718,148 +1768,148 @@ struct_anon_60._fields_ = [
     ('user_roi_size', rfUint32),
 ]
 
-rf627_old_frame_t = struct_anon_60#	rf62X_types.h: 527
+rf627_old_frame_t = struct_anon_63#	rf62X_types.h: 547
 
-#	rf62X_types.h: 532
-class struct_anon_61(Structure):
+#	rf62X_types.h: 552
+class struct_anon_64(Structure):
     pass
 
-struct_anon_61.__slots__ = [
+struct_anon_64.__slots__ = [
     'data',
 ]
-struct_anon_61._fields_ = [
+struct_anon_64._fields_ = [
     ('data', c_char_p),
 ]
 
-rf627_old_calib_table_t = struct_anon_61#	rf62X_types.h: 532
+rf627_old_calib_table_t = struct_anon_64#	rf62X_types.h: 552
 
-#	rf62X_types.h: 540
-class struct_anon_62(Structure):
-    pass
-
-struct_anon_62.__slots__ = [
-    'pixels',
-    'pixels_count',
-]
-struct_anon_62._fields_ = [
-    ('pixels', POINTER(rfUint16)),
-    ('pixels_count', rfUint32),
-]
-
-#	rf62X_types.h: 544
-class struct_anon_63(Structure):
-    pass
-
-struct_anon_63.__slots__ = [
-    'points',
-    'points_count',
-]
-struct_anon_63._fields_ = [
-    ('points', POINTER(rf627_old_point2D_t)),
-    ('points_count', rfUint32),
-]
-
-#	rf62X_types.h: 539
-class union_anon_64(Union):
-    pass
-
-union_anon_64.__slots__ = [
-    'pixels_format',
-    'profile_format',
-]
-union_anon_64._fields_ = [
-    ('pixels_format', struct_anon_62),
-    ('profile_format', struct_anon_63),
-]
-
-#	rf62X_types.h: 551
+#	rf62X_types.h: 560
 class struct_anon_65(Structure):
     pass
 
 struct_anon_65.__slots__ = [
-    'header',
-    'unnamed_1',
-    'intensity',
-    'intensity_count',
-]
-struct_anon_65._anonymous_ = [
-    'unnamed_1',
-]
-struct_anon_65._fields_ = [
-    ('header', rf627_old_profile_header_t),
-    ('unnamed_1', union_anon_64),
-    ('intensity', POINTER(rfUint8)),
-    ('intensity_count', rfUint32),
-]
-
-rf627_smart_profile2D_t = struct_anon_65#	rf62X_types.h: 551
-
-#	rf62X_types.h: 559
-class struct_anon_66(Structure):
-    pass
-
-struct_anon_66.__slots__ = [
     'pixels',
     'pixels_count',
 ]
-struct_anon_66._fields_ = [
+struct_anon_65._fields_ = [
     ('pixels', POINTER(rfUint16)),
     ('pixels_count', rfUint32),
 ]
 
-#	rf62X_types.h: 563
-class struct_anon_67(Structure):
+#	rf62X_types.h: 564
+class struct_anon_66(Structure):
     pass
 
-struct_anon_67.__slots__ = [
+struct_anon_66.__slots__ = [
     'points',
     'points_count',
 ]
-struct_anon_67._fields_ = [
-    ('points', POINTER(rf627_old_point3D_t)),
+struct_anon_66._fields_ = [
+    ('points', POINTER(rf627_old_point2D_t)),
     ('points_count', rfUint32),
 ]
 
-#	rf62X_types.h: 558
-class union_anon_68(Union):
+#	rf62X_types.h: 559
+class union_anon_67(Union):
     pass
 
-union_anon_68.__slots__ = [
+union_anon_67.__slots__ = [
     'pixels_format',
     'profile_format',
 ]
-union_anon_68._fields_ = [
-    ('pixels_format', struct_anon_66),
-    ('profile_format', struct_anon_67),
+union_anon_67._fields_ = [
+    ('pixels_format', struct_anon_65),
+    ('profile_format', struct_anon_66),
 ]
 
-#	rf62X_types.h: 570
-class struct_anon_69(Structure):
+#	rf62X_types.h: 571
+class struct_anon_68(Structure):
     pass
 
-struct_anon_69.__slots__ = [
+struct_anon_68.__slots__ = [
     'header',
     'unnamed_1',
     'intensity',
     'intensity_count',
 ]
-struct_anon_69._anonymous_ = [
+struct_anon_68._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_69._fields_ = [
+struct_anon_68._fields_ = [
     ('header', rf627_old_profile_header_t),
-    ('unnamed_1', union_anon_68),
+    ('unnamed_1', union_anon_67),
     ('intensity', POINTER(rfUint8)),
     ('intensity_count', rfUint32),
 ]
 
-rf627_smart_profile3D_t = struct_anon_69#	rf62X_types.h: 570
+rf627_smart_profile2D_t = struct_anon_68#	rf62X_types.h: 571
 
-#	rf62X_types.h: 586
+#	rf62X_types.h: 579
+class struct_anon_69(Structure):
+    pass
+
+struct_anon_69.__slots__ = [
+    'pixels',
+    'pixels_count',
+]
+struct_anon_69._fields_ = [
+    ('pixels', POINTER(rfUint16)),
+    ('pixels_count', rfUint32),
+]
+
+#	rf62X_types.h: 583
 class struct_anon_70(Structure):
     pass
 
 struct_anon_70.__slots__ = [
+    'points',
+    'points_count',
+]
+struct_anon_70._fields_ = [
+    ('points', POINTER(rf627_old_point3D_t)),
+    ('points_count', rfUint32),
+]
+
+#	rf62X_types.h: 578
+class union_anon_71(Union):
+    pass
+
+union_anon_71.__slots__ = [
+    'pixels_format',
+    'profile_format',
+]
+union_anon_71._fields_ = [
+    ('pixels_format', struct_anon_69),
+    ('profile_format', struct_anon_70),
+]
+
+#	rf62X_types.h: 590
+class struct_anon_72(Structure):
+    pass
+
+struct_anon_72.__slots__ = [
+    'header',
+    'unnamed_1',
+    'intensity',
+    'intensity_count',
+]
+struct_anon_72._anonymous_ = [
+    'unnamed_1',
+]
+struct_anon_72._fields_ = [
+    ('header', rf627_old_profile_header_t),
+    ('unnamed_1', union_anon_71),
+    ('intensity', POINTER(rfUint8)),
+    ('intensity_count', rfUint32),
+]
+
+rf627_smart_profile3D_t = struct_anon_72#	rf62X_types.h: 590
+
+#	rf62X_types.h: 606
+class struct_anon_73(Structure):
+    pass
+
+struct_anon_73.__slots__ = [
     'data',
     'data_size',
     'frame_width',
@@ -1872,7 +1922,7 @@ struct_anon_70.__slots__ = [
     'fact_sensor_width',
     'fact_sensor_height',
 ]
-struct_anon_70._fields_ = [
+struct_anon_73._fields_ = [
     ('data', c_char_p),
     ('data_size', rfUint32),
     ('frame_width', rfUint32),
@@ -1886,13 +1936,13 @@ struct_anon_70._fields_ = [
     ('fact_sensor_height', rfUint32),
 ]
 
-rf627_smart_frame_t = struct_anon_70#	rf62X_types.h: 586
+rf627_smart_frame_t = struct_anon_73#	rf62X_types.h: 606
 
-#	rf62X_types.h: 602
-class struct_anon_71(Structure):
+#	rf62X_types.h: 622
+class struct_anon_74(Structure):
     pass
 
-struct_anon_71.__slots__ = [
+struct_anon_74.__slots__ = [
     'm_Type',
     'm_CRC16',
     'm_Serial',
@@ -1905,7 +1955,7 @@ struct_anon_71.__slots__ = [
     'm_Data',
     'm_DataSize',
 ]
-struct_anon_71._fields_ = [
+struct_anon_74._fields_ = [
     ('m_Type', rfUint16),
     ('m_CRC16', rfUint16),
     ('m_Serial', rfUint32),
@@ -1919,13 +1969,13 @@ struct_anon_71._fields_ = [
     ('m_DataSize', rfUint32),
 ]
 
-rf627_smart_calib_table_t = struct_anon_71#	rf62X_types.h: 602
+rf627_smart_calib_table_t = struct_anon_74#	rf62X_types.h: 622
 
-#	rf62X_types.h: 618
-class struct_anon_72(Structure):
+#	rf62X_types.h: 638
+class struct_anon_75(Structure):
     pass
 
-struct_anon_72.__slots__ = [
+struct_anon_75.__slots__ = [
     'version',
     'crc_x',
     'crc_z',
@@ -1939,7 +1989,7 @@ struct_anon_72.__slots__ = [
     'poly_coef_x',
     'poly_coef_z',
 ]
-struct_anon_72._fields_ = [
+struct_anon_75._fields_ = [
     ('version', rfUint32),
     ('crc_x', rfUint32),
     ('crc_z', rfUint32),
@@ -1954,13 +2004,13 @@ struct_anon_72._fields_ = [
     ('poly_coef_z', POINTER(c_float)),
 ]
 
-rf627_smart_approx_table_v6_t = struct_anon_72#	rf62X_types.h: 618
+rf627_smart_approx_table_v6_t = struct_anon_75#	rf62X_types.h: 638
 
-#	rf62X_types.h: 634
-class struct_anon_73(Structure):
+#	rf62X_types.h: 654
+class struct_anon_76(Structure):
     pass
 
-struct_anon_73.__slots__ = [
+struct_anon_76.__slots__ = [
     'device_name',
     'serial_number',
     'ip_address',
@@ -1974,7 +2024,7 @@ struct_anon_73.__slots__ = [
     'x_begin',
     'x_end',
 ]
-struct_anon_73._fields_ = [
+struct_anon_76._fields_ = [
     ('device_name', c_char_p),
     ('serial_number', rfUint32),
     ('ip_address', rfUint8 * int(4)),
@@ -1989,13 +2039,13 @@ struct_anon_73._fields_ = [
     ('x_end', rfUint32),
 ]
 
-rf627_old_hello_info_by_service_protocol = struct_anon_73#	rf62X_types.h: 634
+rf627_old_hello_info_by_service_protocol = struct_anon_76#	rf62X_types.h: 654
 
-#	rf62X_types.h: 670
-class struct_anon_74(Structure):
+#	rf62X_types.h: 690
+class struct_anon_77(Structure):
     pass
 
-struct_anon_74.__slots__ = [
+struct_anon_77.__slots__ = [
     'fact_general_firmwareVer',
     'fact_general_hardwareVer',
     'fact_general_mr',
@@ -2020,7 +2070,7 @@ struct_anon_74.__slots__ = [
     'fact_general_xemr',
     'fact_maxPacketSize',
 ]
-struct_anon_74._fields_ = [
+struct_anon_77._fields_ = [
     ('fact_general_firmwareVer', uint32_t * int(3)),
     ('fact_general_hardwareVer', uint32_t),
     ('fact_general_mr', uint32_t),
@@ -2046,13 +2096,13 @@ struct_anon_74._fields_ = [
     ('fact_maxPacketSize', uint32_t),
 ]
 
-rf627_smart_hello_info_by_service_protocol = struct_anon_74#	rf62X_types.h: 670
+rf627_smart_hello_info_by_service_protocol = struct_anon_77#	rf62X_types.h: 690
 
-#	rf62X_types.h: 680
-class struct_anon_75(Structure):
+#	rf62X_types.h: 700
+class struct_anon_78(Structure):
     pass
 
-struct_anon_75.__slots__ = [
+struct_anon_78.__slots__ = [
     'cmd_name',
     'is_check_crc',
     'is_confirmation',
@@ -2060,7 +2110,7 @@ struct_anon_75.__slots__ = [
     'waiting_time',
     'resends_count',
 ]
-struct_anon_75._fields_ = [
+struct_anon_78._fields_ = [
     ('cmd_name', String),
     ('is_check_crc', uint8_t),
     ('is_confirmation', uint8_t),
@@ -2069,45 +2119,45 @@ struct_anon_75._fields_ = [
     ('resends_count', uint32_t),
 ]
 
-rf627_smart_protocol_cmd_settings_t = struct_anon_75#	rf62X_types.h: 680
+rf627_smart_protocol_cmd_settings_t = struct_anon_78#	rf62X_types.h: 700
 
-#	rf62X_types.h: 688
-class struct_anon_76(Structure):
+#	rf62X_types.h: 708
+class struct_anon_79(Structure):
     pass
 
-struct_anon_76.__slots__ = [
+struct_anon_79.__slots__ = [
     'value',
     'label',
     'key',
 ]
-struct_anon_76._fields_ = [
+struct_anon_79._fields_ = [
     ('value', rfInt32),
     ('label', c_char_p),
     ('key', c_char_p),
 ]
 
-enumRec_t = struct_anon_76#	rf62X_types.h: 688
+enumRec_t = struct_anon_79#	rf62X_types.h: 708
 
-#	rf62X_types.h: 694
-class struct_anon_77(Structure):
+#	rf62X_types.h: 714
+class struct_anon_80(Structure):
     pass
 
-struct_anon_77.__slots__ = [
+struct_anon_80.__slots__ = [
     'recCount',
     'rec',
 ]
-struct_anon_77._fields_ = [
+struct_anon_80._fields_ = [
     ('recCount', rfUint32),
     ('rec', POINTER(enumRec_t)),
 ]
 
-valuesEnum_t = struct_anon_77#	rf62X_types.h: 694
+valuesEnum_t = struct_anon_80#	rf62X_types.h: 714
 
-#	rf62X_types.h: 705
-class struct_anon_78(Structure):
+#	rf62X_types.h: 725
+class struct_anon_81(Structure):
     pass
 
-struct_anon_78.__slots__ = [
+struct_anon_81.__slots__ = [
     'name',
     'type',
     'access',
@@ -2116,7 +2166,7 @@ struct_anon_78.__slots__ = [
     'size',
     'units',
 ]
-struct_anon_78._fields_ = [
+struct_anon_81._fields_ = [
     ('name', c_char_p),
     ('type', c_char_p),
     ('access', c_char_p),
@@ -2126,9 +2176,9 @@ struct_anon_78._fields_ = [
     ('units', c_char_p),
 ]
 
-value_base_t = struct_anon_78#	rf62X_types.h: 705
+value_base_t = struct_anon_81#	rf62X_types.h: 725
 
-#	rf62X_types.h: 716
+#	rf62X_types.h: 736
 class struct_value_uint32_t(Structure):
     pass
 
@@ -2149,9 +2199,9 @@ struct_value_uint32_t._fields_ = [
     ('value', rfUint32),
 ]
 
-value_uint32_t = struct_value_uint32_t#	rf62X_types.h: 716
+value_uint32_t = struct_value_uint32_t#	rf62X_types.h: 736
 
-#	rf62X_types.h: 726
+#	rf62X_types.h: 746
 class struct_value_uint64_t(Structure):
     pass
 
@@ -2172,9 +2222,9 @@ struct_value_uint64_t._fields_ = [
     ('value', rfUint64),
 ]
 
-value_uint64_t = struct_value_uint64_t#	rf62X_types.h: 726
+value_uint64_t = struct_value_uint64_t#	rf62X_types.h: 746
 
-#	rf62X_types.h: 736
+#	rf62X_types.h: 756
 class struct_value_int32_t(Structure):
     pass
 
@@ -2195,9 +2245,9 @@ struct_value_int32_t._fields_ = [
     ('value', rfInt32),
 ]
 
-value_int32_t = struct_value_int32_t#	rf62X_types.h: 736
+value_int32_t = struct_value_int32_t#	rf62X_types.h: 756
 
-#	rf62X_types.h: 746
+#	rf62X_types.h: 766
 class struct_value_int64_t(Structure):
     pass
 
@@ -2218,9 +2268,9 @@ struct_value_int64_t._fields_ = [
     ('value', rfInt64),
 ]
 
-value_int64_t = struct_value_int64_t#	rf62X_types.h: 746
+value_int64_t = struct_value_int64_t#	rf62X_types.h: 766
 
-#	rf62X_types.h: 755
+#	rf62X_types.h: 775
 class struct_value_flt_t(Structure):
     pass
 
@@ -2239,9 +2289,9 @@ struct_value_flt_t._fields_ = [
     ('value', rfFloat),
 ]
 
-value_flt_t = struct_value_flt_t#	rf62X_types.h: 755
+value_flt_t = struct_value_flt_t#	rf62X_types.h: 775
 
-#	rf62X_types.h: 764
+#	rf62X_types.h: 784
 class struct_value_dbl_t(Structure):
     pass
 
@@ -2260,9 +2310,9 @@ struct_value_dbl_t._fields_ = [
     ('value', rfDouble),
 ]
 
-value_dbl_t = struct_value_dbl_t#	rf62X_types.h: 764
+value_dbl_t = struct_value_dbl_t#	rf62X_types.h: 784
 
-#	rf62X_types.h: 776
+#	rf62X_types.h: 796
 class struct_array_uint32_t(Structure):
     pass
 
@@ -2287,9 +2337,9 @@ struct_array_uint32_t._fields_ = [
     ('value', POINTER(rfUint32)),
 ]
 
-array_uint32_t = struct_array_uint32_t#	rf62X_types.h: 776
+array_uint32_t = struct_array_uint32_t#	rf62X_types.h: 796
 
-#	rf62X_types.h: 788
+#	rf62X_types.h: 808
 class struct_array_uint64_t(Structure):
     pass
 
@@ -2314,9 +2364,9 @@ struct_array_uint64_t._fields_ = [
     ('value', POINTER(rfUint64)),
 ]
 
-array_uint64_t = struct_array_uint64_t#	rf62X_types.h: 788
+array_uint64_t = struct_array_uint64_t#	rf62X_types.h: 808
 
-#	rf62X_types.h: 800
+#	rf62X_types.h: 820
 class struct_array_int32_t(Structure):
     pass
 
@@ -2341,9 +2391,9 @@ struct_array_int32_t._fields_ = [
     ('value', POINTER(rfInt32)),
 ]
 
-array_int32_t = struct_array_int32_t#	rf62X_types.h: 800
+array_int32_t = struct_array_int32_t#	rf62X_types.h: 820
 
-#	rf62X_types.h: 812
+#	rf62X_types.h: 832
 class struct_array_int64_t(Structure):
     pass
 
@@ -2368,9 +2418,9 @@ struct_array_int64_t._fields_ = [
     ('value', POINTER(rfInt64)),
 ]
 
-array_int64_t = struct_array_int64_t#	rf62X_types.h: 812
+array_int64_t = struct_array_int64_t#	rf62X_types.h: 832
 
-#	rf62X_types.h: 824
+#	rf62X_types.h: 844
 class struct_array_flt_t(Structure):
     pass
 
@@ -2395,9 +2445,9 @@ struct_array_flt_t._fields_ = [
     ('value', POINTER(rfFloat)),
 ]
 
-array_flt_t = struct_array_flt_t#	rf62X_types.h: 824
+array_flt_t = struct_array_flt_t#	rf62X_types.h: 844
 
-#	rf62X_types.h: 836
+#	rf62X_types.h: 856
 class struct_array_dbl_t(Structure):
     pass
 
@@ -2422,9 +2472,9 @@ struct_array_dbl_t._fields_ = [
     ('value', POINTER(rfDouble)),
 ]
 
-array_dbl_t = struct_array_dbl_t#	rf62X_types.h: 836
+array_dbl_t = struct_array_dbl_t#	rf62X_types.h: 856
 
-#	rf62X_types.h: 843
+#	rf62X_types.h: 863
 class struct_value_str_t(Structure):
     pass
 
@@ -2439,13 +2489,13 @@ struct_value_str_t._fields_ = [
     ('value', c_char_p),
 ]
 
-value_str_t = struct_value_str_t#	rf62X_types.h: 843
+value_str_t = struct_value_str_t#	rf62X_types.h: 863
 
-#	rf62X_types.h: 849
-class union_anon_79(Union):
+#	rf62X_types.h: 869
+class union_anon_82(Union):
     pass
 
-union_anon_79.__slots__ = [
+union_anon_82.__slots__ = [
     'rawData',
     'val_uint32',
     'val_uint64',
@@ -2461,7 +2511,7 @@ union_anon_79.__slots__ = [
     'arr_dbl',
     'val_str',
 ]
-union_anon_79._fields_ = [
+union_anon_82._fields_ = [
     ('rawData', POINTER(None)),
     ('val_uint32', POINTER(value_uint32_t)),
     ('val_uint64', POINTER(value_uint64_t)),
@@ -2478,42 +2528,42 @@ union_anon_79._fields_ = [
     ('val_str', POINTER(value_str_t)),
 ]
 
-#	rf62X_types.h: 867
-class struct_anon_80(Structure):
+#	rf62X_types.h: 887
+class struct_anon_83(Structure):
     pass
 
-struct_anon_80.__slots__ = [
+struct_anon_83.__slots__ = [
     'base',
     'unnamed_1',
     'is_changed',
 ]
-struct_anon_80._anonymous_ = [
+struct_anon_83._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_80._fields_ = [
+struct_anon_83._fields_ = [
     ('base', value_base_t),
-    ('unnamed_1', union_anon_79),
+    ('unnamed_1', union_anon_82),
     ('is_changed', uint8_t),
 ]
 
-parameter_t = struct_anon_80#	rf62X_types.h: 867
+parameter_t = struct_anon_83#	rf62X_types.h: 887
 
-#	rf62X_types.h: 875
-class struct_anon_81(Structure):
+#	rf62X_types.h: 895
+class struct_anon_84(Structure):
     pass
 
-struct_anon_81.__slots__ = [
+struct_anon_84.__slots__ = [
     'name',
     'arg_list',
 ]
-struct_anon_81._fields_ = [
+struct_anon_84._fields_ = [
     ('name', c_char_p),
     ('arg_list', c_void_p),
 ]
 
-command_t = struct_anon_81#	rf62X_types.h: 875
+command_t = struct_anon_84#	rf62X_types.h: 895
 
-#	rf62X_types.h: 880
+#	rf62X_types.h: 900
 class struct_input_t(Structure):
     pass
 
@@ -2526,7 +2576,7 @@ struct_input_t._fields_ = [
     ('payload', POINTER(rfUint8)),
 ]
 
-#	rf62X_types.h: 884
+#	rf62X_types.h: 904
 class struct_output_t(Structure):
     pass
 
@@ -2539,258 +2589,258 @@ struct_output_t._fields_ = [
     ('payload', POINTER(rfUint8)),
 ]
 
-#	rf62X_types.h: 888
-class struct_anon_82(Structure):
+#	rf62X_types.h: 908
+class struct_anon_85(Structure):
     pass
 
-struct_anon_82.__slots__ = [
+struct_anon_85.__slots__ = [
     'name',
     'input',
     'output',
 ]
-struct_anon_82._fields_ = [
+struct_anon_85._fields_ = [
     ('name', c_char_p),
     ('input', struct_input_t),
     ('output', struct_output_t),
 ]
 
-command2_t = struct_anon_82#	rf62X_types.h: 888
+command2_t = struct_anon_85#	rf62X_types.h: 908
 
-enum_anon_83 = c_int#	rf62X_types.h: 896
+enum_anon_86 = c_int#	rf62X_types.h: 916
 
-kRF627_OLD = 1#	rf62X_types.h: 896
+kRF627_OLD = 1#	rf62X_types.h: 916
 
-kRF627_SMART = 2#	rf62X_types.h: 896
+kRF627_SMART = 2#	rf62X_types.h: 916
 
-scanner_types_t = enum_anon_83#	rf62X_types.h: 896
+scanner_types_t = enum_anon_86#	rf62X_types.h: 916
 
-enum_anon_84 = c_int#	rf62X_types.h: 902
+enum_anon_87 = c_int#	rf62X_types.h: 922
 
-kSERVICE = 1#	rf62X_types.h: 902
+kSERVICE = 1#	rf62X_types.h: 922
 
-kETHERNET_IP = 2#	rf62X_types.h: 902
+kETHERNET_IP = 2#	rf62X_types.h: 922
 
-kMODBUS_TCP = 3#	rf62X_types.h: 902
+kMODBUS_TCP = 3#	rf62X_types.h: 922
 
-protocol_types_t = enum_anon_84#	rf62X_types.h: 902
+protocol_types_t = enum_anon_87#	rf62X_types.h: 922
 
-enum_anon_85 = c_int#	rf62X_types.h: 908
+enum_anon_88 = c_int#	rf62X_types.h: 928
 
-kSTEP = 1#	rf62X_types.h: 908
+kSTEP = 1#	rf62X_types.h: 928
 
-kMEASURE = 2#	rf62X_types.h: 908
+kMEASURE = 2#	rf62X_types.h: 928
 
-kPACKET = 3#	rf62X_types.h: 908
+kPACKET = 3#	rf62X_types.h: 928
 
-count_types_t = enum_anon_85#	rf62X_types.h: 908
+count_types_t = enum_anon_88#	rf62X_types.h: 928
 
-#	rf62X_types.h: 915
-class union_anon_86(Union):
+#	rf62X_types.h: 935
+class union_anon_89(Union):
     pass
 
-union_anon_86.__slots__ = [
+union_anon_89.__slots__ = [
     'rf627old_profile2D',
     'rf627smart_profile2D',
 ]
-union_anon_86._fields_ = [
+union_anon_89._fields_ = [
     ('rf627old_profile2D', POINTER(rf627_old_profile2D_t)),
     ('rf627smart_profile2D', POINTER(rf627_smart_profile2D_t)),
 ]
 
-#	rf62X_types.h: 919
-class struct_anon_87(Structure):
+#	rf62X_types.h: 939
+class struct_anon_90(Structure):
     pass
 
-struct_anon_87.__slots__ = [
+struct_anon_90.__slots__ = [
     'type',
     'unnamed_1',
 ]
-struct_anon_87._anonymous_ = [
+struct_anon_90._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_87._fields_ = [
+struct_anon_90._fields_ = [
     ('type', scanner_types_t),
-    ('unnamed_1', union_anon_86),
+    ('unnamed_1', union_anon_89),
 ]
 
-rf627_profile2D_t = struct_anon_87#	rf62X_types.h: 919
+rf627_profile2D_t = struct_anon_90#	rf62X_types.h: 939
 
-#	rf62X_types.h: 924
-class union_anon_88(Union):
+#	rf62X_types.h: 944
+class union_anon_91(Union):
     pass
 
-union_anon_88.__slots__ = [
+union_anon_91.__slots__ = [
     'rf627old_frame',
     'rf627smart_frame',
 ]
-union_anon_88._fields_ = [
+union_anon_91._fields_ = [
     ('rf627old_frame', POINTER(rf627_old_frame_t)),
     ('rf627smart_frame', POINTER(rf627_smart_frame_t)),
 ]
 
-#	rf62X_types.h: 928
-class struct_anon_89(Structure):
+#	rf62X_types.h: 948
+class struct_anon_92(Structure):
     pass
 
-struct_anon_89.__slots__ = [
+struct_anon_92.__slots__ = [
     'type',
     'unnamed_1',
 ]
-struct_anon_89._anonymous_ = [
+struct_anon_92._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_89._fields_ = [
+struct_anon_92._fields_ = [
     ('type', scanner_types_t),
-    ('unnamed_1', union_anon_88),
+    ('unnamed_1', union_anon_91),
 ]
 
-rf627_frame_t = struct_anon_89#	rf62X_types.h: 928
+rf627_frame_t = struct_anon_92#	rf62X_types.h: 948
 
-#	rf62X_types.h: 933
-class union_anon_90(Union):
+#	rf62X_types.h: 953
+class union_anon_93(Union):
     pass
 
-union_anon_90.__slots__ = [
+union_anon_93.__slots__ = [
     'rf627old_calib_table',
     'rf627smart_calib_table',
 ]
-union_anon_90._fields_ = [
+union_anon_93._fields_ = [
     ('rf627old_calib_table', POINTER(rf627_old_calib_table_t)),
     ('rf627smart_calib_table', POINTER(rf627_smart_calib_table_t)),
 ]
 
-#	rf62X_types.h: 937
-class struct_anon_91(Structure):
+#	rf62X_types.h: 957
+class struct_anon_94(Structure):
     pass
 
-struct_anon_91.__slots__ = [
+struct_anon_94.__slots__ = [
     'type',
     'unnamed_1',
 ]
-struct_anon_91._anonymous_ = [
+struct_anon_94._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_91._fields_ = [
+struct_anon_94._fields_ = [
     ('type', scanner_types_t),
-    ('unnamed_1', union_anon_90),
+    ('unnamed_1', union_anon_93),
 ]
 
-rf627_calib_table_t = struct_anon_91#	rf62X_types.h: 937
+rf627_calib_table_t = struct_anon_94#	rf62X_types.h: 957
 
-#	rf62X_types.h: 942
-class union_anon_92(Union):
+#	rf62X_types.h: 962
+class union_anon_95(Union):
     pass
 
-union_anon_92.__slots__ = [
+union_anon_95.__slots__ = [
     'table_v6',
 ]
-union_anon_92._fields_ = [
+union_anon_95._fields_ = [
     ('table_v6', POINTER(rf627_smart_approx_table_v6_t)),
 ]
 
-#	rf62X_types.h: 945
-class struct_anon_93(Structure):
+#	rf62X_types.h: 965
+class struct_anon_96(Structure):
     pass
 
-struct_anon_93.__slots__ = [
+struct_anon_96.__slots__ = [
     'version',
     'unnamed_1',
 ]
-struct_anon_93._anonymous_ = [
+struct_anon_96._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_93._fields_ = [
+struct_anon_96._fields_ = [
     ('version', rfUint32),
-    ('unnamed_1', union_anon_92),
+    ('unnamed_1', union_anon_95),
 ]
 
-rf627_approx_table_t = struct_anon_93#	rf62X_types.h: 945
+rf627_approx_table_t = struct_anon_96#	rf62X_types.h: 965
 
-#	rf62X_types.h: 952
-class union_anon_94(Union):
-    pass
-
-union_anon_94.__slots__ = [
-    'rf627_profile3D',
-    'rf627smart_profile3D',
-]
-union_anon_94._fields_ = [
-    ('rf627_profile3D', POINTER(rf627_old_profile3D_t)),
-    ('rf627smart_profile3D', POINTER(rf627_smart_profile3D_t)),
-]
-
-#	rf62X_types.h: 956
-class struct_anon_95(Structure):
-    pass
-
-struct_anon_95.__slots__ = [
-    'type',
-    'unnamed_1',
-]
-struct_anon_95._anonymous_ = [
-    'unnamed_1',
-]
-struct_anon_95._fields_ = [
-    ('type', scanner_types_t),
-    ('unnamed_1', union_anon_94),
-]
-
-rf627_profile3D_t = struct_anon_95#	rf62X_types.h: 956
-
-#	rf62X_types.h: 965
-class union_anon_96(Union):
-    pass
-
-union_anon_96.__slots__ = [
-    'hello_info_service_protocol',
-]
-union_anon_96._fields_ = [
-    ('hello_info_service_protocol', POINTER(rf627_old_hello_info_by_service_protocol)),
-]
-
-#	rf62X_types.h: 968
+#	rf62X_types.h: 972
 class union_anon_97(Union):
     pass
 
 union_anon_97.__slots__ = [
-    'hello_info_service_protocol',
+    'rf627_profile3D',
+    'rf627smart_profile3D',
 ]
 union_anon_97._fields_ = [
+    ('rf627_profile3D', POINTER(rf627_old_profile3D_t)),
+    ('rf627smart_profile3D', POINTER(rf627_smart_profile3D_t)),
+]
+
+#	rf62X_types.h: 976
+class struct_anon_98(Structure):
+    pass
+
+struct_anon_98.__slots__ = [
+    'type',
+    'unnamed_1',
+]
+struct_anon_98._anonymous_ = [
+    'unnamed_1',
+]
+struct_anon_98._fields_ = [
+    ('type', scanner_types_t),
+    ('unnamed_1', union_anon_97),
+]
+
+rf627_profile3D_t = struct_anon_98#	rf62X_types.h: 976
+
+#	rf62X_types.h: 985
+class union_anon_99(Union):
+    pass
+
+union_anon_99.__slots__ = [
+    'hello_info_service_protocol',
+]
+union_anon_99._fields_ = [
+    ('hello_info_service_protocol', POINTER(rf627_old_hello_info_by_service_protocol)),
+]
+
+#	rf62X_types.h: 988
+class union_anon_100(Union):
+    pass
+
+union_anon_100.__slots__ = [
+    'hello_info_service_protocol',
+]
+union_anon_100._fields_ = [
     ('hello_info_service_protocol', POINTER(rf627_smart_hello_info_by_service_protocol)),
 ]
 
-#	rf62X_types.h: 964
-class union_anon_98(Union):
+#	rf62X_types.h: 984
+class union_anon_101(Union):
     pass
 
-union_anon_98.__slots__ = [
+union_anon_101.__slots__ = [
     'rf627old',
     'rf627smart',
 ]
-union_anon_98._fields_ = [
-    ('rf627old', union_anon_96),
-    ('rf627smart', union_anon_97),
+union_anon_101._fields_ = [
+    ('rf627old', union_anon_99),
+    ('rf627smart', union_anon_100),
 ]
 
-#	rf62X_types.h: 972
-class struct_anon_99(Structure):
+#	rf62X_types.h: 992
+class struct_anon_102(Structure):
     pass
 
-struct_anon_99.__slots__ = [
+struct_anon_102.__slots__ = [
     'scanner_type',
     'protocol_type',
     'unnamed_1',
 ]
-struct_anon_99._anonymous_ = [
+struct_anon_102._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_99._fields_ = [
+struct_anon_102._fields_ = [
     ('scanner_type', scanner_types_t),
     ('protocol_type', protocol_types_t),
-    ('unnamed_1', union_anon_98),
+    ('unnamed_1', union_anon_101),
 ]
 
-hello_information = struct_anon_99#	rf62X_types.h: 972
+hello_information = struct_anon_102#	rf62X_types.h: 992
 
 #	custom_vector.h: 10
 class struct_vector_(Structure):
@@ -2824,16 +2874,16 @@ u_long = c_ulong#	sys\\bsdtypes.h: 62
 SOCKET = u_int#	winsock.h: 103
 
 #	winsock.h: 322
-class struct_anon_168(Structure):
+class struct_anon_171(Structure):
     pass
 
-struct_anon_168.__slots__ = [
+struct_anon_171.__slots__ = [
     's_b1',
     's_b2',
     's_b3',
     's_b4',
 ]
-struct_anon_168._fields_ = [
+struct_anon_171._fields_ = [
     ('s_b1', u_char),
     ('s_b2', u_char),
     ('s_b3', u_char),
@@ -2841,30 +2891,30 @@ struct_anon_168._fields_ = [
 ]
 
 #	winsock.h: 323
-class struct_anon_169(Structure):
+class struct_anon_172(Structure):
     pass
 
-struct_anon_169.__slots__ = [
+struct_anon_172.__slots__ = [
     's_w1',
     's_w2',
 ]
-struct_anon_169._fields_ = [
+struct_anon_172._fields_ = [
     ('s_w1', u_short),
     ('s_w2', u_short),
 ]
 
 #	winsock.h: 321
-class union_anon_170(Union):
+class union_anon_173(Union):
     pass
 
-union_anon_170.__slots__ = [
+union_anon_173.__slots__ = [
     'S_un_b',
     'S_un_w',
     'S_addr',
 ]
-union_anon_170._fields_ = [
-    ('S_un_b', struct_anon_168),
-    ('S_un_w', struct_anon_169),
+union_anon_173._fields_ = [
+    ('S_un_b', struct_anon_171),
+    ('S_un_w', struct_anon_172),
     ('S_addr', u_long),
 ]
 
@@ -2876,7 +2926,7 @@ struct_in_addr.__slots__ = [
     'S_un',
 ]
 struct_in_addr._fields_ = [
-    ('S_un', union_anon_170),
+    ('S_un', union_anon_173),
 ]
 
 #	winsock.h: 347
@@ -2897,17 +2947,17 @@ struct_sockaddr_in._fields_ = [
 ]
 
 #	udpport.h: 36
-class struct_anon_178(Structure):
+class struct_anon_181(Structure):
     pass
 
-struct_anon_178.__slots__ = [
+struct_anon_181.__slots__ = [
     'port_num',
     'input_addr',
     'output_addr',
     'init_flag',
     'sock',
 ]
-struct_anon_178._fields_ = [
+struct_anon_181._fields_ = [
     ('port_num', uint16_t),
     ('input_addr', struct_sockaddr_in),
     ('output_addr', struct_sockaddr_in),
@@ -2915,22 +2965,22 @@ struct_anon_178._fields_ = [
     ('sock', SOCKET),
 ]
 
-udp_port_t = struct_anon_178#	udpport.h: 36
+udp_port_t = struct_anon_181#	udpport.h: 36
 
 #	pthread.h: 400
-class struct_anon_185(Structure):
+class struct_anon_188(Structure):
     pass
 
-struct_anon_185.__slots__ = [
+struct_anon_188.__slots__ = [
     'p',
     'x',
 ]
-struct_anon_185._fields_ = [
+struct_anon_188._fields_ = [
     ('p', POINTER(None)),
     ('x', c_uint),
 ]
 
-ptw32_handle_t = struct_anon_185#	pthread.h: 400
+ptw32_handle_t = struct_anon_188#	pthread.h: 400
 
 pthread_t = ptw32_handle_t#	pthread.h: 402
 
@@ -2953,10 +3003,10 @@ RF62X_timeout_callback = CFUNCTYPE(UNCHECKED(c_int8), POINTER(None))#	RF62Xtypes
 RF62X_free_callback = CFUNCTYPE(UNCHECKED(c_int8), POINTER(None))#	RF62Xtypes.h: 15
 
 #	RF62Xtypes.h: 46
-class struct_anon_188(Structure):
+class struct_anon_191(Structure):
     pass
 
-struct_anon_188.__slots__ = [
+struct_anon_191.__slots__ = [
     'type',
     'cmd_name',
     'container_type',
@@ -2979,7 +3029,7 @@ struct_anon_188.__slots__ = [
     'result',
     'result_mutex',
 ]
-struct_anon_188._fields_ = [
+struct_anon_191._fields_ = [
     ('type', c_char * int(64)),
     ('cmd_name', c_char * int(256)),
     ('container_type', c_char * int(64)),
@@ -3003,54 +3053,56 @@ struct_anon_188._fields_ = [
     ('result_mutex', POINTER(pthread_mutex_t)),
 ]
 
-RF62X_msg_t = struct_anon_188#	RF62Xtypes.h: 46
+RF62X_msg_t = struct_anon_191#	RF62Xtypes.h: 46
 
 #	RF62Xtypes.h: 72
-class struct_anon_190(Structure):
+class struct_anon_193(Structure):
     pass
 
-struct_anon_190.__slots__ = [
+struct_anon_193.__slots__ = [
     'msg',
     'data_pos',
 ]
-struct_anon_190._fields_ = [
+struct_anon_193._fields_ = [
     ('msg', POINTER(RF62X_msg_t)),
     ('data_pos', uint32_t),
 ]
 
-RF62X_parser_output_msg_t = struct_anon_190#	RF62Xtypes.h: 72
+RF62X_parser_output_msg_t = struct_anon_193#	RF62Xtypes.h: 72
 
-#	RF62Xtypes.h: 82
-class struct_anon_191(Structure):
+#	RF62Xtypes.h: 83
+class struct_anon_194(Structure):
     pass
 
-struct_anon_191.__slots__ = [
+struct_anon_194.__slots__ = [
     'msg',
     'mask',
+    'mask_size',
     'received_size',
     'data_pos',
 ]
-struct_anon_191._fields_ = [
+struct_anon_194._fields_ = [
     ('msg', POINTER(RF62X_msg_t)),
     ('mask', POINTER(uint8_t)),
+    ('mask_size', uint32_t),
     ('received_size', uint32_t),
     ('data_pos', uint32_t),
 ]
 
-RF62X_parser_input_msg_t = struct_anon_191#	RF62Xtypes.h: 82
+RF62X_parser_input_msg_t = struct_anon_194#	RF62Xtypes.h: 83
 
-#	RF62Xtypes.h: 93
-class struct_anon_192(Structure):
+#	RF62Xtypes.h: 94
+class struct_anon_195(Structure):
     pass
 
-struct_anon_192.__slots__ = [
+struct_anon_195.__slots__ = [
     'data',
     'data_pos',
     'data_size',
     'data_id',
     'is_data_confirmed',
 ]
-struct_anon_192._fields_ = [
+struct_anon_195._fields_ = [
     ('data', POINTER(uint8_t)),
     ('data_pos', uint32_t),
     ('data_size', uint32_t),
@@ -3058,13 +3110,13 @@ struct_anon_192._fields_ = [
     ('is_data_confirmed', uint8_t),
 ]
 
-RF62X_parser_output_data_t = struct_anon_192#	RF62Xtypes.h: 93
+RF62X_parser_output_data_t = struct_anon_195#	RF62Xtypes.h: 94
 
-#	RF62Xtypes.h: 105
-class struct_anon_193(Structure):
+#	RF62Xtypes.h: 106
+class struct_anon_196(Structure):
     pass
 
-struct_anon_193.__slots__ = [
+struct_anon_196.__slots__ = [
     'data',
     'mask',
     'chain_size',
@@ -3074,7 +3126,7 @@ struct_anon_193.__slots__ = [
     'uid',
     'cmd_name',
 ]
-struct_anon_193._fields_ = [
+struct_anon_196._fields_ = [
     ('data', POINTER(uint8_t)),
     ('mask', POINTER(uint8_t)),
     ('chain_size', uint32_t),
@@ -3085,13 +3137,13 @@ struct_anon_193._fields_ = [
     ('cmd_name', String),
 ]
 
-RF62X_parser_input_data = struct_anon_193#	RF62Xtypes.h: 105
+RF62X_parser_input_data = struct_anon_196#	RF62Xtypes.h: 106
 
-#	RF62Xtypes.h: 185
-class struct_anon_194(Structure):
+#	RF62Xtypes.h: 186
+class struct_anon_197(Structure):
     pass
 
-struct_anon_194.__slots__ = [
+struct_anon_197.__slots__ = [
     'output_msg_buffer',
     'output_msg_index',
     'input_msg_buffer',
@@ -3129,7 +3181,7 @@ struct_anon_194.__slots__ = [
     'lost_data_request_packet',
     'data_confirmation_packet',
 ]
-struct_anon_194._fields_ = [
+struct_anon_197._fields_ = [
     ('output_msg_buffer', POINTER(RF62X_parser_output_msg_t)),
     ('output_msg_index', uint32_t),
     ('input_msg_buffer', POINTER(RF62X_parser_input_msg_t)),
@@ -3168,13 +3220,13 @@ struct_anon_194._fields_ = [
     ('data_confirmation_packet', POINTER(uint8_t)),
 ]
 
-RF62X_parser_t = struct_anon_194#	RF62Xtypes.h: 185
+RF62X_parser_t = struct_anon_197#	RF62Xtypes.h: 186
 
-#	RF62Xtypes.h: 213
-class struct_anon_195(Structure):
+#	RF62Xtypes.h: 214
+class struct_anon_198(Structure):
     pass
 
-struct_anon_195.__slots__ = [
+struct_anon_198.__slots__ = [
     'RF62X_parser',
     'dst_ip_addr',
     'host_ip_addr',
@@ -3192,7 +3244,7 @@ struct_anon_195.__slots__ = [
     'max_packet_size',
     'max_data_size',
 ]
-struct_anon_195._fields_ = [
+struct_anon_198._fields_ = [
     ('RF62X_parser', RF62X_parser_t),
     ('dst_ip_addr', uint32_t),
     ('host_ip_addr', uint32_t),
@@ -3211,13 +3263,13 @@ struct_anon_195._fields_ = [
     ('max_data_size', uint32_t),
 ]
 
-RF62X_channel_t = struct_anon_195#	RF62Xtypes.h: 213
+RF62X_channel_t = struct_anon_198#	RF62Xtypes.h: 214
 
 #	rf62X_devices.h: 32
-class struct_anon_241(Structure):
+class struct_anon_246(Structure):
     pass
 
-struct_anon_241.__slots__ = [
+struct_anon_246.__slots__ = [
     'options',
     'factory_params',
     'user_params',
@@ -3228,7 +3280,7 @@ struct_anon_241.__slots__ = [
     'params_list',
     'info_by_service_protocol',
 ]
-struct_anon_241._fields_ = [
+struct_anon_246._fields_ = [
     ('options', config_options_t),
     ('factory_params', rf627_old_factory_params_t),
     ('user_params', rf627_old_user_params_t),
@@ -3240,13 +3292,13 @@ struct_anon_241._fields_ = [
     ('info_by_service_protocol', rf627_old_hello_info_by_service_protocol),
 ]
 
-rf627_old_t = struct_anon_241#	rf62X_devices.h: 32
+rf627_old_t = struct_anon_246#	rf62X_devices.h: 32
 
 #	rf62X_devices.h: 221
-class struct_anon_242(Structure):
+class struct_anon_247(Structure):
     pass
 
-struct_anon_242.__slots__ = [
+struct_anon_247.__slots__ = [
     'channel',
     'm_data_sock',
     'params_list',
@@ -3257,7 +3309,7 @@ struct_anon_242.__slots__ = [
     'protocol_settings_list',
     'protocol_settings_mutex',
 ]
-struct_anon_242._fields_ = [
+struct_anon_247._fields_ = [
     ('channel', RF62X_channel_t),
     ('m_data_sock', POINTER(None)),
     ('params_list', POINTER(vector_t)),
@@ -3269,38 +3321,38 @@ struct_anon_242._fields_ = [
     ('protocol_settings_mutex', pthread_mutex_t),
 ]
 
-rf627_smart_t = struct_anon_242#	rf62X_devices.h: 221
+rf627_smart_t = struct_anon_247#	rf62X_devices.h: 221
 
-#	rf62X_devices.h: 748
-class union_anon_243(Union):
+#	rf62X_devices.h: 749
+class union_anon_248(Union):
     pass
 
-union_anon_243.__slots__ = [
+union_anon_248.__slots__ = [
     'rf627_old',
     'rf627_smart',
 ]
-union_anon_243._fields_ = [
+union_anon_248._fields_ = [
     ('rf627_old', POINTER(rf627_old_t)),
     ('rf627_smart', POINTER(rf627_smart_t)),
 ]
 
-#	rf62X_devices.h: 752
-class struct_anon_244(Structure):
+#	rf62X_devices.h: 753
+class struct_anon_249(Structure):
     pass
 
-struct_anon_244.__slots__ = [
+struct_anon_249.__slots__ = [
     'type',
     'unnamed_1',
 ]
-struct_anon_244._anonymous_ = [
+struct_anon_249._anonymous_ = [
     'unnamed_1',
 ]
-struct_anon_244._fields_ = [
+struct_anon_249._fields_ = [
     ('type', scanner_types_t),
-    ('unnamed_1', union_anon_243),
+    ('unnamed_1', union_anon_248),
 ]
 
-scanner_base_t = struct_anon_244#	rf62X_devices.h: 752
+scanner_base_t = struct_anon_249#	rf62X_devices.h: 753
 
 #	rf62X_sdk.h: 18
 try:
@@ -3308,35 +3360,35 @@ try:
 except:
     pass
 
-value_uint32_t = struct_value_uint32_t#	rf62X_types.h: 716
+value_uint32_t = struct_value_uint32_t#	rf62X_types.h: 736
 
-value_uint64_t = struct_value_uint64_t#	rf62X_types.h: 726
+value_uint64_t = struct_value_uint64_t#	rf62X_types.h: 746
 
-value_int32_t = struct_value_int32_t#	rf62X_types.h: 736
+value_int32_t = struct_value_int32_t#	rf62X_types.h: 756
 
-value_int64_t = struct_value_int64_t#	rf62X_types.h: 746
+value_int64_t = struct_value_int64_t#	rf62X_types.h: 766
 
-value_flt_t = struct_value_flt_t#	rf62X_types.h: 755
+value_flt_t = struct_value_flt_t#	rf62X_types.h: 775
 
-value_dbl_t = struct_value_dbl_t#	rf62X_types.h: 764
+value_dbl_t = struct_value_dbl_t#	rf62X_types.h: 784
 
-array_uint32_t = struct_array_uint32_t#	rf62X_types.h: 776
+array_uint32_t = struct_array_uint32_t#	rf62X_types.h: 796
 
-array_uint64_t = struct_array_uint64_t#	rf62X_types.h: 788
+array_uint64_t = struct_array_uint64_t#	rf62X_types.h: 808
 
-array_int32_t = struct_array_int32_t#	rf62X_types.h: 800
+array_int32_t = struct_array_int32_t#	rf62X_types.h: 820
 
-array_int64_t = struct_array_int64_t#	rf62X_types.h: 812
+array_int64_t = struct_array_int64_t#	rf62X_types.h: 832
 
-array_flt_t = struct_array_flt_t#	rf62X_types.h: 824
+array_flt_t = struct_array_flt_t#	rf62X_types.h: 844
 
-array_dbl_t = struct_array_dbl_t#	rf62X_types.h: 836
+array_dbl_t = struct_array_dbl_t#	rf62X_types.h: 856
 
-value_str_t = struct_value_str_t#	rf62X_types.h: 843
+value_str_t = struct_value_str_t#	rf62X_types.h: 863
 
-input_t = struct_input_t#	rf62X_types.h: 880
+input_t = struct_input_t#	rf62X_types.h: 900
 
-output_t = struct_output_t#	rf62X_types.h: 884
+output_t = struct_output_t#	rf62X_types.h: 904
 
 vector_ = struct_vector_#	custom_vector.h: 10
 
@@ -3415,121 +3467,121 @@ lib.free_profile2D.restype = None
 #	rf62X_sdk.h: 178
 lib.get_profile3D_from_scanner.argtypes = [POINTER(scanner_base_t), rfFloat, rfFloat, count_types_t, rfBool, protocol_types_t]
 lib.get_profile3D_from_scanner.restype = POINTER(rf627_profile3D_t)
-#	rf62X_sdk.h: 190
-lib.get_frame_from_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
+#	rf62X_sdk.h: 193
+lib.get_frame_from_scanner.argtypes = [POINTER(scanner_base_t), rfBool, rfUint32, protocol_types_t]
 lib.get_frame_from_scanner.restype = POINTER(rf627_frame_t)
-#	rf62X_sdk.h: 203
+#	rf62X_sdk.h: 207
 lib.read_params_from_scanner.argtypes = [POINTER(scanner_base_t), rfUint32, protocol_types_t]
 lib.read_params_from_scanner.restype = rfUint8
-#	rf62X_sdk.h: 215
+#	rf62X_sdk.h: 219
 lib.write_params_to_scanner.argtypes = [POINTER(scanner_base_t), rfUint32, protocol_types_t]
 lib.write_params_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 226
+#	rf62X_sdk.h: 230
 lib.save_params_to_scanner.argtypes = [POINTER(scanner_base_t), rfUint32, protocol_types_t]
 lib.save_params_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 235
+#	rf62X_sdk.h: 239
 lib.load_recovery_params_from_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, protocol_types_t]
 lib.load_recovery_params_from_scanner.restype = rfUint8
-#	rf62X_sdk.h: 246
+#	rf62X_sdk.h: 250
 lib.get_parameter.argtypes = [POINTER(scanner_base_t), c_char_p]
 lib.get_parameter.restype = POINTER(parameter_t)
-#	rf62X_sdk.h: 257
+#	rf62X_sdk.h: 261
 lib.set_parameter.argtypes = [POINTER(scanner_base_t), POINTER(parameter_t)]
 lib.set_parameter.restype = rfUint8
-#	rf62X_sdk.h: 260
+#	rf62X_sdk.h: 264
 lib.create_parameter_from_type.argtypes = [c_char_p]
 lib.create_parameter_from_type.restype = POINTER(parameter_t)
-#	rf62X_sdk.h: 268
+#	rf62X_sdk.h: 272
 lib.free_parameter.argtypes = [POINTER(parameter_t), scanner_types_t]
 lib.free_parameter.restype = None
-#	rf62X_sdk.h: 279
+#	rf62X_sdk.h: 283
 lib.set_parameter_by_name.argtypes = [POINTER(scanner_base_t), String, rfUint32, c_void_p]
 lib.set_parameter_by_name.restype = rfUint8
-#	rf62X_sdk.h: 296
+#	rf62X_sdk.h: 300
 lib.get_dumps_profiles_from_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, uint32_t, uint32_t, protocol_types_t, POINTER(POINTER(rf627_profile2D_t)), POINTER(uint32_t), uint32_t]
 lib.get_dumps_profiles_from_scanner.restype = rfUint8
-#	rf62X_sdk.h: 311
+#	rf62X_sdk.h: 315
 lib.get_authorization_token_from_scanner.argtypes = [POINTER(scanner_base_t), POINTER(POINTER(c_char)), POINTER(uint32_t), uint32_t, protocol_types_t]
 lib.get_authorization_token_from_scanner.restype = rfUint8
-#	rf62X_sdk.h: 324
+#	rf62X_sdk.h: 328
 lib.set_authorization_key_to_scanner.argtypes = [POINTER(scanner_base_t), String, uint32_t, uint32_t, protocol_types_t]
 lib.set_authorization_key_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 336
+#	rf62X_sdk.h: 340
 lib.create_calibration_table_for_scanner.argtypes = [POINTER(scanner_base_t), uint32_t]
 lib.create_calibration_table_for_scanner.restype = rfUint8
-#	rf62X_sdk.h: 347
+#	rf62X_sdk.h: 351
 lib.read_calibration_table_from_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, protocol_types_t]
 lib.read_calibration_table_from_scanner.restype = rfUint8
-#	rf62X_sdk.h: 357
+#	rf62X_sdk.h: 361
 lib.convert_calibration_table_from_bytes.argtypes = [String, uint32_t]
 lib.convert_calibration_table_from_bytes.restype = POINTER(rf627_calib_table_t)
-#	rf62X_sdk.h: 368
+#	rf62X_sdk.h: 372
 lib.convert_calibration_table_to_bytes.argtypes = [POINTER(rf627_calib_table_t), POINTER(POINTER(c_char)), POINTER(uint32_t)]
 lib.convert_calibration_table_to_bytes.restype = rfBool
-#	rf62X_sdk.h: 379
+#	rf62X_sdk.h: 383
 lib.write_calibration_table_to_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, protocol_types_t]
 lib.write_calibration_table_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 390
+#	rf62X_sdk.h: 394
 lib.get_calibration_table_from_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, protocol_types_t]
 lib.get_calibration_table_from_scanner.restype = POINTER(rf627_calib_table_t)
-#	rf62X_sdk.h: 402
+#	rf62X_sdk.h: 406
 lib.set_calibration_table_to_scanner.argtypes = [POINTER(scanner_base_t), POINTER(rf627_calib_table_t), uint32_t, protocol_types_t]
 lib.set_calibration_table_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 414
+#	rf62X_sdk.h: 418
 lib.save_calibration_table_to_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, protocol_types_t]
 lib.save_calibration_table_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 427
+#	rf62X_sdk.h: 431
 lib.create_approximation_table_for_scanner.argtypes = [POINTER(scanner_base_t)]
 lib.create_approximation_table_for_scanner.restype = rfUint8
-#	rf62X_sdk.h: 437
+#	rf62X_sdk.h: 441
 lib.read_approximation_table_from_scanner.argtypes = [POINTER(scanner_base_t), uint32_t]
 lib.read_approximation_table_from_scanner.restype = rfUint8
-#	rf62X_sdk.h: 447
+#	rf62X_sdk.h: 451
 lib.convert_approximation_table_from_bytes.argtypes = [POINTER(rf627_approx_table_t), String, uint32_t]
 lib.convert_approximation_table_from_bytes.restype = rfUint8
-#	rf62X_sdk.h: 458
+#	rf62X_sdk.h: 462
 lib.convert_approximation_table_to_bytes.argtypes = [POINTER(rf627_approx_table_t), POINTER(POINTER(c_char)), POINTER(uint32_t)]
 lib.convert_approximation_table_to_bytes.restype = rfBool
-#	rf62X_sdk.h: 469
+#	rf62X_sdk.h: 473
 lib.write_approximation_table_to_scanner.argtypes = [POINTER(scanner_base_t), uint32_t]
 lib.write_approximation_table_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 480
+#	rf62X_sdk.h: 484
 lib.get_approximation_table_from_scanner.argtypes = [POINTER(scanner_base_t), uint32_t, protocol_types_t]
 lib.get_approximation_table_from_scanner.restype = POINTER(rf627_approx_table_t)
-#	rf62X_sdk.h: 492
+#	rf62X_sdk.h: 496
 lib.set_approximation_table_to_scanner.argtypes = [POINTER(scanner_base_t), POINTER(rf627_approx_table_t), uint32_t]
 lib.set_approximation_table_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 504
+#	rf62X_sdk.h: 508
 lib.save_approximation_table_to_scanner.argtypes = [POINTER(scanner_base_t), uint32_t]
 lib.save_approximation_table_to_scanner.restype = rfUint8
-#	rf62X_sdk.h: 517
+#	rf62X_sdk.h: 521
 lib.send_reboot_device_request_to_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
 lib.send_reboot_device_request_to_scanner.restype = uint8_t
-#	rf62X_sdk.h: 526
+#	rf62X_sdk.h: 530
 lib.send_reboot_sensor_request_to_scanner.argtypes = [POINTER(scanner_base_t), protocol_types_t]
 lib.send_reboot_sensor_request_to_scanner.restype = uint8_t
-#	rf62X_sdk.h: 535
+#	rf62X_sdk.h: 539
 lib.send_data_to_scanner_periphery.argtypes = [POINTER(scanner_base_t), c_char_p, rfUint32, c_char_p, rfUint32, POINTER(c_char_p), POINTER(rfUint32)]
 lib.send_data_to_scanner_periphery.restype = uint8_t
-#	rf62X_sdk.h: 545
+#	rf62X_sdk.h: 549
 lib.receive_data_from_scanner_periphery.argtypes = [POINTER(scanner_base_t), c_char_p, rfUint32, rfUint16, POINTER(c_char_p), POINTER(rfUint32)]
 lib.receive_data_from_scanner_periphery.restype = uint8_t
-#	rf62X_sdk.h: 555
+#	rf62X_sdk.h: 559
 lib.receive_firmware_from_scanner.argtypes = [POINTER(scanner_base_t), rfUint32, POINTER(c_char_p), POINTER(rfUint32)]
 lib.receive_firmware_from_scanner.restype = uint8_t
-#	rf62X_sdk.h: 574
+#	rf62X_sdk.h: 578
 lib.add_protocol_settings_for_cmd.argtypes = [POINTER(scanner_base_t), String, rfUint8, rfUint8, rfUint8, rfUint32, rfUint32]
 lib.add_protocol_settings_for_cmd.restype = uint8_t
-#	rf62X_sdk.h: 592
+#	rf62X_sdk.h: 596
 lib.send_custom_command_to_scanner.argtypes = [POINTER(scanner_base_t), c_char_p, c_char_p, c_char_p, rfUint32, POINTER(c_char_p), POINTER(rfUint32)]
 lib.send_custom_command_to_scanner.restype = uint8_t
-#	rf62X_sdk.h: 605
+#	rf62X_sdk.h: 609
 lib.remove_protocol_settings_for_cmd.argtypes = [POINTER(scanner_base_t), String]
 lib.remove_protocol_settings_for_cmd.restype = uint8_t
-#	rf62X_sdk.h: 614
+#	rf62X_sdk.h: 618
 lib.send_command.argtypes = [POINTER(scanner_base_t), POINTER(command_t)]
 lib.send_command.restype = rfUint8
-#	rf62X_sdk.h: 623
+#	rf62X_sdk.h: 627
 lib.send_command2.argtypes = [POINTER(scanner_base_t), POINTER(command2_t)]
 lib.send_command2.restype = rfUint8
 #	rf62Xcore.h: 21
@@ -4170,6 +4222,10 @@ def py_profile2python(profile_sdk):
                 return None
         ret['header'] = getdict(profile.header)
         datatype = ret['header']['data_type']
+        
+        ##ÏÐÎÂÅÐÊÀ ÂÅÐÑÈÈ
+        ##
+        
         if (datatype == DTY_PixelsNormal) or (datatype == DTY_PixelsInterpolated):
             # pixels_format
             c=profile.pixels_format.pixels_count
@@ -4187,6 +4243,28 @@ def py_profile2python(profile_sdk):
                 ret['points']=(c*rf627_old_point2D_t).from_buffer_copy(_buffer_profile_tmp)
                 ret['points_count']=c
             lib.platform_free(v)#free ctypes object
+            
+            
+        #ver 1,2
+        if (datatype == SPDT_v1_2_Pixels):
+            # pixels_format
+            c=profile.pixels_format.pixels_count
+            v=profile.pixels_format.pixels
+            if c and v and memmove(_buffer_profile_tmp, v, c*sizeof(rfUint16)): #copy ctypes object to buffer
+                ret['pixels']=(c*rfUint16).from_buffer_copy(_buffer_profile_tmp)
+                ret['pixels_count']=c
+            lib.platform_free(v) #free ctypes object
+            
+        if (datatype == SPDT_v1_2_ProfileTable) or (datatype == SPDT_v1_2_ProfilePoly):
+            # profile_format
+            c = profile.profile_format.points_count
+            v = profile.profile_format.points
+            if c and v and memmove(_buffer_profile_tmp, v, c*sizeof(rf627_old_point2D_t)):
+                ret['points']=(c*rf627_old_point2D_t).from_buffer_copy(_buffer_profile_tmp)
+                ret['points_count']=c
+            lib.platform_free(v)#free ctypes object
+            
+        #----ver 1,2
 
         if (profile.intensity_count>0):
             #intensity
@@ -4196,6 +4274,9 @@ def py_profile2python(profile_sdk):
                 ret['intensity']=(c*rfUint8).from_buffer_copy(_buffer_profile_tmp)
                 ret['intensity_count']=c
             lib.platform_free(v)#free ctypes object
+
+        
+
 
 
         #freemem
@@ -4207,7 +4288,7 @@ def py_profile2python(profile_sdk):
 
     return ret
 
-def get_dumps_profiles(scanner, index, count, timeout=1000, protocol=kSERVICE):
+def get_dumps_profiles(scanner, index, count, timeout=10000, protocol=kSERVICE):
     result=[]
     fact_dump_unitSize = get_param(scanner, "fact_dump_unitSize")
     if (fact_dump_unitSize is not None and fact_dump_unitSize["type"]=="uint32_t"):
@@ -4248,3 +4329,4 @@ def get_profile2D(scanner, zero_points=True, realtime=True,  protocol=kSERVICE):
 
     _profile_mutex.release()
     return prof
+
