@@ -1,5 +1,8 @@
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <ctime>
 
 #include "rf62Xsdk.h"
 #include "rf62Xtypes.h"
@@ -32,32 +35,45 @@ int main()
     std::cout << "Was found\t: " << list.size()<< " RF627 v2.x.x"<< std::endl;
     std::cout << "========================================="     << std::endl;
 
-
-    // Iterate over all discovered scanners in network, connect to each of them,
-    // get a frame and print the main frame-info.
-    for (size_t i = 0; i < list.size(); i++)
+    int index = -1;
+    if (list.size() > 1)
     {
-        std::shared_ptr<rf627smart> scanner = list[i];
-        std::shared_ptr<hello_info> info = scanner->get_info();
+        std::cout << "Select scanner for test: " << std::endl;
+        for (size_t i = 0; i < list.size(); i++)
+            std::cout << i << ". Serial: "
+                      << list[i]->get_info()->serial_number() << std::endl;
+        std::cin >> index;
+    }
+    else if (list.size() == 1)
+        index = 0;
+    else
+        return 0;
 
-        // Print short information about the scanner
-        std::cout << "\n\nID scanner's list: " << i              << std::endl;
-        std::cout << "-----------------------------------------" << std::endl;
-        std::cout << "Device information: "                      << std::endl;
-        std::cout << "* Name  \t: "   << info->device_name()     << std::endl;
-        std::cout << "* Serial\t: "   << info->serial_number()   << std::endl;
-        std::cout << "* IP Addr\t: "  << info->ip_address()      << std::endl;
-        std::cout << "-----------------------------------------" << std::endl;
 
-        // Establish connection to the RF627 device by Service Protocol.
-        bool is_connected = scanner->connect();
-        if (!is_connected){
-            std::cout << "Failed to connect to scanner!" << std::endl;
-            continue;
-        }
+    std::shared_ptr<rf627smart> scanner = list[index];
+    std::shared_ptr<hello_info> info = scanner->get_info();
 
-        uint32_t count_of_profiles = 1000;
-        scanner->start_dump_recording(count_of_profiles);
+    // Print short information about the scanner
+    std::cout << "-----------------------------------------" << std::endl;
+    std::cout << "Device information: "                      << std::endl;
+    std::cout << "* Name  \t: "   << info->device_name()     << std::endl;
+    std::cout << "* Serial\t: "   << info->serial_number()   << std::endl;
+    std::cout << "* IP Addr\t: "  << info->ip_address()      << std::endl;
+    std::cout << "-----------------------------------------" << std::endl;
+
+    // Establish connection to the RF627 device by Service Protocol.
+    bool is_connected = scanner->connect();
+    if (!is_connected){
+        std::cout << "Failed to connect to scanner!" << std::endl;
+        return 0;
+    }
+
+    uint32_t count = 1000;
+    while(count > 0)
+    {
+        std::cout << "Enter the number of profiles in the dump: " << std::endl;
+        std::cin >> count;
+        scanner->start_dump_recording(count);
 
         std::cout << "Start dump recording..."                   << std::endl;
         std::cout << "-----------------------------------------" << std::endl;
@@ -66,18 +82,37 @@ int main()
             scanner->read_params();
             size = scanner->get_param("user_dump_size")->getValue<uint32_t>();
             std::cout << "Current profiles in the dump: "<< size << std::endl;
-        }while(size < count_of_profiles);
+        }while(size < count);
         std::cout << "-----------------------------------------" << std::endl;
 
         std::cout << "Start dump downloading..."                 << std::endl;
+        int waiting_timeout_ms = count * 10;
         std::vector<std::shared_ptr<profile2D>> dump =
-                scanner->get_dumps_profiles(0, count_of_profiles);
+            scanner->get_dumps_profiles(0,count,waiting_timeout_ms);
 
-        std::cout << dump.size() << " Profiles in dump were downloaded!\n";
+        // Create file name
+        std::time_t now = std::time(nullptr);
+        std::tm* localTime = std::localtime(&now);
+        std::stringstream date;
+        date << std::put_time(localTime, "%Y.%m.%d_%H.%M.%S");
+        std::string filename = "dump__"+date.str()+"__"+std::to_string(count)+".bin";
+
+        for (auto& profile : dump) {
+            profile->save_to_file(filename);
+        }
+
+        std::cout << dump.size() << " The dump has been downloaded!\n";
         std::cout << "-----------------------------------------" << std::endl;
 
-        // Disconnect from scanner.
-        scanner->disconnect();
+        // Apply changed parameters to the device
+        std::string answer = "n";
+        std::cout << "Try again? (y/n): ";
+        std::cin >> answer;
+        if (!(answer == "y" || answer == "Y")){
+            // Disconnect from scanner.
+            scanner->disconnect();
+            break;
+        }
     }
 
     // Cleanup resources allocated with sdk_init()
