@@ -69,22 +69,27 @@ int main()
             case PROFILE_DATA_TYPES::PIXELS:
                 std::cout<<"* DataType\t: "<<"PIXELS"                <<std::endl;
                 std::cout<<"* Count\t\t: "<<profile->getPixels().size()<<std::endl;
+                std::cout<<"* Step \t\t: "<<profile->getHeader().step_count<<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PIXELS_INTRP:
                 std::cout<<"* DataType\t: "<<"PIXELS_INTRP"          <<std::endl;
                 std::cout<<"* Count\t\t: "<<profile->getPixels().size()<<std::endl;
+                std::cout<<"* Step \t\t: "<<profile->getHeader().step_count<<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PROFILE:
                 std::cout<<"* DataType\t: "<<"PROFILE"               <<std::endl;
                 std::cout<<"* Size\t\t: "<<profile->getPoints().size() <<std::endl;
+                std::cout<<"* Step \t\t: "<<profile->getHeader().step_count<<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PROFILE_INTRP:
                 std::cout<<"* DataType\t: "<<"PROFILE_INTRP"         <<std::endl;
                 std::cout<<"* Size\t\t: "<<profile->getPoints().size() <<std::endl;
+                std::cout<<"* Step \t\t: "<<profile->getHeader().step_count<<std::endl;
                 break;
             case PROFILE_DATA_TYPES::PROFILE_POLYNOMIAL:
                 std::cout<<"* DataType\t: "<<"PROFILE_POLYNOMIAL"    <<std::endl;
                 std::cout<<"* Size\t\t: "<<profile->getPoints().size() <<std::endl;
+                std::cout<<"* Step \t\t: "<<profile->getHeader().step_count<<std::endl;
                 break;
             }
             std::cout << "Profile was successfully received!"        <<std::endl;

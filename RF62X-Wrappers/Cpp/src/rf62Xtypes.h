@@ -532,7 +532,7 @@ public:
     const header& getHeader() const noexcept;
 
     const std::vector<point2D_t>& getPoints() const noexcept;
-    const std::vector<uint16_t>& getPixels() const noexcept;
+    const std::vector<unsigned int>& getPixels() const noexcept;
     const std::vector<uint8_t>& getIntensity() const noexcept;
 
     profile2D(const profile2D&) = delete;
@@ -541,7 +541,7 @@ private:
     void* m_ProfileBase;
 
     std::vector<point2D_t> m_Points;
-    std::vector<uint16_t> m_Pixels;
+    std::vector<unsigned int> m_Pixels;
     std::vector<uint8_t> m_Intensity;
 
     header m_Header;
