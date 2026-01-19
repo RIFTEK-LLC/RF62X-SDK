@@ -308,34 +308,140 @@ namespace SDK
 #endif
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
-            private struct profile_header
+            private unsafe struct v1_0_standart_t
             {
-                public byte data_type;
-                public byte flags;
-                public ushort device_type;
-                public uint serial_number;
-                public ulong system_time;
-
-                public byte proto_version_major;
-                public byte proto_version_minor;
-                public byte hardware_params_offset;
-                public byte data_offset;
-                public uint packet_count;
-                public uint measure_count;
-
                 public ushort zmr;
                 public ushort xemr;
                 public ushort discrete_value;
                 public fixed byte reserved_0[10];
-                public uint license_hash;
+            }
 
-                public uint exposure_time;
-                public uint laser_value;
-                public uint step_count;
-                public byte dir;
-                public ushort payload_size;
-                public byte bytes_per_point;
-            };
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private unsafe struct v1_1_standart_t
+            {
+                public ushort zmr;
+                public ushort xemr;
+                public ushort discrete_value;
+                public fixed byte reserved_0[10];
+            }
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private unsafe struct v1_1_polynomial_t
+            {
+                public ushort zmr;
+                public ushort xemr;
+                public float scaling_factor;
+                public fixed byte reserved_0[8];
+            }
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private unsafe struct v1_2_standart_t
+            {
+                public ushort zmr;
+                public ushort xemr;
+                public ushort discrete_value;
+                public ushort alignment_with_sensor;
+                public fixed byte reserved_0[8];
+            }
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private unsafe struct v1_2_polynomial_t
+            {
+                public ushort zmr;
+                public ushort xemr;
+                public float scaling_factor;
+                public fixed byte reserved_0[8];
+            }
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private unsafe struct v1_3_standart_t
+            {
+                public ushort zmr;
+                public ushort xemr;
+                public uint pixels_divider;
+                public ushort alignment_with_sensor;
+                public fixed byte reserved_0[6];
+            }
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private unsafe struct v1_3_polynomial_t
+            {
+                public ushort zmr;
+                public ushort xemr;
+                public float scaling_factor;
+                public fixed byte reserved_0[8];
+            }
+
+            [StructLayout(LayoutKind.Explicit, Pack = _pack, Size = 16)]
+            private unsafe struct profile_header_union_t
+            {
+                [FieldOffset(0)] public v1_0_standart_t v1_0_standart;
+                [FieldOffset(0)] public v1_1_standart_t v1_1_standart;
+                [FieldOffset(0)] public v1_1_polynomial_t v1_1_polynomial;
+                [FieldOffset(0)] public v1_2_standart_t v1_2_standart;
+                [FieldOffset(0)] public v1_2_polynomial_t v1_2_polynomial;
+                [FieldOffset(0)] public v1_3_standart_t v1_3_standart;
+                [FieldOffset(0)] public v1_3_polynomial_t v1_3_polynomial;
+            }
+
+            //[StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            //private struct profile_header
+            //{
+            //    public byte data_type;
+            //    public byte flags;
+            //    public ushort device_type;
+            //    public uint serial_number;
+            //    public ulong system_time;
+
+            //    public byte proto_version_major;
+            //    public byte proto_version_minor;
+            //    public byte hardware_params_offset;
+            //    public byte data_offset;
+            //    public uint packet_count;
+            //    public uint measure_count;
+
+            //    public ushort zmr;
+            //    public ushort xemr;
+            //    public ushort discrete_value;
+            //    public fixed byte reserved_0[10];
+            //    public uint license_hash;
+
+            //    public uint exposure_time;
+            //    public uint laser_value;
+            //    public uint step_count;
+            //    public byte dir;
+            //    public ushort payload_size;
+            //    public byte bytes_per_point;
+            //};
+
+            [StructLayout(LayoutKind.Explicit, Pack = _pack, Size = 72)]
+            private unsafe struct profile_header
+            {
+                [FieldOffset(0)] public byte data_type;
+                [FieldOffset(1)] public byte flags;
+                [FieldOffset(2)] public ushort device_type;
+                [FieldOffset(4)] public uint serial_number;
+                [FieldOffset(8)] public ulong system_time;
+
+                [FieldOffset(16)] public byte proto_version_major;
+                [FieldOffset(17)] public byte proto_version_minor;
+                [FieldOffset(18)] public byte hardware_params_offset;
+                [FieldOffset(19)] public byte data_offset;
+                [FieldOffset(20)] public uint packet_count;
+                [FieldOffset(24)] public uint measure_count;
+
+                [FieldOffset(28)] public profile_header_union_t u;
+
+                [FieldOffset(44)] public uint license_hash;
+
+                [FieldOffset(48)] public uint exposure_time;
+                [FieldOffset(52)] public uint laser_value;
+                [FieldOffset(56)] public uint step_count;
+
+                [FieldOffset(60)] public byte dir;
+                [FieldOffset(62)] public ushort payload_size;
+                [FieldOffset(64)] public byte bytes_per_point;
+            }
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct pixels_format
@@ -343,6 +449,7 @@ namespace SDK
                 public ushort* pixels;
                 public uint pixels_count;
             };
+
 
             [StructLayout(LayoutKind.Sequential, Pack = _pack)]
             private struct rf62X_point_t
@@ -357,6 +464,13 @@ namespace SDK
                 public rf62X_point_t* points;
                 public uint points_count;
             };
+
+            [StructLayout(LayoutKind.Sequential, Pack = _pack)]
+            private struct pixels_v1_3_format
+            {
+                public uint* pixels;
+                public uint pixels_count;
+            }
 
 
 
@@ -458,6 +572,8 @@ namespace SDK
                 public profile_header header;
                 [FieldOffset(72)]
                 public pixels_format pixelsFormat;
+                [FieldOffset(72)]
+                public pixels_v1_3_format pixelsV13Format;
                 [FieldOffset(72)]
                 public profile_format profileFormat;
                 [FieldOffset(72 + 2 * _pack)]
@@ -683,7 +799,9 @@ namespace SDK
                 PIXELS = 0x10,
                 PROFILE = 0x11,
                 PIXELS_INTRP = 0x12,
-                PROFILE_INTRP = 0x13
+                PROFILE_INTRP = 0x13,
+
+                PROFILE_POLYNOMIAL = 0x20
             };
 
             public enum COUNT_TYPES
@@ -801,6 +919,7 @@ namespace SDK
                     public ushort xemr { get; private set; }
                     public ushort discrete_value { get; private set; }
 
+                    public uint license_hash { get; private set; }
                     public uint exposure_time { get; private set; }
                     public uint laser_value { get; private set; }
                     public uint step_count { get; private set; }
@@ -808,68 +927,114 @@ namespace SDK
                     public ushort payload_size { get; private set; }
                     public byte bytes_per_point { get; private set; }
 
+                    public float scaling_factor { get; private set; }
+                    public uint pixels_divider { get; private set; }
+                    public ushort alignment_with_sensor { get; private set; }
+
                     public Header(void* profile2D, SCANNER_TYPES type)
                     {
+                        profile_header* h = null;
+
                         switch (type)
                         {
                             case SCANNER_TYPES.RF627_OLD:
-                                {
-                                    data_type = (PROFILE_DATA_TYPES)((rf627_old_profile2D_t*)profile2D)->header.data_type;
+                                h = &((rf627_old_profile2D_t*)profile2D)->header;
+                                break;
 
-                                    data_offset = ((rf627_old_profile2D_t*)profile2D)->header.data_offset;
-                                    flags = ((rf627_old_profile2D_t*)profile2D)->header.flags;
-                                    device_type = ((rf627_old_profile2D_t*)profile2D)->header.device_type;
-                                    serial_number = ((rf627_old_profile2D_t*)profile2D)->header.serial_number;
-                                    system_time = ((rf627_old_profile2D_t*)profile2D)->header.system_time;
-
-                                    version_major = ((rf627_old_profile2D_t*)profile2D)->header.proto_version_major;
-                                    version_minor = ((rf627_old_profile2D_t*)profile2D)->header.proto_version_minor;
-                                    hardware_params_offset = ((rf627_old_profile2D_t*)profile2D)->header.hardware_params_offset;
-                                    data_offset = ((rf627_old_profile2D_t*)profile2D)->header.data_offset;
-                                    packet_count = ((rf627_old_profile2D_t*)profile2D)->header.packet_count;
-                                    measure_count = ((rf627_old_profile2D_t*)profile2D)->header.measure_count;
-
-                                    zmr = ((rf627_old_profile2D_t*)profile2D)->header.zmr;
-                                    xemr = ((rf627_old_profile2D_t*)profile2D)->header.xemr;
-                                    discrete_value = ((rf627_old_profile2D_t*)profile2D)->header.discrete_value;
-
-                                    exposure_time = ((rf627_old_profile2D_t*)profile2D)->header.exposure_time;
-                                    laser_value = ((rf627_old_profile2D_t*)profile2D)->header.laser_value;
-                                    step_count = ((rf627_old_profile2D_t*)profile2D)->header.step_count;
-                                    dir = ((rf627_old_profile2D_t*)profile2D)->header.dir;
-                                    break;
-                                }
                             case SCANNER_TYPES.RF62X_SMART:
-                                {
-                                    rf627_smart_profile2D_t* a = (rf627_smart_profile2D_t*)profile2D;
-                                    data_type = (PROFILE_DATA_TYPES)((rf627_smart_profile2D_t*)profile2D)->header.data_type;
-
-                                    data_offset = ((rf627_smart_profile2D_t*)profile2D)->header.data_offset;
-                                    flags = ((rf627_smart_profile2D_t*)profile2D)->header.flags;
-                                    device_type = ((rf627_smart_profile2D_t*)profile2D)->header.device_type;
-                                    serial_number = ((rf627_smart_profile2D_t*)profile2D)->header.serial_number;
-                                    system_time = ((rf627_smart_profile2D_t*)profile2D)->header.system_time;
-
-                                    version_major = ((rf627_smart_profile2D_t*)profile2D)->header.proto_version_major;
-                                    version_minor = ((rf627_smart_profile2D_t*)profile2D)->header.proto_version_minor;
-                                    hardware_params_offset = ((rf627_smart_profile2D_t*)profile2D)->header.hardware_params_offset;
-                                    data_offset = ((rf627_smart_profile2D_t*)profile2D)->header.data_offset;
-                                    packet_count = ((rf627_smart_profile2D_t*)profile2D)->header.packet_count;
-                                    measure_count = ((rf627_smart_profile2D_t*)profile2D)->header.measure_count;
-
-                                    zmr = ((rf627_smart_profile2D_t*)profile2D)->header.zmr;
-                                    xemr = ((rf627_smart_profile2D_t*)profile2D)->header.xemr;
-                                    discrete_value = ((rf627_smart_profile2D_t*)profile2D)->header.discrete_value;
-
-                                    exposure_time = ((rf627_smart_profile2D_t*)profile2D)->header.exposure_time;
-                                    laser_value = ((rf627_smart_profile2D_t*)profile2D)->header.laser_value;
-                                    step_count = ((rf627_smart_profile2D_t*)profile2D)->header.step_count;
-                                    dir = ((rf627_smart_profile2D_t*)profile2D)->header.dir;
-                                    break;
-                                }
+                                h = &((rf627_smart_profile2D_t*)profile2D)->header;
+                                break;
                         }
-                    }
 
+                        if (h == null) return;
+
+                        data_type = (PROFILE_DATA_TYPES)h->data_type;
+
+                        flags = h->flags;
+                        device_type = h->device_type;
+                        serial_number = h->serial_number;
+                        system_time = h->system_time;
+
+                        version_major = h->proto_version_major;
+                        version_minor = h->proto_version_minor;
+                        hardware_params_offset = h->hardware_params_offset;
+                        data_offset = h->data_offset;
+                        packet_count = h->packet_count;
+                        measure_count = h->measure_count;
+
+                        // default
+                        zmr = 0;
+                        xemr = 0;
+                        discrete_value = 0;
+                        scaling_factor = 0.0f;
+                        pixels_divider = 0;
+                        alignment_with_sensor = 0;
+
+                        bool isPoly = (data_type == PROFILE_DATA_TYPES.PROFILE_POLYNOMIAL);
+
+                        if (version_major == 1 && version_minor == 0)
+                        {
+                            zmr = h->u.v1_0_standart.zmr;
+                            xemr = h->u.v1_0_standart.xemr;
+                            discrete_value = h->u.v1_0_standart.discrete_value;
+                        }
+                        else if (version_major == 1 && version_minor == 1)
+                        {
+                            if (isPoly)
+                            {
+                                zmr = h->u.v1_1_polynomial.zmr;
+                                xemr = h->u.v1_1_polynomial.xemr;
+                                scaling_factor = h->u.v1_1_polynomial.scaling_factor;
+                            }
+                            else
+                            {
+                                zmr = h->u.v1_1_standart.zmr;
+                                xemr = h->u.v1_1_standart.xemr;
+                                discrete_value = h->u.v1_1_standart.discrete_value;
+                            }
+                        }
+                        else if (version_major == 1 && version_minor == 2)
+                        {
+                            if (isPoly)
+                            {
+                                zmr = h->u.v1_2_polynomial.zmr;
+                                xemr = h->u.v1_2_polynomial.xemr;
+                                scaling_factor = h->u.v1_2_polynomial.scaling_factor;
+                            }
+                            else
+                            {
+                                zmr = h->u.v1_2_standart.zmr;
+                                xemr = h->u.v1_2_standart.xemr;
+                                discrete_value = h->u.v1_2_standart.discrete_value;
+                                alignment_with_sensor = h->u.v1_2_standart.alignment_with_sensor;
+                            }
+                        }
+                        else if (version_major == 1 && version_minor == 3)
+                        {
+                            if (isPoly)
+                            {
+                                zmr = h->u.v1_3_polynomial.zmr;
+                                xemr = h->u.v1_3_polynomial.xemr;
+                                scaling_factor = h->u.v1_3_polynomial.scaling_factor;
+                            }
+                            else
+                            {
+                                zmr = h->u.v1_3_standart.zmr;
+                                xemr = h->u.v1_3_standart.xemr;
+                                pixels_divider = h->u.v1_3_standart.pixels_divider;
+                                alignment_with_sensor = h->u.v1_3_standart.alignment_with_sensor;
+                            }
+                        }
+
+                        license_hash = h->license_hash;
+
+                        exposure_time = h->exposure_time;
+                        laser_value = h->laser_value;
+                        step_count = h->step_count;
+                        dir = h->dir;
+                        payload_size = h->payload_size;
+                        bytes_per_point = h->bytes_per_point;
+                    }
                 }
 
                 public Profile2D(void* _base)
@@ -891,7 +1056,7 @@ namespace SDK
                                             case PROFILE_DATA_TYPES.PIXELS_INTRP:
                                                 {
                                                     uint pixels_count = ((rf627_profile2D_t*)_base)->rf627old_profile2D->pixelsFormat.pixels_count;
-                                                    pixels = new List<ushort>((int)pixels_count);
+                                                    pixels = new List<uint>((int)pixels_count);
                                                     for (int i = 0; i < pixels_count; i++)
                                                     {
                                                         pixels.Add(((rf627_profile2D_t*)_base)->rf627old_profile2D->pixelsFormat.pixels[i]);
@@ -940,45 +1105,57 @@ namespace SDK
                                     if (profile_from_scanner->rf627smart_profile2D != null)
                                     {
                                         header = new Header(profile_from_scanner->rf627smart_profile2D, SCANNER_TYPES.RF62X_SMART);
+
                                         switch (header.data_type)
                                         {
                                             case PROFILE_DATA_TYPES.PIXELS:
                                             case PROFILE_DATA_TYPES.PIXELS_INTRP:
                                                 {
-                                                    uint pixels_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsFormat.pixels_count;
-                                                    pixels = new List<ushort>((int)pixels_count);
-                                                    for (int i = 0; i < pixels_count; i++)
+                                                    // v1.3 -> pixelsV13Format (uint32)
+                                                    if (header.version_major == 1 && header.version_minor == 3)
                                                     {
-                                                        pixels.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsFormat.pixels[i]);
+                                                        uint cnt = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsV13Format.pixels_count;
+                                                        pixels = new List<uint>((int)cnt);
+                                                        for (int i = 0; i < cnt; i++)
+                                                            pixels.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsV13Format.pixels[i]);
+                                                    }
+                                                    else
+                                                    {
+                                                        // v1.0..v1.2 -> pixelsFormat (uint16) => кастим в uint32
+                                                        uint cnt = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsFormat.pixels_count;
+                                                        pixels = new List<uint>((int)cnt);
+                                                        for (int i = 0; i < cnt; i++)
+                                                            pixels.Add((uint)((rf627_profile2D_t*)_base)->rf627smart_profile2D->pixelsFormat.pixels[i]);
                                                     }
 
                                                     if (((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count > 0)
                                                     {
-                                                        uint intensity_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count;
-                                                        intensities = new List<byte>((int)intensity_count);
-                                                        for (int i = 0; i < intensity_count; i++)
+                                                        uint icnt = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count;
+                                                        intensities = new List<byte>((int)icnt);
+                                                        for (int i = 0; i < icnt; i++)
                                                             intensities.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity[i]);
                                                     }
                                                     break;
                                                 }
+
                                             case PROFILE_DATA_TYPES.PROFILE:
                                             case PROFILE_DATA_TYPES.PROFILE_INTRP:
+                                            case PROFILE_DATA_TYPES.PROFILE_POLYNOMIAL:
                                                 {
                                                     uint points_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->profileFormat.points_count;
                                                     points = new List<Point2D>((int)points_count);
                                                     for (int i = 0; i < points_count; i++)
                                                     {
-                                                        Point2D point = new Point2D(
+                                                        points.Add(new Point2D(
                                                             ((rf627_profile2D_t*)_base)->rf627smart_profile2D->profileFormat.points[i].x,
-                                                            ((rf627_profile2D_t*)_base)->rf627smart_profile2D->profileFormat.points[i].z);
-                                                        points.Add(point);
+                                                            ((rf627_profile2D_t*)_base)->rf627smart_profile2D->profileFormat.points[i].z));
                                                     }
 
                                                     if (((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count > 0)
                                                     {
-                                                        uint intensity_count = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count;
-                                                        intensities = new List<byte>((int)intensity_count);
-                                                        for (int i = 0; i < intensity_count; i++)
+                                                        uint icnt = ((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity_count;
+                                                        intensities = new List<byte>((int)icnt);
+                                                        for (int i = 0; i < icnt; i++)
                                                             intensities.Add(((rf627_profile2D_t*)_base)->rf627smart_profile2D->intensity[i]);
                                                     }
                                                     break;
@@ -1038,35 +1215,39 @@ namespace SDK
                 public Header header { get; private set; }
                 public List<byte> intensities { get; }
                 public List<Point2D> points { get; }
-                public List<ushort> pixels { get; }
+                public List<uint> pixels { get; }
 
-                public ushort[] getPixelsArray()
+                public uint[] getPixelsArray()
                 {
-                    return pixels.ToArray();
+                    return pixels?.ToArray() ?? Array.Empty<uint>();
                 }
 
                 public Point2D[] getPointsArray()
                 {
-                    return points.ToArray();
+                    return points?.ToArray() ?? Array.Empty<Point2D>();
                 }
 
                 public float[] getPointsXArray()
                 {
+                    if (points == null || points.Count == 0)
+                        return Array.Empty<float>();
+
                     float[] x = new float[points.Count];
                     for (int i = 0; i < points.Count; i++)
-                    {
                         x[i] = points[i].X;
-                    }
+
                     return x;
                 }
 
                 public float[] getPointsZArray()
                 {
+                    if (points == null || points.Count == 0)
+                        return Array.Empty<float>();
+
                     float[] z = new float[points.Count];
                     for (int i = 0; i < points.Count; i++)
-                    {
                         z[i] = points[i].Z;
-                    }
+
                     return z;
                 }
 
