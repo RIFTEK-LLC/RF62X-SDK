@@ -3804,8 +3804,8 @@ bool rf627smart::connect(PROTOCOLS protocol)
             result = connect_to_scanner(
                         ((scanner_base_t*)this->scanner_base), kSERVICE);
             _is_connected = result;
-            if (_is_connected)
-                read_params();
+            // if (_is_connected)
+            //     read_params();
         }else
         {
             result = _is_connected;
