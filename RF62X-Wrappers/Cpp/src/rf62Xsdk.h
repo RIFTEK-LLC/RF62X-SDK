@@ -150,7 +150,7 @@ public:
      * @return frame if success, else - null
      */
     std::shared_ptr<frame> get_frame(
-            bool confirm_enabled = false, uint32_t waiting_time = 300);
+            bool confirm_enabled = false, uint32_t waiting_time = 3000);
 
 
 

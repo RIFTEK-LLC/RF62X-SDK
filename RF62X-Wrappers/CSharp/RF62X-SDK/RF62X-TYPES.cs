@@ -587,14 +587,16 @@ namespace SDK
             {
                 public byte* data;
                 public uint data_size;
-                public uint width;
-                public uint height;
+                public uint frame_width;
+                public uint frame_height;
                 public byte pixel_size;
 
                 public byte user_roi_active;
                 public byte user_roi_enabled;
                 public uint user_roi_pos;
                 public uint user_roi_size;
+                public uint fact_sensor_width;
+                public uint fact_sensor_height;
             };
 
             #endregion
@@ -716,7 +718,11 @@ namespace SDK
             private static extern void free_profile2D(rf627_profile2D_t* profile);
 
             [DllImport("libRF62X-SDK", CallingConvention = CallingConvention.Cdecl)]
-            private static extern rf627_frame_t* get_frame_from_scanner(scanner_base_t* device, PROTOCOL_TYPES protocol);
+            private static extern rf627_frame_t* get_frame_from_scanner(
+                scanner_base_t* device,
+                bool confirm_enabled,
+                uint waiting_time,
+                PROTOCOL_TYPES protocol);
 
 
             [DllImport("libRF62X-SDK", CallingConvention = CallingConvention.Cdecl)]
@@ -1275,6 +1281,8 @@ namespace SDK
                                     PixelSize = _frame->rf627old_frame->pixel_size;
                                     FrameWidth = _frame->rf627old_frame->width;
                                     FrameHeight = _frame->rf627old_frame->height;
+                                    SensorWidth = _frame->rf627old_frame->width;
+                                    SensorHeight = _frame->rf627old_frame->height;
 
                                     RoiActive = _frame->rf627old_frame->user_roi_active == 1 ? true : false;
                                     RoiEnabled = _frame->rf627old_frame->user_roi_enabled == 1 ? true : false;
@@ -1289,8 +1297,10 @@ namespace SDK
                                         Data.Add(_frame->rf627smart_frame->data[i]);
                                     DataSize = _frame->rf627smart_frame->data_size;
                                     PixelSize = _frame->rf627smart_frame->pixel_size;
-                                    FrameWidth = _frame->rf627smart_frame->width;
-                                    FrameHeight = _frame->rf627smart_frame->height;
+                                    FrameWidth = _frame->rf627smart_frame->frame_width;
+                                    FrameHeight = _frame->rf627smart_frame->frame_height;
+                                    SensorWidth = _frame->rf627smart_frame->fact_sensor_width;
+                                    SensorHeight = _frame->rf627smart_frame->fact_sensor_height;
 
                                     RoiActive = _frame->rf627smart_frame->user_roi_active == 1 ? true : false;
                                     RoiEnabled = _frame->rf627smart_frame->user_roi_enabled == 1 ? true : false;
@@ -1315,12 +1325,14 @@ namespace SDK
                                 {
                                     if (_frame->rf627old_frame->data != null)
                                         platform_free(_frame->rf627old_frame->data);
+                                    platform_free(_frame->rf627old_frame);
                                     break;
                                 }
                             case SCANNER_TYPES.RF62X_SMART:
                                 {
                                     if (_frame->rf627smart_frame->data != null)
                                         platform_free(_frame->rf627smart_frame->data);
+                                    platform_free(_frame->rf627smart_frame);
                                     break;
                                 }
                         }
@@ -1333,6 +1345,8 @@ namespace SDK
                 public uint PixelSize { get; }
                 public uint FrameWidth { get; }
                 public uint FrameHeight { get; }
+                public uint SensorWidth { get; }
+                public uint SensorHeight { get; }
 
                 public bool RoiActive { get; }
                 public bool RoiEnabled { get; }

@@ -312,9 +312,14 @@ namespace SDK
                 /// <summary>
                 /// Get RAW frame from scanner
                 /// </summary>
+                /// <param name="confirm_enabled">enable request confirmation</param>
+                /// <param name="waiting_time">time to wait for response, ms</param>
                 /// <param name="protocol">protocol’s type</param>
                 /// <returns>Frame</returns>
-                public Frame GetFrame(PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
+                public Frame GetFrame(
+                    bool confirm_enabled = false,
+                    uint waiting_time = 3000,
+                    PROTOCOL_TYPES protocol = PROTOCOL_TYPES.SERVICE)
                 {
                     PROTOCOL_TYPES p;
                     if (protocol == PROTOCOL_TYPES.CURRENT)
@@ -328,32 +333,70 @@ namespace SDK
                         {
                             case PROTOCOL_TYPES.SERVICE:
                                 {
-                                    // Get profile from scanner's data stream by Service Protocol.
+                                    // Get frame from scanner's data stream by Service Protocol.
                                     rf627_frame_t* _frame = get_frame_from_scanner(
-                                                (scanner_base_t*)scannerBase, PROTOCOL_TYPES.SERVICE);
+                                                (scanner_base_t*)scannerBase,
+                                                confirm_enabled,
+                                                waiting_time,
+                                                PROTOCOL_TYPES.SERVICE);
                                     if (_frame != null && _frame->rf627smart_frame != null)
                                     {
-                                        Parameter<uint> width = GetParam("fact_sensor_width");
-                                        Parameter<uint> height = GetParam("fact_sensor_width");
-
-                                        if (width != null)
+                                        if (_frame->rf627smart_frame->fact_sensor_width == 0)
                                         {
-                                            _frame->rf627smart_frame->width = width.GetValue();
-                                        }
-                                        if (height != null)
-                                        {
-                                            _frame->rf627smart_frame->height = height.GetValue();
+                                            Parameter<uint> width = GetParam("fact_sensor_width");
+                                            if (width != null)
+                                            {
+                                                _frame->rf627smart_frame->fact_sensor_width = width.GetValue();
+                                            }
                                         }
 
-                                        if (_frame->rf627smart_frame->data_size == _frame->rf627smart_frame->width * _frame->rf627smart_frame->height * 1)
+                                        if (_frame->rf627smart_frame->fact_sensor_height == 0)
+                                        {
+                                            Parameter<uint> height = GetParam("fact_sensor_height");
+                                            if (height != null)
+                                            {
+                                                _frame->rf627smart_frame->fact_sensor_height = height.GetValue();
+                                            }
+                                        }
+
+                                        if (_frame->rf627smart_frame->frame_width == 0)
+                                        {
+                                            _frame->rf627smart_frame->frame_width =
+                                                _frame->rf627smart_frame->fact_sensor_width;
+                                        }
+
+                                        if (_frame->rf627smart_frame->frame_height == 0)
+                                        {
+                                            _frame->rf627smart_frame->frame_height =
+                                                _frame->rf627smart_frame->user_roi_enabled == 1
+                                                    ? _frame->rf627smart_frame->user_roi_size
+                                                    : _frame->rf627smart_frame->fact_sensor_height;
+                                        }
+
+                                        if (_frame->rf627smart_frame->data_size ==
+                                            _frame->rf627smart_frame->frame_width *
+                                            _frame->rf627smart_frame->frame_height)
                                         {
                                             _frame->rf627smart_frame->pixel_size = 1;
                                         }
 
-                                        Frame result = new Frame(_frame);
-                                        return result;
+                                        if (_frame->rf627smart_frame->pixel_size == 1)
+                                        {
+                                            Frame result = new Frame(_frame);
+                                            return result;
+                                        }
                                     }
-                                    platform_free(_frame);
+
+                                    if (_frame != null)
+                                    {
+                                        if (_frame->rf627smart_frame != null)
+                                        {
+                                            if (_frame->rf627smart_frame->data != null)
+                                                platform_free(_frame->rf627smart_frame->data);
+                                            platform_free(_frame->rf627smart_frame);
+                                        }
+                                        platform_free(_frame);
+                                    }
                                     break;
                                 }
                             default:
